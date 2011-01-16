@@ -3,10 +3,19 @@ import logging
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
+DIATONIC = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+HARMONIC = [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1]
+MELODIC =  [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]
+
+HARMONIES = [[2, 4, 6], [2, 4, 7], [3, 5, 7], [2, 5, 7],
+             [2, 4, 8], [2, 6, 8]]
+DISHARMS = [1]
+
 class Composer(object):
     def __init__(self):
         self.harm = {}
         self.voices = {}
+        self.num_voices = 4
         self.scale = []
 
     def x():
@@ -30,4 +39,12 @@ class Composer(object):
     
     def calculate_possible_notes(self):
         self.harm
+
+    def random_harmonic(self):
+        
+
+if __name__ == "__main__":
+    print DIATONIC, len(DIATONIC)
+    print HARMONIC, len(HARMONIC)
+    print MELODIC, len(MELODIC)
 
