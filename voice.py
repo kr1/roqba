@@ -13,7 +13,7 @@ class Voice(object):
     def voice(self, target):
         while True:
             state = (yield)
-            print state, ", possible: ", state.get("possible", [])
+            #print state, ", possible: ", state.get("possible", [])
             val = self.desc(state["composer"], sample(state["possible"]))
             state["composer"].harm.update({self.id:val})
             target.send(val)

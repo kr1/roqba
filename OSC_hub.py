@@ -1,5 +1,7 @@
+import logging
+logger = logging.getLogger("OSC_hub")
 
 def hub():
     while True:
         data = (yield)
-        print "sink: ", data
+        logger.info("sending out: {0}".format(data))

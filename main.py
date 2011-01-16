@@ -1,11 +1,20 @@
 
+from Queue import Queue
+import time
+import logging
+import threading
+import logging.config
 
 from voice import Voice
 from composer import Composer
+from director import Director
 from OSC_hub import hub
 
-
 def startup():
+    #logging.basicConfig(filename="log.txt")
+    #logger = logging.getLogger('startup')
+    #logger.setLevel(logging.INFO)
+    logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
     s = hub()
     s.next() # get the coroutine to the yield
     c = Composer()

@@ -1,4 +1,7 @@
+import logging
 
+comp_logger = logging.getLogger("composer")
+note_logger = logging.getLogger("transcriber")
 
 class Composer(object):
     def __init__(self):
@@ -20,7 +23,8 @@ class Composer(object):
         self.voices.update({id:voice})
 
     def send_state(self, state):
-        print "sending state: {0}".format(state)
+        #print "sending state: {0}".format(state)
+        note_logger.info("sending state: {0}".format(state))
         for v in self.voices.values():
             v.send(state)
     
