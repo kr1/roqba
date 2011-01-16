@@ -22,12 +22,22 @@ def startup():
     v2 = Voice(2, s, c)
     v3 = Voice(3, s, c)
     return c
+logging.config.fileConfig("logging.conf")
+logger = logging.getLogger('startup')
 
-def main(c):
-    c.send_state({"possible":[2,6,9],
-                  "composer":c})
-    c.report()
+go = True 
+composer = startup()
+SPEED = 0.250
+STATE = {"possible":[2,6,9],
+         "composer":composer}
+director = Director(composer, SPEED, STATE)
+
+
+def main():
+    ## stop execution by setting go to False
+    print "app is running in a thread. stop by setting:\nmain.go = False"
+    threading.Thread(target = director.play, args=()).start()
+    composer.report()
 
 if __name__ == "__main__":
-    composer = startup()
-    main(composer)
+    main()
