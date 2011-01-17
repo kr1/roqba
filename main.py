@@ -34,10 +34,13 @@ director = Director(composer, SPEED, STATE)
 
 
 def main():
-    ## stop execution by setting go to False
-    print "app is running in a thread. stop by setting:\nmain.go = False"
     threading.Thread(target = director.play, args=()).start()
     composer.report()
 
 if __name__ == "__main__":
-    main()
+    print '''please run this app from the interpreter as:
+    \b\b\b\bimport main
+    \b\b\b\bmain.main()
+    \b\b\bstop it with:
+    \b\b\b\bmain.director.stop()
+    '''

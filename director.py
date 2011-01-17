@@ -32,8 +32,9 @@ class Director(object):
 
 
     def stop(self):
-        logger.info("stop playing ========== length: '{0}' -------------<<<<<<<<<<<<<<<<<".format(self.make_length()))
-        self.playing = False
+        if self.playing:
+            logger.info("stop playing ========== length: '{0}' -------------<<<<<<<<<<<<<<<<<".format(self.make_length()))
+            self.playing = False
 
     def make_length(self):
         delta = int(time.time() - self.start_time)
