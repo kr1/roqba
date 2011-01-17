@@ -1,5 +1,6 @@
 import time
 import logging
+import itertools
 
 from metronome import metro
 
@@ -7,9 +8,10 @@ logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
 
 class Director(object):
-    def __init__(self, composer, speed, state):
+    def __init__(self, composer, speed, state, meter = [2,0,1,0]):
         self.composer = composer
         self.playing = None
+        self.meter = itertools.cycle(meter)
         self.state = state
         self.speed = speed
         self.metro = metro()
@@ -17,7 +19,7 @@ class Director(object):
     def play(self, duration = None):
         self.start_time = time.time()
         self.playing = True
-        logger.info("start playing")
+        logger.info("<<<<<<<<<<<<<<<<<<<<<<   start playing  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         pos = 0
         self.playing = True
         while self.playing:
@@ -25,15 +27,16 @@ class Director(object):
                 pos += self.speed
                 if pos > duration:
                     self.playing = False
-                    logger.info("stop playing")
+                    logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<   stop playing   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             time.sleep(self.speed)
-            self.composer.send_state(self.state)
-            self.metro.next()
+            self.state['weight'] =  self.meter.next()
+            self.composer.generate(self.state)
+            #self.metro.next()
 
 
     def stop(self):
         if self.playing:
-            logger.info("stop playing ========== length: '{0}' -------------<<<<<<<<<<<<<<<<<".format(self.make_length()))
+            logger.info("<<<<<<<<<<<<<<   stop playing = length: '{0}' >>>>>>>>>>>>>>>>>>>>>>>>>".format(self.make_length()))
             self.playing = False
 
     def make_length(self):
