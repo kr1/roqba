@@ -28,8 +28,7 @@ logger = logging.getLogger('startup')
 go = True 
 composer = startup()
 SPEED = 0.250
-STATE = {"possible":[2,6,9],
-         "composer":composer}
+STATE = {"comp":composer}
 director = Director(composer, SPEED, STATE)
 
 

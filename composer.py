@@ -23,22 +23,25 @@ class Composer(object):
         self.voices = {}
         self.num_voices = num_voices
         self.scale = []
+        self.highest = 0
+        self.lowest = 1000000
 
     def __repr__(self):
-        return "<Composer-Instance for {0}>".format(self.harm)
+        return "<Composer-Inst with {0}>".format(self.harm)
 
     def report(self):
         print "harmonies: {0}".format(self.harm)
-        #print "voices: {0}".format(self.voices)
+        print "voices: {0}\nnotes:{1}".format(self.voices,
+                                                map(lambda x: x.note, self.voices.values()))
 
     def add_voice(self, id, voice):
         self.voices.update({id:voice})
 
-    def send_state(self, state):
+    def generate(self, state):
         #print "sending state: {0}".format(state)
         note_logger.info("sending state: {0}".format(state))
         for v in self.voices.values():
-            v.send(state)
+            v.generator.send(state)
     
     def calculate_possible_notes(self):
         self.harm
@@ -49,6 +52,12 @@ class Composer(object):
            for v in self.voices:
                res.append(v.random_note())
         return res
+
+    def highest_note_of_piece(self):
+        self.highest
+
+    def lowest_note_of_piece(self):
+        self.lowest
     
     @staticmethod
     def acceptable_harmony(chord):
