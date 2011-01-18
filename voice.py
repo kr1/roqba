@@ -28,7 +28,7 @@ class Voice(object):
             #print state, ", possible: ", state.get("possible", [])
             #val = self.desc(state["composer"], sample(state["possible"]))
             val = self.next_note()
-            target.send(val)
+            target.send({"voice":str(self.id),"message":str(val)})
 
     def bounce_back(self, dir):
         self.dir = dir   
