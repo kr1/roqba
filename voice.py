@@ -2,25 +2,32 @@ from composer import MOVEMENT_PROBS
 from random import choice as sample
 
 class Voice(object):
-    def __init__(self, id, target, composer, range = [0, 64]):
+    def __init__(self, id, target, composer, range = [0, 64], note = None):
         self.target = target
         self.id = id
         range.sort()
         self.range = range
         self.dir = 0
-        self.note = None
+        self.note = note or int((max(self.range) - min(self.range))/2) + min(self.range)
         self.prior_note = None
         self.composer = composer # store the composer
-        self.gen = self.voice(target)
-        self.gen.next() # get the coroutine to the yield
-        composer.add_voice(id, self.gen) # register with the composer
+        self.generator = self.voice(target)
+        self.generator.next() # get the coroutine to the yield
+        composer.add_voice(id, self) # register with the composer
+
+    def __str__(self):
+        return str({"note": self.note,
+                    "dir": self.dir})
+
+    def __repr__(self):
+        return "{0} - {1}".format(self.__class__, self.__str__())
     
     def voice(self, target):
         while True:
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
-            val = self.desc(state["composer"], sample(state["possible"]))
-            state["composer"].harm.update({self.id:val})
+            #val = self.desc(state["composer"], sample(state["possible"]))
+            val = self.next_note()
             target.send(val)
 
     def bounce_back(self, dir):
@@ -28,9 +35,9 @@ class Voice(object):
 
     def next_note(self):
         if self.dir:
-            res = self.note + (self.dir * MOVEMENT_PROBS)
+            res = self.note + (self.dir * sample(MOVEMENT_PROBS))
         else:
-            res = self.note + sample([-1, 0, 1] * MOVEMENT_PROBS)
+            res = self.note + sample([-1, 0, 1]) * sample(MOVEMENT_PROBS)
         if self.exceeds(self.note):
             res, self.dir = self.exceeds(self.note)
         if self.in_the_middle(res):
