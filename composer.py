@@ -18,11 +18,12 @@ MOVEMENT_PROBS = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                   8, 8, 8, 8, 8, 8, 9, 9, 10 ,11, 12, 13]
 
 class Composer(object):
-    def __init__(self, num_voices = 4):
+    def __init__(self, hub = None, num_voices = 3):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
         self.scale = []
+        self.hub = hub
         self.highest = 0
         self.lowest = 1000000
 

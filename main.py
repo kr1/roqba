@@ -10,6 +10,9 @@ from composer import Composer
 from director import Director
 from OSC_hub import hub
 
+app_hub = hub()
+app_hub.next()
+
 def startup():
     #logging.basicConfig(filename="log.txt")
     #logger = logging.getLogger('startup')
@@ -17,7 +20,7 @@ def startup():
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
     s = hub()
     s.next() # get the coroutine to the yield
-    c = Composer()
+    c = Composer(app_hub)
     v1 = Voice(1, s, c)
     v2 = Voice(2, s, c)
     v3 = Voice(3, s, c)

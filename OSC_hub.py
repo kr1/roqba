@@ -9,9 +9,15 @@ client.connect( ('localhost', 9999))
 def hub():
     while True:
         data = (yield)
-        m = OSCMessage(data["voice"])
-        m.message = data["message"]
         logger.info("sending out: {0}".format(data))
+        if type(data) == dict:
+            address = data["voice"]
+            msg = data["message"]
+        else:
+            address = "gen"
+            msg = str(data)
+        m = OSCMessage(address)
+        m.message = msg
         try:
             client.send(m, 20)
         except OSCClientError:
