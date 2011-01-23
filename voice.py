@@ -34,25 +34,29 @@ class Voice(object):
         self.dir = dir   
 
     def next_note(self):
+        self.prior_note = self.note
         if self.dir:
             res = self.note + (self.dir * sample(MOVEMENT_PROBS))
         else:
             res = self.note + sample([-1, 0, 1]) * sample(MOVEMENT_PROBS)
-        if self.exceeds(self.note):
-            res, self.dir = self.exceeds(self.note)
+        exceed = self.exceeds(res)
+        if exceed:
+            print "exceed"
+            res, self.dir = exceed
         if self.in_the_middle(res):
             self.dir = 0
-        self.prior_note = self.note
         self.note = res
+        if self.exceeds(res):
+            raise RuntimeError, "diabolus in musica: {0} is too low/high, dir:{1}".format(res,self.dir)
         return res
 
     def exceeds(self, note):
         if note > self.range[1]:
-            return [self.range[1], -1]
+            return (self.range[1], -1)
         elif note < self.range[0]:
-            return [self.range[0], 1]
+            return (self.range[0], 1)
         else:
-            None
+            False
         
     def in_the_middle(self, note):
         range_span = self.range[1] - self.range[0]
