@@ -37,11 +37,24 @@ class Notator(object):
             line = "".join(t)
             line_buffer.append(line)
         return "\n".join(line_buffer)
-              
+    
     def write_to_file(self, s):
         fi = open(self.scroll_filename, "w")
         fi.write(s)
         fi.close()
+
+    def note_to_file(self, note):
+        """this method does the full service:
+            
+        1. created matrix
+        2. draws the text
+        3. writes the text to file
+        NB: see the scrolling notation with:
+        {0}""".format(self.get_unix_scroll_command())
+        self.add_note(note)
+        mat = self.make_matrix()
+        txt = self.draw(mat)
+        self.write_to_file(txt)
 
     def get_unix_scroll_command(self):
         return "tail -f {0}".format(self.scroll_filename)

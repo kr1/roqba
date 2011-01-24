@@ -1,6 +1,8 @@
 import logging
 from random import choice as sample
 
+from notator import Notator
+
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
@@ -28,6 +30,7 @@ class Composer(object):
         self.hub = hub
         self.highest = 0
         self.lowest = 1000000
+        self.notator = Notator(self.num_voices)
 
     def __repr__(self):
         return "<Composer-Inst with {0}>".format(self.harm)
@@ -58,6 +61,7 @@ class Composer(object):
             counter += 1
         print "tmp_harm: {0}".format(tmp_harm)
         self.hub.send(tmp_harm)
+        self.notator.note_to_file(tmp_harm)
         #target.send({"voice":str(self.id),"message":str(val)})
 
     def acceptable_harm_for_length(self, harm, length):
