@@ -34,14 +34,17 @@ class Voice(object):
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
             #val = self.desc(state["composer"], sample(state["possible"]))
-            val = self.next_note()
+            self.new_note =  self.on_off_pattern[state['cycle_pos']]
+            if self.new_note:
+                self.prior_note = self.note
+                self.note = self.next_note()
             #target.send({"voice":str(self.id),"message":str(val)})
 
-    def bounce_back(self, dir):
-        self.dir = dir   
+#    def bounce_back(self, dir):
+#        self.dir = dir   
 
     def next_note(self):
-        self.prior_note = self.note
+        """the next is calculated from here""" 
         if self.dir:
             res = self.note + (self.dir * sample(MOVEMENT_PROBS))
         else:
@@ -52,20 +55,28 @@ class Voice(object):
             res, self.dir = exceed
         if self.in_the_middle(res):
             self.dir = 0
-        self.note = res
         if self.exceeds(res):
             raise RuntimeError, "diabolus in musica: {0} is too low/high, dir:{1}".format(res,self.dir)
         return res
 
     def exceeds(self, note):
+        """returns min/max limits and a bounce back direction coefficient if incomint int exceeds limits
+        
+        returns False otherwise"""
         if note > self.range[1]:
             return (self.range[1], -1)
         elif note < self.range[0]:
             return (self.range[0], 1)
         else:
             False
+
+    def set_rhythm_grouping(self, grouping):
+        """setter method which creates also the on/off pattern"""
+        self.note_length_grouping = grouping
+        self.on_off_pattern = analyze_grouping(grouping)
         
     def in_the_middle(self, note):
+        """returns true is the incoming int is in the center area of the range"""
         range_span = self.range[1] - self.range[0]
         lower_thresh = self.range[0] + (range_span * 0.333)
         upper_thresh = self.range[0] + (range_span * 0.666)

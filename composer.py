@@ -64,7 +64,7 @@ class Composer(object):
                     tmp_harm.append(v.note)
             counter += 1
         print "tmp_harm: {0}".format(tmp_harm)
-        self.hub.send(tmp_harm)
+        self.hub.send(self.voices)
         self.notator.note_to_file(tmp_harm)
         #target.send({"voice":str(self.id),"message":str(val)})
 
