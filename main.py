@@ -32,7 +32,9 @@ go = True
 composer = startup()
 SPEED = 0.250
 STATE = {"comp":composer}
-director = Director(composer, SPEED, STATE)
+METER = [2, 0, 1, 0, 2, 0, 1, 0]
+#METER = [2, 0, 0, 0, 1, 0, 0, 0]
+director = Director(composer, SPEED, STATE, METER)
 
 
 def main():

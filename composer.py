@@ -1,7 +1,9 @@
 import logging
 from random import choice as sample
 
+import metronome
 from notator import Notator
+from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
@@ -16,10 +18,11 @@ HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
 DISHARMS = [1]
 
-MOVEMENT_PROBS = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  
-                  1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 
-                  3, 4, 4, 5, 5, 6, 6, 7, 7, 
-                  8, 8, 8, 8, 8, 8, 9, 9, 10 ,11, 12, 13]
+DEFAULT_MOVEMENT_PROBS = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  
+                  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1 ,1 ,1 ,1 ,1,
+                  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 6, 
+                  7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 10 ,11, 12, 13]
+
 
 class Composer(object):
     def __init__(self, hub = None, num_voices = 3):
@@ -54,10 +57,11 @@ class Composer(object):
             if len(self.voices) < self.num_voices: raise RuntimeError
             v.generator.send(state)
             tmp_harm.append(v.note)
-            while not self.acceptable_harm_for_length(tmp_harm, counter):
-                if len(tmp_harm) > counter: tmp_harm.pop()
-                v.generator.send(state)
-                tmp_harm.append(v.note)
+            if state["weight"] == metronome.HEAVY: 
+                while not self.acceptable_harm_for_length(tmp_harm, counter):
+                    if len(tmp_harm) > counter: tmp_harm.pop()
+                    v.generator.send(state)
+                    tmp_harm.append(v.note)
             counter += 1
         print "tmp_harm: {0}".format(tmp_harm)
         self.hub.send(tmp_harm)
@@ -81,6 +85,10 @@ class Composer(object):
         no_dirs = list(set(self.voices.values()) - set(dirs))
         return dirs + no_dirs
 
+    def choose_rhythm(self):
+        for v in self.voices.values():
+            v.note_length_grouping = sample(GROUPINGS)
+            
     def random_harmonic(self):
         res = []
         while not self.acceptable_harmony(res):

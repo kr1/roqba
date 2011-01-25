@@ -1,14 +1,21 @@
-from composer import MOVEMENT_PROBS
+from composer import DEFAULT_MOVEMENT_PROBS as MOVEMENT_PROBS
+from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from random import choice as sample
 
 class Voice(object):
-    def __init__(self, id, target, composer, range = [0, 64], note = None):
+    def __init__(self, id, 
+                       target, 
+                       composer, 
+                       range = [0, 64], 
+                       note = None, 
+                       note_length_grouping = sample(GROUPINGS)):
         self.target = target
         self.id = id
         range.sort()
         self.range = range
         self.dir = 0
         self.note = note or int((max(self.range) - min(self.range))/2) + min(self.range)
+        self.note_length_grouping = note_length_grouping 
         self.prior_note = None
         self.composer = composer # store the composer
         self.generator = self.voice(target)

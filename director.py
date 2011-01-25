@@ -2,7 +2,7 @@ import time
 import logging
 import itertools
 
-from metronome import metro
+import metronome
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -11,10 +11,9 @@ class Director(object):
     def __init__(self, composer, speed, state, meter = [2,0,1,0]):
         self.composer = composer
         self.playing = None
-        self.meter = itertools.cycle(meter)
         self.state = state
         self.speed = speed
-        self.metro = metro()
+        self.metronome = metronome.Metronome(meter)
 
     def play(self, duration = None):
         self.start_time = time.time()
@@ -28,10 +27,13 @@ class Director(object):
                 if pos > duration:
                     self.playing = False
                     logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<   stop playing   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            
             time.sleep(self.speed)
-            self.state['weight'] =  self.meter.next()
+            weight  =  self.metronome.beat()
+            self.state['weight'] = weight
+            if weight == metronome.HEAVY:
+                self.composer.choose_rhythm()
             self.composer.generate(self.state)
-            #self.metro.next()
 
 
     def stop(self):
