@@ -29,8 +29,9 @@ class Director(object):
                     logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<   stop playing   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             
             time.sleep(self.speed)
-            weight  =  self.metronome.beat()
-            self.state['weight'] = weight
+            cycle_pos, weight  =  self.metronome.beat()
+            self.state.update({'weight': weight,
+                               'cycle_pos': cycle_pos})
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             self.composer.generate(self.state)

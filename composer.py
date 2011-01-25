@@ -87,7 +87,7 @@ class Composer(object):
 
     def choose_rhythm(self):
         for v in self.voices.values():
-            v.note_length_grouping = sample(GROUPINGS)
+            v.set_rhythm_grouping(sample(GROUPINGS))
             
     def random_harmonic(self):
         res = []

@@ -58,6 +58,18 @@ raw = [
 
 DEFAULT_NOTE_LENGTH_GROUPINGS = sum(raw, [])
 
+def analyze_grouping(g):
+    res = []
+    for item in g:
+        first = True
+        for n in xrange(item):
+            if first:
+              res.append(1)
+            else:
+              res.append(0)
+            first = False
+    return res
+
 def badly_formeD():
     odd = filter(lambda x: sum(x) != 8, DEFAULT_NOTE_LENGTH_GROUPINGS)
     return odd
@@ -69,3 +81,8 @@ if badly_formeD():
 if __name__ == "__main__":
     import pprint as pp
     pp.pprint(DEFAULT_NOTE_LENGTH_GROUPINGS)
+
+    ## TEST analyze_grouping
+    res = analyze_grouping([1,2,1,3])
+    assert res == [1,1,0,1,1,0,0]
+    print res

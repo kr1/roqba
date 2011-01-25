@@ -8,6 +8,7 @@ class Metronome(object):
     def __init__(self, meter = [2, 0, 1, 0]):
         self.meter = meter
         self.metronome = cycle(meter)
+        self.cycle_pos = cycle(xrange(len(meter)))
 
     def beat(self):
-        return self.metronome.next()
+        return [self.cycle_pos.next(), self.metronome.next()]

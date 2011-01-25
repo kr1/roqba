@@ -1,6 +1,8 @@
 from composer import DEFAULT_MOVEMENT_PROBS as MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
+from note_length_groupings import  analyze_grouping 
 from random import choice as sample
+from metronome import HEAVY, MEDIUM, LIGHT
 
 class Voice(object):
     def __init__(self, id, 
@@ -17,6 +19,7 @@ class Voice(object):
         self.note = note or int((max(self.range) - min(self.range))/2) + min(self.range)
         self.note_length_grouping = note_length_grouping 
         self.prior_note = None
+        self.note_change = True
         self.composer = composer # store the composer
         self.generator = self.voice(target)
         self.generator.next() # get the coroutine to the yield
@@ -34,8 +37,8 @@ class Voice(object):
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
             #val = self.desc(state["composer"], sample(state["possible"]))
-            self.new_note =  self.on_off_pattern[state['cycle_pos']]
-            if self.new_note:
+            self.note_change =  self.on_off_pattern[state['cycle_pos']]
+            if self.note_change:
                 self.prior_note = self.note
                 self.note = self.next_note()
             #target.send({"voice":str(self.id),"message":str(val)})
