@@ -20,9 +20,11 @@ def hub():
         logger.info("sending out: {0}".format(data))
         if type(data) == dict:
             for v in data.values():
-                address = str(v.id)
-                msg = str(v.note)
-            send(address, msg)
+                if v.note_change:
+                    address = str(v.id)
+                    msg = str(v.note)
+                    logger.info("sending out: /{0}/{1} for id:{2}".format(address, msg, v.id))
+                    send(address, msg)
             #address = data["voice"]
             #msg = data["message"]
         else:
