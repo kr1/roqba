@@ -65,7 +65,9 @@ class Composer(object):
             counter += 1
         print "tmp_harm: {0}".format(tmp_harm)
         self.hub.send(self.voices)
-        self.notator.note_to_file(tmp_harm)
+        self.notator.note_to_file({"notes" : tmp_harm, 
+                                   "weight": state["weight"], 
+                                   "cycle_pos":state["cycle_pos"]})
         #target.send({"voice":str(self.id),"message":str(val)})
 
     def acceptable_harm_for_length(self, harm, length):

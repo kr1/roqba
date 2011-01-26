@@ -1,4 +1,7 @@
+# encoding: utf-8 
+
 import collections
+import metronome
 
 class Notator(object):
     def __init__(self, num_voices, 
@@ -29,11 +32,16 @@ class Notator(object):
                 mat[int(self.buffer[n][v]/2)][n] = self.buffer[n][v] % 2
         return mat
 
-    def draw(self, mat):
+    def draw(self, mat, weight, cycle_pos):
         text = ""
         line_buffer = []
         for l in xrange(self.num_lines):
             t = map(lambda x: {-1:" ", 0:"_", 1:"-"}[x], mat[l])
+            if l == self.num_lines - 1 and len(t) > 6:
+                t[0] = "w"
+                t[1] = str(weight)
+                t[4] = "p"
+                t[5] = str(cycle_pos)
             line = "".join(t)
             line_buffer.append(line)
         return "\n".join(line_buffer)
@@ -43,18 +51,34 @@ class Notator(object):
         fi.write(s)
         fi.close()
 
-    def note_to_file(self, note):
+    def note_to_file(self, data):
         """this method does the full service:
             
-        1. created matrix
+        0. adds a note to the buffer
+        1. creates matrix
         2. draws the text
         3. writes the text to file
         NB: see the scrolling notation with:
         {0}""".format(self.get_unix_scroll_command())
+        note = data["notes"]
+        weight = data["weight"]
+        cycle_pos = data["cycle_pos"]
         self.add_note(note)
         mat = self.make_matrix()
-        txt = self.draw(mat)
+        txt = self.draw(mat, weight, cycle_pos)
+        txt = self.post_process(txt, weight)
         self.write_to_file(txt)
+
+    def post_process(self, txt, weight):
+        if weight == metronome.HEAVY: 
+            new_txt = []
+            for l in  txt.split("\n"):
+                if "_" not in l and "-" not in l:
+                    new_txt.append(l.replace(" ", "."))
+                else:
+                    new_txt.append(l)
+            return "\n".join(new_txt)
+        return txt
 
     def get_unix_scroll_command(self):
         return "tail -f {0}".format(self.scroll_filename)
