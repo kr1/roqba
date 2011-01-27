@@ -82,6 +82,9 @@ class Notator(object):
     def get_unix_scroll_command(self):
         return "tail -f {0}".format(self.scroll_filename)
 
+    def reset(self):
+        self.buffer = collections.deque()
+
 
 def main():
     import random

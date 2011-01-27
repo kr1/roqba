@@ -13,13 +13,11 @@ from OSC_hub import hub
 app_hub = hub()
 app_hub.next()
 
+
 def startup():
-    #logging.basicConfig(filename="log.txt")
-    #logger = logging.getLogger('startup')
-    #logger.setLevel(logging.INFO)
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
     s = hub()
-    s.next() # get the coroutine to the yield
+    s.next()  # get the coroutine to the yield
     c = Composer(app_hub)
     v1 = Voice(1, s, c)
     v2 = Voice(2, s, c)
@@ -28,17 +26,17 @@ def startup():
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
 
-go = True 
+go = True
 composer = startup()
 SPEED = 0.150
-STATE = {"comp":composer}
+STATE = {"comp": composer}
 METER = [2, 0, 1, 0, 1, 0, 1, 0]
 #METER = [2, 0, 0, 0, 1, 0, 0, 0]
 director = Director(composer, SPEED, STATE, METER)
 
 
 def main():
-    threading.Thread(target = director.play, args=()).start()
+    threading.Thread(target=director._play, args=()).start()
     composer.report()
 
 if __name__ == "__main__":
