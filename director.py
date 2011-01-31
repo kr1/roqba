@@ -4,6 +4,7 @@ import itertools
 import threading
 
 import metronome
+import OSC_hub
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -43,6 +44,7 @@ class Director(object):
     def pause(self):
         if self.playing:
             self.playing = False
+            OSC_hub.client.stop_notes()
         return True
 
     def unpause(self):
@@ -58,6 +60,8 @@ class Director(object):
         self.playing = False
         self.metronome.reset()
         self.composer.notator.reset()
+        time.sleep(1)
+        OSC_hub.client.stop_notes()
 
     def make_length(self):
         delta = int(time.time() - self.start_time)
