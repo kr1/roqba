@@ -26,12 +26,15 @@ DEFAULT_MOVEMENT_PROBS = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 
 
 class Composer(object):
-    def __init__(self, hub=None, num_voices=3):
+    def __init__(self, gateway=None, num_voices=3):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
         self.scale = []
-        self.hub = hub
+        self.gateway = gateway
+        self.hub = gateway.hub()
+        # XxxxX consider making NoteGateway a Singleton
+        self.hub.next()
         self.highest = 0
         self.lowest = 1000000
         self.notator = Notator(self.num_voices)

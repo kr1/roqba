@@ -15,6 +15,7 @@ class Director(object):
         self.composer = composer
         self.playing = None
         self.state = state
+        self.gateway = composer.gateway
         self.speed = speed
         self.metronome = metronome.Metronome(meter)
 
@@ -44,12 +45,14 @@ class Director(object):
     def pause(self):
         if self.playing:
             self.playing = False
-            OSC_hub.client.stop_notes()
+            self.gateway.pause()
+            #OSC_hub.client.stop_notes()
         return True
 
     def unpause(self):
         if not self.playing:
             self.playing = True
+            self.gateway.unpause()
             threading.Thread(target=self._play, args=()).start()
         return True
 
@@ -58,10 +61,11 @@ class Director(object):
             logger.info("<<<<<<<<<<<<<<   stop playing = length: '{0}' >>>>>>>\
 >>>>>>>>>>>>>>>>>>".format(self.make_length()))
         self.playing = False
+        self.gateway.stop()
         self.metronome.reset()
         self.composer.notator.reset()
         time.sleep(1)
-        OSC_hub.client.stop_notes()
+        #OSC_hub.client.stop_notes()
 
     def make_length(self):
         delta = int(time.time() - self.start_time)
