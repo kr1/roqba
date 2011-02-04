@@ -37,7 +37,7 @@ class Notator(object):
     def draw(self, mat, weight, cycle_pos):
         text = ""
         line_buffer = []
-        for l in xrange(self.num_lines):
+        for l in xrange(self.num_lines-1, 0, -1):
             t = map(lambda x: {-1: " ", 0: "_", 1: "-"}[x], mat[l])
             if l == self.num_lines - 1 and len(t) > 6:
                 t[0] = "w"
