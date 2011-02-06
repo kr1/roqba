@@ -32,7 +32,8 @@ class Voice(object):
     def __repr__(self):
         return "{0} - {1}".format(self.__class__, self.__str__())
     
-    def voice(self, target):
+    def voice(self):
+        """the generator method of the Voice-class"""
         while True:
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
@@ -41,10 +42,6 @@ class Voice(object):
             if self.note_change:
                 self.prior_note = self.note
                 self.note = self.next_note()
-            #target.send({"voice":str(self.id),"message":str(val)})
-
-#    def bounce_back(self, dir):
-#        self.dir = dir   
 
     def next_note(self):
         """the next is calculated from here""" 

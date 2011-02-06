@@ -16,12 +16,10 @@ gateway.hub().next()
 
 def startup():
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
-    s = gateway.hub()
-    s.next()  # get the coroutine to the yield
     c = Composer(gateway)
-    v1 = Voice(0, s, c)
-    v2 = Voice(1, s, c)
-    v3 = Voice(2, s, c)
+    v1 = Voice(0, c)
+    v2 = Voice(1, c)
+    v3 = Voice(2, c)
     #v4 = Voice(3, s, c)
     return c
 logging.config.fileConfig("logging.conf")
