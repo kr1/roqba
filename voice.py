@@ -6,22 +6,22 @@ from metronome import HEAVY, MEDIUM, LIGHT
 
 class Voice(object):
     def __init__(self, id, 
-                       target, 
                        composer, 
                        range = [0, 64], 
                        note = None, 
                        note_length_grouping = sample(GROUPINGS)):
-        self.target = target
         self.id = id
         range.sort()
         self.range = range
         self.dir = 0
         self.note = note or int((max(self.range) - min(self.range))/2) + min(self.range)
+        self.real_note = None 
         self.note_length_grouping = note_length_grouping 
         self.prior_note = None
         self.note_change = True
         self.composer = composer # store the composer
-        self.generator = self.voice(target)
+        self.scale = composer.scale
+        self.generator = self.voice()
         self.generator.next() # get the coroutine to the yield
         composer.add_voice(id, self) # register with the composer
 
