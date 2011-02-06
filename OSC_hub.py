@@ -34,7 +34,7 @@ class NoteGateway(object):
         del self.pd
 
     def pd_send_note(self, voice_id, msg):
-        self.pd.send(["ctl", voice_id, msg + TRANSPOSE])
+        self.pd.send(["voice", voice_id, msg + TRANSPOSE])
         return True
         
     def send(self, address, msg):

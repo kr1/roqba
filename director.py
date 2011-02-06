@@ -20,6 +20,9 @@ class Director(object):
         self.metronome = metronome.Metronome(meter)
 
     def _play(self, duration=None):
+        """this is the core of the program giving the impulse for all actions.
+
+        """
         self.start_time = time.time()
         self.playing = True
         logger.info("<<<<<<<<<<<<<<<<<<<<<<   start playing  >>>>>>>>>>>>>>>>\
@@ -38,6 +41,7 @@ class Director(object):
             cycle_pos, weight = self.metronome.beat()
             self.state.update({'weight': weight,
                                'cycle_pos': cycle_pos})
+            # on heavy beats a new rhythm-grouping is loaded
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             self.composer.generate(self.state)
