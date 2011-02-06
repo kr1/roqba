@@ -1,12 +1,11 @@
 import logging
+import time
 
-from OSC import OSCClient, OSCMessage, OSCClientError
-from roqba_sc import *
 from pdsender import PdSender
 
-HOST = "localhost"
-PORT = 9999
-PD_HOST = "msf"
+#HOST = "localhost"
+#PORT = 9999
+PD_HOST = "localhost"
 PD_PORT = 11211
 block_messages = False
 TRANSPOSE = 30
