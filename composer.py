@@ -26,11 +26,14 @@ DEFAULT_MOVEMENT_PROBS = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 
 
 class Composer(object):
-    def __init__(self, gateway=None, num_voices=3):
+    def __init__(self,
+                 gateway=None,
+                 num_voices=3,
+                 scale=DIATONIC):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
-        self.scale = []
+        self.scale = scale
         self.gateway = gateway
         self.hub = gateway.hub()
         # XxxxX consider making NoteGateway a Singleton
@@ -70,10 +73,18 @@ class Composer(object):
                     tmp_harm.append(v.note)
                     patience += 1
             counter += 1
+        # here we have arrived at the next level
+        # now we set the "real note" field according to the present scale
+        self.apply_scale()
         self.hub.send(self.voices)  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
                                    "cycle_pos": state["cycle_pos"]})
+
+    def apply_scale(self):
+        for v in self.voices.values():
+            if v.note_change:
+                v.real_note = self.scale_walker(self.scale, v.real_note, v.note_delta)
 
     def acceptable_harm_for_length(self, harm, length):
         if length in [0, 1]:
@@ -124,6 +135,28 @@ class Composer(object):
         chord.sort()
         base = chord[0]
         return map(lambda x: x - base, chord)[1:]
+
+    @staticmethod
+    def scale_walker(scale, present_note, delta):
+        """walks the <scale> <delta> steps starting at <present_note>"""
+        if delta == 0:
+            return present_note
+        dir = delta / abs(delta)
+        steps = 0
+        index = 1
+        octave = present_note // len(scale)
+        mod = present_note % len(scale)
+        while steps < abs(delta):
+            check_index = (mod + (dir * index)) % len(scale)
+            if scale[check_index]:
+                steps += 1
+                if steps == abs(delta):
+                    break
+                index += 1
+            else:
+                index += 1
+            #print check_index, scale[check_index], index, steps
+        return (index * dir) + mod + (octave * len(scale))
 
 if __name__ == "__main__":
     print DIATONIC, len(DIATONIC)

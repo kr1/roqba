@@ -1,7 +1,7 @@
 #N canvas 0 0 1216 662 12;
 #X obj 653 572 dac~;
 #X msg 53 564 \; pd dsp \$1 \;;
-#X obj 53 536 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 53 536 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 229 90 route vol;
 #X obj 511 456 *~ 0.2;
@@ -85,11 +85,12 @@ This patch is used as an abstraction in various examples.;
 #X obj 523 602 outlet~;
 #X obj 485 505 * 45;
 #X obj 516 415 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 12700 1;
+-1 -1 0 1;
 #X floatatom 535 543 5 0 0 0 - - -;
 #X obj 479 427 * 1;
 #X obj 519 438 / 64;
 #X obj 522 469 - 1;
+#X floatatom 51 148 5 0 0 0 - - -;
 #X connect 0 0 3 0;
 #X connect 1 0 5 1;
 #X connect 1 0 18 1;
@@ -119,6 +120,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 39 1 40 0;
 #X connect 40 0 9 0;
 #X connect 56 0 58 0;
+#X connect 56 0 77 0;
 #X connect 57 0 56 0;
 #X connect 57 0 3 0;
 #X connect 58 0 60 0;
@@ -149,7 +151,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 834 311 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 667 366 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 11430 1;
+-1 -1 5700 1;
 #X obj 664 389 / 127;
 #X obj 834 3 metro 500;
 #X obj 746 138 random 20;
@@ -305,7 +307,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 920 80 del 300;
 #X obj 506 130 route 1 2 3 4;
 #X obj 932 260 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 893 1;
+-1 -1 2183 1;
 #X obj 641 187 line;
 #X obj 650 66 random 127;
 #X msg 652 152 \$1 500;
@@ -314,7 +316,7 @@ This patch is used as an abstraction in various examples.;
 #X msg 1013 88 \$1 500;
 #X obj 57 469 key;
 #X obj 52 496 select 32;
-#X obj 288 -52 netreceive 11211 1;
+#X obj 262 -48 netreceive 11211 1;
 #X obj 81 129 print log udp;
 #X obj 335 -7 route sound voice sys;
 #X obj 664 341 * 127;
@@ -327,7 +329,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 1030 34 / 64;
 #X obj 1017 63 - 1;
 #X obj 624 223 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 9327 1;
+-1 -1 10800 1;
 #X obj 380 129 route 1 2 3 4;
 #X obj 720 3 spigot;
 #X obj 756 -21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -420,6 +422,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 522 469 - 1;
 #X obj 102 75 sel 0;
 #X msg 916 102 666;
+#X floatatom 38 153 5 0 0 0 - - -;
 #X connect 0 0 3 0;
 #X connect 1 0 5 1;
 #X connect 1 0 18 1;
@@ -449,6 +452,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 39 1 40 0;
 #X connect 40 0 9 0;
 #X connect 56 0 58 0;
+#X connect 56 0 78 0;
 #X connect 57 0 3 0;
 #X connect 57 0 76 0;
 #X connect 58 0 60 0;
@@ -479,7 +483,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 77 0 16 1;
 #X restore 56 269 pd voice 1 30 30 30 30 300;
 #X obj 97 214 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 2500 1;
 #N canvas 0 0 985 666 voice 0;
 #X obj 327 108 inlet;
 #X obj 657 148 inlet;
@@ -622,12 +626,20 @@ This patch is used as an abstraction in various examples.;
 #X connect 77 1 56 0;
 #X restore 286 271 pd voice 1 30 30 30 30 300;
 #X obj 327 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 12700 1;
+-1 -1 7400 1;
 #X obj 226 168 s master_vol;
 #X obj 606 304 r master_vol;
 #X obj 737 463 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 123 1;
 #X obj 752 427 abs;
+#X obj 202 -4 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 144 10 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 428 174 5 0 0 0 - - -;
+#X floatatom 481 176 5 0 0 0 - - -;
+#X floatatom 525 176 5 0 0 0 - - -;
+#X floatatom 569 177 5 0 0 0 - - -;
 #X connect 2 0 1 0;
 #X connect 3 0 45 0;
 #X connect 3 1 2 0;
@@ -669,9 +681,13 @@ This patch is used as an abstraction in various examples.;
 #X connect 27 0 26 0;
 #X connect 27 0 54 0;
 #X connect 28 0 58 0;
+#X connect 28 0 68 0;
 #X connect 28 1 60 0;
+#X connect 28 1 69 0;
 #X connect 28 2 8 0;
+#X connect 28 2 70 0;
 #X connect 28 3 20 0;
+#X connect 28 3 71 0;
 #X connect 29 0 20 2;
 #X connect 30 0 50 0;
 #X connect 31 0 46 0;
@@ -683,6 +699,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 37 0 2 0;
 #X connect 38 0 40 0;
 #X connect 38 0 42 0;
+#X connect 38 0 66 0;
 #X connect 40 0 3 0;
 #X connect 40 0 44 0;
 #X connect 40 1 28 0;
@@ -719,3 +736,4 @@ This patch is used as an abstraction in various examples.;
 #X connect 63 0 4 1;
 #X connect 63 0 5 1;
 #X connect 65 0 64 0;
+#X connect 67 0 42 1;

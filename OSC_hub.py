@@ -65,7 +65,7 @@ class NoteGateway(object):
                 for v in data.values():
                     if v.note_change:
                         address = v.id
-                        msg = v.note
+                        msg = v.real_note if v.real_note else 0
                         self.logger.info("sending out: /{0}/{1} for id:{2}".\
                                    format(address, msg, v.id))
                         #send(address, msg)
