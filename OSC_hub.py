@@ -8,7 +8,7 @@ from pdsender import PdSender
 PD_HOST = "localhost"
 PD_PORT = 11211
 block_messages = False
-TRANSPOSE = 30
+TRANSPOSE = 24
 
 class NoteGateway(object):
     def __init__(self):

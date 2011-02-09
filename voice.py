@@ -27,7 +27,12 @@ class Voice(object):
         self.note_length_grouping = note_length_grouping
         self.prior_note = None
         self.note_delta = None
+        # behaviour
+        self.change_rhythm_after_times = 1
+        self.movement_probs = DEFAULT_MOVEMENT_PROBS
+
         self.note_change = True
+        self.counter = 0
         self.composer = composer  # store the composer
         self.scale = composer.scale
         self.generator = self.voice()
