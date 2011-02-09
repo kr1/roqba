@@ -91,8 +91,10 @@ class Voice(object):
 
     def set_rhythm_grouping(self, grouping):
         """setter method which creates also the on/off pattern"""
-        self.note_length_grouping = grouping
-        self.on_off_pattern = analyze_grouping(grouping)
+        if self.counter % self.change_rhythm_after_times == 0:
+            self.note_length_grouping = grouping
+            self.on_off_pattern = analyze_grouping(grouping)
+        self.counter += 1
 
     def in_the_middle(self, note):
         """returns true is int is in the center area of the range"""
@@ -103,6 +105,20 @@ class Voice(object):
 
     def desc(self, c, val):
         return val - 1
+
+    def set_state(self, name):
+        if name == "BASS":
+            self.change_rhythm_after_times = 8
+            self.movement_probs = BASS_MOVEMENT_PROBS
+            self.range = [18, 36]
+        elif name == "MID":
+            self.change_rhythm_after_times = 4
+            self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
+            self.range = [30, 45]
+        elif name == "HIGH":
+            self.change_rhythm_after_times = 1
+            self.movement_probs = DEFAULT_MOVEMENT_PROBS
+            self.range = [35, 50]
 
 
 if __name__ == "__main__":

@@ -18,8 +18,11 @@ def startup():
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
     c = Composer(gateway)
     v1 = Voice(1, c)
+    v1.set_state("HIGH")
     v2 = Voice(2, c)
+    v2.set_state("MID")
     v3 = Voice(3, c)
+    v3.set_state("BASS")
     #v4 = Voice(3, s, c)
     return c
 logging.config.fileConfig("logging.conf")
