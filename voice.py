@@ -1,14 +1,18 @@
-from composer import DEFAULT_MOVEMENT_PROBS as MOVEMENT_PROBS
+
+from random import choice as sample
+
+from movement_probabilities import DEFAULT_MOVEMENT_PROBS
+from movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
+from movement_probabilities import BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
-from random import choice as sample
 from metronome import HEAVY, MEDIUM, LIGHT
 
 
 class Voice(object):
     def __init__(self, id,
                        composer,
-                       range=[0, 64],
+                       range=[24, 48],
                        note=None,
                        real_note=None,
                        note_length_grouping=sample(GROUPINGS)):
