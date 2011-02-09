@@ -148,10 +148,10 @@ This patch is used as an abstraction in various examples.;
 #X connect 75 0 76 0;
 #X connect 76 0 71 0;
 #X restore 583 278 pd voice 1 30 30 30 30 300;
-#X obj 834 311 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 834 311 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 667 366 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 5700 1;
+-1 -1 0 1;
 #X obj 664 389 / 127;
 #X obj 834 3 metro 500;
 #X obj 746 138 random 20;
@@ -307,7 +307,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 920 80 del 300;
 #X obj 506 130 route 1 2 3 4;
 #X obj 932 260 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 2183 1;
+-1 -1 0 1;
 #X obj 641 187 line;
 #X obj 650 66 random 127;
 #X msg 652 152 \$1 500;
@@ -329,7 +329,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 1030 34 / 64;
 #X obj 1017 63 - 1;
 #X obj 624 223 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 10800 1;
+-1 -1 11800 1;
 #X obj 380 129 route 1 2 3 4;
 #X obj 720 3 spigot;
 #X obj 756 -21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -483,7 +483,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 77 0 16 1;
 #X restore 56 269 pd voice 1 30 30 30 30 300;
 #X obj 97 214 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 2500 1;
+-1 -1 900 1;
 #N canvas 0 0 985 666 voice 0;
 #X obj 327 108 inlet;
 #X obj 657 148 inlet;
@@ -626,11 +626,11 @@ This patch is used as an abstraction in various examples.;
 #X connect 77 1 56 0;
 #X restore 286 271 pd voice 1 30 30 30 30 300;
 #X obj 327 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 7400 1;
+-1 -1 6000 1;
 #X obj 226 168 s master_vol;
 #X obj 606 304 r master_vol;
 #X obj 737 463 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 123 1;
+-1 -1 0 1;
 #X obj 752 427 abs;
 #X obj 202 -4 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -638,7 +638,7 @@ This patch is used as an abstraction in various examples.;
 1;
 #X floatatom 428 174 5 0 0 0 - - -;
 #X floatatom 481 176 5 0 0 0 - - -;
-#X floatatom 525 176 5 0 0 0 - - -;
+#X floatatom 529 171 5 0 0 0 - - -;
 #X floatatom 569 177 5 0 0 0 - - -;
 #X connect 2 0 1 0;
 #X connect 3 0 45 0;
