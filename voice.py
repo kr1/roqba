@@ -57,19 +57,20 @@ class Voice(object):
                 self.prior_note = self.note
                 self.note = self.next_note()
                 self.note_delta = self.note - self.prior_note
-                self.real_note = self.composer.scale_walker(self.scale, self.real_note, self.note_delta)
+                self.real_note = self.composer.scale_walker(self.scale,
+                                                            self.real_note,
+                                                            self.note_delta)
 
     def next_note(self):
         """the next is calculated from here"""
         if self.dir:
-            move = (self.dir * sample(MOVEMENT_PROBS))
+            move = (self.dir * sample(self.movement_probs))
         else:
-            move = sample([-1, 0, 1]) * sample(MOVEMENT_PROBS)
+            move = sample([-1, 0, 1]) * sample(self.movement_probs)
         res = self.note + move
-        self.real_note = self.composer.scale_walker(self.scale, self.real_note, move)
-        exceed = self.exceeds(self.real_note)
+        exceed = self.exceeds(res)
         if exceed:
-            print "exceed"
+            #print "exceed"
             res, self.dir = exceed
         if self.in_the_middle(res):
             self.dir = 0
