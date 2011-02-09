@@ -43,8 +43,16 @@ raw_first = [
       [[7 , 1]] * 2,
       [[1 , 7]] * 2,
       # 1: 1x8
-      [[8]] * 1,
+      [[8]] * 1
+      ]
+
+raw_second = [
       # second smallest units:
+      # 5 3x2 & 2x1
+      [[1, 1, 2, 2, 2]] * 3,
+      [[2, 1, 1, 2, 2]] * 3,
+      [[2, 2, 1, 1, 2]] * 3,
+      [[2, 2, 2, 1, 1]] * 3,
       # 4: 4x2
       [[2, 2, 2, 2]] * 10,
       # 3: 1x4 & 2x2
@@ -56,7 +64,11 @@ raw_first = [
       [[2, 6]] * 6,
       ]
 
+raw = raw_first + raw_second
+
 DEFAULT_NOTE_LENGTH_GROUPINGS = sum(raw, [])
+DEFAULT_FAST_GROUPINGS = sum(raw_first, [])
+DEFAULT_SLOWER_GROUPINGS = sum(raw_second, [])
 
 def analyze_grouping(g):
     res = []
