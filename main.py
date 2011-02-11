@@ -30,7 +30,7 @@ logger = logging.getLogger('startup')
 
 go = True
 composer = startup()
-SPEED = 0.150
+SPEED = 0.300
 STATE = {"comp": composer}
 METER = [2, 0, 1, 0, 1, 0, 1, 0]
 #METER = [2, 0, 0, 0, 1, 0, 0, 0]

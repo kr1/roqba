@@ -1,3 +1,4 @@
+"""this module contains probability values for melody sequences."""
 
 default_probs = [[1] * 30,
                  [2] * 10,
@@ -30,7 +31,5 @@ BASS_MOVEMENT_PROBS = sum(bass_probs, [])
 
 if __name__ == "__main__":
     print DEFAULT_MOVEMENT_PROBS
-    print MIDDLE_VOICES_PROBS
+    print MIDDLE_VOICES_MOVEMENT_PROBS
     print BASS_MOVEMENT_PROBS
-
-

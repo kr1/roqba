@@ -9,7 +9,7 @@ from pdsender import PdSender
 PD_HOST = "localhost"
 PD_PORT = 11211
 block_messages = False
-TRANSPOSE = 24
+TRANSPOSE = 12
 
 class NoteGateway(object):
     def __init__(self):
@@ -20,6 +20,7 @@ class NoteGateway(object):
         #client = SC_Gateway("192.168.0.104")
         #client.load_scsyndef()
         #client.create_nodes(3)
+        self.transpose = TRANSPOSE
         self.pd = PdSender(PD_HOST, PD_PORT)
     
     def pause(self):
@@ -35,7 +36,7 @@ class NoteGateway(object):
         del self.pd
 
     def pd_send_note(self, voice_id, msg):
-        self.pd.send(["voice", voice_id, msg + TRANSPOSE])
+        self.pd.send(["voice", voice_id, msg + self.transpose])
         return True
         
     def send(self, address, msg):
