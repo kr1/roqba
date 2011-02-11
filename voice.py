@@ -25,6 +25,7 @@ class Voice(object):
         self.real_note = real_note or int((max(self.range)
                                  - min(self.range)) / 2) + min(self.range)
         self.note_length_grouping = note_length_grouping
+        self.weight = MEDIUM
         self.prior_note = None
         self.note_delta = None
         # behaviour
@@ -53,6 +54,7 @@ class Voice(object):
             #print state, ", possible: ", state.get("possible", [])
             #val = self.desc(state["composer"], sample(state["possible"]))
             self.note_change = self.on_off_pattern[state['cycle_pos']]
+            self.weight = state["weight"]
             if self.note_change:
                 self.prior_note = self.note
                 self.note = self.next_note()

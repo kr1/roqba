@@ -1,5 +1,6 @@
 import logging
 import time
+from metronome import HEAVY
 
 from pdsender import PdSender
 
@@ -70,6 +71,8 @@ class NoteGateway(object):
                                    format(address, msg, v.id))
                         #send(address, msg)
                         self.pd_send_note(v.id, msg)
+                        if v.weight == HEAVY:
+                            self.pd.send(["voice", "rhythm", v.id, str(v.note_length_grouping).replace(",","_")])
                 #address = data["voice"]
                 #msg = data["message"]
             else:
