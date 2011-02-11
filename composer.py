@@ -18,6 +18,7 @@ HARMONIES = STRICT_HARMONIES + [set([2, 4, 1]), set([2, 6, 1])]
 HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
 DISHARMS = [1]
+MINMAX = [0, 128]
 
 
 class Composer(object):
@@ -29,6 +30,7 @@ class Composer(object):
         self.voices = {}
         self.num_voices = num_voices
         self.scale = scale
+        self.generate_real_scale(*MINMAX)
         self.gateway = gateway
         self.hub = gateway.hub()
         # XxxxX consider making NoteGateway a Singleton
@@ -79,7 +81,23 @@ class Composer(object):
     def apply_scale(self):
         for v in self.voices.values():
             if v.note_change:
-                v.real_note = self.scale_walker(self.scale, v.real_note, v.note_delta)
+                v.real_note = self.real_scale[v.note]
+        
+#        for v in self.voices.values():
+#            if v.note_change:
+#                v.real_note = self.scale_walker(self.scale,
+#                                                v.real_note,
+#                                                v.note_delta)
+
+    def generate_real_scale(self, min, max):
+        self.real_scale = []
+        value = 0
+        for n in xrange(min, max):
+            value += 1
+            index = n % len(self.scale)
+            if self.scale[index]:
+                self.real_scale.append(value)
+        print self.real_scale
 
     def acceptable_harm_for_length(self, harm, length):
         if length in [0, 1]:
