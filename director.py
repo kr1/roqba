@@ -1,5 +1,6 @@
 import time
 import logging
+import random
 import itertools
 import threading
 
@@ -17,6 +18,9 @@ class Director(object):
         self.gateway = composer.gateway
         self.speed = speed
         self.metronome = metronome.Metronome(meter)
+        self.speed_change = 'leap'
+        self.MIN_SPEED = 0.1
+        self.MAX_SPEED = 0.7
 
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.
@@ -36,14 +40,24 @@ class Director(object):
                     logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<   stop playing  \
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 
-            time.sleep(self.speed)
             cycle_pos, weight = self.metronome.beat()
             self.state.update({'weight': weight,
                                'cycle_pos': cycle_pos})
             # on heavy beats a new rhythm-grouping is loaded
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
-            self.composer.generate(self.state)
+            comment = self.composer.generate(self.state)
+            if comment == 'caesura':
+                # take 5 + 1 times out....
+                time.sleep(self.speed * 4)
+                if self.speed_change == 'transition':
+                    self.speed += random.randint(-1000,1000)/66666.
+                elif self.speed_change == 'leap':
+                    self.speed = self.MIN_SPEED + (random.random() * (self.MAX_SPEED - self.MIN_SPEED))
+                print "new speed values:", self.speed
+                self.composer.gateway.stop_all_notes()
+                time.sleep(self.speed)
+            time.sleep(self.speed)
 
     def pause(self):
         if self.playing:
