@@ -89,6 +89,7 @@ class Composer(object):
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
                                    "cycle_pos": state["cycle_pos"]})
+        return self.comment
 
     def apply_scale(self):
         for v in self.voices.values():
@@ -114,11 +115,12 @@ class Composer(object):
     def acceptable_harm_for_length(self, harm, length):
         if length in [0, 1]:
             return True
-        elif length == 2:
-            deltas = self.flatten_chord(self.get_deltas(harm))[0]
-            return deltas in HARMONIC_INTERVALS
         else:
-            return acceptable_harmony(chord)
+            deltas = self.flatten_chord(self.get_deltas(harm))
+            if length == 2:
+                return deltas[0] in HARMONIC_INTERVALS
+            else:
+                return set(deltas) in STRICT_HARMONIES
 
     def calculate_possible_notes(self):
         self.harm
@@ -146,29 +148,35 @@ class Composer(object):
         self.lowest
 
     def stream_analyzer(self):
+        """analyses the stream of notes.
+        
+        searches for target-harmonies and sets a flag"""
         # check if all notes are new
+        self.comment = 'normal'
         note_changes = [v.note_change for v in self.voices.values()]
         all_notes_change = reduce(lambda x, y :
                                  x and y,
                                  note_changes)
         if all_notes_change:
-            if self.is_base_harmony(map (lambda x: x.note, self.voices.values())):
+            harmony = map(lambda x: x.note, self.voices.values())
+            #print "all_notes_change: harmony {0}".format(harmony)
+            if self.is_base_harmony(harmony):
+                self.comment = "caesura"
                 print "all notes change to a base harmony"
-        # check for base harmonies:
-        
 
-    @staticmethod
-    def acceptable_harmony(chord):
-        flat = flatten_chord(chord)
+    def acceptable_harmony(self, chord):
+        flat = self.flatten_chord(chord)
         return set(flat) in STRICT_HARMONIES
 
     def is_base_harmony(self, chord):
         flat = self.flatten_chord(chord)
-        return set(flat) in BASE_HARMONIES
+        #print set(flat)
+        return set(flat) in BASE_HARMONIES[self.num_voices]
 
     @staticmethod
     def flatten_chord(chord):
-        return map(lambda x: x % 7, chord)
+        flat = map(lambda x: x % 7, chord) 
+        return flat
 
     @staticmethod
     def get_deltas(chord):
