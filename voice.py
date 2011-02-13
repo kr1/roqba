@@ -18,6 +18,7 @@ class Voice(object):
                        note_length_grouping=sample(GROUPINGS)):
         self.id = id
         range.sort()
+        self.track_me = False
         self.range = range
         self.dir = 0
         self.note = note or int((max(self.range)

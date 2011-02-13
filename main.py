@@ -23,7 +23,8 @@ def startup():
     v2.set_state("MID")
     v3 = Voice(3, c)
     v3.set_state("BASS")
-    #v4 = Voice(3, s, c)
+    v4 = Voice(4, c)
+    v4.set_state("MID")
     return c
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')

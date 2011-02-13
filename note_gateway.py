@@ -20,6 +20,7 @@ class NoteGateway(object):
         #client = SC_Gateway("192.168.0.104")
         #client.load_scsyndef()
         #client.create_nodes(3)
+        self.voice_ids = []
         self.transpose = TRANSPOSE
         self.pd = PdSender(PD_HOST, PD_PORT)
     
@@ -35,7 +36,13 @@ class NoteGateway(object):
         time.sleep(2)
         del self.pd
 
+    def stop_all_notes(self):
+        for v in self.voice_ids:
+            self.pd_send_note(v, 0)
+    
     def pd_send_note(self, voice_id, msg):
+        if voice_id not in self.voice_ids:
+            self.voice_ids.append(voice_id)
         self.pd.send(["voice", voice_id, msg + self.transpose])
         return True
         
