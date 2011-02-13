@@ -51,12 +51,15 @@ class Composer(object):
         self.voices.update({id: voice})
 
     def generate(self, state):
-        """main generating function, the next harmony is produced here"""
+        """main generating function, the next polyphonic step is produced here
+        
+        any of the voices can change.
+        """
         tmp_harm = []
         counter = 0
         for v in self.sort_voices_by_importance():
             if len(self.voices) < self.num_voices:
-                raise RuntimeError
+                raise (RuntimeError, "mismatch in voices count")
             v.generator.send(state)
             tmp_harm.append(v.note)
             if state["weight"] == metronome.HEAVY:
@@ -73,6 +76,9 @@ class Composer(object):
         # here we have arrived at the next level
         # now we set the "real note" field according to the present scale
         self.apply_scale()
+        # the stream analyzer can be used to check for chords, simultaneities
+        self.stream_analyzer()
+        # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
@@ -97,7 +103,7 @@ class Composer(object):
             index = n % len(self.scale)
             if self.scale[index]:
                 self.real_scale.append(value)
-        print self.real_scale
+        #print self.real_scale
 
     def acceptable_harm_for_length(self, harm, length):
         if length in [0, 1]:
@@ -107,7 +113,6 @@ class Composer(object):
             return deltas in HARMONIC_INTERVALS
         else:
             return acceptable_harmony(chord)
-        #return sample([True, False])
 
     def calculate_possible_notes(self):
         self.harm

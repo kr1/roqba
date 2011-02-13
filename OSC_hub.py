@@ -14,7 +14,7 @@ TRANSPOSE = 12
 class NoteGateway(object):
     def __init__(self):
         ## XxxxX: make these settings configurable
-        self.logger = logging.getLogger("OSC_hub")
+        self.logger = logging.getLogger("sender")
         #client = OSCClient()
         #client.connect((HOST, PORT))
         #client = SC_Gateway("192.168.0.104")

@@ -1,14 +1,19 @@
 import time
 from  subprocess import PIPE, Popen
+from mock import Mock
+import logging
 
+#send_logger = logging.getLogger("sender")
 
 class PdSender(object):
     def __init__(self, host, port):
         self.host = host
+        self.logger = logging.getLogger("sender")
         self.port = port
         self.pd = self.create_sender(host, port)
+        self.no_pd = False
         self.send("sound 1")
-    
+
     def create_sender(self, host, port):
         pd = Popen('pdsend {0} {1} udp'.format(port, host),
                     shell=True,
