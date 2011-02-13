@@ -42,7 +42,8 @@ class Voice(object):
 
     def __str__(self):
         return str({"note": self.note,
-                    "dir": self.dir})
+                    "dir": self.dir,
+                    "note_change": self.note_change})
 
     def __repr__(self):
         return "{0} - {1}".format(self.__class__, self.__str__())

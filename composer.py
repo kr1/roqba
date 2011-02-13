@@ -14,6 +14,7 @@ MELODIC = [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]
 
 STRICT_HARMONIES = [set([2, 4, 6]), set([2, 4, 0]),
                     set([3, 5, 0]), set([2, 5, 0])]
+BASE_HARMONIES = [set([2 , 4, 7])]
 HARMONIES = STRICT_HARMONIES + [set([2, 4, 1]), set([2, 6, 1])]
 HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
@@ -139,10 +140,26 @@ class Composer(object):
     def lowest_note_of_piece(self):
         self.lowest
 
+    def stream_analyzer(self):
+        # check if all notes are new
+        note_changes = [v.note_change for v in self.voices.values()]
+        all_notes_change = reduce(lambda x, y :
+                                 x and y,
+                                 note_changes)
+        if all_notes_change:
+            if self.is_base_harmony(map (lambda x: x.note, self.voices.values())):
+                print "all notes change to a base harmony"
+        # check for base harmonies:
+        
+
     @staticmethod
     def acceptable_harmony(chord):
         flat = flatten_chord(chord)
         return set(flat) in STRICT_HARMONIES
+
+    def is_base_harmony(self, chord):
+        flat = self.flatten_chord(chord)
+        return set(flat) in BASE_HARMONIES
 
     @staticmethod
     def flatten_chord(chord):
