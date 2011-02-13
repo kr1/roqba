@@ -8,9 +8,9 @@ import logging.config
 from voice import Voice
 from composer import Composer
 from director import Director
-import OSC_hub
+import note_gateway
 
-gateway = OSC_hub.NoteGateway()
+gateway = note_gateway.NoteGateway()
 gateway.hub().next()
 
 
