@@ -7,7 +7,7 @@ from movement_probabilities import BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
 from metronome import HEAVY, MEDIUM, LIGHT
-
+from Queue import deque
 
 class Voice(object):
     def __init__(self, id,
@@ -19,6 +19,7 @@ class Voice(object):
         self.id = id
         range.sort()
         self.track_me = False
+        self.queue = deque([], 666)
         self.range = range
         self.dir = 0
         self.note = note or int((max(self.range)
@@ -59,12 +60,21 @@ class Voice(object):
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
             #val = self.desc(state["composer"], sample(state["possible"]))
-            self.note_change = self.on_off_pattern[state['cycle_pos']]
+            meter_pos = state['cycle_pos']
+            self.note_change = self.on_off_pattern[meter_pos]
             self.weight = state["weight"]
             if self.note_change:
+                # calculate duration by checking for the next note 
+                # in the pattern
+                tmp_list = self.on_off_pattern[(meter_pos + 1):]
+                if 1 in tmp_list:
+                    self.note_duration_steps = tmp_list.index(1) + 1
+                else:
+                     self.note_duration_steps = 1  
                 self.prior_note = self.note
                 self.note = self.next_note()
                 self.note_delta = self.note - self.prior_note
+                if self.track_me: self.queue.append(self.note)
                 self.real_note = self.composer.scale_walker(self.scale,
                                                             self.real_note,
                                                             self.note_delta)
