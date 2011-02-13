@@ -22,9 +22,19 @@ class PdSender(object):
 
     def send(self, msg):
         if msg.__class__ == [].__class__:
-           msg = " ".join(map(lambda x: str(x),msg))
-        self.pd.stdin.write("{0}\n".format(msg))
-        return True
+            msg = " ".join(map(lambda x: str(x),msg))
+        if self.no_pd:
+            self.logger.info("no pd instance")
+        try:
+            res = self.pd.stdin.write("{0}\n".format(msg))
+            return res
+        except:
+            msg = "no pd-instance found, falling back to mocking!"
+            self.no_pd = True
+            print msg
+            self.logger.info(msg)
+            self.send = Mock()
+
 
     def __del__(self):
         print "switching off the lights...."
