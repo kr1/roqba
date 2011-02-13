@@ -74,7 +74,7 @@ class Voice(object):
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
         else:
-            move = sample([-1, 0, 1]) * sample(self.movement_probs)
+            move = sample([-1, 1]) * sample(self.movement_probs)
         res = self.note + move
         exceed = self.exceeds(res)
         if exceed:
@@ -119,15 +119,17 @@ class Voice(object):
         if name == "BASS":
             self.change_rhythm_after_times = 8
             self.movement_probs = BASS_MOVEMENT_PROBS
-            self.range = [18, 36]
+            self.range = [21, 33]
         elif name == "MID":
             self.change_rhythm_after_times = 4
+            self.slide = True
+            self.slide_duration_prop = 0.1
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
             self.range = [30, 45]
         elif name == "HIGH":
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
-            self.range = [35, 50]
+            self.range = [35, 48]
 
 
 if __name__ == "__main__":

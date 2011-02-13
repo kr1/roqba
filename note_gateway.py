@@ -41,34 +41,19 @@ class NoteGateway(object):
 
     def stop_all_notes(self):
         for v in self.voice_ids:
-            self.pd_send_note(v, 0)
+            self.pd.send(["voice", v, 0])
     
+    def set_slide_to_0(self):
+        for v in self.voice_ids:
+            self.pd.send(["voice", "slide", v, 0])
+        
+
     def pd_send_note(self, voice_id, msg):
         if voice_id not in self.voice_ids:
             self.voice_ids.append(voice_id)
         self.pd.send(["voice", voice_id, msg + self.transpose])
         return True
-        
-    def send(self, address, msg):
-        if not block_messages:
-            if msg > 0:
-                if msg < 70:
-                    msg = (msg+12)**1.7
-                client.play_note(client.node_ids[address], msg)
-            else:
-                client.stop_note(client.node_ids[address])
-        return True
-    #    m = OSCMessage(address)
-    #    m.message = msg
-    #    try:
-    #        client.send(m, 20)
-    #    except OSCClientError:
-    #        logger.error("error sending OSC message: {0} to {1}:{2}".format(msg,
-    #                                                                        HOST,
-    #                                                                        PORT))
-    #        pass
-    
-    
+
     def hub(self):
         while True:
             data = (yield)
