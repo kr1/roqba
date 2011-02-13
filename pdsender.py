@@ -3,7 +3,10 @@ from  subprocess import PIPE, Popen
 from mock import Mock
 import logging
 
-#send_logger = logging.getLogger("sender")
+def sound_off():
+    pd = PdSender.create_sender("localhost", 11211)
+    pd.stdin.write("sound 0\n")
+    return pd
 
 class PdSender(object):
     def __init__(self, host, port):
@@ -14,7 +17,8 @@ class PdSender(object):
         self.no_pd = False
         self.send("sound 1")
 
-    def create_sender(self, host, port):
+    @staticmethod
+    def create_sender(host, port):
         pd = Popen('pdsend {0} {1} udp'.format(port, host),
                     shell=True,
                     stdin=PIPE)
