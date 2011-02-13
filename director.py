@@ -51,10 +51,13 @@ class Director(object):
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
                 if self.speed_change == 'transition':
-                    self.speed += random.randint(-1000,1000)/66666.
+                    self.speed += random.randint(-1000, 1000) / 66666.
                 elif self.speed_change == 'leap':
-                    self.speed = self.MIN_SPEED + (random.random() * (self.MAX_SPEED - self.MIN_SPEED))
-                print "new speed values:", self.speed
+                    self.speed = self.MIN_SPEED + (random.random() *
+                                            (self.MAX_SPEED - self.MIN_SPEED))
+                print "new speed values: {0}\n resetting metronome.".format(
+                                                                self.speed)
+                self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 time.sleep(self.speed)
             time.sleep(self.speed)
