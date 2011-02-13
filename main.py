@@ -32,10 +32,10 @@ logger = logging.getLogger('startup')
 go = True
 composer = startup()
 SPEED = 0.300
-STATE = {"comp": composer}
+STATE = {"comp": composer, "speed": SPEED}
 METER = [2, 0, 1, 0, 1, 0, 1, 0]
 #METER = [2, 0, 0, 0, 1, 0, 0, 0]
-director = Director(composer, SPEED, STATE, METER)
+director = Director(composer, STATE, METER)
 
 
 def main():

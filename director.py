@@ -11,12 +11,12 @@ logger.setLevel(logging.INFO)
 
 
 class Director(object):
-    def __init__(self, composer, speed, state, meter=[2, 0, 1, 0]):
+    def __init__(self, composer, state, meter=[2, 0, 1, 0]):
         self.composer = composer
         self.playing = None
         self.state = state
         self.gateway = composer.gateway
-        self.speed = speed
+        self.speed = state["speed"]
         self.metronome = metronome.Metronome(meter)
         self.speed_change = 'leap'
         self.MIN_SPEED = 0.1
@@ -52,11 +52,12 @@ class Director(object):
                 time.sleep(self.speed * 4)
                 if self.speed_change == 'transition':
                     self.speed += random.randint(-1000, 1000) / 66666.
-                elif self.speed_change == 'leap':
+                else:  #if self.speed_change == 'leap':
                     self.speed = self.MIN_SPEED + (random.random() *
                                             (self.MAX_SPEED - self.MIN_SPEED))
                 print "new speed values: {0}\n resetting metronome.".format(
                                                                 self.speed)
+                self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 time.sleep(self.speed)

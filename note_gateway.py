@@ -11,6 +11,7 @@ PD_PORT = 11211
 block_messages = False
 TRANSPOSE = 12
 
+
 class NoteGateway(object):
     def __init__(self):
         ## XxxxX: make these settings configurable
@@ -20,10 +21,12 @@ class NoteGateway(object):
         #client = SC_Gateway("192.168.0.104")
         #client.load_scsyndef()
         #client.create_nodes(3)
+        self.slide = True
+        self.slide_duration_prop = 0.7
         self.voice_ids = []
         self.transpose = TRANSPOSE
         self.pd = PdSender(PD_HOST, PD_PORT)
-    
+
     def pause(self):
         self.block_messages = True
         self.pd.send("sound 0")
@@ -73,14 +76,23 @@ class NoteGateway(object):
             if type(data) == dict:
                 for v in data.values():
                     if v.note_change:
-                        address = v.id
                         msg = v.real_note if v.real_note else 0
-                        self.logger.info("sending out: /{0}/{1} for id:{2}".\
-                                   format(address, msg, v.id))
+                        self.logger.info("sending out: voice: {1}: {0}".\
+                                          format(msg, v.id))
                         #send(address, msg)
+                        if self.slide and v.slide:
+                            if v.slide_duration_prop:
+                                dur_prop = v.slide_duration_prop
+                            else:
+                                dur_prop = self.slide_duration_prop
+                            self.pd.send(["voice",
+                                          "slide",
+                                          v.id,
+                                          (v.duration_in_msec *  dur_prop)])
                         self.pd_send_note(v.id, msg)
                         if v.weight == HEAVY:
-                            self.pd.send(["voice", "rhythm", v.id, str(v.note_length_grouping).replace(",","_")])
+                            self.pd.send(["voice", "rhythm", v.id,
+                                str(v.note_length_grouping).replace(",", "_")])
                 #address = data["voice"]
                 #msg = data["message"]
             else:

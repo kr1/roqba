@@ -81,6 +81,7 @@ class Composer(object):
             counter += 1
         # here we have arrived at the next level
         # now we set the "real note" field according to the present scale
+        self.add_duration_in_msec(state)
         self.apply_scale()
         # the stream analyzer can be used to check for chords, simultaneities
         self.stream_analyzer()
@@ -205,6 +206,10 @@ class Composer(object):
                 index += 1
             #print check_index, scale[check_index], index, steps
         return (index * dir) + mod + (octave * len(scale))
+
+    def add_duration_in_msec(self, state):
+        for v in self.voices.values():
+            v.duration_in_msec = int(v.note_duration_steps * state["speed"] * 1000)
 
 if __name__ == "__main__":
     print DIATONIC, len(DIATONIC)

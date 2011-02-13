@@ -29,9 +29,13 @@ class Voice(object):
         self.weight = MEDIUM
         self.prior_note = None
         self.note_delta = None
+        self.duration_in_msec = 0
+        self.note_duration_steps = 1
         # behaviour
         self.change_rhythm_after_times = 1
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
+        self.slide = False
+        self.slide_duration_prop = 0.2
 
         self.note_change = True
         self.counter = 0
