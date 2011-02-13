@@ -1,5 +1,4 @@
 dependencies:
 ============
 
-pyosc, from: http://gitorious.org/pyosc
-
+you'll need pure-data for the sound-production
