@@ -2,12 +2,14 @@
 from random import choice as sample
 
 from movement_probabilities import DEFAULT_MOVEMENT_PROBS
+import note_length_groupings
 from movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
 from movement_probabilities import BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
 from metronome import HEAVY, MEDIUM, LIGHT
 from Queue import deque
+
 
 class Voice(object):
     def __init__(self, id,
@@ -64,17 +66,18 @@ class Voice(object):
             self.note_change = self.on_off_pattern[meter_pos]
             self.weight = state["weight"]
             if self.note_change:
-                # calculate duration by checking for the next note 
+                # calculate duration by checking for the next note
                 # in the pattern
                 tmp_list = self.on_off_pattern[(meter_pos + 1):]
                 if 1 in tmp_list:
                     self.note_duration_steps = tmp_list.index(1) + 1
                 else:
-                     self.note_duration_steps = 1  
+                    self.note_duration_steps = 1
                 self.prior_note = self.note
                 self.note = self.next_note()
                 self.note_delta = self.note - self.prior_note
-                if self.track_me: self.queue.append(self.note)
+                if self.track_me:
+                    self.queue.append(self.note)
                 self.real_note = self.composer.scale_walker(self.scale,
                                                             self.real_note,
                                                             self.note_delta)
@@ -130,16 +133,19 @@ class Voice(object):
             self.change_rhythm_after_times = 8
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
+            self.note_length_groupings = note_length_groupings.DEFAULT_SLOWER_GROUPINGS
         elif name == "MID":
             self.change_rhythm_after_times = 4
             self.slide = True
             self.slide_duration_prop = 0.1
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
             self.range = [30, 45]
+            self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
         elif name == "HIGH":
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
+            self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
 
 
 if __name__ == "__main__":

@@ -64,10 +64,27 @@ raw_second = [
       [[2, 6]] * 6,
       ]
 
-raw = raw_first + raw_second
+raw_terns = [
+      # second smallest units:
+      #  2x3 & 2x1
+      [[3, 3, 1, 1]] * 8,
+      [[3, 1, 1, 3]] * 3,
+      [[1, 1, 3, 3]] * 8,
+      #  2x3 & 2x1
+      [[2, 3, 3]] * 8,
+      [[3, 2, 3]] * 3,
+      [[3, 3, 2]] * 8,
+      # 2 x (2, 1) & 2x1
+      [[2, 2, 1, 2, 1]] * 8,
+      [[2, 1, 2, 2, 1]] * 5,
+      [[2, 1, 2, 1, 2]] * 8,
+      ]
+
+raw = raw_first + raw_second + raw_terns
 
 DEFAULT_NOTE_LENGTH_GROUPINGS = sum(raw, [])
 DEFAULT_FAST_GROUPINGS = sum(raw_first, [])
+DEFAULT_TERNARY_GROUPINGS = sum(raw_terns, [])
 DEFAULT_SLOWER_GROUPINGS = sum(raw_second, [])
 
 def analyze_grouping(g):

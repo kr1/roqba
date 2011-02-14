@@ -3,7 +3,6 @@ from random import choice as sample
 
 import metronome
 from notator import Notator
-from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
@@ -133,7 +132,7 @@ class Composer(object):
 
     def choose_rhythm(self):
         for v in self.voices.values():
-            v.set_rhythm_grouping(sample(GROUPINGS))
+            v.set_rhythm_grouping(sample(v.note_length_groupings))
 
     def random_harmonic(self):
         res = []
