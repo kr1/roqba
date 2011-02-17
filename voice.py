@@ -139,12 +139,15 @@ class Voice(object):
             self.slide = True
             self.slide_duration_prop = 0.1
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
+            self.embellishment = 0.02
             self.range = [30, 45]
             self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
         elif name == "HIGH":
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
+            # XxxxX implement embellishments (who schedules?)
+            self.embellishment = 0.05
             self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
 
 
