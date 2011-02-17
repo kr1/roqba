@@ -42,11 +42,11 @@ class NoteGateway(object):
     def stop_all_notes(self):
         for v in self.voice_ids:
             self.pd.send(["voice", v, 0])
-    
+
     def set_slide_to_0(self):
         for v in self.voice_ids:
             self.pd.send(["voice", "slide", v, 0])
-        
+
 
     def pd_send_note(self, voice_id, msg):
         if voice_id not in self.voice_ids:
@@ -62,9 +62,8 @@ class NoteGateway(object):
                 for v in data.values():
                     if v.note_change:
                         msg = v.real_note if v.real_note else 0
-                        self.logger.info("sending out: voice: {1}: {0}".\
-                                          format(msg, v.id))
-                        #send(address, msg)
+                        #self.logger.info("sending out: voice: {1}: {0}".\
+                        #                  format(msg, v.id))
                         if self.slide and v.slide:
                             if v.slide_duration_prop:
                                 dur_prop = v.slide_duration_prop
