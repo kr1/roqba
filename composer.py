@@ -57,7 +57,7 @@ class Composer(object):
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
-        
+
         any of the voices can change.
         """
         tmp_harm = []
@@ -95,7 +95,7 @@ class Composer(object):
         for v in self.voices.values():
             if v.note_change:
                 v.real_note = self.real_scale[v.note]
-        
+
 #        for v in self.voices.values():
 #            if v.note_change:
 #                v.real_note = self.scale_walker(self.scale,
@@ -149,7 +149,7 @@ class Composer(object):
 
     def stream_analyzer(self):
         """analyses the stream of notes.
-        
+
         searches for target-harmonies and sets a flag"""
         # check if all notes are new
         self.comment = 'normal'
@@ -175,7 +175,7 @@ class Composer(object):
 
     @staticmethod
     def flatten_chord(chord):
-        flat = map(lambda x: x % 7, chord) 
+        flat = map(lambda x: x % 7, chord)
         return flat
 
     @staticmethod

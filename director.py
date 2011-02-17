@@ -17,10 +17,12 @@ class Director(object):
         self.state = state
         self.gateway = composer.gateway
         self.speed = state["speed"]
+        self.shuffle_delay = 0.1 # keep this between 0 and MAX_SHUFFLE
         self.metronome = metronome.Metronome(meter)
         self.speed_change = 'leap'
         self.MIN_SPEED = 0.1
         self.MAX_SPEED = 0.7
+        self.MAX_SHUFFLE = 0.333
 
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.
@@ -50,6 +52,8 @@ class Director(object):
             if comment == 'caesura':
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
+                self.shuffle_delay = random.random() * self.MAX_SHUFFLE
+                logger.info("shuffle delay set to: {0}".format(self.shuffle_delay))
                 if self.speed_change == 'transition':
                     self.speed += random.randint(-1000, 1000) / 66666.
                 else:  #if self.speed_change == 'leap':
@@ -61,7 +65,11 @@ class Director(object):
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 time.sleep(self.speed)
-            time.sleep(self.speed)
+
+            shuffle_delta = (self.speed * self.shuffle_delay
+                              if weight == metronome.LIGHT
+                                else 0)
+            time.sleep(self.speed + shuffle_delta)
 
     def pause(self):
         if self.playing:
