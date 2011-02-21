@@ -47,6 +47,8 @@ class NoteGateway(object):
         for v in self.voice_ids:
             self.pd.send(["voice", "slide", v, 0])
 
+    def set_slide_msecs(self, voice_id, msecs):
+        self.pd.send(["voice", "slide", voice_id, msecs])
 
     def pd_send_note(self, voice_id, msg):
         if voice_id not in self.voice_ids:
@@ -69,10 +71,7 @@ class NoteGateway(object):
                                 dur_prop = v.slide_duration_prop
                             else:
                                 dur_prop = self.slide_duration_prop
-                            self.pd.send(["voice",
-                                          "slide",
-                                          v.id,
-                                          (v.duration_in_msec *  dur_prop)])
+                            self.set_slide_msecs(v.id, (v.duration_in_msec *  dur_prop))
                         self.pd_send_note(v.id, msg)
                         if v.weight == HEAVY:
                             self.pd.send(["voice", "rhythm", v.id,

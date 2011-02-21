@@ -1,4 +1,4 @@
-
+import random
 from random import choice as sample
 
 from movement_probabilities import DEFAULT_MOVEMENT_PROBS
@@ -19,9 +19,9 @@ class Voice(object):
                        real_note=None,
                        note_length_grouping=sample(GROUPINGS)):
         self.id = id
-        range.sort()
         self.track_me = False
         self.queue = deque([], 666)
+        range.sort()
         self.range = range
         self.dir = 0
         self.note = note or int((max(self.range)
@@ -35,6 +35,9 @@ class Voice(object):
         self.duration_in_msec = 0
         self.note_duration_steps = 1
         # behaviour
+        # probability to have an embellishment-ornament during the current note
+        self.embellishment_prob = 0.005
+        self.do_embellish = False
         self.change_rhythm_after_times = 1
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = False
