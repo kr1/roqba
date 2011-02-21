@@ -7,7 +7,7 @@ from pdsender import PdSender
 #HOST = "localhost"
 #PORT = 9999
 PD_HOST = "localhost"
-PD_PORT = 11211
+PD_PORT = 12321
 block_messages = False
 TRANSPOSE = 12
 

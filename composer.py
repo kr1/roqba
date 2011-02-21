@@ -1,8 +1,11 @@
 import logging
+import time
+import threading
 from random import choice as sample
 
 import metronome
 from notator import Notator
+from movement_probabilities import ORNAMENTS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")

@@ -21,7 +21,7 @@ class Director(object):
         self.metronome = metronome.Metronome(meter)
         self.speed_change = 'leap'
         self.MIN_SPEED = 0.1
-        self.MAX_SPEED = 0.7
+        self.MAX_SPEED = 0.5
         self.MAX_SHUFFLE = 0.333
 
     def _play(self, duration=None):
