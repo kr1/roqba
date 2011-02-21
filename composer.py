@@ -86,6 +86,7 @@ class Composer(object):
         self.add_duration_in_msec(state)
         self.apply_scale()
         # the stream analyzer can be used to check for chords, simultaneities
+        self.embellish(state)
         self.stream_analyzer()
         # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
@@ -149,6 +150,36 @@ class Composer(object):
 
     def lowest_note_of_piece(self):
         self.lowest
+
+    def embellish(self, state):
+        for v in self.voices.values():
+            if v.do_embellish:
+                v.do_embellish = False
+                threading.Thread(target=self.ornament_handler,
+                                 args=(v,
+                                       v.note_duration_steps,
+                                       v.note,
+                                       v.note_delta,
+                                       state)).start()
+                
+    def ornament_handler(self, v, duration, note, note_delta, state):
+        #print "ornament-len: {0}, delta: {1}".format(duration, note_delta)
+        key = (abs(note_delta), duration)
+        if key in ORNAMENTS:
+            notes = sample(ORNAMENTS[key])
+            #print notes
+            for orn_note in notes:
+                dur_fraction = orn_note[0]
+                time.sleep(state["speed"] * dur_fraction)
+                # add pos/neg multiplier
+                multiplier = (note_delta / abs(note_delta)) if note_delta != 0 else 0
+                next_note = note + (orn_note[1] * multiplier)
+                real_note = self.real_scale[next_note]
+                dur_prop = v.slide_duration_prop or 0.666
+                self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
+                                                    dur_fraction *
+                                                    dur_prop))
+                self.gateway.pd_send_note(v.id, real_note)
 
     def stream_analyzer(self):
         """analyses the stream of notes.

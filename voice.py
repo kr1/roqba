@@ -78,9 +78,8 @@ class Voice(object):
                 self.note_delta = self.note - self.prior_note
                 if self.track_me:
                     self.queue.append(self.note)
-                self.real_note = self.composer.scale_walker(self.scale,
-                                                            self.real_note,
-                                                            self.note_delta)
+                if random.random() < self.embellishment_prob:
+                    self.do_embellish = True
 
     def next_note(self):
         """the next is calculated from here"""
@@ -133,13 +132,14 @@ class Voice(object):
             self.change_rhythm_after_times = 8
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
+            self.embellishment_prob = 0.005
             self.note_length_groupings = note_length_groupings.DEFAULT_SLOWER_GROUPINGS
         elif name == "MID":
             self.change_rhythm_after_times = 4
             self.slide = True
             self.slide_duration_prop = 0.1
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
-            self.embellishment = 0.02
+            self.embellishment_prob = 0.01
             self.range = [30, 45]
             self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
         elif name == "HIGH":
@@ -147,7 +147,7 @@ class Voice(object):
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
             # XxxxX implement embellishments (who schedules?)
-            self.embellishment = 0.05
+            self.embellishment_prob = 0.015
             self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
 
 
