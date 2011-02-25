@@ -27,7 +27,7 @@ HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
 DISHARMS = [1]
 MINMAX = [0, 128]
-
+SPEED_LIM = 0.07
 
 class Composer(object):
     def __init__(self,
@@ -167,6 +167,9 @@ class Composer(object):
         key = (abs(note_delta), duration)
         if key in ORNAMENTS:
             notes = sample(ORNAMENTS[key])
+            if min([n[0] for n in notes]) < SPEED_LIM:
+                print "SPEED_LIM"
+                return
             #print notes
             for orn_note in notes:
                 dur_fraction = orn_note[0]
