@@ -1,7 +1,7 @@
 #N canvas 0 0 1216 662 12;
 #X obj 653 572 dac~;
 #X msg 53 564 \; pd dsp \$1 \;;
-#X obj 53 536 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 53 536 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 229 90 route vol;
 #X obj 603 542 *~ 0.2;
@@ -336,7 +336,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 920 80 del 300;
 #X obj 506 130 route 1 2 3 4;
 #X obj 932 260 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 6400 1;
 #X obj 641 187 line;
 #X obj 650 66 random 127;
 #X msg 652 152 \$1 500;
@@ -694,18 +694,18 @@ This patch is used as an abstraction in various examples.;
 #X floatatom 569 177 5 0 0 0 - - -;
 #X msg 556 47 -0.7;
 #X msg 608 42 0;
-#X msg 579 80 0.7;
+#X msg 583 82 0.7;
 #X obj 643 -2 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 462 326 route 1 2 3 4;
 #X obj 56 305 prepend set;
-#X msg 53 330 [2_ 2_ 2_ 1_ 1];
+#X msg 53 330 [2_ 3];
 #X obj 312 312 prepend set;
-#X msg 309 337 [4_ 2_ 2];
+#X msg 309 337 [4_ 1];
 #X obj 566 347 prepend set;
-#X msg 563 372 [2_ 2_ 2_ 2];
+#X msg 563 372 [1_ 1_ 2_ 1];
 #X obj 945 318 prepend set;
-#X msg 942 343 [2_ 2_ 2_ 2];
+#X msg 942 343 [2_ 2_ 1];
 #X obj 802 382 metro 120;
 #X obj 35 335 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -823,9 +823,10 @@ This patch is used as an abstraction in various examples.;
 #X connect 61 0 5 1;
 #X connect 63 0 62 0;
 #X connect 65 0 40 1;
-#X connect 70 0 57 0;
-#X connect 71 0 48 0;
-#X connect 72 0 59 0;
+#X connect 70 0 59 0;
+#X connect 71 0 57 0;
+#X connect 71 0 28 0;
+#X connect 72 0 48 0;
 #X connect 73 0 70 0;
 #X connect 73 0 71 0;
 #X connect 73 0 72 0;
