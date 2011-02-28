@@ -6,27 +6,12 @@ from random import choice as sample
 import metronome
 from notator import Notator
 from movement_probabilities import ORNAMENTS
+from scales_and_harmonies import *
 import note_length_groupings
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
-DIATONIC = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
-HARMONIC = [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1]
-MELODIC = [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]
-
-STRICT_HARMONIES = [set([2, 4, 6]), set([2, 4, 0]),
-                    set([3, 5, 0]), set([2, 5, 0])]
-
-# TODO: create dynamically
-BASE_HARMONIES = {2:[set([6]), set([6, 2]), set([6, 0]), set([0, 2]), set([0, 4])],
-                  3:[set([0]), set([6]), set([6, 2]), set([6, 0]), set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])],
-                  4:[set([0, 2]), set([6]), set([6, 2]), set([6, 0]), set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])]
-                  }
-HARMONIES = STRICT_HARMONIES + [set([2, 4, 1]), set([2, 6, 1])]
-HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
-
-DISHARMS = [1]
 MINMAX = [0, 128]
 SPEED_LIM = 0.1
 
@@ -34,7 +19,9 @@ class Composer(object):
     def __init__(self,
                  gateway=None,
                  num_voices=3,
-                 scale=DIATONIC):
+                 #scale=DIATONIC):
+                 #scale=PENTATONIC):
+                 scale=PENTA_MINOR):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
