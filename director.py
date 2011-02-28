@@ -11,18 +11,19 @@ logger.setLevel(logging.INFO)
 
 
 class Director(object):
-    def __init__(self, composer, state, meter=[2, 0, 1, 0]):
+    def __init__(self, composer, state):
         self.composer = composer
         self.playing = None
         self.state = state
         self.gateway = composer.gateway
         self.speed = state["speed"]
         self.shuffle_delay = 0.1 # keep this between 0 and MAX_SHUFFLE
-        self.metronome = metronome.Metronome(meter)
+        self.meter = composer.applied_meter
+        self.metronome = metronome.Metronome(self.meter)
         self.speed_change = 'leap'
         self.MIN_SPEED = 0.1
         self.MAX_SPEED = 0.5
-        self.MAX_SHUFFLE = 0.333
+        self.MAX_SHUFFLE = 0.1
 
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.

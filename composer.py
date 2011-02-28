@@ -28,7 +28,7 @@ HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
 DISHARMS = [1]
 MINMAX = [0, 128]
-SPEED_LIM = 0.07
+SPEED_LIM = 0.1
 
 class Composer(object):
     def __init__(self,
@@ -39,8 +39,9 @@ class Composer(object):
         self.voices = {}
         self.num_voices = num_voices
         self.scale = scale
-        self.set_meter(8)
-        #self.set_meter((5,(2,3)))
+        #self.set_meter(8)
+        self.set_meter((5,(2,3)))
+        self.applied_meter = [2, 0, 1, 0, 0]
         self.generate_real_scale(*MINMAX)
         self.gateway = gateway
         self.hub = gateway.hub()
