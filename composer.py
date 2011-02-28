@@ -19,9 +19,9 @@ class Composer(object):
     def __init__(self,
                  gateway=None,
                  num_voices=3,
-                 #scale=DIATONIC):
+                 scale=DIATONIC):
                  #scale=PENTATONIC):
-                 scale=PENTA_MINOR):
+                 #scale=PENTA_MINOR):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
@@ -242,6 +242,13 @@ class Composer(object):
     def add_duration_in_msec(self, state):
         for v in self.voices.values():
             v.duration_in_msec = int(v.note_duration_steps * state["speed"] * 1000)
+
+    def apply_setting(self, setting):
+        if setting not in melody_sets:
+            return "key error - setting not found"
+        settings = melody_sets[setting]
+        for attr in settings:
+            pass
 
 if __name__ == "__main__":
     print DIATONIC, len(DIATONIC)
