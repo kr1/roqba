@@ -6,6 +6,7 @@ from random import choice as sample
 import metronome
 from notator import Notator
 from movement_probabilities import ORNAMENTS
+import note_length_groupings
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
@@ -38,6 +39,8 @@ class Composer(object):
         self.voices = {}
         self.num_voices = num_voices
         self.scale = scale
+        self.set_meter(8)
+        #self.set_meter((5,(2,3)))
         self.generate_real_scale(*MINMAX)
         self.gateway = gateway
         self.hub = gateway.hub()
@@ -54,6 +57,11 @@ class Composer(object):
         print "harmonies: {0}".format(self.harm)
         print "voices: {0}\nnotes:{1}".format(self.voices,
                             map(lambda x: x.note, self.voices.values()))
+
+    def set_meter(self, meter):
+        self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter, "terns")
+        self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter, "heavy")
+        self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter, "default")
 
     def add_voice(self, id, voice):
         self.voices.update({id: voice})
