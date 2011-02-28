@@ -126,6 +126,21 @@ groupings = {8:
 }
 
 
+def get_grouping(meter, mode, check=True):
+    '''returns the groupings for a given meter and mode
+
+    well_foredness is checked by default, "default"-mode
+    will combine first, second and terns-modes
+    '''
+    mode = None if mode == "default" else mode
+    meter_length = meter if type(meter) == int else meter[0]
+    res = assemble(meter, mode, meter_length=meter_length)
+    if check:
+        if badly_formeD(meter_length, res):
+            raise RuntimeError("badly formed rhythm grouping.")
+    return res
+
+
 def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
     if id not in groupings.keys():
         raise RuntimeError("KeyError: specified meter not found.")
@@ -141,6 +156,9 @@ def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
         else:
             return sum(target[which], [])
     else:
+        return assemble(id, "first", fallback, meter_length) +\
+               assemble(id, "second", fallback, meter_length) +\
+               assemble(id, "terns", fallback, meter_length)
         return sum(target["first"] +
                    target["second"] +
                    target["terns"], [])
@@ -165,21 +183,6 @@ DEFAULT_NOTE_LENGTH_GROUPINGS = assemble(DEFAULT_METER_LENGTH)
 DEFAULT_FAST_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "first")
 DEFAULT_TERNARY_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "terns")
 DEFAULT_SLOWER_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "heavy")
-
-
-def get_grouping(meter, mode, check=True):
-    '''returns the groupings for a given meter and mode
-
-    well_foredness is checked by default, "default"-mode
-    will combine first, second and terns-modes
-    '''
-    mode = None if mode == "default" else mode
-    meter_length = meter if type(meter) == int else meter[0]
-    res = assemble(meter, mode, meter_length=meter_length)
-    if check:
-        if badly_formeD(meter_length, res):
-            raise RuntimeError("badly formed rhythm grouping.")
-    return res
 
 
 def analyze_grouping(g):
