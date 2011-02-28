@@ -136,7 +136,8 @@ class Voice(object):
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
             self.embellishment_prob = 0.005
-            self.note_length_groupings = note_length_groupings.DEFAULT_SLOWER_GROUPINGS
+            #self.note_length_groupings = note_length_groupings.DEFAULT_SLOWER_GROUPINGS
+            self.note_length_groupings = self.composer.HEAVY_GROUPINGS
         elif name == "MID":
             self.change_rhythm_after_times = 4
             self.slide = True
@@ -144,14 +145,16 @@ class Voice(object):
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
             self.embellishment_prob = 0.01
             self.range = [30, 45]
-            self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
+            #self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
+            self.note_length_groupings = self.composer.DEFAULT_GROUPINGS
         elif name == "HIGH":
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
             # XxxxX implement embellishments (who schedules?)
             self.embellishment_prob = 0.015
-            self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
+            #self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
+            self.note_length_groupings = self.composer.TERNARY_GROUPINGS
 
 
 if __name__ == "__main__":
