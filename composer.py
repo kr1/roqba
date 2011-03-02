@@ -13,7 +13,8 @@ comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
 MINMAX = [0, 128]
-SPEED_LIM = 0.1
+SPEED_LIM = 0.06
+
 
 class Composer(object):
     def __init__(self,
@@ -27,7 +28,7 @@ class Composer(object):
         self.num_voices = num_voices
         self.scale = scale
         #self.set_meter(8)
-        self.set_meter((5,(2,3)))
+        self.set_meter((5, (2, 3)))
         self.applied_meter = [2, 0, 1, 0, 0]
         self.generate_real_scale(*MINMAX)
         self.gateway = gateway
@@ -47,9 +48,12 @@ class Composer(object):
                             map(lambda x: x.note, self.voices.values()))
 
     def set_meter(self, meter):
-        self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter, "terns")
-        self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter, "heavy")
-        self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter, "default")
+        self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
+                                                                    "terns")
+        self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
+                                                                  "heavy")
+        self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter,
+                                                                   "default")
 
     def add_voice(self, id, voice):
         self.voices.update({id: voice})
@@ -66,7 +70,8 @@ class Composer(object):
                 raise (RuntimeError, "mismatch in voices count")
             v.generator.send(state)
             tmp_harm.append(v.note)
-            if state["weight"] == metronome.HEAVY or state["weight"] == metronome.MEDIUM:
+            if (state["weight"] == metronome.HEAVY or
+                state["weight"] == metronome.MEDIUM):
                 patience = 0
                 while not self.acceptable_harm_for_length(tmp_harm,\
                                                           counter) and\
@@ -148,6 +153,9 @@ class Composer(object):
         self.lowest
 
     def embellish(self, state):
+        '''checks for embellishment markers of the single voices
+
+        starts a thread to handle the embellishment'''
         for v in self.voices.values():
             if v.do_embellish:
                 v.do_embellish = False
@@ -157,21 +165,28 @@ class Composer(object):
                                        v.note,
                                        v.note_delta,
                                        state)).start()
-                
+
     def ornament_handler(self, v, duration, note, note_delta, state):
-        #print "ornament-len: {0}, delta: {1}".format(duration, note_delta)
+        '''this method handles the sending of the ornament notes.
+
+        the ornament is chosen randomly
+        if the ornament would be too fast, it returns without action'''
         key = (abs(note_delta), duration)
         if key in ORNAMENTS:
             notes = sample(ORNAMENTS[key])
-            if min([n[0] for n in notes]) < SPEED_LIM:
-                print "SPEED_LIM"
+
+            ## check for the speed limit, if ornaments wold be too fast,
+            ## don't embellish
+            if min([n[0] * state["speed"] for n in notes]) < SPEED_LIM:
                 return
-            #print notes
+
             for orn_note in notes:
                 dur_fraction = orn_note[0]
                 time.sleep(state["speed"] * dur_fraction)
                 # add pos/neg multiplier
-                multiplier = (note_delta / abs(note_delta)) if note_delta != 0 else 0
+                multiplier = ((note_delta / abs(note_delta))
+                              if note_delta != 0
+                              else 0)
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
                 dur_prop = v.slide_duration_prop or 0.666
@@ -187,7 +202,7 @@ class Composer(object):
         # check if all notes are new
         self.comment = 'normal'
         note_changes = [v.note_change for v in self.voices.values()]
-        all_notes_change = reduce(lambda x, y :
+        all_notes_change = reduce(lambda x, y:
                                  x and y,
                                  note_changes)
         if all_notes_change:
@@ -241,7 +256,8 @@ class Composer(object):
 
     def add_duration_in_msec(self, state):
         for v in self.voices.values():
-            v.duration_in_msec = int(v.note_duration_steps * state["speed"] * 1000)
+            v.duration_in_msec = int(v.note_duration_steps *
+                                     state["speed"] * 1000)
 
     def apply_setting(self, setting):
         if setting not in melody_sets:
