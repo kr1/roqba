@@ -15,41 +15,49 @@ class Voice(object):
     def __init__(self, id,
                        composer,
                        range=[24, 48],
+                       register=None,
                        note=None,
                        real_note=None,
                        note_length_grouping=sample(GROUPINGS)):
+        # AFFILIATION
+        self.composer = composer  # store the composer
+        composer.add_voice(id, self)  # register with the composer
+        # IDENTITY
         self.id = id
+        self.register = (self.composer.registers[register]
+                      if register else
+                  composer.registers[sample(self.composer.registers.keys())])
+        # TECH
         self.track_me = False
         self.queue = deque([], 666)
+        # STARTUP
         range.sort()
         self.range = range
         self.dir = 0
+        self.prior_note = None
+        self.note_change = True
+        self.generator = self.voice()
+        self.generator.next()  # set the coroutine to the yield-point
+        self.counter = 0
+        self.scale = composer.scale
+        self.do_embellish = False
+        self.note_delta = None
+        self.weight = MEDIUM
         self.note = note or int((max(self.range)
                                  - min(self.range)) / 2) + min(self.range)
         self.real_note = real_note or int((max(self.range)
                                  - min(self.range)) / 2) + min(self.range)
-        self.note_length_grouping = note_length_grouping
-        self.weight = MEDIUM
-        self.prior_note = None
-        self.note_delta = None
+
+        # BEHAVIOUR
         self.duration_in_msec = 0
+        self.note_length_grouping = note_length_grouping
         self.note_duration_steps = 1
-        # behaviour
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = 0.005
-        self.do_embellish = False
         self.change_rhythm_after_times = 1
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = False
         self.slide_duration_prop = 0.2
-
-        self.note_change = True
-        self.counter = 0
-        self.composer = composer  # store the composer
-        self.scale = composer.scale
-        self.generator = self.voice()
-        self.generator.next()  # set the coroutine to the yield-point
-        composer.add_voice(id, self)  # register with the composer
 
     def __str__(self):
         return str({"note": self.note,
@@ -136,7 +144,6 @@ class Voice(object):
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
             self.embellishment_prob = 0.005
-            #self.note_length_groupings = note_length_groupings.DEFAULT_SLOWER_GROUPINGS
             self.note_length_groupings = self.composer.HEAVY_GROUPINGS
         elif name == "MID":
             self.change_rhythm_after_times = 4
@@ -155,11 +162,11 @@ class Voice(object):
 
     def reload_register(self):
         name = self.register["name"]
-        print "reloading register: {0}".format(name)
+        #print "reloading register: {0}".format(name)
         for k, v in self.register["voice_attrs"].items():
             setattr(self, k, v)
         for k, v in self.register["voice_composer_attrs"].items():
-            setattr(self, k, getattr(self.composer, v)) 
+            setattr(self, k, getattr(self.composer, v))
         self.counter = 0
 
 if __name__ == "__main__":
