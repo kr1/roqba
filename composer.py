@@ -16,6 +16,23 @@ note_logger = logging.getLogger("transcriber")
 MINMAX = [0, 128]
 SPEED_LIM = 0.06
 
+METERS = {
+    8: {
+        "human": 8,
+        "applied": [2, 0, 1, 0, 1, 0, 1, 0],
+        "max_shuffle": 0.333333
+    },
+    (5, (2, 3)): {
+        "human": (5, (2, 3)),
+        "applied": [2, 0, 1, 0, 0],
+        "max_shuffle": 0.15
+    },
+    6: {
+        "human": (6, (3, 3)),
+        "applied": [2, 0, 0, 1, 0, 0],
+        "max_shuffle": 0.1
+    }
+}
 
 class Composer(object):
     def __init__(self,

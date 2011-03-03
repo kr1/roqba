@@ -5,6 +5,7 @@ import itertools
 import threading
 
 import metronome
+import composer
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -25,6 +26,10 @@ class Director(object):
         self.MAX_SPEED = 0.5
         self.MAX_SHUFFLE = 0.1
 
+    def set_meter(self, meter):
+        self.composer.set_meter(meter)
+        self.metronome.set_meter(composer.METERS[meter]["applied"])
+    
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.
 
@@ -66,7 +71,7 @@ class Director(object):
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 time.sleep(self.speed)
-
+                self.set_meter(random.choice(composer.METERS.keys()))
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
                                 else 0)

@@ -17,3 +17,8 @@ class Metronome(object):
     def reset(self):
         self.metronome = cycle(self.meter)
         self.cycle_pos = cycle(xrange(len(self.meter)))
+
+    def set_meter(self, meter):
+        self.meter = meter
+        self.metronome = cycle(meter)
+        self.cycle_pos = cycle(xrange(len(meter)))
