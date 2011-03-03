@@ -8,6 +8,7 @@ from notator import Notator
 from movement_probabilities import ORNAMENTS
 from scales_and_harmonies import *
 import note_length_groupings
+from melodic_behaviours import registers
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
@@ -35,6 +36,7 @@ class Composer(object):
         self.hub = gateway.hub()
         # XxxxX consider making NoteGateway a Singleton
         self.hub.next()
+        self.registers = registers
         self.highest = 0
         self.lowest = 1000000
         self.notator = Notator(self.num_voices)
@@ -54,6 +56,8 @@ class Composer(object):
                                                                   "heavy")
         self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                    "default")
+        for v in self.voices.values():
+            v.reload_register()
 
     def add_voice(self, id, voice):
         self.voices.update({id: voice})

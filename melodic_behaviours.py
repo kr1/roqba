@@ -5,6 +5,34 @@ melody creation environment
 from scales_and_harmonies import *
 from movement_probabilities import *
 
+registers = {
+    "BASS": {
+        "name": "BASS",
+        "voice_composer_attrs": {
+              "note_length_groupings": "HEAVY_GROUPINGS"},
+        "voice_attrs":{
+              "embellishment_prob": 0.005,
+              "range": [21, 33]
+              }
+    }, 
+    "MID": {
+        "name":"MID",
+        "voice_composer_attrs": {
+              "note_length_groupings": "DEFAULT_GROUPINGS"},
+        "voice_attrs":{
+              "embellishment_prob": 0.01,
+              "range":[30, 45]},
+    },
+    "HIGH": {
+        "name":"HIGH",
+        "voice_composer_attrs": {
+            "note_length_groupings": "TERNARY_GROUPINGS"},
+        "voice_attrs":{
+            "embellishment_prob": 0.015,
+            "range":[35, 48]}
+    }
+}
+
 melody_sets = {
   "roqba" : {
     "lead": {
@@ -94,3 +122,4 @@ melody_sets = {
 
 if __name__ == "__main__":
     print melody_sets
+    print registers

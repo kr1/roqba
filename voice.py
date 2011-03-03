@@ -145,16 +145,22 @@ class Voice(object):
             self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
             self.embellishment_prob = 0.01
             self.range = [30, 45]
-            #self.note_length_groupings = note_length_groupings.DEFAULT_NOTE_LENGTH_GROUPINGS
             self.note_length_groupings = self.composer.DEFAULT_GROUPINGS
         elif name == "HIGH":
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
             self.embellishment_prob = 0.015
-            #self.note_length_groupings = note_length_groupings.DEFAULT_TERNARY_GROUPINGS
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
 
+    def reload_register(self):
+        name = self.register["name"]
+        print "reloading register: {0}".format(name)
+        for k, v in self.register["voice_attrs"].items():
+            setattr(self, k, v)
+        for k, v in self.register["voice_composer_attrs"].items():
+            setattr(self, k, getattr(self.composer, v)) 
+        self.counter = 0
 
 if __name__ == "__main__":
     from composer import Composer
