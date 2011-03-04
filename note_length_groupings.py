@@ -123,6 +123,17 @@ groupings = {8:
       [[2, 1, 1, 1]] * 5
     ]
   },
+  (5, (3, 2)):
+  {"heavy": [
+      [[5]] * 7,
+      [[3, 2]] * 20,
+      [[2, 1, 2]] * 5,
+
+      [[1, 1, 1, 2]] * 5,
+      [[1, 1, 1, 1, 1]] * 5,
+      [[2, 1, 1, 1]] * 5
+    ]
+  },
   6:
   {"heavy": [
   [[6]] * 3,
@@ -133,6 +144,33 @@ groupings = {8:
   [[1, 1, 1, 3]] * 3,
   [[2, 2, 2]] * 4,
   ]
+  },
+  (7, (3, 2, 2)):
+  {"heavy": [
+      [[5, 2]] * 7,
+      [[3, 2, 2]] * 20,
+      [[2, 1, 2, 2]] * 7,
+
+      [[1, 1, 1, 2, 2]] * 5,
+      [[1, 1, 1, 1, 1, 1, 1]] * 5,
+      [[2, 1, 1, 1, 1, 1]] * 7,
+      [[1, 1, 1, 1, 1, 2]] * 5,
+      [[2, 1, 2, 1, 1]] * 7
+    ]
+  },
+  (9, (3, 3, 3)):
+  {"heavy": [
+      [[6, 3]] * 7,
+      [[3, 6]] * 7,
+      [[3, 3, 3]] * 30,
+      [[2, 1, 2, 1, 2, 1]] * 7,
+
+      [[1, 1, 1, 1, 1, 1, 1, 1, 1]] * 5,
+      [[2, 1, 1, 1, 1, 1, 1, 1]] * 5,
+      [[2, 1, 2, 1, 1, 1, 1]] * 7,
+      [[3, 3, 1, 1, 1]] * 5,
+      [[3, 2, 1, 1, 2]] * 7
+    ]
   }
 }
 
@@ -185,8 +223,10 @@ def cut_grouping_to_size(grouping, size):
                 new.pop()
                 diff = size -sum(new)
                 if diff != 0:
-                    new.append(diff)
+                    new.append(abs(diff))
                 break
+        if sum_ < size:
+            new.append(size - sum_)
         res.append(new)
     return res
 
@@ -236,5 +276,7 @@ if __name__ == "__main__":
             sum(groupings[(5, (2, 3))]["heavy"], [])
     assert get_grouping(8, "heavy") == sum(groupings[8]["heavy"], [])
     print get_grouping((5, (2, 3)), "terns")
+    print get_grouping((9, (3, 3, 3)), "terns")
+    print get_grouping((7, (3, 2, 2)), "terns")
     import doctest
     doctest.testmod()
