@@ -18,7 +18,7 @@ class Director(object):
         self.state = state
         self.gateway = composer.gateway
         self.speed = state["speed"]
-        self.shuffle_delay = 0.1 # keep this between 0 and MAX_SHUFFLE
+        self.shuffle_delay = 0.1  # keep this between 0 and MAX_SHUFFLE
         self.meter = composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
         self.speed_change = 'leap'
@@ -29,7 +29,7 @@ class Director(object):
     def set_meter(self, meter):
         self.composer.set_meter(meter)
         self.metronome.set_meter(composer.METERS[meter]["applied"])
-    
+
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.
 
@@ -59,10 +59,11 @@ class Director(object):
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
                 self.shuffle_delay = random.random() * self.MAX_SHUFFLE
-                logger.info("shuffle delay set to: {0}".format(self.shuffle_delay))
+                logger.info("shuffle delay set to: {0}".format(
+                                                  self.shuffle_delay))
                 if self.speed_change == 'transition':
                     self.speed += random.randint(-1000, 1000) / 66666.
-                else:  #if self.speed_change == 'leap':
+                else:  # if self.speed_change == 'leap':
                     self.speed = self.MIN_SPEED + (random.random() *
                                             (self.MAX_SPEED - self.MIN_SPEED))
                 print "new speed values: {0}\n resetting metronome.".format(
@@ -71,7 +72,10 @@ class Director(object):
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 time.sleep(self.speed)
-                self.set_meter(random.choice(composer.METERS.keys()))
+                new_meter = random.choice(composer.METERS.keys())
+                self.gateway.pd.send(["sys", "meter",
+                                       str(new_meter).replace(",", " ")])
+                self.set_meter(new_meter)
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
                                 else 0)
