@@ -74,7 +74,8 @@ class Director(object):
                 time.sleep(self.speed)
                 new_meter = random.choice(composer.METERS.keys())
                 self.gateway.pd.send(["sys", "meter",
-                                       str(new_meter).replace(",", " ")])
+                                       str(new_meter).replace(",", " ").
+                                       replace(" ","_")])
                 self.set_meter(new_meter)
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
