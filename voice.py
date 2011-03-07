@@ -52,6 +52,8 @@ class Voice(object):
         self.duration_in_msec = 0
         self.note_length_grouping = note_length_grouping
         self.note_duration_steps = 1
+        self.pause_prob = 0.03
+        self.legato_prob = 0.1
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = 0.005
         self.change_rhythm_after_times = 1
@@ -75,6 +77,8 @@ class Voice(object):
             #val = self.desc(state["composer"], sample(state["possible"]))
             meter_pos = state['cycle_pos']
             self.note_change = self.on_off_pattern[meter_pos]
+            if random.random() < self.legato_prob:
+                self.note_change = 0
             self.weight = state["weight"]
             if self.note_change:
                 # calculate duration by checking for the next note
@@ -85,8 +89,11 @@ class Voice(object):
                 else:
                     self.note_duration_steps = 1
                 self.prior_note = self.note
-                self.note = self.next_note()
-                self.note_delta = self.note - self.prior_note
+                if random.random() < self.pause_prob:
+                   self.note = -1
+                else:
+                    self.note = self.next_note()
+                    self.note_delta = self.note - self.prior_note
                 if self.track_me:
                     self.queue.append(self.note)
                 if random.random() < self.embellishment_prob:

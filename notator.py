@@ -31,7 +31,8 @@ class Notator(object):
                     mat[l] = []
                 mat[l].append(-1)
             for v in xrange(self.num_voices):
-                mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
+                if self.buffer[n][v] != -1:
+                    mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
         return mat
 
     def draw(self, mat, weight, cycle_pos):

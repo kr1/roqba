@@ -12,6 +12,7 @@ registers = {
               "note_length_groupings": "HEAVY_GROUPINGS"},
         "voice_attrs":{
               "embellishment_prob": 0.005,
+              "legato_prob": 0.02,
               "range": [21, 33]
               }
     }, 
@@ -21,6 +22,8 @@ registers = {
               "note_length_groupings": "DEFAULT_GROUPINGS"},
         "voice_attrs":{
               "embellishment_prob": 0.01,
+              "legato_prob": 0.1,
+              "pause_prob": 0.1,
               "range":[30, 45]},
     },
     "HIGH": {
@@ -29,6 +32,8 @@ registers = {
             "note_length_groupings": "TERNARY_GROUPINGS"},
         "voice_attrs":{
             "embellishment_prob": 0.015,
+              "legato_prob": 0.05,
+              "pause_prob": 0.03,
             "range":[35, 48]}
     }
 }
