@@ -53,7 +53,7 @@ class NoteGateway(object):
     def pd_send_note(self, voice_id, msg):
         if voice_id not in self.voice_ids:
             self.voice_ids.append(voice_id)
-        self.pd.send(["voice", voice_id, msg + self.transpose])
+        self.pd.send(["voice", voice_id, 0 if msg == 0 else msg + self.transpose])
         return True
 
     def hub(self):

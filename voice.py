@@ -90,7 +90,7 @@ class Voice(object):
                     self.note_duration_steps = 1
                 self.prior_note = self.note
                 if random.random() < self.pause_prob:
-                   self.note = -1
+                   self.note = 0
                 else:
                     self.note = self.next_note()
                     self.note_delta = self.note - self.prior_note
