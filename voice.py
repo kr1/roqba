@@ -147,12 +147,14 @@ class Voice(object):
 
     def set_state(self, name):
         if name == "BASS":
+            self.behaviour = "AUTONOMOUS"
             self.change_rhythm_after_times = 8
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
             self.embellishment_prob = 0.005
             self.note_length_groupings = self.composer.HEAVY_GROUPINGS
         elif name == "MID":
+            self.behaviour = "AUTONOMOUS"
             self.change_rhythm_after_times = 4
             self.slide = True
             self.slide_duration_prop = 0.1
@@ -161,11 +163,26 @@ class Voice(object):
             self.range = [30, 45]
             self.note_length_groupings = self.composer.DEFAULT_GROUPINGS
         elif name == "HIGH":
+            self.behaviour = "AUTONOMOUS"
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
             self.embellishment_prob = 0.015
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
+        elif name == "SLAVE":
+            self.behaviour = "SLAVE"
+            self.others = self.other_voices()
+            self.followed_voice = sample(self.others.values())
+            self.following_counter = 0
+            self.follow_limit = sample(range(3,9))
+
+    def other_voices(self):
+        res = {}
+        for k,v in self.composer.voices.items():
+            if v != self:
+                res[k] = v
+        print res
+        return res
 
     def reload_register(self):
         name = self.register["name"]

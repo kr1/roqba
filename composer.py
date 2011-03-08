@@ -125,6 +125,18 @@ class Composer(object):
                     tmp_harm.append(v.note)
                     patience += 1
             counter += 1
+        for v in self.voices.values():
+            if v.behaviour == "SLAVE" and v.followed_voice.note_change:
+                if v.followed_voice.note == 0:
+                    v.note = 0
+                    continue
+                if v.following_counter == 0:
+                    v.follow_dist = sample(FOLLOWINGS)
+                if v.following_counter < v.follow_limit:
+                    v.note = v.followed_voice.note + v.follow_dist
+                    v.following_counter += 1
+                else:
+                    v.set_state("SLAVE")
         # here we have arrived at the next level
         # now we set the "real note" field according to the present scale
         self.add_duration_in_msec(state)

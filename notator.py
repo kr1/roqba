@@ -31,7 +31,7 @@ class Notator(object):
                     mat[l] = []
                 mat[l].append(-1)
             for v in xrange(self.num_voices):
-                if self.buffer[n][v] != -1:
+                if self.buffer[n][v] > 0:
                     mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
         return mat
 
