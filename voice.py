@@ -122,9 +122,9 @@ class Voice(object):
 
         if incomint int exceeds limits, returns False otherwise"""
         if note > self.range[1]:
-            return (self.range[1], -1)
+            return (self.range[1] - sample([0, 0, 1, 1, 2]), -1)
         elif note < self.range[0]:
-            return (self.range[0], 1)
+            return (self.range[0] + sample([0, 0, 1, 1, 2]), 1)
         else:
             False
 
