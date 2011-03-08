@@ -111,7 +111,7 @@ class Composer(object):
                 raise (RuntimeError, "mismatch in voices count")
             v.generator.send(state)
             tmp_harm.append(v.note)
-            if v.note == 0:
+            if v.note == 0 or not v.note_change:
                 continue
             if (state["weight"] == metronome.HEAVY or
                 state["weight"] == metronome.MEDIUM):
