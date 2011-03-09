@@ -164,14 +164,19 @@ class Composer(object):
 #                v.real_note = self.scale_walker(self.scale,
 #                                                v.real_note,
 #                                                v.note_delta)
+    
+    def set_scale(self, name, min=0, max=128):
+        self.scale = name
+        self.generate_real_scale(min, max)
 
-    def generate_real_scale(self, min, max):
+    def generate_real_scale(self, min=0, max=128):
+        scale = SCALES[self.scale]
         self.real_scale = []
         value = 0
         for n in xrange(min, max):
             value += 1
-            index = n % len(self.scale)
-            if self.scale[index]:
+            index = n % len(scale)
+            if scale[index]:
                 self.real_scale.append(value)
         #print self.real_scale
 
