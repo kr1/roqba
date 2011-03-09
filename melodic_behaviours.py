@@ -41,7 +41,7 @@ registers = {
 melody_sets = {
   "roqba" : {
     "lead": {
-       "scale": DIATONIC,
+       "scale": "DIATONIC",
        "grouping": "ternary",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -51,7 +51,7 @@ melody_sets = {
        "range" : [35, 48]
     },
     "alto": {
-       "scale": DIATONIC,
+       "scale": "DIATONIC",
        "grouping": "default",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -61,7 +61,7 @@ melody_sets = {
        "range" : [30, 45]
     },
     "tenor": {
-       "scale": DIATONIC,
+       "scale": "DIATONIC",
        "grouping": "default",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -71,7 +71,7 @@ melody_sets = {
        "range" : [27, 42]
     },
     "bass": {
-       "scale": DIATONIC,
+       "scale": "DIATONIC",
        "grouping": "heavy",
        "slide" : True,
        "slide_duration_prop" : 0.3,
@@ -83,7 +83,7 @@ melody_sets = {
   },
   "penta" : {
     "lead": {
-       "scale": PENTA_MINOR,
+       "scale": "PENTA_MINOR",
        "grouping": "ternary",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -93,7 +93,7 @@ melody_sets = {
        "range" : [28, 36]
     },
     "alto": {
-       "scale": PENTA_MINOR,
+       "scale": "PENTA_MINOR",
        "grouping": "default",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -103,7 +103,7 @@ melody_sets = {
        "range" : [20, 33]
     },
     "tenor": {
-       "scale": PENTA_MINOR,
+       "scale": "PENTA_MINOR",
        "grouping": "default",
        "slide" : True,
        "slide_duration_prop" : 0.1,
@@ -113,7 +113,7 @@ melody_sets = {
        "range" : [18, 31]
     },
     "bass": {
-       "scale": PENTA_MINOR,
+       "scale": "PENTA_MINOR",
        "grouping": "heavy",
        "slide" : True,
        "slide_duration_prop" : 0.3,

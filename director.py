@@ -71,6 +71,7 @@ class Director(object):
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
+                self.composer.set_scale(random.choice(composer.SCALES_BY_FREQUENCY))
                 time.sleep(self.speed)
                 new_meter = random.choice(composer.METERS.keys())
                 self.gateway.pd.send(["sys", "meter",

@@ -58,9 +58,9 @@ class Composer(object):
     def __init__(self,
                  gateway=None,
                  num_voices=3,
-                 scale=DIATONIC):
-                 #scale=PENTATONIC):
-                 #scale=PENTA_MINOR):
+                 scale="DIATONIC"):
+                 #scale="PENTATONIC"):
+                 #scale="PENTA_MINOR"):
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices

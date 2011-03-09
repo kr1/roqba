@@ -1,9 +1,22 @@
 
-DIATONIC = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
-HARMONIC = [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1]
-MELODIC = [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]
-PENTATONIC = [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0 ]
-PENTA_MINOR = [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]
+SCALES = {
+    "DIATONIC" : [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
+    "HARMONIC" : [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+    "MELODIC" : [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1],
+    "PENTATONIC" : [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0 ],
+    "PENTA_MINOR" : [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]
+  }
+
+SCALES_BY_FREQUENCY = sum([
+    ["DIATONIC"] * 10,
+    ["HARMONIC"] * 2,
+    ["MELODIC"] * 2,
+    ["PENTATONIC"] * 2,
+    ["PENTA_MINOR"] * 1]
+,[])
+
+
+
 
 STRICT_HARMONIES = [set([2, 4, 6]), set([2, 4, 0]),
                     set([3, 5, 0]), set([2, 5, 0])]
@@ -19,3 +32,6 @@ HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 FOLLOWINGS = [-5, -2, 2, 5]
 
 DISHARMS = [1]
+
+if __name__ == "__main__":
+    print SCALES_BY_FREQUENCY
