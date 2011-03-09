@@ -93,6 +93,9 @@ class Voice(object):
                    self.note = 0
                 else:
                     self.note = self.next_note()
+                    # compensate for less notes in pentatonic scales
+                   # if self.composer.scale in ["PENTATONIC", "PENTA_MINOR"]:
+                   #     self.note = int((self.note / 7.0) * 5)
                     self.note_delta = self.note - self.prior_note
                 if self.track_me:
                     self.queue.append(self.note)
@@ -121,10 +124,14 @@ class Voice(object):
         """returns min/max limits and a bounce back direction coefficient
 
         if incomint int exceeds limits, returns False otherwise"""
-        if note > self.range[1]:
-            return (self.range[1] - sample([0, 0, 1, 1, 2]), -1)
-        elif note < self.range[0]:
-            return (self.range[0] + sample([0, 0, 1, 1, 2]), 1)
+        if self.composer.scale in ["PENTATONIC", "PENTA_MINOR"]:
+            range = [int((x / 7.0) * 5) for x in self.range]
+        else:
+            range = self.range
+        if note > range[1]:
+            return (range[1] - sample([0, 0, 1, 1, 2]), -1)
+        elif note < range[0]:
+            return (range[0] + sample([0, 0, 1, 1, 2]), 1)
         else:
             False
 
