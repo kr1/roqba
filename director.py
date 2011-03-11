@@ -21,6 +21,7 @@ class Director(object):
         self.shuffle_delay = 0.1  # keep this between 0 and MAX_SHUFFLE
         self.meter = composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
+        self.automate_binaural_diffs = True
         self.speed_change = 'leap'
         self.MIN_SPEED = 0.1
         self.MAX_SPEED = 0.5
@@ -72,12 +73,14 @@ class Director(object):
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
                 self.composer.set_scale(random.choice(composer.SCALES_BY_FREQUENCY))
-                time.sleep(self.speed)
                 new_meter = random.choice(composer.METERS.keys())
                 self.gateway.pd.send(["sys", "meter",
                                        str(new_meter).replace(",", " ").
                                        replace(" ","_")])
+                if self.automate_binaural_diffs:
+                    self.composer.set_binaural_diffs()
                 self.set_meter(new_meter)
+                time.sleep(self.speed)
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
                                 else 0)

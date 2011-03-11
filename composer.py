@@ -1,6 +1,7 @@
 import logging
 import time
 import threading
+import random
 from random import choice as sample
 
 import metronome
@@ -68,6 +69,7 @@ class Composer(object):
         #self.set_meter(8)
         self.set_meter((5, (2, 3)))
         self.applied_meter = [2, 0, 1, 0, 0]
+        self.max_binaural_diff = 10
         self.generate_real_scale(*MINMAX)
         self.gateway = gateway
         self.hub = gateway.hub()
@@ -228,6 +230,17 @@ class Composer(object):
                                        v.note,
                                        v.note_delta,
                                        state)).start()
+
+    def set_binaural_diffs(self, val=None, voice=None):
+        if val:
+            if voice:
+                self.gateway.pd.send(["voice", "binaural", voice, val ])
+            else:  
+                self.gateway.pd.send(["voice", "binaural", -1, val ])
+        else:
+            for v in self.voices.values():
+                val = random.random() * self.max_binaural_diff
+                self.gateway.pd.send(["voice", "binaural", v.id, val ])
 
     def ornament_handler(self, v, duration, note, note_delta, state):
         '''this method handles the sending of the ornament notes.
