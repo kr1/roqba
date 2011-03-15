@@ -204,13 +204,6 @@ class Composer(object):
         for v in self.voices.values():
             v.set_rhythm_grouping(sample(v.note_length_groupings))
 
-    def random_harmonic(self):
-        res = []
-        while not self.acceptable_harmony(res):
-            for v in self.voices:
-                res.append(v.random_note())
-        return res
-
     def highest_note_of_piece(self):
         self.highest
 
@@ -286,7 +279,7 @@ class Composer(object):
             #print "all_notes_change: harmony {0}".format(harmony)
             if self.is_base_harmony(harmony):
                 self.comment = "caesura"
-                print "all notes change to a base harmony"
+                #print "all notes change to a base harmony"
 
     def acceptable_harmony(self, chord):
         flat = self.flatten_chord(chord)

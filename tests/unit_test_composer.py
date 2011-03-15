@@ -3,8 +3,12 @@
 """
 import unittest2 as unittest
 from mock import Mock
-from composer import Composer, DIATONIC
+from voice import Voice
+from composer import Composer
+from scales_and_harmonies import SCALES
+from note_length_groupings import groupings
 
+DIATONIC = SCALES["DIATONIC"]
 
 class UnitTestComposer(unittest.TestCase):
     """a test class for the Composer class"""
@@ -15,8 +19,13 @@ class UnitTestComposer(unittest.TestCase):
         this method is called before each test function execution.
 #        """
         gw = Mock()
-        self.composer = Composer(gateway=gw)
+        self.composer = Composer(gateway=gw, num_voices = 2)
+        v = Voice(1, self.composer)
+        v = Voice(2, self.composer)
+        self.composer.add_voice(v.id, v)
+        self.composer.add_voice(v.id, v)
         self.composer.gateway.hub = Mock()
+        self.test_chord = [30, 25, 28, 40]
 
     def test_40_scale_walker(self):
         """hard-coded test to check the correctness of the scale-walker method
@@ -35,6 +44,13 @@ class UnitTestComposer(unittest.TestCase):
         self.assertEqual(sw(DIATONIC, 36, -1), 35)
         self.assertEqual(sw(DIATONIC, 36, -2), 33)
 
+    def test_flatten_chord(self):
+        res = self.composer.flatten_chord(self.test_chord)
+        self.assertEqual(res, [2, 4, 0, 5])
+
+    def test_get_deltas(self):
+        res = self.composer.get_deltas(self.test_chord)
+        self.assertEqual(res, [3, 5, 15])
 
 def suite():
     """make the test suite"""

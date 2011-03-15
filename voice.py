@@ -50,13 +50,15 @@ class Voice(object):
 
         # BEHAVIOUR
         self.duration_in_msec = 0
+        self.behaviour = "AUTONOMOUS"
+        self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
+        self.set_rhythm_grouping(note_length_grouping)
         self.note_duration_steps = 1
         self.pause_prob = 0.03
         self.legato_prob = 0.1
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = 0.005
-        self.change_rhythm_after_times = 1
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = False
         self.slide_duration_prop = 0.2
