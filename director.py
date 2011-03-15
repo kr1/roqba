@@ -67,8 +67,8 @@ class Director(object):
                 else:  # if self.speed_change == 'leap':
                     self.speed = self.MIN_SPEED + (random.random() *
                                             (self.MAX_SPEED - self.MIN_SPEED))
-                print "new speed values: {0}\n resetting metronome.".format(
-                                                                self.speed)
+                #print "new speed values: {0}\n resetting metronome.".format(
+                #                                                self.speed)
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()

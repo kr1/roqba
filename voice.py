@@ -190,7 +190,7 @@ class Voice(object):
         for k,v in self.composer.voices.items():
             if v != self:
                 res[k] = v
-        print res
+        #print res
         return res
 
     def reload_register(self):
