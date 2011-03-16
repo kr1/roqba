@@ -190,7 +190,7 @@ class Composer(object):
             if length == 2:
                 return deltas[0] in HARMONIC_INTERVALS
             else:
-                return set(deltas) in STRICT_HARMONIES
+                return set(deltas) in ALL_STRICT_HARMONIES
 
     def calculate_possible_notes(self):
         self.harm
