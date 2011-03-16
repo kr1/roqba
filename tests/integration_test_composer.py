@@ -33,6 +33,7 @@ class UnitTestComposer(unittest.TestCase):
             self.composer.set_meter(meter)
 
     def test_generate(self):
+        '''test the main function of the module'''
         state = {"weight" : 1,
                  "speed" : 0.4,
                  "cycle_pos":2}
@@ -48,6 +49,11 @@ class UnitTestComposer(unittest.TestCase):
         self.v2.note_change = 1
         self.composer.stream_analyzer()
         self.assertEqual(self.composer.comment, 'caesura')
+
+    def test_generate_real_scale(self):
+        '''test real scale genration from scale patterns'''
+        for scale in SCALES:
+           self.composer.generate_real_scale() 
 
 def suite():
     """make the test suite"""

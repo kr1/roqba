@@ -45,12 +45,30 @@ class UnitTestComposer(unittest.TestCase):
         self.assertEqual(sw(DIATONIC, 36, -2), 33)
 
     def test_flatten_chord(self):
+        '''test flattening of a chord'''
         res = self.composer.flatten_chord(self.test_chord)
         self.assertEqual(res, [2, 4, 0, 5])
 
     def test_get_deltas(self):
+        '''should create reliable deltas of harmonies'''
         res = self.composer.get_deltas(self.test_chord)
         self.assertEqual(res, [3, 5, 15])
+
+    def test_acceptable_harm_for_length(self):
+        '''harmonic watchdog: test harmonies pass'''
+        fun = self.composer.acceptable_harm_for_length
+        self.assertEqual(fun([], 0), True)
+        self.assertEqual(fun([1], 1), True)
+        self.assertEqual(fun([1, 3], 2), True)
+        self.assertEqual(fun([1, 3, 5], 3), True)
+        self.assertEqual(fun([1, 3, 5, 7], 4), True)
+
+    def test_inacceptable_harm_for_length(self):
+        '''harmonic watchdog: test disharmonies do not pass'''
+        fun = self.composer.acceptable_harm_for_length
+        self.assertEqual(fun([1, 2], 2), False)
+        self.assertEqual(fun([1, 3, 4], 3), False)
+        self.assertEqual(fun([1, 3, 5, 6], 4), False)
 
 def suite():
     """make the test suite"""
