@@ -20,7 +20,7 @@ class UnitTestComposer(unittest.TestCase):
         this method is called before each test function execution.
 #        """
         gw = Mock()
-        self.composer = Composer(gateway=gw, num_voices = 2)
+        self.composer = Composer(gateway=gw, num_voices=2)
         self.v1 = Voice(1, self.composer)
         self.v2 = Voice(2, self.composer)
         self.composer.add_voice(self.v1.id, self.v1)

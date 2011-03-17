@@ -6,9 +6,9 @@ from mock import Mock
 from voice import Voice
 from composer import Composer
 from scales_and_harmonies import SCALES
-from note_length_groupings import groupings
 
 DIATONIC = SCALES["DIATONIC"]
+
 
 class UnitTestComposer(unittest.TestCase):
     """a test class for the Composer class"""
@@ -19,7 +19,7 @@ class UnitTestComposer(unittest.TestCase):
         this method is called before each test function execution.
 #        """
         gw = Mock()
-        self.composer = Composer(gateway=gw, num_voices = 2)
+        self.composer = Composer(gateway=gw, num_voices=2)
         v = Voice(1, self.composer)
         v = Voice(2, self.composer)
         self.composer.add_voice(v.id, v)
@@ -69,6 +69,7 @@ class UnitTestComposer(unittest.TestCase):
         self.assertEqual(fun([1, 2], 2), False)
         self.assertEqual(fun([1, 3, 4], 3), False)
         self.assertEqual(fun([1, 3, 5, 6], 4), False)
+
 
 def suite():
     """make the test suite"""
