@@ -62,13 +62,7 @@ class Director(object):
                 self.shuffle_delay = random.random() * self.MAX_SHUFFLE
                 logger.info("shuffle delay set to: {0}".format(
                                                   self.shuffle_delay))
-                if self.speed_change == 'transition':
-                    self.speed += random.randint(-1000, 1000) / 66666.
-                else:  # if self.speed_change == 'leap':
-                    self.speed = self.MIN_SPEED + (random.random() *
-                                            (self.MAX_SPEED - self.MIN_SPEED))
-                #print "new speed values: {0}\n resetting metronome.".format(
-                #                                                self.speed)
+                self.new_speed()
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
@@ -113,3 +107,13 @@ class Director(object):
         delta = int(time.time() - self.start_time)
         return "{0}:{1}".format(int(delta / 60),
                                 str(delta % 60).zfill(2))
+
+    def new_speed(self):
+        if self.speed_change == 'transition':
+            self.speed += random.randint(-1000, 1000) / 66666.
+        else:  # if self.speed_change == 'leap':
+            self.speed = self.MIN_SPEED + (random.random() *
+                                    (self.MAX_SPEED - self.MIN_SPEED))
+        #print "new speed values: {0}\n resetting metronome.".format(
+        #                                                self.speed)
+        return self.speed
