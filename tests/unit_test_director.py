@@ -8,6 +8,9 @@ from composer import Composer
 from director import Director
 from scales_and_harmonies import SCALES
 
+import random
+import math
+
 DIATONIC = SCALES["DIATONIC"]
 
 
@@ -45,8 +48,16 @@ class UnitTestDirector(unittest.TestCase):
         average = sum(leaps) / float(len(leaps))
         max_ =  self.director.MAX_SPEED
         min_ =  self.director.MIN_SPEED
-        center = min_ + (max_ - min_) / 2
+        center = min_ + (max_ - min_) * self.director.speed_target
         self.assertTrue(abs(average - center) < 0.05)
+        for r in [0.000001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.9999999]:
+            self.director.speed_target = r
+            res = [self.director.new_speed() for n in xrange(666)]
+            average = sum(res) / float(len(res))
+            calc_target = min_ + ((max_ - min_) * r)
+            #print r, average, calc_target
+            self.assertTrue(abs(average - calc_target) < 0.15)
+
 
 def suite():
     """make the test suite"""

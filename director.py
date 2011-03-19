@@ -1,7 +1,7 @@
 import time
 import logging
 import random
-import itertools
+import math
 import threading
 
 import metronome
@@ -17,14 +17,15 @@ class Director(object):
         self.playing = None
         self.state = state
         self.gateway = composer.gateway
+        self.speed_target = 0.3
         self.speed = state["speed"]
         self.shuffle_delay = 0.1  # keep this between 0 and MAX_SHUFFLE
         self.meter = composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
         self.automate_binaural_diffs = True
         self.speed_change = 'leap'
-        self.MIN_SPEED = 0.1
-        self.MAX_SPEED = 0.5
+        self.MIN_SPEED = 0.2
+        self.MAX_SPEED = 0.9
         self.MAX_SHUFFLE = 0.1
 
     def set_meter(self, meter):
@@ -112,7 +113,14 @@ class Director(object):
         if self.speed_change == 'transition':
             self.speed += random.randint(-1000, 1000) / 66666.
         else:  # if self.speed_change == 'leap':
-            self.speed = self.MIN_SPEED + (random.random() *
+            if self.speed_target != 0.5:
+                target = self.speed_target
+                if  target < 0.3:
+                    target = target ** 2
+                speed_tmp = random.random() ** math.log(target, 0.5)
+                self.speed = self.MIN_SPEED + ((self.MAX_SPEED - self.MIN_SPEED) * speed_tmp)
+            else:
+                self.speed = self.MIN_SPEED + (random.random() *
                                     (self.MAX_SPEED - self.MIN_SPEED))
         #print "new speed values: {0}\n resetting metronome.".format(
         #                                                self.speed)
