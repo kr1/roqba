@@ -6,6 +6,7 @@ class Drummer(object):
         self.composer = composer
         self.meter = meter
         self.create_pattern()
+        self.high_low_seq()
 
     def create_pattern(self, patt=None):
         '''creates a drum pattern from a given (bass-)pattern
@@ -30,16 +31,25 @@ class Drummer(object):
                             "mark": [0 for n in indeces]}
 
         self.smoothen()
+        self.high_low_seq()
 
     def smoothen(self):
-        '''post - production method to smoothen loop-related duplications'''
+        '''post - creation method to smoothen loop-related duplications'''
         self.pattern
 
     def high_low_seq(self):
         '''creates a pattern consisting of the sequence of low-high changes
         
         format to be defined'''
-        pass
+        p = self.pattern
+        res = []
+        indeces = xrange(len(self.pattern["low"]))
+        for i in indeces:
+            if p["low"][i]: res.append(-1)
+            elif p["high"][i]: res.append(1)
+            else: res.append(0)
+        self.high_low_pattern = res
+        return res
 
     def push_value(self, val):
         '''append a value to all keys of the pattern'''

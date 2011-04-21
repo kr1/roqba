@@ -41,6 +41,14 @@ class UnitTestDrummer(unittest.TestCase):
         self.assertEqual(self.drum.pattern["low"],  [1, 0, 0, 1, 0, 0, 0])
         self.assertEqual(self.drum.pattern["high"], [0, 0, 1, 0, 0, 1, 0])
 
+    def test_create_high_low_pattern(self):
+        '''control the mapping between full pattern and high-low version'''
+
+        self.drum.create_pattern([1, 0, 1, 1, 0, 1, 0])
+        self.assertEqual(self.drum.pattern["low"],  [1, 0, 0, 1, 0, 0, 0])
+        self.assertEqual(self.drum.pattern["high"], [0, 0, 1, 0, 0, 1, 0])
+        self.assertEqual(self.drum.high_low_pattern,[-1, 0, 1, -1, 0, 1, 0])
+
 
 def suite():
     """make the test suite"""
