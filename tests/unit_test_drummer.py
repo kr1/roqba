@@ -24,7 +24,7 @@ class UnitTestDrummer(unittest.TestCase):
         self.drum.push_value(111)
         self.assertEqual(self.drum.pattern["cont"], [1,111])
 
-    def test_create_pattern_without_specifing(self):
+    def test_create_pattern_without_specifing_a_pattern(self):
         '''creating a pattern without specifying a reference
 
         should lead to the a pattern based on the meter'''

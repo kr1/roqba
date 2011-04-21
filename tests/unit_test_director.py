@@ -49,7 +49,7 @@ class UnitTestDirector(unittest.TestCase):
         max_ =  self.director.MAX_SPEED
         min_ =  self.director.MIN_SPEED
         center = min_ + (max_ - min_) * self.director.speed_target
-        self.assertTrue(abs(average - center) < 0.05)
+        self.assertTrue(abs(average - center) < 0.07)
         for r in [0.000001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.9999999]:
             self.director.speed_target = r
             res = [self.director.new_speed() for n in xrange(666)]
