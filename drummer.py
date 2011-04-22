@@ -2,11 +2,28 @@
 class Drummer(object):
     def __init__(self,
                  composer,
-                 meter):
+                 meter=[0, 0, 0, 0, 0, 0]):
         self.composer = composer
         self.meter = meter
         self.create_pattern()
         self.high_low_seq()
+        self.generator = self.generate()
+        self.generator.next()
+        self.frame = {}
+
+    def generate(self):
+        while True:
+            state = (yield)
+            meter_pos = state['cycle_pos']
+            #print meter_pos
+            self.frame = {}
+            for k,v in self.pattern.items():
+                if v[meter_pos]:
+                    ## to-do make more dynamic
+                    self.frame[k] = {"vol": 1,
+                                     "pan": 0, 
+                                     "ctl": None}
+                    
 
     def create_pattern(self, patt=None):
         '''creates a drum pattern from a given (bass-)pattern

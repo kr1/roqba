@@ -10,6 +10,7 @@ from movement_probabilities import ORNAMENTS
 from scales_and_harmonies import *
 import note_length_groupings
 from melodic_behaviours import registers
+from drummer import Drummer
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
@@ -62,6 +63,10 @@ class Composer(object):
                  scale="DIATONIC"):
                  #scale="PENTATONIC"):
                  #scale="PENTA_MINOR"):
+        # percussion
+        self.drummer = Drummer(self)
+        self.percussion_hub = gateway.drum_hub()
+        self.percussion_hub.next()
         self.harm = {}
         self.voices = {}
         self.num_voices = num_voices
@@ -97,6 +102,7 @@ class Composer(object):
                                                                    "default")
         for v in self.voices.values():
             v.reload_register()
+        self.drummer.create_pattern(METERS[meter]["applied"])
 
     def add_voice(self, id, voice):
         self.voices.update({id: voice})
@@ -146,6 +152,9 @@ class Composer(object):
         # the stream analyzer can be used to check for chords, simultaneities
         self.embellish(state)
         self.stream_analyzer()
+        # percussion
+        self.drummer.generator.send(state)
+        self.percussion_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
