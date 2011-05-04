@@ -1,3 +1,4 @@
+import random
 
 class Drummer(object):
     def __init__(self,
@@ -6,9 +7,22 @@ class Drummer(object):
         self.composer = composer
         self.meter = meter
         self.create_pattern()
+        self.pan_positions = {"low": 0,
+                              "high": 0,
+                              "cont": 0,
+                              "tuned": 0,
+                              "mark": 0}
+        self.ctl_values = {"low": {"val" : 150, "devi" : 30},
+                           "high": {"val" : 800, "devi" : 30},
+                           "cont": {"val" : 1000, "devi" : 500},
+                           "tuned": {"val" : 500, "devi" : 100},
+                           "mark": {"val" : 10000, "devi" : 1000}
+                          }
         self.high_low_seq()
         self.generator = self.generate()
         self.generator.next()
+        self.cont_accent_mult = 0.3
+        self.cont_ctl_rand_deviation = 1000
         self.frame = {}
 
     def generate(self):
@@ -20,9 +34,15 @@ class Drummer(object):
             for k,v in self.pattern.items():
                 if v[meter_pos]:
                     ## to-do make more dynamic
-                    self.frame[k] = {"vol": 1,
-                                     "pan": 0, 
-                                     "ctl": None}
+                    vol = 0.5
+                    ctl = None
+                    if k == "cont":
+                        vol = 0.5 + state["weight"] * self.cont_accent_mult
+                        ctl = self.ctl_values[k]["val"] + (self.ctl.values[k][0]["devi"] * random.choice([1, -1]))
+                        #print "cont: vol:", vol
+                    self.frame[k] = {"vol": vol,
+                                     "pan": self.pan_positions[k], 
+                                     "ctl": ctl}
                     
 
     def create_pattern(self, patt=None):
