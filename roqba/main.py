@@ -1,6 +1,4 @@
 
-from Queue import Queue
-import time
 import logging
 import threading
 import logging.config
@@ -26,6 +24,7 @@ def startup():
     v4 = Voice(4, c, register="BASS")
     v4.set_state("BASS")
     return c
+
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
 
