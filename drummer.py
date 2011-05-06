@@ -38,7 +38,7 @@ class Drummer(object):
                     ctl = None
                     if k == "cont":
                         vol = 0.5 + state["weight"] * self.cont_accent_mult
-                        ctl = self.ctl_values[k]["val"] + (self.ctl.values[k][0]["devi"] * random.choice([1, -1]))
+                        ctl = self.ctl_values[k]["val"] + (self.ctl_values[k]["devi"] * random.choice([1, -1]))
                         #print "cont: vol:", vol
                     self.frame[k] = {"vol": vol,
                                      "pan": self.pan_positions[k], 
