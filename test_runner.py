@@ -1,8 +1,8 @@
 """this script orchestrates the tests contained in the tests folder"""
 import sys
 import unittest2 as unittest
-import tests.unit_test_composer as u_t_composer
-import tests.integration_test_composer as i_t_composer
+import roqba.tests.unit_test_composer as u_t_composer
+import roqba.tests.integration_test_composer as i_t_composer
 
 if __name__ == "__main__":
     uniT, integratioN = False, False

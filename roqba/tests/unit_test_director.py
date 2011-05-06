@@ -3,13 +3,10 @@
 """
 import unittest2 as unittest
 from mock import Mock
-from voice import Voice
-from composer import Composer
-from director import Director
-from scales_and_harmonies import SCALES
-
-import random
-import math
+from roqba.voice import Voice
+from roqba.composer import Composer
+from roqba.director import Director
+from roqba.scales_and_harmonies import SCALES
 
 DIATONIC = SCALES["DIATONIC"]
 

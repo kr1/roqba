@@ -3,7 +3,7 @@
 """
 import unittest2 as unittest
 from mock import Mock
-from drummer import Drummer
+from roqba.drummer import Drummer
 
 class UnitTestDrummer(unittest.TestCase):
     """a test class for the Drummer class"""
