@@ -63,7 +63,7 @@ class NoteGateway(object):
             for k,v in data.items():
                 args = ["perc", k]
                 if v["vol"]: args.append(v["vol"])
-                if v["pan"]: args.append(v["pan"])
+                args.append(v["pan"])
                 if v["ctl"]: args.append(v["ctl"])
                 self.pd.send(args)
 
