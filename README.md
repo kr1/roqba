@@ -8,7 +8,7 @@ getting started:
 
 open a python shell (I recommend Ipython) in this folder.
 to start the app:
-    import main
+    from roqba import main
     main.main()
 to pause:
     main.director.pause()

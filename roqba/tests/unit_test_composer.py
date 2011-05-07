@@ -3,9 +3,9 @@
 """
 import unittest2 as unittest
 from mock import Mock
-from voice import Voice
-from composer import Composer
-from scales_and_harmonies import SCALES
+from roqba.voice import Voice
+from roqba.composer import Composer
+from roqba.scales_and_harmonies import SCALES
 
 DIATONIC = SCALES["DIATONIC"]
 
