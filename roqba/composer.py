@@ -56,6 +56,7 @@ METERS = {
     }
 }
 
+
 class Composer(object):
     def __init__(self,
                  gateway=None,
@@ -81,19 +82,22 @@ class Composer(object):
         # XxxxX consider making NoteGateway a Singleton
         self.hub.next()
         self.registers = registers
-        self.highest = 0
-        self.lowest = 1000000
         self.notator = Notator(self.num_voices)
 
     def __repr__(self):
         return "<Composer-Inst with {0}>".format(self.harm)
 
     def report(self):
+        '''utility function that prints info on  harmonies and single voices'''
         print "harmonies: {0}".format(self.harm)
         print "voices: {0}\nnotes:{1}".format(self.voices,
                             map(lambda x: x.note, self.voices.values()))
 
     def set_meter(self, meter):
+        '''modifies composer-attributes for the specified meter.
+
+        calls reload_register method of the voices and creates and
+        sets the new meter also for the drummer-instance'''
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                     "terns")
         self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
@@ -105,6 +109,7 @@ class Composer(object):
         self.drummer.create_pattern(METERS[meter]["applied"])
 
     def add_voice(self, id, voice):
+        '''adds a voice to self.voices'''
         self.voices.update({id: voice})
 
     def generate(self, state):
@@ -163,6 +168,7 @@ class Composer(object):
         return self.comment
 
     def apply_scale(self):
+        '''sets the real note for '''
         for v in self.voices.values():
             if v.note == 0:
                 v.real_note = 0
@@ -175,12 +181,14 @@ class Composer(object):
 #                v.real_note = self.scale_walker(self.scale,
 #                                                v.real_note,
 #                                                v.note_delta)
-    
+
     def set_scale(self, name, min=0, max=128):
+        '''sets the specified scale and generates a new real scale'''
         self.scale = name
         self.generate_real_scale(min, max)
 
     def generate_real_scale(self, min=0, max=128):
+        '''extends the one-octave scale over the specified range'''
         scale = SCALES[self.scale]
         self.real_scale = []
         value = 0
@@ -192,6 +200,7 @@ class Composer(object):
         #print self.real_scale
 
     def acceptable_harm_for_length(self, harm, length):
+        '''checks if the specified (interval-set) are "harmonic"'''
         if length in [0, 1]:
             return True
         else:
@@ -201,28 +210,24 @@ class Composer(object):
             else:
                 return set(deltas) in ALL_STRICT_HARMONIES
 
-    def calculate_possible_notes(self):
-        self.harm
-
     def sort_voices_by_importance(self):
+        '''sorts the voices according to their importance.
+
+        having a registered direction is the only determinant of importace
+        for the tim being'''
         dirs = filter(lambda x: x.dir, self.voices.values())
         no_dirs = list(set(self.voices.values()) - set(dirs))
         return dirs + no_dirs
 
     def choose_rhythm(self):
+        '''chooses a new rhythm randomly from each voices groupings'''
         for v in self.voices.values():
             v.set_rhythm_grouping(sample(v.note_length_groupings))
-
-    def highest_note_of_piece(self):
-        self.highest
-
-    def lowest_note_of_piece(self):
-        self.lowest
 
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
 
-        starts a thread to handle the embellishment'''
+        - starts a thread to handle the embellishment'''
         for v in self.voices.values():
             if v.do_embellish:
                 v.do_embellish = False
@@ -234,15 +239,20 @@ class Composer(object):
                                        state)).start()
 
     def set_binaural_diffs(self, val=None, voice=None):
+        '''"de-tunes" the specified voice by the specified interval (in hertz)
+
+        - if no values are given, random values (in the configurated range)
+        are set for each voice.
+        '''
         if val:
             if voice:
-                self.gateway.pd.send(["voice", "binaural", voice, val ])
-            else:  
-                self.gateway.pd.send(["voice", "binaural", -1, val ])
+                self.gateway.pd.send(["voice", "binaural", voice, val])
+            else:
+                self.gateway.pd.send(["voice", "binaural", -1, val])
         else:
             for v in self.voices.values():
                 val = random.random() * self.max_binaural_diff
-                self.gateway.pd.send(["voice", "binaural", v.id, val ])
+                self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def ornament_handler(self, v, duration, note, note_delta, state):
         '''this method handles the sending of the ornament notes.
@@ -291,21 +301,27 @@ class Composer(object):
                 #print "all notes change to a base harmony"
 
     def acceptable_harmony(self, chord):
+        '''checks if a chord is "harmonic"'''
         flat = self.flatten_chord(chord)
         return set(flat) in STRICT_HARMONIES
 
     def is_base_harmony(self, chord):
+        '''checks if a chord is a the base tonality
+
+        (either major or minor) of the current context'''
         flat = self.flatten_chord(chord)
         #print set(flat)
         return set(flat) in BASE_HARMONIES[self.num_voices]
 
     @staticmethod
     def flatten_chord(chord):
+        '''maps a specified code to the base octave'''
         flat = map(lambda x: x % 7, chord)
         return flat
 
     @staticmethod
     def get_deltas(chord):
+        '''returns an array of the intervals between the specified notes'''
         chord.sort()
         base = chord[0]
         return map(lambda x: x - base, chord)[1:]
@@ -333,16 +349,10 @@ class Composer(object):
         return (index * dir) + mod + (octave * len(scale))
 
     def add_duration_in_msec(self, state):
+        '''adds duration in milliseconds for each note in self.voices'''
         for v in self.voices.values():
             v.duration_in_msec = int(v.note_duration_steps *
                                      state["speed"] * 1000)
-
-    def apply_setting(self, setting):
-        if setting not in melody_sets:
-            return "key error - setting not found"
-        settings = melody_sets[setting]
-        for attr in settings:
-            pass
 
 if __name__ == "__main__":
     print DIATONIC, len(DIATONIC)
