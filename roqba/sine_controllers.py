@@ -30,21 +30,29 @@ class Sine(object):
 
 class MultiSine(object):
     """a controller object for multiple overlaid sine-waves"""
-    def __init__(self, freqs):
+    def __init__(self, freqs, equal_power=True):
         self.start = time()
         if type(freqs) != type([]):
-            raise RuntimeError("freqs has to be of list-type")
+            raise RuntimeError("freqs must be a list")
         self.freqs = freqs
+        self.equal_power = equal_power
+        if equal_power:
+            self.coeff = 1
+        else:
+            self.coeff = 1.0 / sum([1.0 / (n + 1) for n in xrange(len(freqs))])
         self.assemble_funnel()
-        print self.funnel
 
     def get_value(self):
         """returns the combined (added) value of the
 
         multiple sine controllers"""
         tmp = [get_value() for get_value in self.funnel]
-        #print tmp
-        return sum(tmp) / float(len(self.funnel))
+        if self.equal_power:
+            return sum(tmp) / float(len(self.funnel))
+        else:
+            ## each value gets scaled according to its position in the array
+            tmp = [tmp[pos] / (pos + 1.0) for pos in xrange(len(tmp))]
+            return sum(tmp) * self.coeff
 
     def assemble_funnel(self):
         """assembles a list of get_value function objects"""
