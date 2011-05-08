@@ -2,12 +2,11 @@ import random
 from random import choice as sample
 
 from movement_probabilities import DEFAULT_MOVEMENT_PROBS
-import note_length_groupings
 from movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
 from movement_probabilities import BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
-from metronome import HEAVY, MEDIUM, LIGHT
+from metronome import MEDIUM
 from Queue import deque
 
 
@@ -76,7 +75,6 @@ class Voice(object):
         while True:
             state = (yield)
             #print state, ", possible: ", state.get("possible", [])
-            #val = self.desc(state["composer"], sample(state["possible"]))
             meter_pos = state['cycle_pos']
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
@@ -92,7 +90,7 @@ class Voice(object):
                     self.note_duration_steps = 1
                 self.prior_note = self.note
                 if random.random() < self.pause_prob:
-                   self.note = 0
+                    self.note = 0
                 else:
                     self.note = self.next_note()
                     # compensate for less notes in pentatonic scales
@@ -105,7 +103,7 @@ class Voice(object):
                     self.do_embellish = True
 
     def next_note(self):
-        """the next is calculated from here"""
+        """the next is calculated here"""
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
         else:
@@ -145,16 +143,19 @@ class Voice(object):
         self.counter += 1
 
     def in_the_middle(self, note):
-        """returns true is int is in the center area of the range"""
+        """returns true if int is in the center area of the range"""
         range_span = self.range[1] - self.range[0]
         lower_thresh = self.range[0] + (range_span * 0.333)
         upper_thresh = self.range[0] + (range_span * 0.666)
         return note > lower_thresh and note < upper_thresh
 
-    def desc(self, c, val):
-        return val - 1
-
     def set_state(self, name):
+        '''sets the state for the voice.
+
+        state is one of "BASS", "MID", "HIGH", or "SLAVE".
+        the state is a set of common settings for the voice, e.g.
+        voice-range, embellishment probability, rhythmic variation,
+        movement-mode, etc.'''
         if name == "BASS":
             self.behaviour = "AUTONOMOUS"
             self.change_rhythm_after_times = 8
@@ -183,18 +184,17 @@ class Voice(object):
             self.others = self.other_voices()
             self.followed_voice = sample(self.others.values())
             self.following_counter = 0
-            self.follow_limit = sample(range(3,9))
+            self.follow_limit = sample(range(3, 9))
 
     def other_voices(self):
         res = {}
-        for k,v in self.composer.voices.items():
+        for k, v in self.composer.voices.items():
             if v != self:
                 res[k] = v
         #print res
         return res
 
     def reload_register(self):
-        name = self.register["name"]
         #print "reloading register: {0}".format(name)
         for k, v in self.register["voice_attrs"].items():
             setattr(self, k, v)

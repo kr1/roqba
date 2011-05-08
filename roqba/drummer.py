@@ -19,7 +19,7 @@ class Drummer(object):
             "low": {"val": 150, "devi": 30},
             "high": {"val": 800, "devi": 30},
             "cont": {"val": 1200, "devi": 400,
-                     "fun": MultiSine([0.1, 0.2, 0.77]).get_value},
+                     "fun": MultiSine([0.1, 0.2, 0.77, 10], False).get_value},
             "tuned": {"val": 500, "devi": 100},
             "mark": {"val": 10000, "devi": 1000}
         }
