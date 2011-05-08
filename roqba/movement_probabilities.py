@@ -81,6 +81,10 @@ ORNAMENTS = {(0, 1): [[(0.5, 0), (0.5, 1)],
             
             }
 
+DRUM_FILLS = [[0.5, 0.5],
+              [0.33333333, 0.33333333, 0.3333333333],
+              [0.25, 0.25, 0.25, 0.25]]
+
 if __name__ == "__main__":
     print DEFAULT_MOVEMENT_PROBS
     print MIDDLE_VOICES_MOVEMENT_PROBS

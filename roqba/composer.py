@@ -6,7 +6,7 @@ from random import choice as sample
 
 import metronome
 from notator import Notator
-from movement_probabilities import ORNAMENTS
+from movement_probabilities import ORNAMENTS, DRUM_FILLS
 from scales_and_harmonies import *
 import note_length_groupings
 from melodic_behaviours import registers
@@ -159,6 +159,9 @@ class Composer(object):
         self.stream_analyzer()
         # percussion
         self.drummer.generator.send(state)
+        for k, v in self.drummer.frame.items():
+            if v["meta"]:
+                self.drum_fill_handler(k, state)
         self.percussion_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
@@ -253,6 +256,16 @@ class Composer(object):
             for v in self.voices.values():
                 val = random.random() * self.max_binaural_diff
                 self.gateway.pd.send(["voice", "binaural", v.id, val])
+
+    def drum_fill_handler(self, v, state):
+        '''handles the sending of drum-fill notes'''
+        for f in sample(DRUM_FILLS):
+            if (state["speed"] * f) < self.drummer.peak_speed:
+                break
+            self.gateway.pd_send_drum_note(v, self.drummer.frame[v]["vol"],
+                                           self.drummer.frame[v]["pan"],
+                                           self.drummer.frame[v]["ctl"])
+            time.sleep(state["speed"] * f)
 
     def ornament_handler(self, v, duration, note, note_delta, state):
         '''this method handles the sending of the ornament notes.

@@ -56,16 +56,22 @@ class NoteGateway(object):
         self.pd.send(["voice", voice_id, 0 if msg == 0 else msg + self.transpose])
         return True
 
+    def pd_send_drum_note(self, voice,  vol, pan, ctl):
+        '''sends a note-message for a drum-voice'''
+        args = ["perc", voice, vol, pan, ctl]
+        self.pd.send(args)
+
     def drum_hub(self):
         while True:
             data = (yield)
             self.logger.info("drums out: {0}".format(data))
             for k,v in data.items():
-                args = ["perc", k]
-                if v["vol"]: args.append(v["vol"])
-                args.append(v["pan"])
-                if v["ctl"]: args.append(v["ctl"])
-                self.pd.send(args)
+                if v["meta"] != "empty":
+                    args = ["perc", k]
+                    if v["vol"]: args.append(v["vol"])
+                    args.append(v["pan"])
+                    if v["ctl"]: args.append(v["ctl"])
+                    self.pd.send(args)
 
     def hub(self):
         while True:

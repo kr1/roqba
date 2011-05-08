@@ -10,6 +10,10 @@ class Drummer(object):
         self.composer = composer
         self.meter = meter
         self.create_pattern()
+        self.peak_speed = 80
+        self.empty_threshhold = 0.2
+        self.full_threshhold = 0.99
+        self.activation_level = "medium"  # ["low", "medium", "high"]
         self.pan_positions = {"low": 0,
                               "high": 0,
                               "cont": 0,
@@ -32,6 +36,10 @@ class Drummer(object):
     def generate(self):
         while True:
             state = (yield)
+            #print state["comp"].voices.values()
+            sum_ = sum(map(lambda v: v.note_change and 1 or 0,
+                              state["comp"].voices.values()))
+            density = sum_ / float(len(state["comp"].voices))
             meter_pos = state['cycle_pos']
             #print meter_pos
             self.frame = {}
@@ -40,20 +48,36 @@ class Drummer(object):
                     ## to-do make more dynamic
                     vol = 0.5
                     ctl = None
+                    meta = None
                     if k == "cont":
-                        vol = 0.5 + state["weight"] * self.cont_accent_mult
-                        ## check if that value is callable
-                        if "fun" in self.ctl_values[k].keys():
-                            addendum = (self.ctl_values[k]["fun"]() *
-                                        self.ctl_values[k]["devi"])
-                        else:
-                            addendum = (random() * self.ctl_values[k]["devi"] *
-                                                  choice([1, -1]))
-                        ctl = self.ctl_values[k]["val"] + addendum
-                        #print "cont: vol:", vol
+                        confirm, vol, ctl, meta = self.cont_frame(state,
+                                                                  density)
+                    if not confirm:
+                        continue
                     self.frame[k] = {"vol": vol,
                                      "pan": self.pan_positions[k],
-                                     "ctl": ctl and int(ctl) or ctl}
+                                     "ctl": ctl and int(ctl) or ctl,
+                                     "meta": meta}
+
+    def cont_frame(self, state, density):
+        '''assembles the frame for the cont-voice'''
+        meta = None
+        if density > self.full_threshhold:
+            return (False, None, None, None)
+        elif density < self.empty_threshhold:
+            meta = "empty"
+        vol = 0.5 + state["weight"] * self.cont_accent_mult
+
+        ## check if that value is callable
+        if "fun" in self.ctl_values["cont"].keys():
+            addendum = (self.ctl_values["cont"]["fun"]() *
+                        self.ctl_values["cont"]["devi"])
+        else:
+            addendum = (random() * self.ctl_values["cont"]["devi"] *
+                                  choice([1, -1]))
+        ctl = self.ctl_values["cont"]["val"] + addendum
+        #print "cont: vol:", vol
+        return (True, vol, ctl, meta)
 
     def create_pattern(self, patt=None):
         '''creates a drum pattern from a given (bass-)pattern
