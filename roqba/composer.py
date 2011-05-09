@@ -161,7 +161,8 @@ class Composer(object):
         self.drummer.generator.send(state)
         for k, v in self.drummer.frame.items():
             if v["meta"]:
-                self.drum_fill_handler(k, state)
+                threading.Thread(target=self.drum_fill_handler,
+                                 args=(k, state)).start()
         self.percussion_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
@@ -260,7 +261,7 @@ class Composer(object):
     def drum_fill_handler(self, v, state):
         '''handles the sending of drum-fill notes'''
         for f in sample(DRUM_FILLS):
-            if (state["speed"] * f) < self.drummer.peak_speed:
+            if (state["speed"] * 1000 * f) < self.drummer.peak_speed:
                 break
             self.gateway.pd_send_drum_note(v, self.drummer.frame[v]["vol"],
                                            self.drummer.frame[v]["pan"],
