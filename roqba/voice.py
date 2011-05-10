@@ -61,6 +61,7 @@ class Voice(object):
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = False
         self.slide_duration_prop = 0.2
+        self.set_state(register)
 
     def __str__(self):
         return str({"note": self.note,

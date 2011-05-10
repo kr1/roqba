@@ -11,18 +11,28 @@ import note_gateway
 gateway = note_gateway.NoteGateway()
 gateway.hub().next()
 
+behaviour = {"speed": 0.3,
+            "max_speed": 0.8,
+            "min_speed": 0.08,
+            "speed_target": 0.2,
+            "speed_change": "leap",  # alt:"transition"
+            "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
+            "max_shuffle": 0.1,
+            "automate_binaural_diffs": True  # alt: False
+            }
+
+settings = {"number_of_voices": 4,
+            "voice_registers": ["BASS", "MID", "MID", "HIGH"],
+            }
+
 
 def startup():
+    '''created the composer instance and the voices'''
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
     c = Composer(gateway)
-    v1 = Voice(1, c, register="HIGH")
-    v1.set_state("HIGH")
-    v2 = Voice(2, c, register="MID")
-    v2.set_state("MID")
-    v3 = Voice(3, c, register="MID")
-    v3.set_state("MID")
-    v4 = Voice(4, c, register="BASS")
-    v4.set_state("BASS")
+    for voice_idx in xrange(settings["number_of_voices"]):
+        Voice(voice_idx + 1, c,
+              register=settings["voice_registers"][voice_idx])
     return c
 
 logging.config.fileConfig("logging.conf")
@@ -30,12 +40,12 @@ logger = logging.getLogger('startup')
 
 go = True
 composer = startup()
-SPEED = 0.300
-STATE = {"comp": composer, "speed": SPEED}
-director = Director(composer, STATE)
+STATE = {"comp": composer, "speed": behaviour["speed"]}
+director = Director(composer, STATE, behaviour, settings)
 
 
 def main():
+    '''starts the main thread of the application'''
     threading.Thread(target=director._play, args=()).start()
     composer.report()
 
