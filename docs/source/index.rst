@@ -11,6 +11,7 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
+    readme
     composer
     director
     drummer
@@ -22,10 +23,8 @@ Contents:
     note_gateway
     note_length_groupings
     pdsender
-    roqba_sc
     scales_and_harmonies
     sine_controllers
-    test_runner
     voice
 
 
