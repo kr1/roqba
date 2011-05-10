@@ -3,7 +3,7 @@ pauses should be implemented as a gate on the trigger and
 are not implemented in the groupings
 
 reconsider specifying pauses with negative values(to-do:
-check implcations on other modules)
+check implications on other modules)
 """
 
 DEFAULT_METER_LENGTH = 8
@@ -192,7 +192,7 @@ groupings = {8:
 def get_grouping(meter, mode, check=True):
     '''returns the groupings for a given meter and mode
 
-    well_foredness is checked by default, "default"-mode
+    well_formedness is checked by default, "default"-mode
     will combine first, second and terns-modes
     '''
     mode = None if mode == "default" else mode
@@ -205,6 +205,9 @@ def get_grouping(meter, mode, check=True):
 
 
 def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
+    '''assembles note-length groupings.
+    
+    it is called during the loading of the module'''
     if id not in groupings.keys():
         raise RuntimeError("KeyError: specified meter not found.")
     target = groupings[id]
@@ -227,6 +230,10 @@ def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
                    target["terns"], [])
 
 def cut_grouping_to_size(grouping, size):
+    '''cut the grouping to the required size
+    
+    it will sanitize the last entry if necessary
+    this function is called in case a non-existing size is required'''
     res = []
     for group in grouping:
         new = []
@@ -251,7 +258,7 @@ DEFAULT_SLOWER_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "heavy")
 
 
 def analyze_grouping(g):
-    """transform the grouping into a nibary pattern for every beat, i.e.:
+    """transform the grouping into a binary pattern for every beat, i.e.:
 
     >>> analyze_grouping([1,2,1,3])
     [1, 1, 0, 1, 1, 0, 0]
@@ -269,6 +276,9 @@ def analyze_grouping(g):
 
 
 def badly_formeD(meter_length, to_check):
+    '''checks if a grouping is well-formed
+    
+    checks if the sum of items equals the specified target length'''
     odd = filter(lambda x: sum(x) != meter_length, to_check)
     return odd
 
