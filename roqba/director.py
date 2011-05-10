@@ -12,21 +12,23 @@ logger.setLevel(logging.INFO)
 
 
 class Director(object):
-    def __init__(self, composer, state):
+    def __init__(self, composer, state, behaviour, settings):
         self.composer = composer
         self.playing = None
         self.state = state
         self.gateway = composer.gateway
-        self.speed_target = 0.3
+        self.speed_target = behaviour["speed_target"]
         self.speed = state["speed"]
-        self.shuffle_delay = 0.1  # keep this between 0 and MAX_SHUFFLE
+
+        # keep this between 0 and MAX_SHUFFLE
+        self.shuffle_delay = behaviour["shuffle_delay"]
         self.meter = composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
-        self.automate_binaural_diffs = True
-        self.speed_change = 'leap'
-        self.MIN_SPEED = 0.2
-        self.MAX_SPEED = 0.9
-        self.MAX_SHUFFLE = 0.1
+        self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
+        self.speed_change = behaviour["speed_change"]
+        self.MIN_SPEED = behaviour["min_speed"]
+        self.MAX_SPEED = behaviour["max_speed"]
+        self.MAX_SHUFFLE = behaviour["max_shuffle"]
 
     def set_meter(self, meter):
         self.composer.set_meter(meter)
@@ -41,7 +43,6 @@ class Director(object):
         logger.info("<<<<<<<<<<<<<<<<<<<<<<   start playing  >>>>>>>>>>>>>>>>\
 >>>>>>>>>>>>>>")
         pos = 0
-        self.playing = True
         while self.playing:
             if duration:
                 pos += self.speed
@@ -67,11 +68,12 @@ class Director(object):
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
-                self.composer.set_scale(random.choice(composer.SCALES_BY_FREQUENCY))
+                self.composer.set_scale(random.choice(
+                                            composer.SCALES_BY_FREQUENCY))
                 new_meter = random.choice(composer.METERS.keys())
                 self.gateway.pd.send(["sys", "meter",
                                        str(new_meter).replace(",", " ").
-                                       replace(" ","_")])
+                                       replace(" ", "_")])
                 if self.automate_binaural_diffs:
                     self.composer.set_binaural_diffs()
                 self.set_meter(new_meter)
@@ -118,7 +120,9 @@ class Director(object):
                 if  target < 0.3:
                     target = target ** 2
                 speed_tmp = random.random() ** math.log(target, 0.5)
-                self.speed = self.MIN_SPEED + ((self.MAX_SPEED - self.MIN_SPEED) * speed_tmp)
+                self.speed = (self.MIN_SPEED +
+                              ((self.MAX_SPEED - self.MIN_SPEED) *
+                              speed_tmp))
             else:
                 self.speed = self.MIN_SPEED + (random.random() *
                                     (self.MAX_SPEED - self.MIN_SPEED))
