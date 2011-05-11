@@ -13,8 +13,13 @@ gateway.hub().next()
 
 behaviour = {"speed": 0.3,
             "max_speed": 0.8,
-            "min_speed": 0.08,
-            "speed_target": 0.2,
+            "min_speed": 0.12,
+            # speed-target:
+            # 0.5 means that the average of all speeds will be
+            # +/- in the middle of the given range
+            # 0.25 means that the average of speeds will be at the first 
+            # quarter of the range
+            "speed_target": 0.25,
             "speed_change": "leap",  # alt:"transition"
             "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
             "max_shuffle": 0.1,
