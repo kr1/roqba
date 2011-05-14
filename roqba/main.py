@@ -9,21 +9,26 @@ from director import Director
 import note_gateway
 
 
-behaviour = {'speed': 0.3,
-            'max_speed': 0.8,
-            'min_speed': 0.08,
-            'speed_target': 0.2,
-            'speed_change': 'leap',  # alt:"transition"
-            'shuffle_delay': 0.1,  # keep this between 0 and MAX_SHUFFLE
-            'max_shuffle': 0.1,
-            'transpose': 12,
-            'automate_binaural_diffs': True  # alt: False
-            }
-
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321
+            }
+
+behaviour = {"speed": 0.3,
+            "max_speed": 0.8,
+            "min_speed": 0.12,
+            # speed-target:
+            # 0.5 means that the average of all speeds will be
+            # +/- in the middle of the given range
+            # 0.25 means that the average of speeds will be at the first 
+            # quarter of the range
+            "speed_target": 0.25,
+            "speed_change": "leap",  # alt:"transition"
+            "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
+            "max_shuffle": 0.1,
+            'transpose': 12,
+            "automate_binaural_diffs": True  # alt: False
             }
 
 gateway = note_gateway.NoteGateway(settings, behaviour)
