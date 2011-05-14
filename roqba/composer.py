@@ -15,9 +15,6 @@ from drummer import Drummer
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
-MINMAX = [0, 128]
-SPEED_LIM = 0.06
-
 METERS = {
     8: {
         "human": 8,
@@ -61,6 +58,7 @@ class Composer(object):
     def __init__(self,
                  gateway,
                  settings,
+                 behaviour,
                  num_voices=3,
                  scale="DIATONIC"):
                  #scale="PENTATONIC"):
@@ -72,13 +70,15 @@ class Composer(object):
         self.percussion_hub.next()
         self.harm = {}
         self.voices = {}
-        self.num_voices = num_voices
+        self.num_voices = settings['number_of_voices']
+        self.speed_lim = behaviour['embellishment_speed_lim']
         self.scale = scale
         #self.set_meter(8)
         self.set_meter((5, (2, 3)))
         self.applied_meter = [2, 0, 1, 0, 0]
-        self.max_binaural_diff = 10
-        self.generate_real_scale(*MINMAX)
+        self.max_binaural_diff = behaviour['max_binaural_diff']
+        self.generate_real_scale(settings['lowest_note_num'],
+                                 settings['highest_note_num'])
         self.gateway = gateway
         self.hub = gateway.hub()
         # XxxxX consider making NoteGateway a Singleton
@@ -281,7 +281,7 @@ class Composer(object):
 
             ## check for the speed limit, if ornaments wold be too fast,
             ## don't embellish
-            if min([n[0] * state["speed"] for n in notes]) < SPEED_LIM:
+            if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return
 
             for orn_note in notes:
