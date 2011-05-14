@@ -14,7 +14,7 @@ settings = {'number_of_voices': 4,
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
             'lowest_note_num': 0,
-            'highest_note_num': 127, 
+            'highest_note_num': 127,
             }
 
 behaviour = {"speed": 0.3,
@@ -23,12 +23,13 @@ behaviour = {"speed": 0.3,
             # speed-target:
             # 0.5 means that the average of all speeds will be
             # +/- in the middle of the given range
-            # 0.25 means that the average of speeds will be at the first 
+            # 0.25 means that the average of speeds will be at the first
             # quarter of the range
             "speed_target": 0.35,
             "speed_change": "leap",  # alt:"transition"
             "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
             "max_shuffle": 0.1,
+            'meter': (5, (2, 3)),
             'transpose': 12,
             'binaural_diff': 0.666,
             'max_binaural_diff': 10,
@@ -38,6 +39,7 @@ behaviour = {"speed": 0.3,
 
 gateway = note_gateway.NoteGateway(settings, behaviour)
 gateway.hub().next()
+
 
 def startup():
     '''created the composer instance and the voices'''

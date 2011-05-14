@@ -11,47 +11,10 @@ from scales_and_harmonies import *
 import note_length_groupings
 from melodic_behaviours import registers
 from drummer import Drummer
+from meters import METERS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
-
-METERS = {
-    8: {
-        "human": 8,
-        "applied": [2, 0, 1, 0, 1, 0, 1, 0],
-        "max_shuffle": 0.333333
-    },
-    (5, (3, 2)): {
-        "human": (5, (3, 2)),
-        "applied": [2, 0, 0, 1, 0],
-        "max_shuffle": 0.15
-    },
-    (5, (2, 3)): {
-        "human": (5, (2, 3)),
-        "applied": [2, 0, 1, 0, 0],
-        "max_shuffle": 0.15
-    },
-    6: {
-        "human": (6, (3, 3)),
-        "applied": [2, 0, 0, 1, 0, 0],
-        "max_shuffle": 0.1
-    },
-    (6, (2, 2, 2)): {
-        "human": (6, (2, 2, 2)),
-        "applied": [2, 0, 1, 0, 1, 0],
-        "max_shuffle": 0.3333333
-    },
-    (7, (3, 2, 2)): {
-        "human": (7, (3, 2, 2)),
-        "applied": [2, 0, 0, 1, 0, 1, 0],
-        "max_shuffle": 0.15
-    },
-    (9, (3, 3, 3)): {
-        "human": (9, (3, 3, 3)),
-        "applied": [2, 0, 1, 0, 0],
-        "max_shuffle": 0.15
-    }
-}
 
 
 class Composer(object):
@@ -73,9 +36,9 @@ class Composer(object):
         self.num_voices = settings['number_of_voices']
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.scale = scale
-        #self.set_meter(8)
-        self.set_meter((5, (2, 3)))
-        self.applied_meter = [2, 0, 1, 0, 0]
+        self.meter = behaviour['meter']
+        self.set_meter(self.meter)
+        self.applied_meter = METERS[self.meter]['applied']
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
