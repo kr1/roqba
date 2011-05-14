@@ -13,14 +13,15 @@ TRANSPOSE = 12
 
 
 class NoteGateway(object):
-    def __init__(self):
+    def __init__(self, settings, behaviour):
         ## XxxxX: make these settings configurable
         self.logger = logging.getLogger("sender")
+        self.settings = settings
         self.slide = True
         self.slide_duration_prop = 0.7
         self.voice_ids = []
-        self.transpose = TRANSPOSE
-        self.pd = PdSender(PD_HOST, PD_PORT)
+        self.transpose = behaviour["transpose"]
+        self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
 
     def pause(self):
         self.block_messages = True
@@ -50,6 +51,7 @@ class NoteGateway(object):
         self.pd.send(["voice", "slide", voice_id, msecs])
 
     def pd_send_note(self, voice_id, msg):
+        '''send out a single note'''
         if voice_id not in self.voice_ids:
             self.voice_ids.append(voice_id)
         self.pd.send(["voice", voice_id, 0 if msg == 0 else

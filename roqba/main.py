@@ -8,28 +8,31 @@ from composer import Composer
 from director import Director
 import note_gateway
 
-gateway = note_gateway.NoteGateway()
+
+behaviour = {'speed': 0.3,
+            'max_speed': 0.8,
+            'min_speed': 0.08,
+            'speed_target': 0.2,
+            'speed_change': 'leap',  # alt:"transition"
+            'shuffle_delay': 0.1,  # keep this between 0 and MAX_SHUFFLE
+            'max_shuffle': 0.1,
+            'transpose': 12,
+            'automate_binaural_diffs': True  # alt: False
+            }
+
+settings = {'number_of_voices': 4,
+            'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
+            'PD_HOST': 'localhost',
+            'PD_PORT': 12321
+            }
+
+gateway = note_gateway.NoteGateway(settings, behaviour)
 gateway.hub().next()
-
-behaviour = {"speed": 0.3,
-            "max_speed": 0.8,
-            "min_speed": 0.08,
-            "speed_target": 0.2,
-            "speed_change": "leap",  # alt:"transition"
-            "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
-            "max_shuffle": 0.1,
-            "automate_binaural_diffs": True  # alt: False
-            }
-
-settings = {"number_of_voices": 4,
-            "voice_registers": ["BASS", "MID", "MID", "HIGH"],
-            }
-
 
 def startup():
     '''created the composer instance and the voices'''
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
-    c = Composer(gateway)
+    c = Composer(gateway, settings)
     for voice_idx in xrange(settings["number_of_voices"]):
         Voice(voice_idx + 1, c,
               register=settings["voice_registers"][voice_idx])

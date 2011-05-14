@@ -16,6 +16,7 @@ class Director(object):
         self.composer = composer
         self.playing = None
         self.state = state
+        self.settings = settings
         self.gateway = composer.gateway
         self.speed_target = behaviour["speed_target"]
         self.speed = state["speed"]

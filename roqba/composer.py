@@ -59,12 +59,14 @@ METERS = {
 
 class Composer(object):
     def __init__(self,
-                 gateway=None,
+                 gateway,
+                 settings,
                  num_voices=3,
                  scale="DIATONIC"):
                  #scale="PENTATONIC"):
                  #scale="PENTA_MINOR"):
         # percussion
+        self.settings = settings
         self.drummer = Drummer(self)
         self.percussion_hub = gateway.drum_hub()
         self.percussion_hub.next()
