@@ -11,8 +11,9 @@ class Drummer(object):
         self.meter = meter
         self.create_pattern()
         self.peak_speed = 80
-        self.empty_threshhold = 0.2
-        self.full_threshhold = 0.99
+        self.mark_prob = 0.03
+        self.empty_threshold = 0.2
+        self.full_threshold = 0.99
         self.activation_level = "medium"  # ["low", "medium", "high"]
         self.pan_positions = {"low": 0,
                               "high": 0,
@@ -25,12 +26,14 @@ class Drummer(object):
             "cont": {"val": 1200, "devi": 400,
                      "fun": MultiSine([0.1, 0.2, 0.77, 10], False).get_value},
             "tuned": {"val": 500, "devi": 100},
-            "mark": {"val": 10000, "devi": 1000}
+            "mark": {"val": 10000, "devi": 1000,
+                     "fun": MultiSine([0.05, 0.02, 0.77, 10], False).get_value}
         }
         self.high_low_seq()
         self.generator = self.generate()
         self.generator.next()
         self.cont_accent_mult = 0.3
+        self.mark_accent_mult = 0.1
         self.frame = {}
 
     def generate(self):
@@ -44,7 +47,7 @@ class Drummer(object):
             #print meter_pos
             self.frame = {}
             for k, v in self.pattern.items():
-                if v[meter_pos]:
+                if v[meter_pos] or k == 'mark':
                     ## to-do make more dynamic
                     vol = 0.5
                     ctl = None
@@ -52,6 +55,9 @@ class Drummer(object):
                     if k == "cont":
                         confirm, vol, ctl, meta = self.cont_frame(state,
                                                                   density)
+                    elif k == 'mark':
+                        confirm, vol, ctl, meta = self.mark_frame(state,
+                                                              density)
                     if not confirm:
                         continue
                     self.frame[k] = {"vol": vol,
@@ -62,9 +68,9 @@ class Drummer(object):
     def cont_frame(self, state, density):
         '''assembles the frame for the cont-voice'''
         meta = None
-        if density > self.full_threshhold:
+        if density > self.full_threshold:
             return (False, None, None, None)
-        elif density < self.empty_threshhold:
+        elif density < self.empty_threshold:
             meta = "empty"
         vol = 0.5 + state["weight"] * self.cont_accent_mult
 
@@ -76,8 +82,23 @@ class Drummer(object):
             addendum = (random() * self.ctl_values["cont"]["devi"] *
                                   choice([1, -1]))
         ctl = self.ctl_values["cont"]["val"] + addendum
-        #print "cont: vol:", vol
         return (True, vol, ctl, meta)
+
+    def mark_frame(self, state, density):
+        '''assembles the frame for the mark-voice'''
+        if (density < self.full_threshold) or random() > self.mark_prob:
+            return (False, None, None, None)
+        elif density > self.full_threshold:
+            meta = "mark"
+        vol = 0.5 + state["weight"] * self.mark_accent_mult
+        if "fun" in self.ctl_values["mark"].keys():
+            addendum = (self.ctl_values["mark"]["fun"]() *
+                        self.ctl_values["mark"]["devi"])
+        else:
+            addendum = (random() * self.ctl_values["mark"]["devi"] *
+                                  choice([1, -1]))
+        ctl = self.ctl_values["mark"]["val"] + addendum
+        return True, vol, ctl, meta
 
     def create_pattern(self, patt=None):
         '''creates a drum pattern from a given (bass-)pattern
@@ -143,7 +164,7 @@ class Drummer(object):
           - mark (special marker (crash, splash, etc))
           '''
         self.pattern = {"low": [],
-                 "high": [],
-                 "cont": [],
-                 "tuned": [],
-                 "mark": []}
+                         "high": [],
+                         "cont": [],
+                         "tuned": [],
+                         "mark": []}
