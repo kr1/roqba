@@ -12,13 +12,16 @@ class Metronome(object):
         self.cycle_pos = cycle(xrange(len(meter)))
 
     def beat(self):
+        '''return the weight of the current beat'''
         return [self.cycle_pos.next(), self.metronome.next()]
 
     def reset(self):
+        '''resets the internal counter to zero'''
         self.metronome = cycle(self.meter)
         self.cycle_pos = cycle(xrange(len(self.meter)))
 
     def set_meter(self, meter):
+        '''sets the meter and resets the internal counter'''
         self.meter = meter
         self.metronome = cycle(meter)
         self.cycle_pos = cycle(xrange(len(meter)))
