@@ -6,8 +6,13 @@ import logging.config
 from voice import Voice
 from composer import Composer
 from director import Director
+#from settings_and_behaviour import settings, behaviour, BehaviourDict
+from settings_and_behaviour import BehaviourDict
 import note_gateway
 
+
+#print behaviour
+#print behaviour.real_setters
 
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
@@ -18,28 +23,32 @@ settings = {'number_of_voices': 4,
             }
 
 behaviour = {"speed": 0.3,
-            "max_speed": 0.8,
-            "min_speed": 0.14,
-            # speed-target:
-            # 0.5 means that the average of all speeds will be
-            # +/- in the middle of the given range
-            # 0.25 means that the average of speeds will be at the first
-            # quarter of the range
-            "speed_target": 0.35,
-            "speed_change": "leap",  # alt:"transition"
-            "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
-            "max_shuffle": 0.1,
-            'meter': (5, (2, 3)),
-            'transpose': 12,
-            'binaural_diff': 0.666,
-            'max_binaural_diff': 10,
-            'automate_binaural_diffs': True,  # alt: False
-            'embellishment_speed_lim': 0.666
+             "max_speed": 0.8,
+             "min_speed": 0.14,
+             # speed-target:
+             # 0.5 means that the average of all speeds will be
+             # +/- in the middle of the given range
+             # 0.25 means that the average of speeds will be at the first
+             # quarter of the range
+             "speed_target": 0.35,
+             'slide_in_msecs': 200,
+             "speed_change": "leap",  # alt:"transition"
+             "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
+             "max_shuffle": 0.1,
+             'meter': (5, (2, 3)),
+             'transpose': 12,
+             'binaural_diff': 0.666,
+             'max_binaural_diff': 10,
+             'slide_duration_msecs': 100,
+             'automate_binaural_diffs': True,  # alt: False
+             'default_slide_duration_prop': 0.666,  # proportion
+             'embellishment_speed_lim': 0.666
             }
+
+behaviour = BehaviourDict(behaviour.items())
 
 gateway = note_gateway.NoteGateway(settings, behaviour)
 gateway.hub().next()
-
 
 def startup():
     '''created the composer instance and the voices'''
@@ -59,8 +68,14 @@ state = {"comp": composer, "speed": behaviour["speed"]}
 director = Director(composer, state, behaviour, settings)
 
 
+def add_setters():
+    behaviour.real_setters["meter"] = director.set_meter
+    behaviour.real_setters["binaural_diff"] = director.set_meter
+    behaviour.real_setters["slide_duration_msecs"] = gateway.set_slide_msecs_for_all_voices
+
 def main():
     '''starts the main thread of the application'''
+    add_setters()
     threading.Thread(target=director._play, args=()).start()
     composer.report()
 

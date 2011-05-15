@@ -256,7 +256,7 @@ class Composer(object):
                               else 0)
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
-                dur_prop = v.slide_duration_prop or 0.666
+                dur_prop = v.slide_duration_prop or behaviour["default_slide_duration_prop"]
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))
