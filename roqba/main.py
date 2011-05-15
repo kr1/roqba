@@ -7,7 +7,7 @@ from voice import Voice
 from composer import Composer
 from director import Director
 #from settings_and_behaviour import settings, behaviour, BehaviourDict
-from settings_and_behaviour import BehaviourDict
+from behaviour_dict import BehaviourDict
 import note_gateway
 
 
