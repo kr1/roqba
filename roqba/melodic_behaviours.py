@@ -1,5 +1,5 @@
-'''this module holds set of attributes that should create an interesting 
-melody creation environment
+'''this module holds sets of attributes to be used in creating
+various melodic environments
 '''
 
 from scales_and_harmonies import *
@@ -13,6 +13,7 @@ registers = {
         "voice_attrs":{
               "embellishment_prob": 0.005,
               "legato_prob": 0.02,
+              "pause_prob": 0.1,
               "range": [21, 33]
               }
     }, 
@@ -32,8 +33,8 @@ registers = {
             "note_length_groupings": "TERNARY_GROUPINGS"},
         "voice_attrs":{
             "embellishment_prob": 0.015,
-              "legato_prob": 0.05,
-              "pause_prob": 0.03,
+            "legato_prob": 0.05,
+            "pause_prob": 0.03,
             "range":[35, 48]}
     }
 }

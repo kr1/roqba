@@ -28,6 +28,7 @@ class Composer(object):
                  #scale="PENTA_MINOR"):
         # percussion
         self.settings = settings
+        self.behaviour = behaviour
         self.drummer = Drummer(self)
         self.percussion_hub = gateway.drum_hub()
         self.percussion_hub.next()

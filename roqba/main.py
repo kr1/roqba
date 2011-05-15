@@ -18,6 +18,7 @@ settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
+            'track_voices_length': 666,
             'lowest_note_num': 0,
             'highest_note_num': 127,
             }
@@ -42,7 +43,9 @@ behaviour = {"speed": 0.3,
              'slide_duration_msecs': 100,
              'automate_binaural_diffs': True,  # alt: False
              'default_slide_duration_prop': 0.666,  # proportion
-             'embellishment_speed_lim': 0.666
+             'embellishment_speed_lim': 0.666,
+             'default_pause_prob': 0.03,
+             'default_embellishment_prob': 0.005
             }
 
 behaviour = BehaviourDict(behaviour.items())

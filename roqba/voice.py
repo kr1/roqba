@@ -1,4 +1,5 @@
 import random
+from Queue import deque
 from random import choice as sample
 
 from movement_probabilities import DEFAULT_MOVEMENT_PROBS
@@ -7,7 +8,6 @@ from movement_probabilities import BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
 from metronome import MEDIUM
-from Queue import deque
 
 
 class Voice(object):
@@ -28,7 +28,7 @@ class Voice(object):
                   composer.registers[sample(self.composer.registers.keys())])
         # TECH
         self.track_me = False
-        self.queue = deque([], 666)
+        self.queue = deque([], composer.settings['track_voices_length'])
         # STARTUP
         range.sort()
         self.range = range
@@ -54,13 +54,14 @@ class Voice(object):
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
         self.note_duration_steps = 1
-        self.pause_prob = 0.03
-        self.legato_prob = 0.1
+        self.pause_prob = composer.behaviour['default_pause_prob']
+        self.legato_prob = 0.1  # to-do: really implement it
         # probability to have an embellishment-ornament during the current note
-        self.embellishment_prob = 0.005
+        self.embellishment_prob = composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = False
-        self.slide_duration_prop = 0.2
+        self.proportional_slide_duration = True
+        self.slide_duration_prop = composer.behaviour['default_slide_duration_prop']
         self.set_state(register)
 
     def __str__(self):
@@ -94,9 +95,6 @@ class Voice(object):
                     self.note = 0
                 else:
                     self.note = self.next_note()
-                    # compensate for less notes in pentatonic scales
-                   # if self.composer.scale in ["PENTATONIC", "PENTA_MINOR"]:
-                   #     self.note = int((self.note / 7.0) * 5)
                     self.note_delta = self.note - self.prior_note
                 if self.track_me:
                     self.queue.append(self.note)
@@ -162,6 +160,8 @@ class Voice(object):
             self.change_rhythm_after_times = 8
             self.movement_probs = BASS_MOVEMENT_PROBS
             self.range = [21, 33]
+            self.slide = True
+            self.slide_duration_prop = 0.1
             self.embellishment_prob = 0.005
             self.note_length_groupings = self.composer.HEAVY_GROUPINGS
         elif name == "MID":
@@ -178,16 +178,21 @@ class Voice(object):
             self.change_rhythm_after_times = 1
             self.movement_probs = DEFAULT_MOVEMENT_PROBS
             self.range = [35, 48]
+            self.slide = True
+            self.slide_duration_prop = 0.1
             self.embellishment_prob = 0.015
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
         elif name == "SLAVE":
             self.behaviour = "SLAVE"
             self.others = self.other_voices()
             self.followed_voice = sample(self.others.values())
+            self.slide_duration_prop = self.followed_voice.slide_duration_prop
+            self.slide = True
             self.following_counter = 0
             self.follow_limit = sample(range(3, 9))
 
     def other_voices(self):
+        '''returns the other voices registered in the app'''
         res = {}
         for k, v in self.composer.voices.items():
             if v != self:
@@ -196,6 +201,10 @@ class Voice(object):
         return res
 
     def reload_register(self):
+        '''reloads the current register and reapplies its settings
+
+        - in voice
+        - in the controller'''
         #print "reloading register: {0}".format(name)
         for k, v in self.register["voice_attrs"].items():
             setattr(self, k, v)
