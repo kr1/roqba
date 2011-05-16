@@ -249,12 +249,11 @@ class Composer(object):
         vol_tmp = vol[0]
         for idx in xrange(6):
             vol_tmp *= 0.9
-            ctl_new =  ctl[0] - ((idx ** 2) * (random.random() * 600 + 200))
+            ctl_new = ctl[0] - ((idx ** 2) * (random.random() * 600 + 200))
             self.gateway.pd_send_drum_note(v, vol_tmp, pan, ctl_new)
             time.sleep(4 * tick)
             self.gateway.pd_send_drum_note(v, 0, pan, ctl_new)
             time.sleep(1 * tick)
-
 
     def ornament_handler(self, v, duration, note, note_delta, state):
         '''this method handles the sending of the ornament notes.
@@ -279,7 +278,8 @@ class Composer(object):
                               else 0)
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
-                dur_prop = v.slide_duration_prop or behaviour["default_slide_duration_prop"]
+                dur_prop = (v.slide_duration_prop or
+                            behaviour["default_slide_duration_prop"])
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))

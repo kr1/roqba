@@ -104,11 +104,14 @@ class NoteGateway(object):
                                 else:
                                     dur_prop = self.slide_duration_prop
                                 self.set_slide_msecs(v.id,
-                                                (v.duration_in_msec * dur_prop))
+                                              (v.duration_in_msec * dur_prop))
                             self.pd_send_note(v.id, msg)
                             if v.weight == HEAVY:
-                                self.pd.send(["voice", "rhythm", v.id,
-                                    str(v.note_length_grouping).replace(",", "_")])
+                                self.pd.send(["voice",
+                                              "rhythm",
+                                              v.id,
+                                              str(v.note_length_grouping).\
+                                                  replace(",", "_")])
                     #address = data["voice"]
                     #msg = data["message"]
                 else:
