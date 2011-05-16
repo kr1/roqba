@@ -70,6 +70,8 @@ class Composer(object):
                                                                   "heavy")
         self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                    "default")
+        self.FAST_GROUPINGS = note_length_groupings.get_grouping(meter,
+                                                                   "first")
         for v in self.voices.values():
             v.reload_register()
         self.drummer.create_pattern(METERS[meter]["applied"])

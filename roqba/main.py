@@ -14,7 +14,8 @@ import note_gateway
 #print behaviour.real_setters
 
 settings = {'number_of_voices': 4,
-            'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
+            #'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
+            'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
             'track_voices_length': 666,

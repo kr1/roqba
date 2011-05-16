@@ -5,6 +5,7 @@ from random import choice as sample
 from movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
 from movement_probabilities import BASS_MOVEMENT_PROBS
+from movement_probabilities import ROCK_BASS_MOVEMENT_PROBS
 from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from note_length_groupings import  analyze_grouping
 from metronome import MEDIUM
@@ -76,7 +77,6 @@ class Voice(object):
         """the generator method of the Voice-class"""
         while True:
             state = (yield)
-            #print state, ", possible: ", state.get("possible", [])
             meter_pos = state['cycle_pos']
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
@@ -164,6 +164,15 @@ class Voice(object):
             self.slide_duration_prop = 0.1
             self.embellishment_prob = 0.005
             self.note_length_groupings = self.composer.HEAVY_GROUPINGS
+        if name == "ROCK_BASS":
+            self.behaviour = "AUTONOMOUS"
+            self.change_rhythm_after_times = 8
+            self.movement_probs = ROCK_BASS_MOVEMENT_PROBS
+            self.range = [21, 33]
+            self.slide = True
+            self.slide_duration_prop = 0.1
+            self.embellishment_prob = 0.002
+            self.note_length_groupings = self.composer.FAST_GROUPINGS
         elif name == "MID":
             self.behaviour = "AUTONOMOUS"
             self.change_rhythm_after_times = 4

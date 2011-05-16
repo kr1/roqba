@@ -17,6 +17,17 @@ registers = {
               "range": [21, 33]
               }
     }, 
+    "ROCK_BASS": {
+        "name": "ROCK_BASS",
+        "voice_composer_attrs": {
+              "note_length_groupings": "FAST_GROUPINGS"},
+        "voice_attrs":{
+              "embellishment_prob": 0.002,
+              "legato_prob": 0.02,
+              "pause_prob": 0.1,
+              "range": [21, 33]
+              }
+    }, 
     "MID": {
         "name":"MID",
         "voice_composer_attrs": {
