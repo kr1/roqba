@@ -132,7 +132,7 @@ class Composer(object):
                                      args=(k, state)).start()
                 if v["meta"] == 'mark':
                     threading.Thread(target=self.drum_mark_handler,
-                                     args=(k,)).start()
+                                     args=(k, state)).start()
         self.percussion_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.hub.send(self.voices)  # this sends the voices to the hub
@@ -238,16 +238,21 @@ class Composer(object):
                                            self.drummer.frame[v]["ctl"])
             time.sleep(state["speed"] * f)
 
-    def drum_mark_handler(self, v):
+    def drum_mark_handler(self, v, state):
         '''handles the sending of a drum mark'''
         vol = self.drummer.frame[v]["vol"],
         pan = self.drummer.frame[v]["pan"],
         ctl = self.drummer.frame[v]["ctl"],
-        for idx in xrange(26):
-            self.gateway.pd_send_drum_note(v, vol[0] * (idx * -1.00001),
-                                              pan,
-                                              ctl[0] - (idx * 200))
-            time.sleep(0.01)
+        tick = state["speed"] / 50
+        vol_tmp = vol[0]
+        for idx in xrange(6):
+            vol_tmp *= 0.9
+            ctl_new =  ctl[0] - ((idx ** 2) * (random.random() * 600 + 200))
+            self.gateway.pd_send_drum_note(v, vol_tmp, pan, ctl_new)
+            time.sleep(4 * tick)
+            self.gateway.pd_send_drum_note(v, 0, pan, ctl_new)
+            time.sleep(1 * tick)
+
 
     def ornament_handler(self, v, duration, note, note_delta, state):
         '''this method handles the sending of the ornament notes.

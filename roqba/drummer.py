@@ -11,7 +11,7 @@ class Drummer(object):
         self.meter = meter
         self.create_pattern()
         self.peak_speed = 80
-        self.mark_prob = 0.03
+        self.mark_prob = 0.09
         self.empty_threshold = 0.2
         self.full_threshold = 0.99
         self.activation_level = "medium"  # ["low", "medium", "high"]
