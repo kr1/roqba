@@ -14,6 +14,7 @@ logger.setLevel(logging.INFO)
 class Director(object):
     def __init__(self, composer, state, behaviour, settings):
         self.composer = composer
+        self.behaviour = behaviour 
         self.playing = None
         self.state = state
         self.settings = settings
@@ -77,6 +78,9 @@ class Director(object):
                                        replace(" ", "_")])
                 if self.automate_binaural_diffs:
                     self.composer.set_binaural_diffs()
+                if self.behaviour["automate_transpose"]:
+                    sample = self.behaviour["transposings"]
+                    self.gateway.transpose = random.choice(sample)
                 self.set_meter(new_meter)
                 time.sleep(self.speed)
             shuffle_delta = (self.speed * self.shuffle_delay

@@ -250,9 +250,9 @@ class Composer(object):
         for idx in xrange(6):
             vol_tmp *= 0.9
             ctl_new = ctl[0] - ((idx ** 2) * (random.random() * 600 + 200))
-            self.gateway.pd_send_drum_note(v, vol_tmp, pan, ctl_new)
+            self.gateway.pd_send_drum_note(v, vol_tmp, pan[0], ctl_new)
             time.sleep(4 * tick)
-            self.gateway.pd_send_drum_note(v, 0, pan, ctl_new)
+            self.gateway.pd_send_drum_note(v, 0, pan[0], ctl_new)
             time.sleep(1 * tick)
 
     def ornament_handler(self, v, duration, note, note_delta, state):
