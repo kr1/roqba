@@ -25,7 +25,7 @@ registers = {
               "embellishment_prob": 0.002,
               "legato_prob": 0.02,
               "pause_prob": 0.1,
-              "range": [21, 33]
+              "range": [15, 24]
               }
     }, 
     "MID": {

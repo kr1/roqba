@@ -16,6 +16,7 @@ class Voice(object):
                        composer,
                        range=[24, 48],
                        register=None,
+                       behaviour=None,
                        note=None,
                        real_note=None,
                        note_length_grouping=sample(GROUPINGS)):
@@ -50,7 +51,7 @@ class Voice(object):
 
         # BEHAVIOUR
         self.duration_in_msec = 0
-        self.behaviour = "AUTONOMOUS"
+        self.behaviour = behaviour or composer.behaviour["default_behaviour"]
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
@@ -151,7 +152,7 @@ class Voice(object):
     def set_state(self, name):
         '''sets the state for the voice.
 
-        state is one of "BASS", "MID", "HIGH", or "SLAVE".
+        state is one of "BASS", "ROCK_BASS", "MID", "HIGH", or "SLAVE".
         the state is a set of common settings for the voice, e.g.
         voice-range, embellishment probability, rhythmic variation,
         movement-mode, etc.'''

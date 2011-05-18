@@ -16,6 +16,8 @@ import note_gateway
 settings = {'number_of_voices': 4,
             #'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 
+                                 'SLAVE', 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
             'track_voices_length': 666,
@@ -24,18 +26,19 @@ settings = {'number_of_voices': 4,
             }
 
 behaviour = {"speed": 0.3,
-             "max_speed": 0.8,
+             "max_speed": 0.5,
              "min_speed": 0.14,
              # speed-target:
              # 0.5 means that the average of all speeds will be
              # +/- in the middle of the given range
              # 0.25 means that the average of speeds will be at the first
              # quarter of the range
-             "speed_target": 0.35,
+             "speed_target": 0.25,
              'slide_in_msecs': 200,
              "speed_change": "leap",  # alt:"transition"
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
-             "max_shuffle": 0.1,
+             'default_behaviour': "AUTONOMOUS",
+             "max_shuffle": 0.15,
              'meter': (5, (2, 3)),
              'transpose': 12,
              'automate_transpose': True,
@@ -61,7 +64,8 @@ def startup():
     c = Composer(gateway, settings, behaviour)
     for voice_idx in xrange(settings["number_of_voices"]):
         Voice(voice_idx + 1, c,
-              register=settings["voice_registers"][voice_idx])
+              register=settings["voice_registers"][voice_idx],
+              behaviour=settings['voice_behaviours'][voice_idx])
     return c
 
 logging.config.fileConfig("logging.conf")
