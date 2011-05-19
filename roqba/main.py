@@ -6,7 +6,7 @@ import logging.config
 from voice import Voice
 from composer import Composer
 from director import Director
-from behaviour_dict import BehaviourDict
+from utilities.behaviour_dict import BehaviourDict
 import note_gateway
 
 
@@ -38,10 +38,12 @@ behaviour = {"speed": 0.3,
              "speed_change": "leap",  # alt:"transition"
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
-             "max_shuffle": 0.15,
-             'meter': (5, (2, 3)),
+             "max_shuffle": 0.1,
+             'meter': (12, (3, 3, 2, 2, 2)),
+             #'meter': (5, (2, 3)),
              'transpose': 12,
              'automate_transpose': True,
+             'automate_meters': False,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,
@@ -64,6 +66,7 @@ def startup():
     c = Composer(gateway, settings, behaviour)
     for voice_idx in xrange(settings["number_of_voices"]):
         Voice(voice_idx + 1, c,
+              note_length_grouping=behaviour["meter"][1],
               register=settings["voice_registers"][voice_idx],
               behaviour=settings['voice_behaviours'][voice_idx])
     return c
