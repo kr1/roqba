@@ -1,6 +1,6 @@
 Sine_controllers
 ================
 
-.. automodule:: roqba.sine_controllers
+.. automodule:: roqba.utilities.sine_controllers
     :members:
     :undoc-members:
