@@ -52,6 +52,7 @@ class Drummer(object):
                     vol = 0.5
                     ctl = None
                     meta = None
+                    confirm = None
                     if k == "cont":
                         confirm, vol, ctl, meta = self.cont_frame(state,
                                                                   density)

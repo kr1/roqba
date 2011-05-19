@@ -14,7 +14,7 @@ logger.setLevel(logging.INFO)
 class Director(object):
     def __init__(self, composer, state, behaviour, settings):
         self.composer = composer
-        self.behaviour = behaviour 
+        self.behaviour = behaviour
         self.playing = None
         self.state = state
         self.settings = settings

@@ -4,12 +4,15 @@
 """
 import unittest2 as unittest
 from mock import Mock
+
 from roqba.voice import Voice
 from roqba.composer import Composer
-from roqba.scales_and_harmonies import SCALES
-from roqba.note_length_groupings import groupings
+from roqba.static.scales_and_harmonies import SCALES
+from roqba.static.note_length_groupings import groupings
+from roqba.main import settings, behaviour
 
 DIATONIC = SCALES["DIATONIC"]
+
 
 class UnitTestComposer(unittest.TestCase):
     """a test class for the Composer class"""
@@ -20,12 +23,12 @@ class UnitTestComposer(unittest.TestCase):
         this method is called before each test function execution.
 #        """
         gw = Mock()
-        self.composer = Composer(gateway=gw, num_voices=2)
+        settings["number_of_voices"] = 2
+        self.composer = Composer(gw, settings, behaviour, num_voices=2)
         self.v1 = Voice(1, self.composer)
         self.v2 = Voice(2, self.composer)
         self.composer.add_voice(self.v1.id, self.v1)
         self.composer.add_voice(self.v2.id, self.v2)
-        self.composer.gateway.hub = Mock()
 
     def test_meter_setting(self):
         '''test method raises non exception'''
@@ -34,11 +37,12 @@ class UnitTestComposer(unittest.TestCase):
 
     def test_generate(self):
         '''test the main function of the module'''
-        state = {"weight" : 1,
-                 "speed" : 0.4,
-                 "cycle_pos":2}
+        state = {"weight": 1,
+                 "speed": 0.4,
+                 "comp": self.composer,
+                 "cycle_pos": 2}
         self.composer.generate(state)
-    
+
     def test_stream_analyzer(self):
         '''test caesura detection'''
         self.composer.stream_analyzer()
@@ -53,7 +57,8 @@ class UnitTestComposer(unittest.TestCase):
     def test_generate_real_scale(self):
         '''test real scale genration from scale patterns'''
         for scale in SCALES:
-           self.composer.generate_real_scale() 
+            self.composer.generate_real_scale()
+
 
 def suite():
     """make the test suite"""

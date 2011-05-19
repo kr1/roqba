@@ -3,9 +3,11 @@
 """
 import unittest2 as unittest
 from mock import Mock
+
 from roqba.voice import Voice
 from roqba.composer import Composer
-from roqba.scales_and_harmonies import SCALES
+from roqba.static.scales_and_harmonies import SCALES
+from roqba.main import settings, behaviour
 
 DIATONIC = SCALES["DIATONIC"]
 
@@ -19,7 +21,7 @@ class UnitTestComposer(unittest.TestCase):
         this method is called before each test function execution.
 #        """
         gw = Mock()
-        self.composer = Composer(gateway=gw, num_voices=2)
+        self.composer = Composer(gw, settings, behaviour, num_voices=2)
         v = Voice(1, self.composer)
         v = Voice(2, self.composer)
         self.composer.add_voice(v.id, v)
