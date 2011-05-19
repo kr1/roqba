@@ -2,12 +2,12 @@ import random
 from Queue import deque
 from random import choice as sample
 
-from movement_probabilities import DEFAULT_MOVEMENT_PROBS
-from movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
-from movement_probabilities import BASS_MOVEMENT_PROBS
-from movement_probabilities import ROCK_BASS_MOVEMENT_PROBS
-from note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
-from note_length_groupings import  analyze_grouping
+from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
+from static.movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
+from static.movement_probabilities import BASS_MOVEMENT_PROBS
+from static.movement_probabilities import ROCK_BASS_MOVEMENT_PROBS
+from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
+from static.note_length_groupings import  analyze_grouping
 from metronome import MEDIUM
 
 

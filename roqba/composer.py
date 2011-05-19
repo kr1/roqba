@@ -6,12 +6,12 @@ from random import choice as sample
 
 import metronome
 from notator import Notator
-from movement_probabilities import ORNAMENTS, DRUM_FILLS
-from scales_and_harmonies import *
-import note_length_groupings
-from melodic_behaviours import registers
+from static.movement_probabilities import ORNAMENTS, DRUM_FILLS
+from static.scales_and_harmonies import *
+import static.note_length_groupings as note_length_groupings
+from static.melodic_behaviours import registers
 from drummer import Drummer
-from meters import METERS
+from static.meters import METERS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
