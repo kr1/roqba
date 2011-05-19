@@ -6,7 +6,7 @@ import logging.config
 from voice import Voice
 from composer import Composer
 from director import Director
-from behaviour_dict import BehaviourDict
+from utilities.behaviour_dict import BehaviourDict
 import note_gateway
 
 

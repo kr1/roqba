@@ -1,6 +1,6 @@
 from random import random, choice
 
-from sine_controllers import MultiSine
+from utilities.sine_controllers import MultiSine
 
 
 class Drummer(object):
