@@ -79,6 +79,7 @@ class Voice(object):
         while True:
             state = (yield)
             meter_pos = state['cycle_pos']
+            #print self.on_off_pattern, " for: ", self.id
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
                 self.note_change = 0

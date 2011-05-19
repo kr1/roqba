@@ -27,6 +27,7 @@ class Director(object):
         self.meter = composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
         self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
+        self.automate_meters = behaviour["automate_meters"]
         self.speed_change = behaviour["speed_change"]
         self.MIN_SPEED = behaviour["min_speed"]
         self.MAX_SPEED = behaviour["max_speed"]
@@ -72,16 +73,17 @@ class Director(object):
                 self.composer.gateway.stop_all_notes()
                 self.composer.set_scale(random.choice(
                                             composer.SCALES_BY_FREQUENCY))
-                new_meter = random.choice(composer.METERS.keys())
-                self.gateway.pd.send(["sys", "meter",
-                                       str(new_meter).replace(",", " ").
-                                       replace(" ", "_")])
+                if self.automate_meters:
+                    new_meter = random.choice(composer.METERS.keys())
+                    self.set_meter(new_meter)
+                    self.gateway.pd.send(["sys", "meter",
+                                           str(new_meter).replace(",", " ").
+                                           replace(" ", "_")])
                 if self.automate_binaural_diffs:
                     self.composer.set_binaural_diffs()
                 if self.behaviour["automate_transpose"]:
                     sample = self.behaviour["transposings"]
                     self.gateway.transpose = random.choice(sample)
-                self.set_meter(new_meter)
                 time.sleep(self.speed)
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
