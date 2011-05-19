@@ -2,8 +2,10 @@
 
 """
 import unittest2 as unittest
+
 from mock import Mock
 from roqba.drummer import Drummer
+
 
 class UnitTestDrummer(unittest.TestCase):
     """a test class for the Drummer class"""
@@ -22,7 +24,7 @@ class UnitTestDrummer(unittest.TestCase):
         self.drum.push_value(1)
         self.assertEqual(self.drum.pattern["low"], [1])
         self.drum.push_value(111)
-        self.assertEqual(self.drum.pattern["cont"], [1,111])
+        self.assertEqual(self.drum.pattern["cont"], [1, 111])
 
     def test_create_pattern_without_specifing_a_pattern(self):
         '''creating a pattern without specifying a reference
@@ -47,7 +49,7 @@ class UnitTestDrummer(unittest.TestCase):
         self.drum.create_pattern([1, 0, 1, 1, 0, 1, 0])
         self.assertEqual(self.drum.pattern["low"],  [1, 0, 0, 1, 0, 0, 0])
         self.assertEqual(self.drum.pattern["high"], [0, 0, 1, 0, 0, 1, 0])
-        self.assertEqual(self.drum.high_low_pattern,[-1, 0, 1, -1, 0, 1, 0])
+        self.assertEqual(self.drum.high_low_pattern, [-1, 0, 1, -1, 0, 1, 0])
 
 
 def suite():

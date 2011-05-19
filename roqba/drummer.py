@@ -1,6 +1,6 @@
 from random import random, choice
 
-from sine_controllers import MultiSine
+from utilities.sine_controllers import MultiSine
 
 
 class Drummer(object):
@@ -52,6 +52,7 @@ class Drummer(object):
                     vol = 0.5
                     ctl = None
                     meta = None
+                    confirm = None
                     if k == "cont":
                         confirm, vol, ctl, meta = self.cont_frame(state,
                                                                   density)

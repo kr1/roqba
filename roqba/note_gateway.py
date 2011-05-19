@@ -2,7 +2,7 @@ import logging
 import time
 
 from metronome import HEAVY
-from pdsender import PdSender
+from utilities.pdsender import PdSender
 
 
 class NoteGateway(object):
