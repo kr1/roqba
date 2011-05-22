@@ -60,6 +60,13 @@ class NoteGateway(object):
                                          msg + self.transpose])
         return True
 
+    def pd_send_duration(self, voice_id, val):
+        '''send out the duration for a given voice'''
+        if voice_id not in self.voice_ids:
+            self.voice_ids.append(voice_id)
+        self.pd.send(["voice", voice_id, "dur", val])
+        return True
+
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
         args = ["perc", voice, vol, pan, ctl]
@@ -105,6 +112,7 @@ class NoteGateway(object):
                                     dur_prop = self.slide_duration_prop
                                 self.set_slide_msecs(v.id,
                                               (v.duration_in_msec * dur_prop))
+                            self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
                             self.pd_send_note(v.id, msg)
                             if v.weight == HEAVY:
                                 self.pd.send(["voice",
@@ -112,6 +120,7 @@ class NoteGateway(object):
                                               v.id,
                                               str(v.note_length_grouping).\
                                                   replace(",", "_")])
+                                
                     #address = data["voice"]
                     #msg = data["message"]
                 else:

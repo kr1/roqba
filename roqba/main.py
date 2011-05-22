@@ -50,6 +50,7 @@ behaviour = {"speed": 0.3,
              'slide_duration_msecs': 100,
              'automate_binaural_diffs': True,  # alt: False
              'default_slide_duration_prop': 0.666,  # proportion
+             'default_note_duration_prop': 0.8,  # proportion
              'embellishment_speed_lim': 0.666,
              'default_pause_prob': 0.03,
              'default_embellishment_prob': 0.005

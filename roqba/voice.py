@@ -64,6 +64,7 @@ class Voice(object):
         self.slide = False
         self.proportional_slide_duration = True
         self.slide_duration_prop = composer.behaviour['default_slide_duration_prop']
+        self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         self.set_state(register)
 
     def __str__(self):
