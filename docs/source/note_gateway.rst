@@ -1,4 +1,4 @@
-Note_gateway
+note_gateway
 ============
 
 .. automodule:: roqba.note_gateway

@@ -1,4 +1,4 @@
-Metronome
+metronome
 =========
 
 .. automodule:: roqba.metronome

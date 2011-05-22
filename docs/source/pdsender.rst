@@ -1,4 +1,4 @@
-Pdsender
+pdsender
 ========
 
 .. automodule:: roqba.utilities.pdsender

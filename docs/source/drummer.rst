@@ -1,4 +1,4 @@
-Drummer
+drummer
 =======
 
 .. automodule:: roqba.drummer

@@ -1,4 +1,4 @@
-Notator
+notator
 =======
 
 .. automodule:: roqba.notator

@@ -12,20 +12,7 @@ Contents:
     :maxdepth: 3
 
     readme
-    composer
-    director
-    drummer
-    main
-    melodic_behaviours
-    metronome
-    movement_probabilities
-    notator
-    note_gateway
-    note_length_groupings
-    pdsender
-    scales_and_harmonies
-    sine_controllers
-    voice
+    roqba
 
 
 Indices and tables

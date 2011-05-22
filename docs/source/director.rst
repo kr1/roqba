@@ -1,4 +1,4 @@
-Director
+director
 ========
 
 .. automodule:: roqba.director

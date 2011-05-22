@@ -1,4 +1,4 @@
-Main
+main
 ====
 
 .. automodule:: roqba.main
