@@ -14,8 +14,8 @@ import note_gateway
 #print behaviour.real_setters
 
 settings = {'number_of_voices': 4,
-            #'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
-            'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
+            #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 
                                  'SLAVE', 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
@@ -26,8 +26,8 @@ settings = {'number_of_voices': 4,
             }
 
 behaviour = {"speed": 0.3,
-             "max_speed": 0.5,
-             "min_speed": 0.14,
+             "max_speed": 0.3,
+             "min_speed": 0.12,
              # speed-target:
              # 0.5 means that the average of all speeds will be
              # +/- in the middle of the given range
@@ -39,7 +39,7 @@ behaviour = {"speed": 0.3,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
              "max_shuffle": 0.1,
-             'meter': (12, (3, 3, 2, 2, 2)),
+             'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
              #'meter': (5, (2, 3)),
              'transpose': 12,
              'automate_transpose': True,
