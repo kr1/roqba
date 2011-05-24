@@ -82,6 +82,17 @@ class Director(object):
                                            replace(" ", "_")])
                 if self.automate_binaural_diffs:
                     self.composer.set_binaural_diffs()
+                if self.behaviour["automate_note_duration_prop"]:
+                    min_, max_ = self.behaviour["automate_note_duration_min_max"]
+                    if self.behaviour["common_note_duration"]:
+                        prop = random_between(min_, max_, 0.3) 
+                        #print "note duration proportion: ", prop
+                        [setattr(v, 'note_duration_prop', prop) for v 
+                                      in self.composer.voices.values()]
+                    else:
+                        for v in self.composer.voices.values():
+                            prop = random_between(min_, max_, 0.3) 
+                            v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
                     sample = self.behaviour["transposings"]
                     self.gateway.transpose = random.choice(sample)
