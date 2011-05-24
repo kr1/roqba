@@ -1,0 +1,148 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>behaviour_dict &mdash; Roqba v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Roqba v1.0 documentation" href="index.html" />
+    <link rel="up" title="utilities" href="utilities.html" />
+    <link rel="next" title="pdsender" href="pdsender.html" />
+    <link rel="prev" title="utilities" href="utilities.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <h1><a href="index.html">Roqba v1.0 documentation</a></h1>
+        <div class="rel">
+          <a href="utilities.html" title="utilities"
+             accesskey="P">previous</a> |
+          <a href="pdsender.html" title="pdsender"
+             accesskey="N">next</a> |
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-roqba.utilities.behaviour_dict">
+<span id="behaviour-dict"></span><h1>behaviour_dict<a class="headerlink" href="#module-roqba.utilities.behaviour_dict" title="Permalink to this headline">¶</a></h1>
+<p>this module defines a behaviour dict class</p>
+<p>BehaviourDict is a subclass of dict and modifies mainly the
+__setitem__ method by calling a setter method for
+the given key if the setter method has been registered before</p>
+<dl class="class">
+<dt id="roqba.utilities.behaviour_dict.BehaviourDict">
+<em class="property">class </em><tt class="descclassname">roqba.utilities.behaviour_dict.</tt><tt class="descname">BehaviourDict</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>defines a dictionary-class with custum setter methods</p>
+<p>upon every call it checks if it has registered setter methods to be
+called and calls them with the given value</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="roqba.utilities.behaviour_dict.test_setter">
+<tt class="descclassname">roqba.utilities.behaviour_dict.</tt><tt class="descname">test_setter</tt><big>(</big><em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#test_setter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.test_setter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="roqba.html">roqba</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="composer.html">composer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="director.html">director</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drummer.html">drummer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metronome.html">metronome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notator.html">notator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="note_gateway.html">note_gateway</a></li>
+<li class="toctree-l2"><a class="reference internal" href="static.html">static</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="utilities.html">utilities</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">behaviour_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pdsender.html">pdsender</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sine_controllers.html">sine_controllers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="voice.html">voice</a></li>
+</ul>
+</li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="utilities.html" title="utilities"
+             >previous</a> |
+          <a href="pdsender.html" title="pdsender"
+             >next</a> |
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="_sources/behaviour_dict.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

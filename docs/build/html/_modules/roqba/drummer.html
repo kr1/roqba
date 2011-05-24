@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>roqba.drummer &mdash; Roqba v1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Roqba v1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <h1><a href="../../index.html">Roqba v1.0 documentation</a></h1>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for roqba.drummer</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">choice</span>
+
+<span class="kn">from</span> <span class="nn">utilities.sine_controllers</span> <span class="kn">import</span> <span class="n">MultiSine</span>
+
+
+<div class="viewcode-block" id="Drummer"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer">[docs]</a><span class="k">class</span> <span class="nc">Drummer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">composer</span><span class="p">,</span>
+                 <span class="n">meter</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">composer</span> <span class="o">=</span> <span class="n">composer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meter</span> <span class="o">=</span> <span class="n">meter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_pattern</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">peak_speed</span> <span class="o">=</span> <span class="mi">80</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_prob</span> <span class="o">=</span> <span class="mf">0.09</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty_threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_threshold</span> <span class="o">=</span> <span class="mf">0.99</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_level</span> <span class="o">=</span> <span class="s">&quot;medium&quot;</span>  <span class="c"># [&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pan_positions</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;low&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="s">&quot;high&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="s">&quot;cont&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="s">&quot;tuned&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="s">&quot;mark&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&quot;low&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;val&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span> <span class="s">&quot;devi&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+            <span class="s">&quot;high&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;val&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span> <span class="s">&quot;devi&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+            <span class="s">&quot;cont&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;val&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="s">&quot;devi&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+                     <span class="s">&quot;fun&quot;</span><span class="p">:</span> <span class="n">MultiSine</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.77</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">get_value</span><span class="p">},</span>
+            <span class="s">&quot;tuned&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;val&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&quot;devi&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+            <span class="s">&quot;mark&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;val&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="s">&quot;devi&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+                     <span class="s">&quot;fun&quot;</span><span class="p">:</span> <span class="n">MultiSine</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.77</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">get_value</span><span class="p">}</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high_low_seq</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cont_accent_mult</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_accent_mult</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Drummer.generate"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span><span class="p">)</span>
+            <span class="c">#print state[&quot;comp&quot;].voices.values()</span>
+            <span class="n">sum_</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">note_change</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
+                              <span class="n">state</span><span class="p">[</span><span class="s">&quot;comp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="n">density</span> <span class="o">=</span> <span class="n">sum_</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s">&quot;comp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">voices</span><span class="p">))</span>
+            <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;cycle_pos&#39;</span><span class="p">]</span>
+            <span class="c">#print meter_pos</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="n">meter_pos</span><span class="p">]</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;mark&#39;</span><span class="p">:</span>
+                    <span class="c">## to-do make more dynamic</span>
+                    <span class="n">vol</span> <span class="o">=</span> <span class="mf">0.5</span>
+                    <span class="n">ctl</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="n">meta</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="n">confirm</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&quot;cont&quot;</span><span class="p">:</span>
+                        <span class="n">confirm</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">ctl</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_frame</span><span class="p">(</span><span class="n">state</span><span class="p">,</span>
+                                                                  <span class="n">density</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s">&#39;mark&#39;</span><span class="p">:</span>
+                        <span class="n">confirm</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">ctl</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_frame</span><span class="p">(</span><span class="n">state</span><span class="p">,</span>
+                                                              <span class="n">density</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">confirm</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;vol&quot;</span><span class="p">:</span> <span class="n">vol</span><span class="p">,</span>
+                                     <span class="s">&quot;pan&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pan_positions</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                                     <span class="s">&quot;ctl&quot;</span><span class="p">:</span> <span class="n">ctl</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">ctl</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ctl</span><span class="p">,</span>
+                                     <span class="s">&quot;meta&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="p">}</span>
+</div>
+<div class="viewcode-block" id="Drummer.cont_frame"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.cont_frame">[docs]</a>    <span class="k">def</span> <span class="nf">cont_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;assembles the frame for the cont-voice&#39;&#39;&#39;</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">density</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">density</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty_threshold</span><span class="p">:</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="s">&quot;empty&quot;</span>
+        <span class="n">vol</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;weight&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cont_accent_mult</span>
+
+        <span class="c">## check if that value is callable</span>
+        <span class="k">if</span> <span class="s">&quot;fun&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">addendum</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">][</span><span class="s">&quot;fun&quot;</span><span class="p">]()</span> <span class="o">*</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">][</span><span class="s">&quot;devi&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">addendum</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">][</span><span class="s">&quot;devi&quot;</span><span class="p">]</span> <span class="o">*</span>
+                                  <span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">ctl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">][</span><span class="s">&quot;val&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">addendum</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">ctl</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Drummer.mark_frame"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.mark_frame">[docs]</a>    <span class="k">def</span> <span class="nf">mark_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">density</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;assembles the frame for the mark-voice&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">density</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_threshold</span><span class="p">)</span> <span class="ow">or</span> <span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_prob</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">density</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_threshold</span><span class="p">:</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="s">&quot;mark&quot;</span>
+        <span class="n">vol</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;weight&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_accent_mult</span>
+        <span class="k">if</span> <span class="s">&quot;fun&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;mark&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">addendum</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;mark&quot;</span><span class="p">][</span><span class="s">&quot;fun&quot;</span><span class="p">]()</span> <span class="o">*</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;mark&quot;</span><span class="p">][</span><span class="s">&quot;devi&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">addendum</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;mark&quot;</span><span class="p">][</span><span class="s">&quot;devi&quot;</span><span class="p">]</span> <span class="o">*</span>
+                                  <span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">ctl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctl_values</span><span class="p">[</span><span class="s">&quot;mark&quot;</span><span class="p">][</span><span class="s">&quot;val&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">addendum</span>
+        <span class="k">return</span> <span class="bp">True</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">ctl</span><span class="p">,</span> <span class="n">meta</span>
+</div>
+<div class="viewcode-block" id="Drummer.create_pattern"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.create_pattern">[docs]</a>    <span class="k">def</span> <span class="nf">create_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patt</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;creates a drum pattern from a given (bass-)pattern</span>
+
+<span class="sd">        as a fallback this method will create a (generic) pattern</span>
+<span class="sd">        using the underlying meter&#39;&#39;&#39;</span>
+        <span class="n">indeces</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">patt</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">empty_pattern</span><span class="p">()</span>
+            <span class="n">next_trigger</span> <span class="o">=</span> <span class="s">&quot;low&quot;</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">patt</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">push_value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="s">&quot;cont&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="n">next_trigger</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">next_trigger</span> <span class="o">=</span> <span class="s">&quot;low&quot;</span> <span class="k">if</span> <span class="n">next_trigger</span> <span class="o">==</span> <span class="s">&quot;high&quot;</span> <span class="k">else</span> <span class="s">&quot;high&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;low&quot;</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">),</span>
+                            <span class="s">&quot;high&quot;</span><span class="p">:</span>  <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">),</span>
+                            <span class="s">&quot;cont&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">indeces</span><span class="p">],</span>
+                            <span class="s">&quot;tuned&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">indeces</span><span class="p">],</span>
+                            <span class="s">&quot;mark&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">indeces</span><span class="p">]}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">smoothen</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high_low_seq</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Drummer.smoothen"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.smoothen">[docs]</a>    <span class="k">def</span> <span class="nf">smoothen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;post - creation method to smoothen loop-related duplications&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>
+</div>
+<div class="viewcode-block" id="Drummer.high_low_seq"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.high_low_seq">[docs]</a>    <span class="k">def</span> <span class="nf">high_low_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;creates a pattern consisting of the sequence of low-high changes</span>
+
+<span class="sd">        format to be defined&#39;&#39;&#39;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">indeces</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="s">&quot;low&quot;</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indeces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;low&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;high&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high_low_pattern</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="Drummer.push_value"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.push_value">[docs]</a>    <span class="k">def</span> <span class="nf">push_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;append a value to all keys of the pattern&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Drummer.empty_pattern"><a class="viewcode-back" href="../../drummer.html#roqba.drummer.Drummer.empty_pattern">[docs]</a>    <span class="k">def</span> <span class="nf">empty_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;initializes a empty pattern-dict</span>
+
+<span class="sd">        keys are:</span>
+<span class="sd">          - low (bass-drum function)</span>
+<span class="sd">          - high (snare-function)</span>
+<span class="sd">          - cont (continuous =&gt; hi-hat/ride cymbal function)</span>
+<span class="sd">          - tuned (should allow melodies (from tom-tom upwards))</span>
+<span class="sd">          - mark (special marker (crash, splash, etc))</span>
+<span class="sd">          &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;low&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                         <span class="s">&quot;high&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                         <span class="s">&quot;cont&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                         <span class="s">&quot;tuned&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                         <span class="s">&quot;mark&quot;</span><span class="p">:</span> <span class="p">[]}</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roqba.html">roqba</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

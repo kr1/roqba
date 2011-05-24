@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>roqba.voice &mdash; Roqba v1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Roqba v1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <h1><a href="../../index.html">Roqba v1.0 documentation</a></h1>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for roqba.voice</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span> <span class="k">as</span> <span class="n">sample</span>
+
+<span class="kn">from</span> <span class="nn">static.movement_probabilities</span> <span class="kn">import</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span>
+<span class="kn">from</span> <span class="nn">static.movement_probabilities</span> <span class="kn">import</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span>
+<span class="kn">from</span> <span class="nn">static.movement_probabilities</span> <span class="kn">import</span> <span class="n">BASS_MOVEMENT_PROBS</span>
+<span class="kn">from</span> <span class="nn">static.movement_probabilities</span> <span class="kn">import</span> <span class="n">ROCK_BASS_MOVEMENT_PROBS</span>
+<span class="kn">from</span> <span class="nn">static.note_length_groupings</span> <span class="kn">import</span> <span class="n">DEFAULT_NOTE_LENGTH_GROUPINGS</span> <span class="k">as</span> <span class="n">GROUPINGS</span>
+<span class="kn">from</span> <span class="nn">static.note_length_groupings</span> <span class="kn">import</span>  <span class="n">analyze_grouping</span>
+<span class="kn">from</span> <span class="nn">metronome</span> <span class="kn">import</span> <span class="n">MEDIUM</span>
+
+
+<div class="viewcode-block" id="Voice"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice">[docs]</a><span class="k">class</span> <span class="nc">Voice</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
+                       <span class="n">composer</span><span class="p">,</span>
+                       <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">48</span><span class="p">],</span>
+                       <span class="n">register</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                       <span class="n">behaviour</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                       <span class="n">note</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                       <span class="n">real_note</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                       <span class="n">note_length_grouping</span><span class="o">=</span><span class="n">sample</span><span class="p">(</span><span class="n">GROUPINGS</span><span class="p">)):</span>
+        <span class="c"># AFFILIATION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">composer</span> <span class="o">=</span> <span class="n">composer</span>  <span class="c"># store the composer</span>
+        <span class="n">composer</span><span class="o">.</span><span class="n">add_voice</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>  <span class="c"># register with the composer</span>
+        <span class="c"># IDENTITY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="n">register</span><span class="p">]</span>
+                      <span class="k">if</span> <span class="n">register</span> <span class="k">else</span>
+                  <span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="o">.</span><span class="n">keys</span><span class="p">())])</span>
+        <span class="c"># TECH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">track_me</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="n">composer</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s">&#39;track_voices_length&#39;</span><span class="p">])</span>
+        <span class="c"># STARTUP</span>
+        <span class="nb">range</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="nb">range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior_note</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># set the coroutine to the yield-point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_embellish</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_delta</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">MEDIUM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">=</span> <span class="n">note</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+                                 <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_note</span> <span class="o">=</span> <span class="n">real_note</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+                                 <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+
+        <span class="c"># BEHAVIOUR</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration_in_msec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="n">behaviour</span> <span class="ow">or</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;default_behaviour&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_length_grouping</span> <span class="o">=</span> <span class="n">note_length_grouping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_rhythm_grouping</span><span class="p">(</span><span class="n">note_length_grouping</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_steps</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_pause_prob&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legato_prob</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c"># to-do: really implement it</span>
+        <span class="c"># probability to have an embellishment-ornament during the current note</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proportional_slide_duration</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_slide_duration_prop&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">register</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">({</span><span class="s">&quot;note&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">,</span>
+                    <span class="s">&quot;dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span>
+                    <span class="s">&quot;note_change&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;{0} - {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Voice.voice"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.voice">[docs]</a>    <span class="k">def</span> <span class="nf">voice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;the generator method of the Voice-class&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span><span class="p">)</span>
+            <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;cycle_pos&#39;</span><span class="p">]</span>
+            <span class="c">#print self.on_off_pattern, &quot; for: &quot;, self.id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[</span><span class="n">meter_pos</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">legato_prob</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;weight&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span><span class="p">:</span>
+                <span class="c"># calculate duration by checking for the next note</span>
+                <span class="c"># in the pattern</span>
+                <span class="n">tmp_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[(</span><span class="n">meter_pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):]</span>
+                <span class="k">if</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">tmp_list</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_steps</span> <span class="o">=</span> <span class="n">tmp_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_steps</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prior_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span>
+                <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pause_prob</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_note</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">note_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_note</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_me</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">do_embellish</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Voice.next_note"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.next_note">[docs]</a>    <span class="k">def</span> <span class="nf">next_note</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;the next is calculated here&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">:</span>
+            <span class="n">move</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">*</span> <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">move</span> <span class="o">=</span> <span class="n">sample</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">+</span> <span class="n">move</span>
+        <span class="n">exceed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceeds</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exceed</span><span class="p">:</span>
+            <span class="c">#print &quot;exceed&quot;</span>
+            <span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="n">exceed</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_the_middle</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceeds</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;&#39;&#39;diabolus in musica: {0} is too low/high,</span>
+<span class="s">                         dir:{1}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="Voice.exceeds"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.exceeds">[docs]</a>    <span class="k">def</span> <span class="nf">exceeds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns min/max limits and a bounce back direction coefficient</span>
+
+<span class="sd">        if incomint int exceeds limits, returns False otherwise&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">scale</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;PENTATONIC&quot;</span><span class="p">,</span> <span class="s">&quot;PENTA_MINOR&quot;</span><span class="p">]:</span>
+            <span class="nb">range</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">/</span> <span class="mf">7.0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span>
+        <span class="k">if</span> <span class="n">note</span> <span class="o">&gt;</span> <span class="nb">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">sample</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">note</span> <span class="o">&lt;</span> <span class="nb">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">sample</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Voice.set_rhythm_grouping"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_rhythm_grouping">[docs]</a>    <span class="k">def</span> <span class="nf">set_rhythm_grouping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;setter method which creates also the on/off pattern&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_grouping</span> <span class="o">=</span> <span class="n">grouping</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span> <span class="o">=</span> <span class="n">analyze_grouping</span><span class="p">(</span><span class="n">grouping</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="Voice.in_the_middle"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.in_the_middle">[docs]</a>    <span class="k">def</span> <span class="nf">in_the_middle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns true if int is in the center area of the range&quot;&quot;&quot;</span>
+        <span class="n">range_span</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lower_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">range_span</span> <span class="o">*</span> <span class="mf">0.333</span><span class="p">)</span>
+        <span class="n">upper_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">range_span</span> <span class="o">*</span> <span class="mf">0.666</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">note</span> <span class="o">&gt;</span> <span class="n">lower_thresh</span> <span class="ow">and</span> <span class="n">note</span> <span class="o">&lt;</span> <span class="n">upper_thresh</span>
+</div>
+<div class="viewcode-block" id="Voice.set_state"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sets the state for the voice.</span>
+
+<span class="sd">        state is one of &quot;BASS&quot;, &quot;ROCK_BASS&quot;, &quot;MID&quot;, &quot;HIGH&quot;, or &quot;SLAVE&quot;.</span>
+<span class="sd">        the state is a set of common settings for the voice, e.g.</span>
+<span class="sd">        voice-range, embellishment probability, rhythmic variation,</span>
+<span class="sd">        movement-mode, etc.&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;BASS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="s">&quot;AUTONOMOUS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">BASS_MOVEMENT_PROBS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="mf">0.005</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">HEAVY_GROUPINGS</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;ROCK_BASS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="s">&quot;AUTONOMOUS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">ROCK_BASS_MOVEMENT_PROBS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="mf">0.002</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;MID&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="s">&quot;AUTONOMOUS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">4</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="mf">0.01</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">DEFAULT_GROUPINGS</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;HIGH&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="s">&quot;AUTONOMOUS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">48</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="mf">0.015</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">TERNARY_GROUPINGS</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;SLAVE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="s">&quot;SLAVE&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">others</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">other_voices</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">followed_voice</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">others</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">followed_voice</span><span class="o">.</span><span class="n">slide_duration_prop</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">following_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">follow_limit</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Voice.other_voices"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.other_voices">[docs]</a>    <span class="k">def</span> <span class="nf">other_voices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;returns the other voices registered in the app&#39;&#39;&#39;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c">#print res</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="Voice.reload_register"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.reload_register">[docs]</a>    <span class="k">def</span> <span class="nf">reload_register</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;reloads the current register and reapplies its settings</span>
+
+<span class="sd">        - in voice</span>
+<span class="sd">        - in the controller&#39;&#39;&#39;</span>
+        <span class="c">#print &quot;reloading register: {0}&quot;.format(name)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s">&quot;voice_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">composer</span> <span class="kn">import</span> <span class="n">Composer</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Composer</span><span class="p">()</span>
+    <span class="k">print</span> <span class="n">Voice</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">in_the_middle</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roqba.html">roqba</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

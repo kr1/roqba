@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>roqba.note_gateway &mdash; Roqba v1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Roqba v1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <h1><a href="../../index.html">Roqba v1.0 documentation</a></h1>
+        <div class="rel">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for roqba.note_gateway</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">metronome</span> <span class="kn">import</span> <span class="n">HEAVY</span>
+<span class="kn">from</span> <span class="nn">utilities.pdsender</span> <span class="kn">import</span> <span class="n">PdSender</span>
+
+
+<div class="viewcode-block" id="NoteGateway"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway">[docs]</a><span class="k">class</span> <span class="nc">NoteGateway</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;sender&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_slide_duration_prop&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_messages</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;transpose&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span> <span class="o">=</span> <span class="n">PdSender</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s">&quot;PD_HOST&quot;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s">&quot;PD_PORT&quot;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="NoteGateway.pause"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.pause">[docs]</a>    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;blocks new messages and turns off sound-production&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_messages</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;sound 0&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.unpause"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.unpause">[docs]</a>    <span class="k">def</span> <span class="nf">unpause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;turns on sound-production and lets messages flow again&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_messages</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;sound 1&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.stop"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;destroys the puredata-sender object&#39;&#39;&#39;</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pd</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.stop_all_notes"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.stop_all_notes">[docs]</a>    <span class="k">def</span> <span class="nf">stop_all_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sends a stop message to all active voices&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.set_slide_to_0"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.set_slide_to_0">[docs]</a>    <span class="k">def</span> <span class="nf">set_slide_to_0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;this method bypasses the slide functionality</span>
+
+<span class="sd">        by setting slide-duration to 0&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="s">&quot;slide&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.set_slide_msecs"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.set_slide_msecs">[docs]</a>    <span class="k">def</span> <span class="nf">set_slide_msecs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice_id</span><span class="p">,</span> <span class="n">msecs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sends a message containing the general slide-time in millisecs&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="s">&quot;slide&quot;</span><span class="p">,</span> <span class="n">voice_id</span><span class="p">,</span> <span class="n">msecs</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.set_slide_msecs_for_all_voices"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.set_slide_msecs_for_all_voices">[docs]</a>    <span class="k">def</span> <span class="nf">set_slide_msecs_for_all_voices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msecs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sends a message containing the general slide-time in millisecs&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="s">&quot;slide&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">msecs</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.pd_send_note"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.pd_send_note">[docs]</a>    <span class="k">def</span> <span class="nf">pd_send_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice_id</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;send out a single note&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">voice_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">voice_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">voice_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="n">voice_id</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">msg</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span>
+                                         <span class="n">msg</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.pd_send_drum_note"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.pd_send_drum_note">[docs]</a>    <span class="k">def</span> <span class="nf">pd_send_drum_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice</span><span class="p">,</span>  <span class="n">vol</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">ctl</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sends a note-message for a drum-voice&#39;&#39;&#39;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;perc&quot;</span><span class="p">,</span> <span class="n">voice</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">ctl</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.drum_hub"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.drum_hub">[docs]</a>    <span class="k">def</span> <span class="nf">drum_hub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;generator method that sends notes to all drum voices</span>
+
+<span class="sd">        according to present state&#39;&#39;&#39;</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_messages</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;drums out: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;meta&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;empty&quot;</span><span class="p">:</span>
+                        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;perc&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;vol&quot;</span><span class="p">]:</span>
+                            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s">&quot;vol&quot;</span><span class="p">])</span>
+                        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s">&quot;pan&quot;</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;ctl&quot;</span><span class="p">]:</span>
+                            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s">&quot;ctl&quot;</span><span class="p">])</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NoteGateway.hub"><a class="viewcode-back" href="../../note_gateway.html#roqba.note_gateway.NoteGateway.hub">[docs]</a>    <span class="k">def</span> <span class="nf">hub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;generator method that sends notes to all melodic voices</span>
+
+<span class="sd">        according to the present state&#39;&#39;&#39;</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_messages</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;sending out: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">note_change</span><span class="p">:</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">real_note</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">real_note</span> <span class="k">else</span> <span class="mi">0</span>
+                            <span class="c">#self.logger.info(&quot;sending out:\</span>
+                            <span class="c">#                  voice: {1}: {0}&quot;.\</span>
+                            <span class="c">#                  format(msg, v.id))</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">slide</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">slide_duration_prop</span><span class="p">:</span>
+                                    <span class="n">dur_prop</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">slide_duration_prop</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">dur_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">set_slide_msecs</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                              <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">duration_in_msec</span> <span class="o">*</span> <span class="n">dur_prop</span><span class="p">))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">pd_send_note</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">weight</span> <span class="o">==</span> <span class="n">HEAVY</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span>
+                                              <span class="s">&quot;rhythm&quot;</span><span class="p">,</span>
+                                              <span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                              <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">note_length_grouping</span><span class="p">)</span><span class="o">.</span>\
+                                                  <span class="n">replace</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)])</span>
+                    <span class="c">#address = data[&quot;voice&quot;]</span>
+                    <span class="c">#msg = data[&quot;message&quot;]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roqba.html">roqba</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="../../search.html" method="get">
+            <input type="text" name="q" size="18" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="../../genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
