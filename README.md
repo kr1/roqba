@@ -1,4 +1,9 @@
-dependencies:
+Documentation
+=============
+
+see the [documentation](http://kr1.github.com/roqba/docs/build/html/index.html)
+
+Dependencies:
 ============
 
 you'll need [**Pure Data**](http://puredata.info/) for the sound-production.
