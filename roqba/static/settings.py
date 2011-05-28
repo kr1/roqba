@@ -45,3 +45,33 @@ behaviour = {"speed": 0.3,
              'default_pause_prob': 0.03,
              'default_embellishment_prob': 0.005
             }
+
+styles = {"bulgarian": {
+              "settings": {
+               },
+               "behaviour": {
+                   'automate_meters': True,
+                   "meter": (7, (3, 2, 2)),
+                   "meters": [
+                       (5, (2, 3)),
+                       (5, (3, 2)),
+                       (7, (3, 2, 2))
+                   ],
+                   "speed": 0.17,
+                   "max_speed": 0.25,
+                   "min_speed": 0.1,
+                   "speed_change": "leap",  # alt:"transition"
+                   'embellishment_speed_lim': 0.5,
+                   'default_pause_prob': 0.07,
+                   'default_embellishment_prob': 0.05,
+                   "max_shuffle": 0.2,  #todo: check possibility for - 
+                   ## constraints on dual and triple grouping
+                   'common_note_duration': False,
+                   'automate_binaural_diffs': False,
+                   'binaural_diff': 0.666
+               } 
+         }
+}
+
+if __name__ == "__main__":
+    print styles
