@@ -12,6 +12,7 @@ settings = {'number_of_voices': 4,
             }
 
 behaviour = {"speed": 0.3,
+	     'automate_speed_change': True,
              "max_speed": 0.3,
              "min_speed": 0.12,
              # speed-target:
@@ -20,21 +21,21 @@ behaviour = {"speed": 0.3,
              # 0.25 means that the average of speeds will be at the first
              # quarter of the range
              "speed_target": 0.25,
-             'slide_in_msecs': 200,
              "speed_change": "leap",  # alt:"transition"
+             'slide_in_msecs': 200,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
              "max_shuffle": 0.1,
+             'automate_meters': False,
              'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
              #'meter': (5, (2, 3)),
              'transpose': 12,
              'automate_transpose': True,
-             'automate_meters': False,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+             'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,
              'slide_duration_msecs': 100,
-             'automate_binaural_diffs': True,  # alt: False
              'default_slide_duration_prop': 0.666,  # proportion
              'automate_note_duration_prop': True,
              'automate_note_duration_min_max': [0.1, 3.3],

@@ -131,20 +131,21 @@ class Director(object):
                                 str(delta % 60).zfill(2))
 
     def new_speed(self):
-        if self.speed_change == 'transition':
-            self.speed += random.randint(-1000, 1000) / 66666.
-        else:  # if self.speed_change == 'leap':
-            if self.speed_target != 0.5:
-                target = self.speed_target
-                if  target < 0.3:
-                    target = target ** 2
-                speed_tmp = random.random() ** math.log(target, 0.5)
-                self.speed = (self.MIN_SPEED +
-                              ((self.MAX_SPEED - self.MIN_SPEED) *
-                              speed_tmp))
-            else:
-                self.speed = self.MIN_SPEED + (random.random() *
-                                    (self.MAX_SPEED - self.MIN_SPEED))
-        #print "new speed values: {0}\n resetting metronome.".format(
-        #                                                self.speed)
+        if self.behaviour['automate_speed_change']:   
+            if self.speed_change == 'transition':
+                self.speed += random.randint(-1000, 1000) / 66666.
+            else:  # if self.speed_change == 'leap':
+                if self.speed_target != 0.5:
+                    target = self.speed_target
+                    if  target < 0.3:
+                        target = target ** 2
+                    speed_tmp = random.random() ** math.log(target, 0.5)
+                    self.speed = (self.MIN_SPEED +
+                                  ((self.MAX_SPEED - self.MIN_SPEED) *
+                                  speed_tmp))
+                else:
+                    self.speed = self.MIN_SPEED + (random.random() *
+                                        (self.MAX_SPEED - self.MIN_SPEED))
+            #print "new speed values: {0}\n resetting metronome.".format(
+            #                                                self.speed)
         return self.speed
