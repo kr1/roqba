@@ -37,6 +37,8 @@ class Composer(object):
         self.num_voices = settings['number_of_voices']
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.scale = scale
+        self.selected_meters = ("meters" in self.behaviour.keys() and
+                        self.behaviour["meters"] or METERS.keys())
         self.meter = behaviour['meter']
         self.set_meter(self.meter)
         self.applied_meter = METERS[self.meter]['applied']

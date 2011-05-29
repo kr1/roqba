@@ -11,3 +11,4 @@ static
     movement_probabilities
     note_length_groupings
     scales_and_harmonies
+    settings
