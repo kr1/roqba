@@ -75,7 +75,7 @@ class Director(object):
                 self.composer.set_scale(random.choice(
                                             composer.SCALES_BY_FREQUENCY))
                 if self.automate_meters:
-                    new_meter = random.choice(composer.METERS.keys())
+                    new_meter = random.choice(self.composer.selected_meters)
                     self.set_meter(new_meter)
                     self.gateway.pd.send(["sys", "meter",
                                            str(new_meter).replace(",", " ").
