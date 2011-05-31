@@ -1,0 +1,15 @@
+*.swp
+*.pyc
+*.wav
+.gitattributes
+.screenrc
+class\ diagram.png
+docs/build
+scrolling.txt
+sound_files
+webserver
+log.txt
+tags
+roqba/static/local_settings.py
+docs/build
+docs/build/
