@@ -56,9 +56,9 @@ styles = {"bulgarian": {
                    'automate_meters': True,
                    "meter": (7, (3, 2, 2)),
                    "meters": [
-                       (5, (2, 3)),
-                       (5, (3, 2)),
-                       (7, (3, 2, 2))
+                       [(5, (2, 3))] * 2,
+                       [(5, (3, 2))] * 5,
+                       [(7, (3, 2, 2))] * 12
                    ],
                    "speed": 0.17,
                    "max_speed": 0.25,
@@ -79,7 +79,8 @@ styles = {"bulgarian": {
 style = None
 
 if style:
-    behaviour.update(styles["behaviour"])
+    behaviour.update(styles[style]["behaviour"])
+    behaviour["style"] = style
 
 if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
     behaviour["meters"] = sum(behaviour["meters"], [])
