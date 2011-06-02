@@ -185,41 +185,20 @@ class Voice(object):
         the state is a set of common settings for the voice, e.g.
         voice-range, embellishment probability, rhythmic variation,
         movement-mode, etc.'''
+        self.reload_register()
         if name == "BASS":
-            self.behaviour = "AUTONOMOUS"
-            self.change_rhythm_after_times = 8
-            self.movement_probs = BASS_MOVEMENT_PROBS
-            self.range = [21, 33]
-            self.slide = True
-            self.slide_duration_prop = 0.1
-            self.embellishment_prob = 0.005
+            #self.behaviour = "AUTONOMOUS"
             self.note_length_groupings = self.composer.HEAVY_GROUPINGS
         if name == "ROCK_BASS":
-            self.behaviour = "AUTONOMOUS"
-            self.change_rhythm_after_times = 8
-            self.movement_probs = ROCK_BASS_MOVEMENT_PROBS
-            self.range = [21, 33]
-            self.slide = True
-            self.slide_duration_prop = 0.1
-            self.embellishment_prob = 0.002
+            #self.behaviour = "AUTONOMOUS"
+            self.note_length_groupings = self.composer.FAST_GROUPINGS
+        elif name == "FLAT_MID":
             self.note_length_groupings = self.composer.FAST_GROUPINGS
         elif name == "MID":
-            self.behaviour = "AUTONOMOUS"
-            self.change_rhythm_after_times = 4
-            self.slide = True
-            self.slide_duration_prop = 0.1
-            self.movement_probs = MIDDLE_VOICES_MOVEMENT_PROBS
-            self.embellishment_prob = 0.01
-            self.range = [30, 45]
+            #self.behaviour = "AUTONOMOUS"
             self.note_length_groupings = self.composer.DEFAULT_GROUPINGS
         elif name == "HIGH":
-            self.behaviour = "AUTONOMOUS"
-            self.change_rhythm_after_times = 1
-            self.movement_probs = DEFAULT_MOVEMENT_PROBS
-            self.range = [35, 48]
-            self.slide = True
-            self.slide_duration_prop = 0.1
-            self.embellishment_prob = 0.015
+            #self.behaviour = "AUTONOMOUS"
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
 
     def other_voices(self):

@@ -13,6 +13,10 @@ registers = {
         "voice_attrs":{
               "embellishment_prob": 0.005,
               "legato_prob": 0.02,
+              "slide": True,
+              "slide_duration_prop": 0.1, 
+              "change_rhythm_after_times": 8,
+              "movement_probs": BASS_MOVEMENT_PROBS,
               "pause_prob": 0.1,
               "range": [21, 33]
               }
@@ -24,6 +28,10 @@ registers = {
         "voice_attrs":{
               "embellishment_prob": 0.002,
               "legato_prob": 0.02,
+              "slide": True,
+              "slide_duration_prop": 0.1, 
+              "change_rhythm_after_times": 8,
+              "movement_probs": ROCK_BASS_MOVEMENT_PROBS,
               "pause_prob": 0.1,
               "range": [15, 24]
               }
@@ -35,9 +43,28 @@ registers = {
         "voice_attrs":{
               "embellishment_prob": 0.01,
               "legato_prob": 0.1,
+              "slide": True,
+              "slide_duration_prop": 0.1, 
+              "change_rhythm_after_times": 4,
+              "movement_probs": MIDDLE_VOICES_MOVEMENT_PROBS,
               "pause_prob": 0.1,
               "range":[30, 45]},
     },
+    "FLAT_MID": {
+        "name": "FLAT_MID",
+        "voice_composer_attrs": {
+              "note_length_groupings": "FAST_GROUPINGS"},
+        "voice_attrs":{
+              "embellishment_prob": 0.01,
+              "legato_prob": 0.02,
+              "slide": True,
+              "slide_duration_prop": 0.1, 
+              "change_rhythm_after_times": 4,
+              "movement_probs": FLAT_MID_MOVEMENT_PROBS,
+              "pause_prob": 0.1,
+              "range": [27, 40]
+              }
+    }, 
     "HIGH": {
         "name":"HIGH",
         "voice_composer_attrs": {
@@ -45,6 +72,10 @@ registers = {
         "voice_attrs":{
             "embellishment_prob": 0.015,
             "legato_prob": 0.05,
+            "slide": True,
+            "slide_duration_prop": 0.2, 
+            "change_rhythm_after_times": 1,
+            "movement_probs": DEFAULT_MOVEMENT_PROBS,
             "pause_prob": 0.03,
             "range":[35, 48]}
     }
