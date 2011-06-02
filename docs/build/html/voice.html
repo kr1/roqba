@@ -53,7 +53,7 @@
 <span id="voice"></span><h1>voice<a class="headerlink" href="#module-roqba.voice" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.voice.Voice">
-<em class="property">class </em><tt class="descclassname">roqba.voice.</tt><tt class="descname">Voice</tt><big>(</big><em>id, composer, range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[1, 1, 1, 1, 1, 1, 1, 1]</em><big>)</big><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">roqba.voice.</tt><tt class="descname">Voice</tt><big>(</big><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[1, 1, 2, 2, 2]</em><big>)</big><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.voice.Voice.exceeds">
 <tt class="descname">exceeds</tt><big>(</big><em>note</em><big>)</big><a class="reference internal" href="_modules/roqba/voice.html#Voice.exceeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.exceeds" title="Permalink to this definition">¶</a></dt>
@@ -87,6 +87,24 @@
 <li>in voice</li>
 <li>in the controller</li>
 </ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.voice.Voice.reset_slave">
+<tt class="descname">reset_slave</tt><big>(</big><em>change_master=False</em><big>)</big><a class="headerlink" href="#roqba.voice.Voice.reset_slave" title="Permalink to this definition">¶</a></dt>
+<dd><p>resets values for slave voices.</p>
+<dl class="docutils">
+<dt>if &lt;change_master&gt; is an int:</dt>
+<dd><ul class="first last simple">
+<li>it is used as the id new master-voice</li>
+</ul>
+</dd>
+<dt>if &lt;change_master&gt; is &#8216;True&#8217;:</dt>
+<dd><ul class="first last simple">
+<li>a new random master is chosen,</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

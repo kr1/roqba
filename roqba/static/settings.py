@@ -2,7 +2,7 @@
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
-            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  'SLAVE', 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
@@ -29,7 +29,7 @@ behaviour = {"speed": 0.3,
              'automate_meters': True,
              'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
              #'meters': [(12, (1, 2, 2, 1, 2, 2, 2)), 8],
-             'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4, 
+             'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,
                         [(7, (3, 2, 2))] * 10],
              #'meter': (5, (2, 3)),
              'transpose': 12,
@@ -56,9 +56,9 @@ styles = {"bulgarian": {
                    'automate_meters': True,
                    "meter": (7, (3, 2, 2)),
                    "meters": [
-                       (5, (2, 3)),
-                       (5, (3, 2)),
-                       (7, (3, 2, 2))
+                       [(5, (2, 3))] * 2,
+                       [(5, (3, 2))] * 5,
+                       [(7, (3, 2, 2))] * 12
                    ],
                    "speed": 0.17,
                    "max_speed": 0.25,
@@ -67,19 +67,54 @@ styles = {"bulgarian": {
                    'embellishment_speed_lim': 0.5,
                    'default_pause_prob': 0.07,
                    'default_embellishment_prob': 0.05,
-                   "max_shuffle": 0.2,  #todo: check possibility for - 
+                   "max_shuffle": 0.2,  # todo: check possibility for -
+                   ## constraints on dual and triple grouping
+                   'common_note_duration': False,
+                   'automate_binaural_diffs': False,
+                   'binaural_diff': 0.666,
+                   'max_binaural_diff': 10
+               }
+         },
+         "rock": {
+              "settings": {
+                  'number_of_voices': 4,
+                  'voice_registers': ['ROCK_BASS', 'FLAT_MID', 'FLAT_MID',
+                  'HIGH'],
+                  'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
+                                       ['SLAVE', 2], 'AUTONOMOUS'],
+
+               },
+               "behaviour": {
+                   'automate_meters': True,
+                   "meter": (8, (4, 4)),
+                   "meters": [
+                       [(8, (4, 4))] * 2,
+                       [(8, (3, 3, 2))] * 1
+                   ],
+                   "speed": 0.25,
+                   'automate_speed_change': True,
+                   "max_speed": 0.25,
+                   "min_speed": 0.18,
+                   "speed_change": "leap",  # alt:"transition"
+                   'embellishment_speed_lim': 0.1,
+                   'default_pause_prob': 0.1,
+                   'default_embellishment_prob': 0.05,
+                   "max_shuffle": 0.3,  # todo: check possibility for -
                    ## constraints on dual and triple grouping
                    'common_note_duration': False,
                    'automate_binaural_diffs': False,
                    'binaural_diff': 0.666
-               } 
+               }
+
          }
 }
 
-style = None
+style = 'rock'
 
 if style:
-    behaviour.update(styles["behaviour"])
+    settings.update(styles[style]["settings"])
+    behaviour.update(styles[style]["behaviour"])
+    behaviour["style"] = style
 
 if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
     behaviour["meters"] = sum(behaviour["meters"], [])

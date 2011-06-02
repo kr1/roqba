@@ -57,7 +57,7 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
             <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BASS&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
             <span class="c">#&#39;voice_registers&#39;: [&#39;ROCK_BASS&#39;, &#39;MID&#39;, &#39;MID&#39;, &#39;HIGH&#39;],</span>
-            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> 
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
                                  <span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
             <span class="s">&#39;PD_HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>
             <span class="s">&#39;PD_PORT&#39;</span><span class="p">:</span> <span class="mi">12321</span><span class="p">,</span>
@@ -84,7 +84,7 @@
              <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
              <span class="c">#&#39;meters&#39;: [(12, (1, 2, 2, 1, 2, 2, 2)), 8],</span>
-             <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="p">[[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> 
+             <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="p">[[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
                         <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">],</span>
              <span class="c">#&#39;meter&#39;: (5, (2, 3)),</span>
              <span class="s">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
@@ -111,9 +111,9 @@
                    <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
                    <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
                    <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
-                       <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-                       <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
-                       <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                       <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                       <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">12</span>
                    <span class="p">],</span>
                    <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
                    <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
@@ -122,19 +122,54 @@
                    <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
                    <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span>
                    <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
-                   <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c">#todo: check possibility for - </span>
+                   <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
+                   <span class="c">## constraints on dual and triple grouping</span>
+                   <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                   <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                   <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+                   <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span>
+               <span class="p">}</span>
+         <span class="p">},</span>
+         <span class="s">&quot;rock&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                  <span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                  <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;ROCK_BASS&#39;</span><span class="p">,</span> <span class="s">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s">&#39;FLAT_MID&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
+                  <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
+                                       <span class="p">[</span><span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
+
+               <span class="p">},</span>
+               <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+                   <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                   <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+                   <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                       <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">1</span>
+                   <span class="p">],</span>
+                   <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+                   <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                   <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+                   <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
+                   <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+                   <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+                   <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
                    <span class="c">## constraints on dual and triple grouping</span>
                    <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
                    <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
                    <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span>
-               <span class="p">}</span> 
+               <span class="p">}</span>
+
          <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="n">style</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">style</span> <span class="o">=</span> <span class="s">&#39;rock&#39;</span>
 
 <span class="k">if</span> <span class="n">style</span><span class="p">:</span>
-    <span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">styles</span><span class="p">[</span><span class="s">&quot;behaviour&quot;</span><span class="p">])</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s">&quot;settings&quot;</span><span class="p">])</span>
+    <span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s">&quot;behaviour&quot;</span><span class="p">])</span>
+    <span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">style</span>
 
 <span class="k">if</span> <span class="s">&quot;meters&quot;</span> <span class="ow">in</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
     <span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">],</span> <span class="p">[])</span>

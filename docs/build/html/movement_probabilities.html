@@ -73,6 +73,13 @@
              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span>
             <span class="p">]</span>
 
+<span class="n">flat_mid_probs</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+                 <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+                 <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+                 <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                 <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span>
+                <span class="p">]</span>
+
 <span class="n">bass_probs</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
               <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
               <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
@@ -94,6 +101,7 @@
 
 <span class="n">DEFAULT_MOVEMENT_PROBS</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">default_probs</span><span class="p">,</span> <span class="p">[])</span>
 <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mid_probs</span><span class="p">,</span> <span class="p">[])</span>
+<span class="n">FLAT_MID_MOVEMENT_PROBS</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">flat_mid_probs</span><span class="p">,</span> <span class="p">[])</span>
 <span class="n">BASS_MOVEMENT_PROBS</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">bass_probs</span><span class="p">,</span> <span class="p">[])</span>
 <span class="n">ROCK_BASS_MOVEMENT_PROBS</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rock_bass_probs</span><span class="p">,</span> <span class="p">[])</span>
 

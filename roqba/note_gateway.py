@@ -23,7 +23,7 @@ class NoteGateway(object):
 
     def unpause(self):
         '''turns on sound-production and lets messages flow again'''
-        self.block_messages = True
+        self.block_messages = False
         self.pd.send("sound 1")
 
     def stop(self):

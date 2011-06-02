@@ -71,7 +71,7 @@ check implications on other modules)</p>
 
 <dl class="function">
 <dt id="roqba.static.note_length_groupings.assemble">
-<tt class="descclassname">roqba.static.note_length_groupings.</tt><tt class="descname">assemble</tt><big>(</big><em>id</em>, <em>which=None</em>, <em>fallback=True</em>, <em>meter_length=8</em><big>)</big><a class="reference internal" href="_modules/roqba/static/note_length_groupings.html#assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.static.note_length_groupings.assemble" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">roqba.static.note_length_groupings.</tt><tt class="descname">assemble</tt><big>(</big><em>id</em>, <em>which=None</em>, <em>fallback=True</em>, <em>meter_length=(8</em>, <em>(4</em>, <em>4))</em><big>)</big><a class="reference internal" href="_modules/roqba/static/note_length_groupings.html#assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.static.note_length_groupings.assemble" title="Permalink to this definition">¶</a></dt>
 <dd><p>assembles note-length groupings.</p>
 <p>it is called during the loading of the module</p>
 </dd></dl>
@@ -107,9 +107,9 @@ will combine first, second and terns-modes</p>
 <span class="sd">check implications on other modules)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">DEFAULT_METER_LENGTH</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">DEFAULT_METER_LENGTH</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
-<span class="n">groupings</span> <span class="o">=</span> <span class="p">{</span><span class="mi">8</span><span class="p">:</span>
+<span class="n">groupings</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
 <span class="p">{</span><span class="s">&quot;first&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="c"># smallest units</span>
       <span class="c"># 8: 8x1</span>
@@ -212,6 +212,15 @@ will combine first, second and terns-modes</p>
       <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
       <span class="p">]</span>
   <span class="p">},</span>
+  <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+  <span class="p">{</span><span class="s">&quot;heavy&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
   <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
   <span class="p">{</span><span class="s">&quot;heavy&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="p">[[</span><span class="mi">5</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
@@ -235,7 +244,7 @@ will combine first, second and terns-modes</p>
       <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">5</span>
     <span class="p">]</span>
   <span class="p">},</span>
-  <span class="mi">6</span><span class="p">:</span>
+  <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
   <span class="p">{</span><span class="s">&quot;heavy&quot;</span><span class="p">:</span> <span class="p">[</span>
   <span class="p">[[</span><span class="mi">6</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
   <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">15</span><span class="p">,</span>
@@ -443,9 +452,9 @@ will combine first, second and terns-modes</p>
     <span class="n">odd</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">meter_length</span><span class="p">,</span> <span class="n">to_check</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">odd</span>
 
-<span class="k">if</span> <span class="n">badly_formeD</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">DEFAULT_NOTE_LENGTH_GROUPINGS</span><span class="p">):</span>
+<span class="k">if</span> <span class="n">badly_formeD</span><span class="p">(</span><span class="n">DEFAULT_METER_LENGTH</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">DEFAULT_NOTE_LENGTH_GROUPINGS</span><span class="p">):</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;&#39;&#39;not all note length groupings are well-formed:</span>
-<span class="s">            </span><span class="se">\n</span><span class="s">{0}</span><span class="se">\n\n</span><span class="s">in:{1}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">badly_formeD</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span>
+<span class="s">            </span><span class="se">\n</span><span class="s">{0}</span><span class="se">\n\n</span><span class="s">in:{1}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">badly_formeD</span><span class="p">(</span><span class="n">DEFAULT_METER_LENGTH</span><span class="p">,</span>
                                           <span class="n">DEFAULT_NOTE_LENGTH_GROUPINGS</span><span class="p">),</span>
                                       <span class="n">DEFAULT_NOTE_LENGTH_GROUPINGS</span><span class="p">))</span>
 
@@ -459,7 +468,7 @@ will combine first, second and terns-modes</p>
     <span class="k">print</span> <span class="n">res</span>
     <span class="k">assert</span> <span class="n">get_grouping</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="s">&quot;heavy&quot;</span><span class="p">)</span> <span class="o">==</span>\
             <span class="nb">sum</span><span class="p">(</span><span class="n">groupings</span><span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))][</span><span class="s">&quot;heavy&quot;</span><span class="p">],</span> <span class="p">[])</span>
-    <span class="k">assert</span> <span class="n">get_grouping</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s">&quot;heavy&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">groupings</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="s">&quot;heavy&quot;</span><span class="p">],</span> <span class="p">[])</span>
+    <span class="k">assert</span> <span class="n">get_grouping</span><span class="p">((</span><span class="mi">8</span><span class="p">,(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="s">&quot;heavy&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">groupings</span><span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,))][</span><span class="s">&quot;heavy&quot;</span><span class="p">],</span> <span class="p">[])</span>
     <span class="k">print</span> <span class="n">get_grouping</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="s">&quot;terns&quot;</span><span class="p">)</span>
     <span class="k">print</span> <span class="n">get_grouping</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="s">&quot;terns&quot;</span><span class="p">)</span>
     <span class="k">print</span> <span class="n">get_grouping</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="s">&quot;terns&quot;</span><span class="p">)</span>

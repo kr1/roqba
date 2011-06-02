@@ -16,6 +16,13 @@ mid_probs = [[1] * 20,
              [4, 5, 6, 7] * 1
             ]
 
+flat_mid_probs = [[0] * 20,
+                 [1] * 7,
+                 [2] * 7,
+                 [3] * 5,
+                 [4, 5, 6, 7] * 1
+                ]
+
 bass_probs = [[1] * 6,
               [2] * 10,
               [3] * 5,
@@ -37,6 +44,7 @@ rock_bass_probs = [
 
 DEFAULT_MOVEMENT_PROBS = sum(default_probs, [])
 MIDDLE_VOICES_MOVEMENT_PROBS = sum(mid_probs, [])
+FLAT_MID_MOVEMENT_PROBS = sum(flat_mid_probs, [])
 BASS_MOVEMENT_PROBS = sum(bass_probs, [])
 ROCK_BASS_MOVEMENT_PROBS = sum(rock_bass_probs, [])
 
