@@ -14,7 +14,7 @@ from metronome import MEDIUM
 class Voice(object):
     def __init__(self, id,
                        composer,
-                       range=[24, 48],
+                       note_range=[24, 48],
                        register=None,
                        behaviour=None,
                        note=None,
@@ -32,8 +32,8 @@ class Voice(object):
         self.track_me = False
         self.queue = deque([], composer.settings['track_voices_length'])
         # STARTUP
-        range.sort()
-        self.range = range
+        note_range.sort()
+        self.range = note_range
         self.dir = 0
         self.prior_note = None
         self.note_change = True
@@ -50,8 +50,14 @@ class Voice(object):
                                  - min(self.range)) / 2) + min(self.range)
 
         # BEHAVIOUR
+        if behaviour:
+            self.behaviour = behaviour[0]
+            self.followed_voice_id = behaviour[1]
+            self.following_counter = 0
+            self.follow_limit = sample(range(3, 9))
+        else:    
+            self.behaviour = composer.behaviour["default_behaviour"]
         self.duration_in_msec = 0
-        self.behaviour = behaviour or composer.behaviour["default_behaviour"]
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
@@ -151,6 +157,27 @@ class Voice(object):
         upper_thresh = self.range[0] + (range_span * 0.666)
         return note > lower_thresh and note < upper_thresh
 
+    def reset_slave(self, change_master=False):
+        """resets values for slave voices.
+        
+        if <change_master> is an int:
+          - it is used as the id new master-voice 
+        if <change_master> is 'True':
+          - a new random master is chosen,
+        """
+        self.others = self.other_voices()
+        if change_master:
+            if type(change_master) == int:
+                self.followed_voice_id = change_master
+            else:
+                self.followed_voice_id = sample(self.others.keys())
+        follow = self.others[self.followed_voice_id]
+        self.slide_duration_prop = follow.slide_duration_prop
+        self.slide = follow.slide
+        self.following_counter = 0
+        self.follow_limit = sample(range(3, 9))
+                        
+
     def set_state(self, name):
         '''sets the state for the voice.
 
@@ -194,14 +221,6 @@ class Voice(object):
             self.slide_duration_prop = 0.1
             self.embellishment_prob = 0.015
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
-        elif name == "SLAVE":
-            self.behaviour = "SLAVE"
-            self.others = self.other_voices()
-            self.followed_voice = sample(self.others.values())
-            self.slide_duration_prop = self.followed_voice.slide_duration_prop
-            self.slide = True
-            self.following_counter = 0
-            self.follow_limit = sample(range(3, 9))
 
     def other_voices(self):
         '''returns the other voices registered in the app'''

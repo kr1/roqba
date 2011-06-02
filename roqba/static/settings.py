@@ -2,7 +2,7 @@
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
-            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  'SLAVE', 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,

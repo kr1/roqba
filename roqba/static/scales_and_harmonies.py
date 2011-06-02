@@ -42,7 +42,7 @@ BASE_HARMONIES = {2: [set([6]), set([6, 2]), set([6, 0]), set([0, 2]),
 HARMONIES = STRICT_HARMONIES + [set([2, 4, 1]), set([2, 6, 1])]
 HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
-FOLLOWINGS = [-5, -2, 2, 5]
+FOLLOWINGS = [-5, -3, -2, 2, 4,  5]
 
 DISHARMS = [1]
 
