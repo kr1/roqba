@@ -6,9 +6,9 @@ reconsider specifying pauses with negative values(to-do:
 check implications on other modules)
 """
 
-DEFAULT_METER_LENGTH = 8
+DEFAULT_METER_LENGTH = (8, (4, 4))
 
-groupings = {8:
+groupings = {(8, (4, 4)):
 {"first": [
       # smallest units
       # 8: 8x1
@@ -111,6 +111,15 @@ groupings = {8:
       [[2, 6]] * 6,
       ]
   },
+  (8, (3, 3, 2)):
+  {"heavy": [
+      [[3, 3, 2]] * 20,
+      [[3, 3, 1, 1]] * 5,
+      [[2, 1,  2, 1, 2]] * 5,
+      [[2, 1, 2, 1, 1, 1 ]] * 5,
+      [[1, 1, 1, 2, 1, 1, 1]] * 5
+    ]
+  },
   (5, (2, 3)):
   {"heavy": [
       [[5]] * 7,
@@ -134,7 +143,7 @@ groupings = {8:
       [[2, 1, 1, 1]] * 5
     ]
   },
-  6:
+  (6, (3, 3)):
   {"heavy": [
   [[6]] * 3,
   [[3, 3]] * 15,
@@ -342,9 +351,9 @@ def badly_formeD(meter_length, to_check):
     odd = filter(lambda x: sum(x) != meter_length, to_check)
     return odd
 
-if badly_formeD(8, DEFAULT_NOTE_LENGTH_GROUPINGS):
+if badly_formeD(DEFAULT_METER_LENGTH[0], DEFAULT_NOTE_LENGTH_GROUPINGS):
     raise RuntimeError('''not all note length groupings are well-formed:
-            \n{0}\n\nin:{1}'''.format(badly_formeD(8,
+            \n{0}\n\nin:{1}'''.format(badly_formeD(DEFAULT_METER_LENGTH,
                                           DEFAULT_NOTE_LENGTH_GROUPINGS),
                                       DEFAULT_NOTE_LENGTH_GROUPINGS))
 
@@ -358,7 +367,7 @@ if __name__ == "__main__":
     print res
     assert get_grouping((5, (2, 3)), "heavy") ==\
             sum(groupings[(5, (2, 3))]["heavy"], [])
-    assert get_grouping(8, "heavy") == sum(groupings[8]["heavy"], [])
+    assert get_grouping((8,(4, 4)), "heavy") == sum(groupings[(8, (4, 4,))]["heavy"], [])
     print get_grouping((5, (2, 3)), "terns")
     print get_grouping((9, (3, 3, 3)), "terns")
     print get_grouping((7, (3, 2, 2)), "terns")

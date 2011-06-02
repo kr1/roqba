@@ -1,10 +1,15 @@
 '''this module contains meter-constants'''
 
 METERS = {
-    8: {
-        "human": 8,
+   (8,(4, 4)): {
+        "human": (8,(4, 4)),
         "applied": [2, 0, 1, 0, 1, 0, 1, 0],
         "max_shuffle": 0.333333
+    },
+    (8,(3, 3, 2)): {
+        "human": (8,(3, 3, 2)),
+        "applied": [2, 0, 0, 1, 0, 0, 1, 0],
+        "max_shuffle": 0.1
     },
     (5, (3, 2)): {
         "human": (5, (3, 2)),
