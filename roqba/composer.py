@@ -225,7 +225,7 @@ class Composer(object):
         - if no values are given, random values (in the configurated range)
         are set for each voice.
         '''
-        if val:
+        if val and val != 'random':
             if voice:
                 self.gateway.pd.send(["voice", "binaural", voice, val])
             else:
