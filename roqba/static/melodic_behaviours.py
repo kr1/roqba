@@ -8,6 +8,7 @@ from movement_probabilities import *
 registers = {
     "BASS": {
         "name": "BASS",
+        "sort_importance": 10,
         "voice_composer_attrs": {
               "note_length_groupings": "HEAVY_GROUPINGS"},
         "voice_attrs":{
@@ -23,6 +24,7 @@ registers = {
     }, 
     "ROCK_BASS": {
         "name": "ROCK_BASS",
+        "sort_importance": 10,
         "voice_composer_attrs": {
               "note_length_groupings": "FAST_GROUPINGS"},
         "voice_attrs":{
@@ -38,6 +40,7 @@ registers = {
     }, 
     "MID": {
         "name":"MID",
+        "sort_importance": 5,
         "voice_composer_attrs": {
               "note_length_groupings": "DEFAULT_GROUPINGS"},
         "voice_attrs":{
@@ -52,6 +55,7 @@ registers = {
     },
     "FLAT_MID": {
         "name": "FLAT_MID",
+        "sort_importance": 5,
         "voice_composer_attrs": {
               "note_length_groupings": "FAST_GROUPINGS"},
         "voice_attrs":{
@@ -67,6 +71,7 @@ registers = {
     }, 
     "HIGH": {
         "name":"HIGH",
+        "sort_importance": 1,
         "voice_composer_attrs": {
             "note_length_groupings": "TERNARY_GROUPINGS"},
         "voice_attrs":{

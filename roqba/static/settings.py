@@ -102,6 +102,8 @@ styles = {"bulgarian": {
                    "max_shuffle": 0.3,  # todo: check possibility for -
                    ## constraints on dual and triple grouping
                    'common_note_duration': False,
+                   'automate_note_duration_prop': True,
+                   'automate_note_duration_min_max': [0.9, 3.3],
                    'automate_binaural_diffs': False,
                    'binaural_diff': 0.666
                }

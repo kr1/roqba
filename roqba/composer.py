@@ -191,14 +191,28 @@ class Composer(object):
             else:
                 return set(deltas) in ALL_STRICT_HARMONIES
 
-    def sort_voices_by_importance(self):
+    def sort_voices_by_importance(self, by='imp'):
         '''sorts the voices according to their importance.
 
-        having a registered direction is the only determinant of importace
-        for the tim being'''
-        dirs = filter(lambda x: x.dir, self.voices.values())
-        no_dirs = list(set(self.voices.values()) - set(dirs))
-        return dirs + no_dirs
+        by: 'imp':
+            - importance according to register
+
+        by: 'dir':
+            - voices having a registered direction first
+        
+        '''
+        voices = self.voices.values()
+        if by == 'imp': 
+            register_sort_dict = {}
+            [register_sort_dict.__setitem__(reg["name"], 
+                                            reg["sort_importance"]) for 
+             reg in self.registers.values()] 
+            voices.sort(key=lambda x: register_sort_dict[x.register["name"]])
+            return voices
+        else:
+            dirs = filter(lambda x: x.dir, voices)
+            no_dirs = list(set(voices) - set(dirs))
+            return dirs + no_dirs
 
     def choose_rhythm(self):
         '''chooses a new rhythm randomly from each voices groupings'''
