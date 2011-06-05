@@ -80,8 +80,19 @@ class Director(object):
                     self.gateway.pd.send(["sys", "meter",
                                            str(new_meter).replace(",", " ").
                                            replace(" ", "_")])
+                voices = self.composer.voices.values()
+                if self.behaviour["automate_pan"]:
+                    for v in voices:
+                        v.pan_pos = (random.random() * 2) - 1
+                        self.gateway.pd.send(["sound", "pan", v.id, v.pan_pos ])
                 if self.automate_binaural_diffs:
-                    self.composer.set_binaural_diffs()
+                    if self.behaviour["pan_controls_binaural_diff"]:
+                        for v in voices:
+                            diff = (abs(v.pan_pos) * 
+                                    self.behaviour["max_binaural_diff"])
+                            self.composer.set_binaural_diffs(diff, str(v.id)) 
+                    else:     
+                        self.composer.set_binaural_diffs()
                 if self.behaviour["automate_note_duration_prop"]:
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:

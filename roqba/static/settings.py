@@ -35,6 +35,8 @@ behaviour = {"speed": 0.3,
              'transpose': 12,
              'automate_transpose': True,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+             'automate_pan' : True,
+             'pan_controls_binaural_diff': True,
              'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,

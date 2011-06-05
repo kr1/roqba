@@ -9,7 +9,7 @@ SCALES = {
   }
 
 SCALES_BY_FREQUENCY = sum([
-    ["DIATONIC"] * 10,
+    ["DIATONIC"] * 4,
     ["HARMONIC"] * 2,
     ["MELODIC"] * 2,
     ["PENTATONIC"] * 2,

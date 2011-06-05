@@ -33,6 +33,7 @@ class Voice(object):
         self.queue = deque([], composer.settings['track_voices_length'])
         # STARTUP
         note_range.sort()
+        self.pan_position = 0
         self.range = note_range
         self.dir = 0
         self.prior_note = None
