@@ -67,6 +67,11 @@ class NoteGateway(object):
         self.pd.send(["voice", voice_id, "dur", val])
         return True
 
+    def pd_send_wavetable(self, voice_id, wavetable):
+        '''send out the duration for a given voice'''
+        self.pd.send(["voice", voice_id, "wavetable", wavetable])
+        return True
+
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
         args = ["perc", voice, vol, pan, ctl]
