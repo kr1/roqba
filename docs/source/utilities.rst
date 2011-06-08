@@ -7,5 +7,7 @@ utilities
     :maxdepth: 2
 
     behaviour_dict
+    pd_wavetables
     pdsender
     sine_controllers
+
