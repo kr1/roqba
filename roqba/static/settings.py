@@ -115,7 +115,8 @@ styles = {"bulgarian": {
          }
 }
 
-style = 'rock'
+#style = 'rock'
+style = None
 
 if style:
     settings.update(styles[style]["settings"])
