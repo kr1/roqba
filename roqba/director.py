@@ -7,6 +7,7 @@ import threading
 import metronome
 import composer
 from roqba.utilities import random_between
+from roqba.utilities import pd_wavetables as wavetables
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -93,6 +94,14 @@ class Director(object):
                             self.composer.set_binaural_diffs(diff, str(v.id)) 
                     else:     
                         self.composer.set_binaural_diffs()
+                if self.behaviour["automate_wavetables"]:
+                    wavetable = (self.behaviour["common_wavetables"] and 
+                                  wavetables.random_harmonic_wavetable() or
+                                  None)
+                    for v in voices:
+                        if not wavetable:
+                            wavetable = wavetables.random_harmonic_wavetable()
+                        self.gateway.pd_send_wavetable(v.id, wavetable)
                 if self.behaviour["automate_note_duration_prop"]:
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:
