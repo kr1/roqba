@@ -159,7 +159,7 @@ class Director(object):
                                 str(delta % 60).zfill(2))
 
     def new_speed(self):
-        if self.behaviour['automate_speed_change']:   
+        if self.behaviour['automate_speed_change']:
             if self.speed_change == 'transition':
                 self.speed += random.randint(-1000, 1000) / 66666.
             else:  # if self.speed_change == 'leap':

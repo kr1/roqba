@@ -3,9 +3,6 @@ from Queue import deque
 from random import choice as sample
 
 from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
-from static.movement_probabilities import MIDDLE_VOICES_MOVEMENT_PROBS
-from static.movement_probabilities import BASS_MOVEMENT_PROBS
-from static.movement_probabilities import ROCK_BASS_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import  analyze_grouping
 from metronome import MEDIUM
@@ -56,7 +53,7 @@ class Voice(object):
             self.followed_voice_id = behaviour[1]
             self.following_counter = 0
             self.follow_limit = sample(range(3, 9))
-        else:    
+        else:
             self.behaviour = composer.behaviour["default_behaviour"]
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
@@ -160,9 +157,9 @@ class Voice(object):
 
     def reset_slave(self, change_master=False):
         """resets values for slave voices.
-        
+
         if <change_master> is an int:
-          - it is used as the id new master-voice 
+          - it is used as the id new master-voice
         if <change_master> is 'True':
           - a new random master is chosen,
         """
@@ -177,7 +174,6 @@ class Voice(object):
         self.slide = follow.slide
         self.following_counter = 0
         self.follow_limit = sample(range(3, 9))
-                        
 
     def set_state(self, name):
         '''sets the state for the voice.
