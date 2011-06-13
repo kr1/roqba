@@ -32,7 +32,14 @@ behaviour = {"speed": 0.3,
              'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,
                         [(7, (3, 2, 2))] * 10],
              #'meter': (5, (2, 3)),
-             'automate_wavetables': True,
+             'automate_wavetables': sum([[['random', ['all', 'even', 'odd']]] * 1,
+                                         [['random_harmonic', ['all', 'even', 'odd']]] * 5,
+                                         [['harmonic', ['all', 'even', 'odd']]] * 15], 
+                                         []),
+             #'automate_wavetables': False,
+             'automate_num_partials': True,
+             'default_num_partial': 13,
+             'max_num_partials': 15,
              'common_wavetables': True,
              'transpose': 12,
              'automate_transpose': True,
@@ -128,3 +135,4 @@ if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
 
 if __name__ == "__main__":
     print styles
+    print behaviour 

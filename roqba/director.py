@@ -85,33 +85,41 @@ class Director(object):
                 if self.behaviour["automate_pan"]:
                     for v in voices:
                         v.pan_pos = (random.random() * 2) - 1
-                        self.gateway.pd.send(["sound", "pan", v.id, v.pan_pos ])
+                        self.gateway.pd.send(["sound", "pan", v.id, v.pan_pos])
                 if self.automate_binaural_diffs:
                     if self.behaviour["pan_controls_binaural_diff"]:
                         for v in voices:
-                            diff = (abs(v.pan_pos) * 
+                            diff = (abs(v.pan_pos) *
                                     self.behaviour["max_binaural_diff"])
-                            self.composer.set_binaural_diffs(diff, str(v.id)) 
-                    else:     
+                            self.composer.set_binaural_diffs(diff, str(v.id))
+                    else:
                         self.composer.set_binaural_diffs()
                 if self.behaviour["automate_wavetables"]:
-                    wavetable = (self.behaviour["common_wavetables"] and 
-                                  wavetables.random_harmonic_wavetable() or
+                    wt_item = random.choice(self.behaviour["automate_wavetables"])
+                    fun = getattr(wavetables, wt_item[0] + '_wavetable')
+                    num_partials = (self.behaviour["automate_num_partials"] and
+                                    random.randint(1, self.behaviour["max_num_partials"])  or
+                                    self.behaviour["default_num_partials"])
+                    wavetable = (self.behaviour["common_wavetables"] and
+                                  fun(num_partials, random.choice(wt_item[1])) or
                                   None)
                     for v in voices:
                         if not wavetable:
-                            wavetable = wavetables.random_harmonic_wavetable()
+                            num_partials = (self.behaviour["automate_num_partials"] and
+                                            random.randint(1, self.behaviour["max_num_partials"])  or
+                                            self.behaviour["default_num_partials"])
+                            wavetable = fun(num_partials, random.choice(wt_item[1]))
                         self.gateway.pd_send_wavetable(v.id, wavetable)
                 if self.behaviour["automate_note_duration_prop"]:
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:
-                        prop = random_between(min_, max_, 0.3) 
+                        prop = random_between(min_, max_, 0.3)
                         #print "note duration proportion: ", prop
-                        [setattr(v, 'note_duration_prop', prop) for v 
+                        [setattr(v, 'note_duration_prop', prop) for v
                                       in self.composer.voices.values()]
                     else:
                         for v in self.composer.voices.values():
-                            prop = random_between(min_, max_, 0.3) 
+                            prop = random_between(min_, max_, 0.3)
                             v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
                     sample = self.behaviour["transposings"]

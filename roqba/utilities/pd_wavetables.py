@@ -30,7 +30,7 @@ def harmonic_wavetable(partials=15, which='all'):
     '''the value of each amplitude of partial N is given by 1 / N'''
     det = lambda x: 1.0 / (x + 1)
     fun = __assemble(which, det)
-    parts = map(fun, xrange(partials - 1))
+    parts = map(fun, xrange(partials))
     parts[0] = "1"
     return " ".join(parts)
 

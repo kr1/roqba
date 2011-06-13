@@ -58,7 +58,7 @@ def main():
 
 if __name__ == "__main__":
     print '''please run this app from the interpreter as:
-    \b\b\b\bimport main
+    \b\b\b\bfrom roqba import main
     \b\b\b\bmain.main()
     \b\b\bstop it with:
     \b\b\b\bmain.director.stop()
