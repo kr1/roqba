@@ -52,14 +52,15 @@ class Drummer(object):
                     vol = 0.5
                     ctl = None
                     meta = None
-                    confirm = None
+                    confirm_cont = True
+                    confirm_mark = True
                     if k == "cont":
-                        confirm, vol, ctl, meta = self.cont_frame(state,
+                        confirm_cont, vol, ctl, meta = self.cont_frame(state,
                                                                   density)
                     elif k == 'mark':
-                        confirm, vol, ctl, meta = self.mark_frame(state,
+                        confirm_mark, vol, ctl, meta = self.mark_frame(state,
                                                               density)
-                    if not confirm:
+                    if not confirm_cont or not confirm_mark :
                         continue
                     self.frame[k] = {"vol": vol,
                                      "pan": self.pan_positions[k],
@@ -87,7 +88,8 @@ class Drummer(object):
 
     def mark_frame(self, state, density):
         '''assembles the frame for the mark-voice'''
-        if (density < self.full_threshold) or random() > self.mark_prob:
+        meta = None
+        if (density > self.full_threshold) or random() > self.mark_prob:
             return (False, None, None, None)
         elif density > self.full_threshold:
             meta = "mark"
@@ -124,7 +126,6 @@ class Drummer(object):
                             "cont": [1 for n in indeces],
                             "tuned": [0 for n in indeces],
                             "mark": [0 for n in indeces]}
-
         self.smoothen()
         self.high_low_seq()
 
