@@ -21,7 +21,7 @@ METERS = {
         "applied": [2, 0, 1, 0, 0],
         "max_shuffle": 0.15
     },
-    6: {
+    (6, (3, 3)): {
         "human": (6, (3, 3)),
         "applied": [2, 0, 0, 1, 0, 0],
         "max_shuffle": 0.1

@@ -1,3 +1,4 @@
+from roqba.static.meters import METERS
 
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
@@ -28,9 +29,10 @@ behaviour = {"speed": 0.3,
              "max_shuffle": 0.1,
              'automate_meters': True,
              'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
+             'meters': METERS.keys(),
              #'meters': [(12, (1, 2, 2, 1, 2, 2, 2)), 8],
-             'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,
-                        [(7, (3, 2, 2))] * 10],
+             #'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,
+             #           [(7, (3, 2, 2))] * 10],
              #'meter': (5, (2, 3)),
              'automate_wavetables': sum([[['random', ['all', 'even', 'odd']]] * 2,
                                          [['random_harmonic', ['all', 'even', 'odd']]] * 5,

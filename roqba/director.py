@@ -37,6 +37,7 @@ class Director(object):
 
     def set_meter(self, meter):
         self.composer.set_meter(meter)
+        self.meter = self.composer.applied_meter
         self.metronome.set_meter(composer.METERS[meter]["applied"])
 
     def _play(self, duration=None):

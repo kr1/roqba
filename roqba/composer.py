@@ -66,6 +66,7 @@ class Composer(object):
 
         calls reload_register method of the voices and creates and
         sets the new meter also for the drummer-instance'''
+        self.meter = meter
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                     "terns")
         self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
