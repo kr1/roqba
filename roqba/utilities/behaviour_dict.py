@@ -1,4 +1,4 @@
-'''this module defines a behaviour dict class
+'''this module defines a custom dict
 
 BehaviourDict is a subclass of dict and modifies mainly the
 __setitem__ method by calling a setter method for
@@ -6,10 +6,10 @@ the given key if the setter method has been registered before'''
 
 
 class BehaviourDict(dict):
-    '''defines a dictionary-class with custum setter methods
+    '''defines a dictionary-class with custom setter methods
 
-    upon every call it checks if it has registered setter methods to be
-    called and calls them with the given value'''
+    upon every __setitem__ call it checks if it has registered setter 
+    methods and calls them with the given value'''
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.real_setters = {}
