@@ -59,7 +59,18 @@ behaviour = {"speed": 0.3,
              'default_note_duration_prop': 0.8,  # proportion
              'embellishment_speed_lim': 0.666,
              'default_pause_prob': 0.03,
-             'default_embellishment_prob': 0.005
+             'default_embellishment_prob': 0.005,
+             'per_voice': {
+                1: {
+                    'slide_duration_msecs': 100,
+                    'automate_binaural_diffs': True,  # alt: False
+                    'binaural_diff': 0.666,
+                    'max_binaural_diff': 15,
+                    'default_slide_duration_prop': 0.666,  # proportion
+                    'automate_note_duration_prop': True,
+                    'automate_note_duration_min_max': [0.1, 3.3]
+                } 
+              } 
             }
 
 styles = {"bulgarian": {

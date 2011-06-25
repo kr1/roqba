@@ -26,12 +26,31 @@ class BehaviourDict(dict):
     def _update(self, *args, **kwargs):
         '''assures that __setitem__  is called from __init__'''
         for k, v in dict(*args, **kwargs).iteritems():
-            if type(v) == dict:
-                self[k] = v['val']
-                self.real_setters[k] = v['setter']
-            else:
-                self[k] = v
+# temporarily commented rudiment from earlier setting handling
+#            if type(v) == dict:
+#                self[k] = v['val']
+#                self.real_setters[k] = v['setter']
+#            else:
+            self[k] = v
 
+    def voice_get(self, vid, key):
+        '''returns the value for the specified key.
+
+        if the value is present for the voice, this value is returned
+        otherwise the defaukt value for this key is returned'''
+        if vid in self.keys():
+                if key in self[vid].keys():
+                    return self[vid][key]
+                else:
+                    try:
+                        return self[key] 
+                    except KeyError:
+                        msg = "inexistent key: "
+                        msg += "{0} for both voice: {1} and default"
+                        raise RuntimeError(msg.format(key, vid))
+        else:
+            msg = "voice_get() called for unregistered voice: {0}"
+            raise RuntimeError(msg.format(vid))
 
 def test_setter(val):
     print "from test_setter, val:", val
