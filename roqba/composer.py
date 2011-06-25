@@ -247,7 +247,7 @@ class Composer(object):
                 self.gateway.pd.send(["voice", "binaural", -1, val])
         else:
             for v in self.voices.values():
-                val = random.random() * self.max_binaural_diff
+                val = random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
                 self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def drum_fill_handler(self, v, state):
@@ -299,7 +299,7 @@ class Composer(object):
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
                 dur_prop = (v.slide_duration_prop or
-                            behaviour["default_slide_duration_prop"])
+                            behaviour.voice_get(v.id, "default_slide_duration_prop"))
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))
