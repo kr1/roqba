@@ -238,7 +238,6 @@ class Composer(object):
         '''"de-tunes" the specified voice by the specified interval (in hertz)
 
         - if no values are given, random values (in the configurated range)
-
         are set for each voice.
         '''
         if val and val != 'random':
