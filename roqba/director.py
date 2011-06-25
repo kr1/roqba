@@ -95,22 +95,6 @@ class Director(object):
                             self.composer.set_binaural_diffs(diff, str(v.id))
                     else:
                         self.composer.set_binaural_diffs()
-                if self.behaviour["automate_wavetables"]:
-                    wt_item = random.choice(self.behaviour["automate_wavetables"])
-                    fun = getattr(wavetables, wt_item[0] + '_wavetable')
-                    num_partials = (self.behaviour["automate_num_partials"] and
-                                    random.randint(1, self.behaviour["max_num_partials"])  or
-                                    self.behaviour["default_num_partials"])
-                    wavetable = (self.behaviour["common_wavetables"] and
-                                  fun(num_partials, random.choice(wt_item[1])) or
-                                  None)
-                    for v in voices:
-                        if not wavetable:
-                            num_partials = (self.behaviour["automate_num_partials"] and
-                                            random.randint(1, self.behaviour["max_num_partials"])  or
-                                            self.behaviour["default_num_partials"])
-                            wavetable = fun(num_partials, random.choice(wt_item[1]))
-                        self.gateway.pd_send_wavetable(v.id, wavetable)
                 if self.behaviour["automate_note_duration_prop"]:
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:
@@ -126,6 +110,23 @@ class Director(object):
                     sample = self.behaviour["transposings"]
                     self.gateway.transpose = random.choice(sample)
                 time.sleep(self.speed)
+                if self.behaviour["automate_wavetables"]:
+                    self.gateway.stop_all_notes()
+                    wt_item = random.choice(self.behaviour["automate_wavetables"])
+                    fun = getattr(wavetables, wt_item[0] + '_wavetable')
+                    num_partials = (self.behaviour["automate_num_partials"] and
+                                    random.randint(1, self.behaviour["max_num_partials"])  or
+                                    self.behaviour["default_num_partials"])
+                    wavetable = (self.behaviour["common_wavetables"] and
+                                  fun(num_partials, random.choice(wt_item[1])) or
+                                  None)
+                    for v in voices:
+                        if not wavetable:
+                            num_partials = (self.behaviour["automate_num_partials"] and
+                                            random.randint(1, self.behaviour["max_num_partials"])  or
+                                            self.behaviour["default_num_partials"])
+                            wavetable = fun(num_partials, random.choice(wt_item[1]))
+                        self.gateway.pd_send_wavetable(v.id, wavetable)
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
                                 else 0)
