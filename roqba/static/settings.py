@@ -46,7 +46,8 @@ behaviour = {"speed": 0.3,
              'transpose': 12,
              'automate_transpose': True,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
-             'automate_pan' : True,
+             'default_pan_position': 0,
+             'automate_pan' : 1,
              'pan_controls_binaural_diff': True,
              'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
@@ -65,11 +66,28 @@ behaviour = {"speed": 0.3,
                     'slide_duration_msecs': 100,
                     'automate_binaural_diffs': True,  # alt: False
                     'binaural_diff': 0.666,
-                    'max_binaural_diff': 15,
+                    'default_pan_position': 0.2,
+                    'automate_pan' : 0.25,
+                    'max_binaural_diff': 5,
                     'default_slide_duration_prop': 0.666,  # proportion
                     'automate_note_duration_prop': True,
                     'automate_note_duration_min_max': [0.1, 3.3]
-                } 
+                    },
+                2: {
+                    'automate_wavetables': sum([[['random', ['even']]] * 2,
+                                         [['random_harmonic', ['even']]] * 5],
+                                         []),
+                    'automate_pan' : 0.75
+                    },
+                3: {'automate_wavetables': sum([[['random', ['odd']]] * 2,
+                                         [['random_harmonic', ['odd']]] * 5],
+                                         []),
+                    'automate_pan' : 0.75
+                    },
+                4: {
+                    'automate_pan' : 1.0,
+                    'max_binaural_diff': 15,
+                }
               } 
             }
 
