@@ -42,24 +42,58 @@ behaviour = {"speed": 0.3,
              'automate_num_partials': True,
              'default_num_partial': 13,
              'max_num_partials': 15,
-             'common_wavetables': True,
+             'common_wavetables': False,
              'transpose': 12,
              'automate_transpose': True,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
-             'automate_pan' : True,
+             'default_pan_position': 0,
+             'automate_pan' : 1,
              'pan_controls_binaural_diff': True,
              'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,
              'slide_duration_msecs': 100,
+             'automate_slide': True,
              'default_slide_duration_prop': 0.666,  # proportion
              'automate_note_duration_prop': True,
              'automate_note_duration_min_max': [0.1, 3.3],
-             'common_note_duration': True,
+             'common_note_duration': False,
              'default_note_duration_prop': 0.8,  # proportion
              'embellishment_speed_lim': 0.666,
              'default_pause_prob': 0.03,
-             'default_embellishment_prob': 0.005
+             'default_embellishment_prob': 0.005,
+             'per_voice': {
+                1: {
+                    'slide_duration_msecs': 100,
+                    'default_slide_duration_prop': 0.666,  # proportion
+                    'automate_binaural_diffs': True,  # alt: False
+                    'binaural_diff': 0.666,
+                    'default_pan_position': 0.2,
+                    'automate_pan' : 0.25,
+                    'max_binaural_diff': 5,
+                    'automate_note_duration_prop': True,
+                    'automate_note_duration_min_max': [0.1, 3.3]
+                    },
+                2: {
+                    'automate_wavetables': sum([[['random', ['even']]] * 2,
+                                         [['random_harmonic', ['even']]] * 5],
+                                         []),
+                     'max_num_partials': 5,
+                    'automate_pan' : 0.75
+                    },
+                3: {'automate_wavetables': sum([[['random', ['odd']]] * 2,
+                                         [['random_harmonic', ['odd']]] * 5],
+                                         []),
+                     'max_num_partials': 5,
+                    'automate_pan' : 0.75
+                    },
+                4: {
+                    'automate_pan' : 1.0,
+                    'max_binaural_diff': 15,
+                    'default_slide_duration_prop': 0.96,  # proportion
+                    'automate_note_duration_min_max': [0.6, 9.3]
+                }
+              } 
             }
 
 styles = {"bulgarian": {

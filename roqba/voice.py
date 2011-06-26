@@ -30,7 +30,7 @@ class Voice(object):
         self.queue = deque([], composer.settings['track_voices_length'])
         # STARTUP
         note_range.sort()
-        self.pan_position = 0
+        self.pan_position = composer.behaviour.voice_get(self.id, "default_pan_position")
         self.range = note_range
         self.dir = 0
         self.prior_note = None
@@ -60,14 +60,14 @@ class Voice(object):
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
         self.note_duration_steps = 1
-        self.pause_prob = composer.behaviour['default_pause_prob']
+        self.pause_prob = composer.behaviour.voice_get(id, 'default_pause_prob')
         self.legato_prob = 0.1  # to-do: really implement it
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
-        self.slide = False
-        self.proportional_slide_duration = True
-        self.slide_duration_prop = composer.behaviour['default_slide_duration_prop']
+        self.slide = composer.behaviour.voice_get(id, "automate_slide")
+        self.slide_duration_prop = composer.behaviour.voice_get(id, 'default_slide_duration_prop')
+
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         self.set_state(register)
 
