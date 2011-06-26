@@ -209,11 +209,15 @@ class Composer(object):
                                             reg["sort_importance"]) for 
              reg in self.registers.values()] 
             voices.sort(key=lambda x: register_sort_dict[x.register["name"]])
-            return voices
         else:
             dirs = filter(lambda x: x.dir, voices)
             no_dirs = list(set(voices) - set(dirs))
-            return dirs + no_dirs
+            voices =  dirs + no_dirs
+        melodic = filter(lambda v: v.playing_a_melody, voices)
+        if len(melodic) > 0:
+            voices.remove(melodic[0])
+            voices = [melodic[0]] + voices
+        return voices
 
     def choose_rhythm(self):
         '''chooses a new rhythm randomly from each voices groupings'''

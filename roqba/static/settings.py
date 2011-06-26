@@ -63,6 +63,7 @@ behaviour = {"speed": 0.3,
              'embellishment_speed_lim': 0.666,
              'default_pause_prob': 0.03,
              'default_embellishment_prob': 0.005,
+             'should_play_a_melody': False,  #alt: melody as list
              'per_voice': {
                 1: {
                     'slide_duration_msecs': 100,
@@ -79,19 +80,21 @@ behaviour = {"speed": 0.3,
                     'automate_wavetables': sum([[['random', ['even']]] * 2,
                                          [['random_harmonic', ['even']]] * 5],
                                          []),
-                     'max_num_partials': 5,
+                    'max_num_partials': 5,
                     'automate_pan' : 0.75
                     },
                 3: {'automate_wavetables': sum([[['random', ['odd']]] * 2,
                                          [['random_harmonic', ['odd']]] * 5],
                                          []),
-                     'max_num_partials': 5,
+                    'max_num_partials': 5,
                     'automate_pan' : 0.75
                     },
                 4: {
                     'automate_pan' : 1.0,
                     'max_binaural_diff': 15,
                     'default_slide_duration_prop': 0.96,  # proportion
+                    'should_play_a_melody': [0, [0, 1, 1, 2, -2, -1, -1, -3, 3, -3, 3]],  #alt: melody as list
+                    'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
                 }
               } 
