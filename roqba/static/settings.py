@@ -23,6 +23,7 @@ behaviour = {"speed": 0.3,
              # quarter of the range
              "speed_target": 0.25,
              "speed_change": "leap",  # alt:"transition"
+             'caesura_prob': 0.666,   
              'slide_in_msecs': 200,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
