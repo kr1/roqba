@@ -64,7 +64,8 @@ class Director(object):
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
-            if comment == 'caesura':
+            if (comment == 'caesura' and
+                random.random() < self.behaviour["caesura_prob"]):
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
                 self.shuffle_delay = random.random() * self.MAX_SHUFFLE
