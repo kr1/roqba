@@ -5,7 +5,7 @@ from random import choice as sample
 from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import  analyze_grouping
-from metronome import MEDIUM
+from metronome import MEDIUM, HEAVY
 
 
 class Voice(object):
@@ -55,6 +55,12 @@ class Voice(object):
             self.follow_limit = sample(range(3, 9))
         else:
             self.behaviour = composer.behaviour["default_behaviour"]
+        self.should_play_a_melody = composer.behaviour.voice_get(id, 'should_play_a_melody')
+        mel = self.should_play_a_melody
+        if mel:
+            self.melody = mel[1]
+            self.melody_starts_on = mel[0]
+        self.playing_a_melody = False 
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
@@ -109,11 +115,24 @@ class Voice(object):
                     self.do_embellish = True
 
     def next_note(self):
-        """the next is calculated here"""
+        """the next note is calculated/read here"""
+        move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
+        elif self.playing_a_melody:
+            try:
+                move = self.melody_iterator.next()
+                print "move {0} ".format(move)
+            except StopIteration:
+                self.playing_a_melody = False
         else:
-            move = sample([-1, 1]) * sample(self.movement_probs)
+            if self.should_play_a_melody and self.note != 0:
+                if (self.melody_starts_on == (self.note % 7) and
+                    self.weight in [HEAVY, MEDIUM]):
+                    print "starting the melody"
+                    self.melody_iterator = iter(self.melody)
+                    move = self.melody_iterator.next()
+                    self.playing_a_melody = True
         res = self.note + move
         exceed = self.exceeds(res)
         if exceed:
