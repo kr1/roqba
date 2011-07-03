@@ -73,7 +73,7 @@ class Voice(object):
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.slide = composer.behaviour.voice_get(id, "automate_slide")
         self.slide_duration_prop = composer.behaviour.voice_get(id, 'default_slide_duration_prop')
-
+        self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         self.set_state(register)
 
@@ -107,21 +107,21 @@ class Voice(object):
                 if random.random() < self.pause_prob:
                     self.note = 0
                 else:
-                    self.note = self.next_note()
+                    self.note = self.next_note(meter_pos)
                     self.note_delta = self.note - self.prior_note
                 if self.track_me:
                     self.queue.append(self.note)
                 if random.random() < self.embellishment_prob:
                     self.do_embellish = True
 
-    def next_note(self):
+    def next_note(self, meter_pos):
         """the next note is calculated/read here"""
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
         elif self.playing_a_melody:
             try:
-                move = self.melody_iterator.next()
+                move = self.manage_melody_note(meter_pos)
                 print "move {0} ".format(move)
             except StopIteration:
                 self.playing_a_melody = False
@@ -130,8 +130,11 @@ class Voice(object):
                 if (self.melody_starts_on == (self.note % 7) and
                     self.weight in [HEAVY, MEDIUM]):
                     print "starting the melody"
+                    # regarding the on-off pattern we try a minimum invasive strategy
+                    # by modifying only those indexes of the pattern covered by the 
+                    # current note and the start of the following note 
                     self.melody_iterator = iter(self.melody)
-                    move = self.melody_iterator.next()
+                    move = self.manage_melody_note(meter_pos)
                     self.playing_a_melody = True
         res = self.note + move
         exceed = self.exceeds(res)
@@ -145,10 +148,49 @@ class Voice(object):
                          dir:{1}'''.format(res, self.dir))
         return res
 
+    def manage_melody_note(self, meter_pos):
+        """retrieves next note-delta and length belonging to the melody.
+
+        sets the following 'bits' of the off-on-pattern according to the 
+        specified length of the note.
+        returns the pitch-related move (delta)"""
+        move, length = self.melody_iterator.next()
+        oop = self.on_off_pattern
+        oop[meter_pos] = 1
+        remaining = len(oop) - meter_pos
+        if remaining < length:
+            this_pat_length = remaining
+            self.next_pat_length = length - remaining
+            self.apply_overhanging_notes()
+        else:
+            this_pat_length = length
+            # this is for the following note,
+            # if it is not run the next pattern will start with a note
+            # anyway
+            try:
+                self.on_off_pattern[meter_pos + length] = 1
+            except IndexError:
+                pass 
+        for note_unit in range(1, this_pat_length):
+            self.on_off_pattern[meter_pos + note_unit] = 0
+        # Note: we set next_pat_length int if note is longer than the remaining 
+        # part of the cycle. upon next cycle the rest of the note is 
+        # applied to the new on-off-pattern.
+        return move 
+
+    def apply_overhanging_notes(self):
+        if len(self.on_off_pattern) > self.next_pat_length:
+            for idx in range(self.next_pat_length):
+                self.on_off_pattern[idx] = 0
+            self.on_off_pattern[idx + 1] = 1
+            self.next_pat_length = None
+        else:
+            self.next_pat_length -= self.on_off_pattern
+
     def exceeds(self, note):
         """returns min/max limits and a bounce back direction coefficient
 
-        if incomint int exceeds limits, returns False otherwise"""
+        if incoming int exceeds limits, returns False otherwise"""
         if self.composer.scale in ["PENTATONIC", "PENTA_MINOR"]:
             range = [int((x / 7.0) * 5) for x in self.range]
         else:
@@ -165,6 +207,11 @@ class Voice(object):
         if self.counter % self.change_rhythm_after_times == 0:
             self.note_length_grouping = grouping
             self.on_off_pattern = analyze_grouping(grouping)
+            # here we check if we are playing a melody and if so if we have
+            # remaining note parts to be applied.
+            if self.playing_a_melody:
+                if self.next_pat_length:
+                    self.apply_overhanging_notes()
         self.counter += 1
 
     def in_the_middle(self, note):
