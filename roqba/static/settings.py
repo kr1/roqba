@@ -93,7 +93,10 @@ behaviour = {"speed": 0.3,
                     'automate_pan' : 1.0,
                     'max_binaural_diff': 15,
                     'default_slide_duration_prop': 0.96,  # proportion
-                    'should_play_a_melody': [0, [0, 1, 1, 2, -2, -1, -1, -3, 3, -3, 3]],  #alt: melody as list
+                    #'should_play_a_melody': [0, [0, 1, 1, 2, -2, -1, -1, -3, 3, -3, 3]],  #alt: False
+                    'should_play_a_melody': [4, [[0, 3], [0, 3], [0, 2], [1, 2], [-2, 2], 
+                                                 [1, 3], [-2, 3], [-2, 6], [4, 3], [0, 3], 
+                                                 [0, 2], [3, 2], [-2, 2], [-1, 6], [-2, 6]]],  #alt: False
                     'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
                 }
