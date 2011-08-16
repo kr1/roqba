@@ -130,3 +130,6 @@ class NoteGateway(object):
                     #msg = data["message"]
                 else:
                     msg = str(data)
+
+    def set_transpose(self, val):
+        self.transpose = val

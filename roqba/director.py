@@ -3,11 +3,15 @@ import logging
 import random
 import math
 import threading
+from Queue import deque
+
+import json
 
 import metronome
 import composer
 from roqba.utilities import random_between
 from roqba.utilities import pd_wavetables as wavetables
+from roqba.utilities.gui_connect import GuiConnect
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -18,11 +22,22 @@ class Director(object):
         self.composer = composer
         self.behaviour = behaviour
         self.playing = None
+        self.stopped = False
         self.state = state
         self.settings = settings
         self.gateway = composer.gateway
         self.speed_target = behaviour["speed_target"]
         self.speed = state["speed"]
+        self.has_gui = settings['gui']
+        self.gui_sender = self.has_gui and GuiConnect() or None
+        self.allowed_incoming_messages = (self.has_gui and 
+                        self.behaviour.keys() +  ['play']
+                        or None)
+        if self.has_gui:
+            self.incoming = deque()
+            thre = threading.Thread(target=self.gui_sender.read_incoming_messages, args=(self.incoming,))
+            thre.daemon = True
+            thre.start()
 
         # keep this between 0 and MAX_SHUFFLE
         self.shuffle_delay = behaviour["shuffle_delay"]
@@ -49,7 +64,12 @@ class Director(object):
         logger.info("<<<<<<<<<<<<<<<<<<<<<<   start playing  >>>>>>>>>>>>>>>>\
 >>>>>>>>>>>>>>")
         pos = 0
-        while self.playing:
+
+        while not self.stopped:
+            if not self.playing:
+                self.check_incoming_messages()
+                time.sleep(0.2)
+                continue
             if duration:
                 pos += self.speed
                 if pos > duration:
@@ -135,10 +155,22 @@ class Director(object):
                                             self.behaviour.voice_get(v.id, "default_num_partials"))
                             wavetable = fun(num_partials, random.choice(wt_item[1]))
                     self.gateway.pd_send_wavetable(v.id, wavetable)
+                if self.has_gui:
+                    self.gui_sender.handle_caesura(self)
+            self.check_incoming_messages()
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT
                                 else 0)
             time.sleep(self.speed + shuffle_delta)
+    
+    def check_incoming_messages(self):
+        '''checks if there are incoming messages in the queue''' 
+        if self.has_gui:
+            if self.playing:
+                self.gui_sender.send_cycle_pos(self)
+            while len(self.incoming) > 0:
+                msg = self.incoming.pop()
+                self.handle_incoming_message(msg)
 
     def pause(self):
         if self.playing:
@@ -150,7 +182,7 @@ class Director(object):
         if not self.playing:
             self.playing = True
             self.gateway.unpause()
-            threading.Thread(target=self._play, args=()).start()
+            #threading.Thread(target=self._play, args=()).start()
         return True
 
     def stop(self):
@@ -158,6 +190,8 @@ class Director(object):
             logger.info("<<<<<<<<<<<<<<   stop playing = length: '{0}' >>>>>>>\
 >>>>>>>>>>>>>>>>>>".format(self.make_length()))
         self.playing = False
+        self.stopped = True
+        self.gui_sender.receive_exit_requested = True
         self.gateway.stop()
         self.metronome.reset()
         self.composer.notator.reset()
@@ -190,3 +224,13 @@ class Director(object):
             #print "new speed values: {0}\n resetting metronome.".format(
             #                                                self.speed)
         return self.speed
+
+    def handle_incoming_message(self, msg):
+        key, val = msg.items()[0]
+        print key, ": ", val
+        if key in self.allowed_incoming_messages:
+            if key in self.behaviour.keys():
+                print "setting %s to %d" % (key, val)
+                self.behaviour[key] = val
+            elif key == "play":
+                val and self.unpause() or self.pause()
