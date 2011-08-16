@@ -47,6 +47,8 @@ director = Director(composer, state, behaviour, settings)
 
 def add_setters():
     behaviour.real_setters["meter"] = director.set_meter
+    behaviour.real_setters["transpose"] = director.gateway.set_transpose
+    behaviour.real_setters["speed"] = director.new_speed
     behaviour.real_setters["binaural_diff"] = composer.set_binaural_diffs
     behaviour.real_setters["slide_duration_msecs"] = gateway.set_slide_msecs_for_all_voices
 

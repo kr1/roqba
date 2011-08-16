@@ -246,12 +246,16 @@ class Composer(object):
         '''
         if val and val != 'random':
             if voice:
-                self.gateway.pd.send(["voice", "binaural", voice, val])
+                voice.binaural_diff = val
+                self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
             else:
                 self.gateway.pd.send(["voice", "binaural", -1, val])
+                for v in self.voices.values():
+                    v.binaural_diff = val
         else:
             for v in self.voices.values():
                 val = random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
+                v.binaural_diff = val
                 self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def drum_fill_handler(self, v, state):

@@ -94,7 +94,7 @@ class Director(object):
                         for v in voices:
                             diff = (abs(v.pan_pos) *
                                     self.behaviour.voice_get(v.id, "max_binaural_diff"))
-                            self.composer.set_binaural_diffs(diff, str(v.id))
+                            self.composer.set_binaural_diffs(diff, v)
                     else:
                         self.composer.set_binaural_diffs()
                 if self.behaviour["automate_note_duration_prop"]:
@@ -168,7 +168,10 @@ class Director(object):
         return "{0}:{1}".format(int(delta / 60),
                                 str(delta % 60).zfill(2))
 
-    def new_speed(self):
+    def new_speed(self, val=None):
+        if val:
+            self.speed = val
+            return self.speed
         if self.behaviour['automate_speed_change']:
             if self.speed_change == 'transition':
                 self.speed += random.randint(-1000, 1000) / 66666.
