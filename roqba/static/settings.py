@@ -1,4 +1,5 @@
 from roqba.static.meters import METERS
+from roqba.utilities.behaviour_dict import BehaviourDict
 
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
@@ -7,6 +8,10 @@ settings = {'number_of_voices': 4,
                                  'SLAVE', 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
+            'gui': True,
+            'GUI_HOST': 'localhost',
+            'TO_GUI_PORT': 12322,
+            'FROM_GUI_PORT': 12323,
             'track_voices_length': 666,
             'lowest_note_num': 0,
             'highest_note_num': 127,
@@ -23,7 +28,7 @@ behaviour = {"speed": 0.3,
              # quarter of the range
              "speed_target": 0.25,
              "speed_change": "leap",  # alt:"transition"
-             'caesura_prob': 0.666,   
+             'caesura_prob': 0.9,   
              'slide_in_msecs': 200,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
@@ -53,7 +58,7 @@ behaviour = {"speed": 0.3,
              'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,
-             'slide_duration_msecs': 100,
+             'slide_duration_msecs': 100, #TODO : defined twice - which is read?
              'automate_slide': True,
              'default_slide_duration_prop': 0.666,  # proportion
              'automate_note_duration_prop': True,
@@ -65,7 +70,7 @@ behaviour = {"speed": 0.3,
              'default_embellishment_prob': 0.005,
              'should_play_a_melody': False,  #alt: melody as list
              'per_voice': {
-                1: {
+                1: BehaviourDict({
                     'slide_duration_msecs': 100,
                     'default_slide_duration_prop': 0.666,  # proportion
                     'automate_binaural_diffs': True,  # alt: False
@@ -75,21 +80,21 @@ behaviour = {"speed": 0.3,
                     'max_binaural_diff': 5,
                     'automate_note_duration_prop': True,
                     'automate_note_duration_min_max': [0.1, 3.3]
-                    },
-                2: {
+                    }),
+                2: BehaviourDict({
                     'automate_wavetables': sum([[['random', ['even']]] * 2,
                                          [['random_harmonic', ['even']]] * 5],
                                          []),
                     'max_num_partials': 5,
                     'automate_pan' : 0.75
-                    },
-                3: {'automate_wavetables': sum([[['random', ['odd']]] * 2,
+                    }),
+                3: BehaviourDict({'automate_wavetables': sum([[['random', ['odd']]] * 2,
                                          [['random_harmonic', ['odd']]] * 5],
                                          []),
                     'max_num_partials': 5,
                     'automate_pan' : 0.75
-                    },
-                4: {
+                    }),
+                4: BehaviourDict({
                     'automate_pan' : 1.0,
                     'max_binaural_diff': 15,
                     'default_slide_duration_prop': 0.96,  # proportion
@@ -99,7 +104,7 @@ behaviour = {"speed": 0.3,
                                                  [0, 2], [3, 2], [-2, 2], [-1, 6], [-2, 6]]],  #alt: False
                     'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
-                }
+                })
               } 
             }
 

@@ -30,7 +30,7 @@ class Voice(object):
         self.queue = deque([], composer.settings['track_voices_length'])
         # STARTUP
         note_range.sort()
-        self.pan_position = composer.behaviour.voice_get(self.id, "default_pan_position")
+        self.pan_pos = composer.behaviour.voice_get(self.id, "default_pan_position")
         self.range = note_range
         self.dir = 0
         self.prior_note = None
@@ -71,6 +71,7 @@ class Voice(object):
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
+        self.binaural_diff = 0 # this is not used in this module directly, but serves to track 
         self.slide = composer.behaviour.voice_get(id, "automate_slide")
         self.slide_duration_prop = composer.behaviour.voice_get(id, 'default_slide_duration_prop')
         self.next_pat_length = None
@@ -122,7 +123,7 @@ class Voice(object):
         elif self.playing_a_melody:
             try:
                 move = self.manage_melody_note(meter_pos)
-                print "move {0} ".format(move)
+                #print "move {0} ".format(move)
             except StopIteration:
                 self.playing_a_melody = False
         else:
