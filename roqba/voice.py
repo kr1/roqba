@@ -186,7 +186,7 @@ class Voice(object):
             self.on_off_pattern[idx + 1] = 1
             self.next_pat_length = None
         else:
-            self.next_pat_length -= self.on_off_pattern
+            self.next_pat_length -= len(self.on_off_pattern)
 
     def exceeds(self, note):
         """returns min/max limits and a bounce back direction coefficient

@@ -10,7 +10,8 @@ class NoteGateway(object):
         self.logger = logging.getLogger("sender")
         self.settings = settings
         self.slide = True
-        self.slide_duration_prop = behaviour['default_slide_duration_prop']
+        self.behaviour = behaviour
+        self.slide_duration_prop = behaviour['slide_duration_prop']
         self.voice_ids = []
         self.block_messages = False
         self.transpose = behaviour["transpose"]
@@ -111,11 +112,9 @@ class NoteGateway(object):
                             #                  voice: {1}: {0}".\
                             #                  format(msg, v.id))
                             if self.slide and v.slide:
-                                if v.slide_duration_prop:
+                                if self.behaviour.voice_get(v.id, "use_proportional_slide_duration"):
                                     dur_prop = v.slide_duration_prop
-                                else:
-                                    dur_prop = self.slide_duration_prop
-                                self.set_slide_msecs(v.id,
+                                    self.set_slide_msecs(v.id,
                                               (v.duration_in_msec * dur_prop))
                             self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
                             self.pd_send_note(v.id, msg)

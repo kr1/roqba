@@ -50,22 +50,30 @@ behaviour = {"speed": 0.3,
              'default_num_partial': 13,
              'max_num_partials': 15,
              'common_wavetables': False,
+             # TRANSPOSING
              'transpose': 12,
              'automate_transpose': True,
              'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+             # PAN RELATED
              'default_pan_position': 0,
              'automate_pan' : 1,
+             # BINAURAL DIFF RELATED
              'pan_controls_binaural_diff': True,
              'automate_binaural_diffs': True,  # alt: False
              'binaural_diff': 0.666,
              'max_binaural_diff': 10,
+             # SLIDE RELATED
+             'use_proportional_slide_duration': False,  # proportion or msecs
              'slide_duration_msecs': 100, #TODO : defined twice - which is read?
+             'slide_in_msecs': 200,
              'automate_slide': True,
-             'default_slide_duration_prop': 0.666,  # proportion
+             'slide_duration_prop': 0.666,  # proportion
+             # NOTE DURATION RELATED
              'automate_note_duration_prop': True,
              'automate_note_duration_min_max': [0.1, 3.3],
              'common_note_duration': False,
              'default_note_duration_prop': 0.8,  # proportion
+
              'embellishment_speed_lim': 0.666,
              'default_pause_prob': 0.03,
              'default_embellishment_prob': 0.005,
@@ -73,7 +81,8 @@ behaviour = {"speed": 0.3,
              'per_voice': {
                 1: BehaviourDict({
                     'slide_duration_msecs': 100,
-                    'default_slide_duration_prop': 0.666,  # proportion
+                    'slide_duration_prop': 0.666,  # proportion
+                    'use_proportional_slide_duration': False,  # proportion or msecs
                     'automate_binaural_diffs': True,  # alt: False
                     'binaural_diff': 0.666,
                     'default_pan_position': 0.2,
@@ -99,7 +108,8 @@ behaviour = {"speed": 0.3,
                 4: BehaviourDict({
                     'automate_pan' : 1.0,
                     'max_binaural_diff': 15,
-                    'default_slide_duration_prop': 0.96,  # proportion
+                    'slide_duration_prop': 0.666,  # proportion
+                    'use_proportional_slide_duration': False,  # proportion or msecs
                     #'should_play_a_melody': [0, [0, 1, 1, 2, -2, -1, -1, -3, 3, -3, 3]],  #alt: False
                     'should_play_a_melody': [4, [[0, 3], [0, 3], [0, 2], [1, 2], [-2, 2], 
                                                  [1, 3], [-2, 3], [-2, 6], [4, 3], [0, 3], 
