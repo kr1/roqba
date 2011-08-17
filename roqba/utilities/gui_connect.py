@@ -37,10 +37,26 @@ class GuiConnect(object):
             val = director.state[field]
             if field == 'cycle_pos':
                 val += 1
-            self.send(json.dumps({field: val}))
+            self.send({field: val})
 
     def read_incoming_messages(self, q):
         while not self.receive_exit_requested:
             time.sleep(0.2)
             msg = self.receiver.recv(1024)
             q.append(json.loads(msg))
+
+    def update_gui(self, director):
+        beh = director.behaviour
+        for field in beh.keys():
+            if (field in ['per_voice', 'meter', 'meters'] or
+                type(beh[field]).__name__ in ['list', 'dict']):
+                continue
+            self.send({field: beh[field]})
+        for voice in beh['per_voice'].keys():
+            v_beh =  beh['per_voice'][voice]
+            for field in v_beh.keys(): 
+                if type(v_beh[field]) in ['list', 'dict']:
+                    continue
+                name = 'voice_' + str(voice) + '_' + field
+                self.send({name: v_beh[field]})
+        self.send({'scale': director.composer.scale})
