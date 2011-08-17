@@ -29,10 +29,10 @@ behaviour = {"speed": 0.3,
              "speed_target": 0.25,
              "speed_change": "leap",  # alt:"transition"
              'caesura_prob': 0.9,   
-             'slide_in_msecs': 200,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
              "max_shuffle": 0.1,
+             # METERS
              'automate_meters': True,
              'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
              'meters': METERS.keys(),
@@ -40,6 +40,7 @@ behaviour = {"speed": 0.3,
              #'meters': [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,
              #           [(7, (3, 2, 2))] * 10],
              #'meter': (5, (2, 3)),
+             # WAVETABLES
              'automate_wavetables': sum([[['random', ['all', 'even', 'odd']]] * 2,
                                          [['random_harmonic', ['all', 'even', 'odd']]] * 5,
                                          [['harmonic', ['all', 'even', 'odd']]] * 10], 
@@ -88,7 +89,8 @@ behaviour = {"speed": 0.3,
                     'max_num_partials': 5,
                     'automate_pan' : 0.75
                     }),
-                3: BehaviourDict({'automate_wavetables': sum([[['random', ['odd']]] * 2,
+                3: BehaviourDict({
+                    'automate_wavetables': sum([[['random', ['odd']]] * 2,
                                          [['random_harmonic', ['odd']]] * 5],
                                          []),
                     'max_num_partials': 5,

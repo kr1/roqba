@@ -292,7 +292,7 @@ class Composer(object):
         if key in ORNAMENTS:
             notes = sample(ORNAMENTS[key])
 
-            ## check for the speed limit, if ornaments wold be too fast,
+            ## check for the speed limit, if ornaments would be too fast,
             ## don't embellish
             if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return

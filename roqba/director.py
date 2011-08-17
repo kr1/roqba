@@ -31,10 +31,12 @@ class Director(object):
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (self.has_gui and 
-                        self.behaviour.keys() +  ['play']
+                        self.behaviour.keys() +  ['play', 'sys', 'scale']
                         or None)
         if self.has_gui:
             self.incoming = deque()
+            self.gui_sender.update_gui(self)
+            #start the reader thread
             thre = threading.Thread(target=self.gui_sender.read_incoming_messages, args=(self.incoming,))
             thre.daemon = True
             thre.start()
@@ -210,17 +212,17 @@ class Director(object):
             if self.speed_change == 'transition':
                 self.speed += random.randint(-1000, 1000) / 66666.
             else:  # if self.speed_change == 'leap':
-                if self.speed_target != 0.5:
-                    target = self.speed_target
+                if self.behaviour['speed_target'] != 0.5:
+                    target =  self.behaviour['speed_target']
                     if  target < 0.3:
                         target = target ** 2
                     speed_tmp = random.random() ** math.log(target, 0.5)
-                    self.speed = (self.MIN_SPEED +
-                                  ((self.MAX_SPEED - self.MIN_SPEED) *
+                    self.speed = (self.behaviour["min_speed"] +
+                                  ((self.behaviour["max_speed"] - self.behaviour["min_speed"]) *
                                   speed_tmp))
                 else:
-                    self.speed = self.MIN_SPEED + (random.random() *
-                                        (self.MAX_SPEED - self.MIN_SPEED))
+                    self.speed = self.behaviour["min_speed"] + (random.random() *
+                                        (self.behaviour["max_speed"] - self.behaviour["min_speed"]))
             #print "new speed values: {0}\n resetting metronome.".format(
             #                                                self.speed)
         return self.speed
