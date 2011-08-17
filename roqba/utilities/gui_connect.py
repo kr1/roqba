@@ -17,18 +17,19 @@ class GuiConnect(object):
         self.receive_exit_requested = False
 
     def send(self, msg):  
-        self.sock.sendto(msg, (self.gui_host, self.send_port))
+        self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
 
     def handle_caesura(self, director):
         print "caesura"
         director_fields_to_transmit = ['speed']#,'transpose']
         for field in director_fields_to_transmit:
-            self.send(json.dumps({field:getattr(director, field)}))
+            self.send({field:getattr(director, field)})
         voice_fields_to_transmit = ['pan_pos', 'binaural_diff']
         for field in voice_fields_to_transmit:
             for v in director.composer.voices.values():
                 dic = {'voice_' + str(v.id) + '_' + field: getattr(v, field)}
-                self.send(json.dumps(dic))
+                self.send(dic)
+        self.update_gui(director)
 
     def send_cycle_pos(self, director):
         director_state_fields_to_transmit = ['weight', 'cycle_pos']#,'transpose']

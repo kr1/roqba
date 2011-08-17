@@ -108,12 +108,15 @@ class Director(object):
                 voices = self.composer.voices.values()
                 if self.behaviour["automate_pan"]:
                     for v in voices:
-                        max_pos = self.behaviour.voice_get(v.id, "automate_pan")
-                        v.pan_pos = (random.random() * max_pos) - max_pos / 2.0
-                        self.gateway.pd.send(["sound", "pan", v.id, v.pan_pos])
-                if self.automate_binaural_diffs:
+                        if self.behaviour.voice_get(v.id, "automate_pan"):
+                            max_pos = self.behaviour.voice_get(v.id, "automate_pan")
+                            v.pan_pos = (random.random() * max_pos) - max_pos / 2.0
+                            self.gateway.send_voice_pan(v, v.pan_pos)
+                if self.behaviour["automate_binaural_diffs"]:
                     if self.behaviour["pan_controls_binaural_diff"]:
                         for v in voices:
+                            if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+                                continue
                             diff = (abs(v.pan_pos) *
                                     self.behaviour.voice_get(v.id, "max_binaural_diff"))
                             self.composer.set_binaural_diffs(diff, v)
