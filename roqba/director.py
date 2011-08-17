@@ -230,9 +230,21 @@ class Director(object):
     def handle_incoming_message(self, msg):
         key, val = msg.items()[0]
         print key, ": ", val
+        if key[0:6] == 'voice_':
+            split = key.split("_")
+            vid = int(split[1])
+            v_key = "_".join(split[2:])
+            print "setting {0} of voice {1} to {2}".format(v_key, vid, val)
+            self.behaviour["per_voice"][vid][v_key] = val
         if key in self.allowed_incoming_messages:
             if key in self.behaviour.keys():
-                print "setting %s to %d" % (key, val)
+                print "setting {0} to {1}".format(key, val)
                 self.behaviour[key] = val
             elif key == "play":
                 val and self.unpause() or self.pause()
+            elif key == "sys":
+                if val == 'update':
+                    self.gui_sender.update_gui(self)
+                val and self.unpause() or self.pause()
+            elif key == 'scale':
+                self.composer.set_scale(val)
