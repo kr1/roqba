@@ -73,10 +73,20 @@ class Voice(object):
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.binaural_diff = 0 # this is not used in this module directly, but serves to track 
         self.slide = composer.behaviour.voice_get(id, "automate_slide")
-        self.slide_duration_prop = composer.behaviour.voice_get(id, 'default_slide_duration_prop')
+        self.slide_duration_prop = composer.behaviour.voice_get(id, 'slide_duration_prop')
         self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         self.set_state(register)
+        self.add_setters_for_behaviour_dict()
+    
+    def add_setters_for_behaviour_dict(self):
+        beh = self.composer.behaviour['per_voice'][self.id]
+        beh.real_setters["slide_duration_prop"] = [setattr, self, "slide_duration_prop"] 
+        beh.real_setters["binaural_diff"] = [setattr, self, "binaural_diff"] 
+
+    def set_pan_pos(self, gateway, pan_pos):
+        self.pan_pos = pan_pos
+        gateway.send_voice_pan(self, pan_pos)
 
     def __str__(self):
         return str({"note": self.note,

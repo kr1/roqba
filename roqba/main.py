@@ -51,6 +51,9 @@ def add_setters():
     behaviour.real_setters["speed"] = director.new_speed
     behaviour.real_setters["binaural_diff"] = composer.set_binaural_diffs
     behaviour.real_setters["slide_duration_msecs"] = gateway.set_slide_msecs_for_all_voices
+    for vid in behaviour['per_voice'].keys():
+        behaviour['per_voice'][vid].real_setters["pan_pos"] = [composer.voices[vid].set_pan_pos, director.gateway]
+        behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = [director.gateway.set_slide_msecs, vid]
 
 def main():
     '''starts the main thread of the application'''
