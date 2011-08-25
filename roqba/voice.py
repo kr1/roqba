@@ -5,6 +5,7 @@ from random import choice as sample
 from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import  analyze_grouping
+from utilities import pd_wavetables as wavetables
 from metronome import MEDIUM, HEAVY
 
 
@@ -76,6 +77,11 @@ class Voice(object):
         self.slide_duration_prop = composer.behaviour.voice_get(id, 'slide_duration_prop')
         self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
+        # WAVETABLE - this is used for non-automated wavetables
+        self.wavetable_generation_type = sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
+        self.partial_pool = sample(sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[1])
+        self.num_partials = composer.behaviour.voice_get(id, 'default_num_partial')
+
         self.set_state(register)
         self.add_setters_for_behaviour_dict()
     
@@ -295,6 +301,13 @@ class Voice(object):
         for k, v in self.register["voice_composer_attrs"].items():
             setattr(self, k, getattr(self.composer, v))
         self.counter = 0
+    
+    def make_wavetable(self):
+        '''assembles a wavetable 
+        
+        using the registered wavetable-related params'''
+        fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
+        return fun(self.num_partials, self.partial_pool)
 
 if __name__ == "__main__":
     from composer import Composer

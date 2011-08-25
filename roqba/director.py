@@ -262,9 +262,19 @@ class Director(object):
         if key[0:6] == 'voice_':
             split = key.split("_")
             vid = int(split[1])
+            voice = self.composer.voices[vid]
             v_key = "_".join(split[2:])
             print "setting {0} of voice {1} to {2}".format(v_key, vid, val)
+            if v_key in ['wavetable_generation_type', 'num_partials', 'partial_pool']:
+                setattr(self.composer.voices[vid], v_key, val)
+                wavetable = voice.make_wavetable()
+                self.set_wavetables(manual=True, wavetable=wavetable, vid=vid)
+                return
             self.behaviour["per_voice"][vid][v_key] = val
+            if v_key == "mute":
+                self.gateway.mute_voice(vid, val == True)
+            elif v_key == "trigger_wavetable":
+                self.set_wavetables(vid=vid, manual=True)
         if key in self.allowed_incoming_messages:
             if key in self.behaviour.keys():
                 print "setting {0} to {1}".format(key, val)

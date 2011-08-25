@@ -131,7 +131,8 @@ class Application(Frame):
                 this_sca.ref = name
                 counter += 1
         CHECK_BUTTONS = OrderedDict(
-                 [('automate_binaural_diffs', True),
+                 [('mute', False),
+                  ('automate_binaural_diffs', True),
                   ('automate_note_duration_prop', True),
                   ('use_proportional_slide_duration', {'val': True, 'label': 'proportional slide'}),
                   ('automate_pan', True),
@@ -139,6 +140,7 @@ class Application(Frame):
         for vid in voice_ids:
             counter = 0
             cb_frame = LabelFrame(self, text="Voice {0} - Automation".format(vid))
+            setattr(self, 'voice_' + vid + '_cb_frame', cb_frame)
             for cb in CHECK_BUTTONS:
                 options = CHECK_BUTTONS[cb]
                 name = 'voice_' + vid + '_' + cb 
@@ -151,8 +153,39 @@ class Application(Frame):
                 self.this_cb.grid(sticky=W, column=0, row=counter)
                 self.this_cb.ref = name
                 counter += 1
-            cb_frame.grid(column=int(vid) + 2, row=4, sticky=N, rowspan=2)
+            # add trigger wavetable-button
+            trigWavetableButton = Button(cb_frame, text='Random Wavetable')
+            trigWavetableButton.bind('<Button-1>', self.trigger_waveform_handler)
+            trigWavetableButton.ref = 'voice_' + vid + "_trigger_wavetable"
+            trigWavetableButton.grid(row=counter)
+            cb_frame.grid(column=int(vid) + 2, row=4, sticky=N, rowspan=8)
+        for vid in voice_ids:
+            generation_types =  ["random", "random_harmonic", "harmonic"]
+            partial_pools = ["even", "odd", "all"]
+            types_name = 'voice_' + vid + '_' + 'wavetable_generation_type'
+            pools_name = 'voice_' + vid + '_' + 'partial_pool'
+            setattr(self, types_name , StringVar())
+            getattr(self, types_name).set("random")
+            setattr(self, pools_name , StringVar())
+            getattr(self, pools_name).set("all")
+            target_frame = getattr(self, 'voice_' + vid + '_cb_frame')
+            for gen_t in generation_types:
+                gen_t_entry = Radiobutton(target_frame, value=gen_t, text=gen_t, anchor=W,
+                                          variable=getattr(self, types_name))
+                gen_t_entry.bind('<ButtonRelease-1>', self.wt_handler)
+                gen_t_entry.ref = types_name
+                gen_t_entry.grid(row=len(target_frame.winfo_children()), sticky=W)
+            for pp in partial_pools:
+                pp_entry = Radiobutton(target_frame, value=pp, text=pp, anchor=W,
+                                        variable=getattr(self, pools_name))
+                pp_entry.bind('<ButtonRelease-1>', self.wt_handler)
+                pp_entry.ref = pools_name
+                pp_entry.grid(row=len(target_frame.winfo_children()), sticky=W)
 
+    def wt_handler(self, event):
+        print event.widget.tk
+        ref = event.widget.ref
+        self.send({ref: getattr(self, ref).get()})
 
     def create_check_buttons(self):
         self.cb_frame = LabelFrame(self, text="Global Settings")
@@ -249,6 +282,10 @@ class Application(Frame):
     def scale_handler(self, event):
         self.send({event.widget.ref: event.widget.get()})
         print event.widget.ref, event.widget.get()
+
+    def trigger_waveform_handler(self, event):
+        self.send({event.widget.ref: True})
+        print event.widget.ref, "- triggering wavetable"
 
     def send_scale(self):
         do = {'scale':self.scale.get()}

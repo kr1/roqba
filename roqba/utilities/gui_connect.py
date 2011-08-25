@@ -52,11 +52,17 @@ class GuiConnect(object):
                 type(beh[field]).__name__ in ['list', 'dict']):
                 continue
             self.send({field: beh[field]})
-        for voice in beh['per_voice'].keys():
-            v_beh =  beh['per_voice'][voice]
+        for vid in beh['per_voice'].keys():
+            voice = director.composer.voices[vid]
+            v_beh =  beh['per_voice'][vid]
+            prefix = 'voice_' + str(vid) + '_'
             for field in v_beh.keys(): 
                 if type(v_beh[field]) in ['list', 'dict']:
                     continue
-                name = 'voice_' + str(voice) + '_' + field
+                name =  prefix + field
                 self.send({name: v_beh[field]})
+            for field in ['num_partials', 'wavetable_generation_type', 'partial_pool']:
+                do = {prefix + field: getattr(voice, field)}
+                print "update gui: ", do
+                self.send(do)
         self.send({'scale': director.composer.scale})
