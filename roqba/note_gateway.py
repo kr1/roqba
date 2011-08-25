@@ -35,7 +35,23 @@ class NoteGateway(object):
     def stop_all_notes(self):
         '''sends a stop message to all active voices'''
         for v in self.voice_ids:
-            self.pd.send(["voice", v, 0])
+            self.stop_notes_of_voice(v)
+
+    def stop_notes_of_voice(self, vid):
+        '''sends the stop message to a specified voice'''
+        self.pd.send(["voice", vid, 0])
+
+    def mute_voice(self, vid, val):
+        '''sends a message to mute/unmute a voice to pd
+        
+        use vid=drums to mute/unmute the drums
+        '''
+        val = 1 if val else 0
+        if vid == "drums":  
+            msg = ["perc", "mute", val]
+        else:
+            msg = ["voice", vid, "mute", val]
+        self.pd.send(msg)
 
     def set_slide_to_0(self):
         '''this method bypasses the slide functionality

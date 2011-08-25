@@ -1,7 +1,6 @@
 import socket
 import json
 from collections import OrderedDict
-from math import floor
 from Tkinter import tkinter
 from Tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
 from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
@@ -78,10 +77,10 @@ class Application(Frame):
         return filter(lambda w: w.__class__.__name__ in ['Scale', 'Checkbutton'], settables)
 
     def create_radio_buttons(self):
+        # Scale related
         entries =  ['DIATONIC', 'HARMONIC', 'MELODIC', 'PENTATONIC', 'PENTA_MINOR']
         self.scale = StringVar()
         self.scale.set('DIATONIC')
-        print self.scale, self.scale.get()
         self.rb_frame = Frame(self)
         for e in entries:
             rb = Radiobutton(self.rb_frame, value=e, text=e, anchor=W, command=self.send_scale, variable=self.scale)
@@ -167,8 +166,10 @@ class Application(Frame):
 
     def set_value(self, name, val):
         '''set a widget to the specified value'''
-        if name == 'scale':
-            self.scale.set(val)
+        direct = ['scale', 'wavetable_generation_type', 'partial_pool']#, 'num_partials']
+        if filter(lambda x: x in name, direct):
+            print "setting:" , name, " to: ", val
+            getattr(self, name).set(val)
             return
         for w in self.settables:
             typ = w.__class__.__name__

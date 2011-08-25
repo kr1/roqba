@@ -5,8 +5,6 @@ import math
 import threading
 from Queue import deque
 
-import json
-
 import metronome
 import composer
 from roqba.utilities import random_between
@@ -248,6 +246,7 @@ class Director(object):
             elif key == "sys":
                 if val == 'update':
                     self.gui_sender.update_gui(self)
-                val and self.unpause() or self.pause()
             elif key == 'scale':
                 self.composer.set_scale(val)
+            elif key == "force_caesura":
+                self.force_caesura = True
