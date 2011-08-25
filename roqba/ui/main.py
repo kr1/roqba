@@ -96,10 +96,15 @@ class Application(Frame):
         this_cycle.grid(column=0, row=0, sticky=E+W)
         self.updateButton = Button(self.monitor_frame, text='Reload all Settings', command=self.request_update)
         self.updateButton.grid(row=1, sticky=E+W)
+        self.ForceCaesuraButton = Button(self.monitor_frame, text='Force Caesura', command=self.force_caesura)
+        self.ForceCaesuraButton.grid(row=2, sticky=E+W)
         self.monitor_frame.grid(column=0, row=10, sticky=E+W)
 
     def request_update(self):
         self.send({'sys': 'update'})
+
+    def force_caesura(self):
+      self.send({'force_caesura': True})
 
     def create_voices(self):
         voice_ids = ['1','2','3','4']  

@@ -21,6 +21,7 @@ class Director(object):
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
+        self.force_caesura = False
         self.state = state
         self.settings = settings
         self.gateway = composer.gateway
@@ -29,7 +30,7 @@ class Director(object):
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (self.has_gui and 
-                        self.behaviour.keys() +  ['play', 'sys', 'scale']
+                        self.behaviour.keys() +  ['play', 'sys', 'scale', 'force_caesura']
                         or None)
         if self.has_gui:
             self.incoming = deque()
@@ -84,8 +85,10 @@ class Director(object):
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
-            if (comment == 'caesura' and
-                random.random() < self.behaviour["caesura_prob"]):
+            if ((comment == 'caesura' and
+               random.random() < self.behaviour["caesura_prob"]) or 
+               self.force_caesura):
+                if self.force_caesura: self.force_caesura = False
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
                 self.shuffle_delay = random.random() * self.MAX_SHUFFLE
