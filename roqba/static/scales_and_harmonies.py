@@ -36,7 +36,7 @@ BASE_HARMONIES = {2: [set([6]), set([6, 2]), set([6, 0]), set([0, 2]),
                   3: [set([0]), set([6]), set([6, 2]), set([6, 0]),
                       set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])],
                   4: [set([0, 2]), set([6]), set([6, 2]), set([6, 0]),
-                      set([0, 2, 6]), set([0, 2, 4, 6]), 
+                      set([0, 2, 5]), set([0, 2, 4, 6]), 
                       set([0, 5]), # experimental: for pentatonic-'trap'
                       set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])]
                   }

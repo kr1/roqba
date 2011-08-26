@@ -28,6 +28,7 @@ class GuiConnect(object):
         for field in voice_fields_to_transmit:
             for v in director.composer.voices.values():
                 dic = {'voice_' + str(v.id) + '_' + field: getattr(v, field)}
+                #print "handle caesura, voice-fields: ", dic
                 self.send(dic)
         self.update_gui(director)
 
@@ -57,12 +58,13 @@ class GuiConnect(object):
             v_beh =  beh['per_voice'][vid]
             prefix = 'voice_' + str(vid) + '_'
             for field in v_beh.keys(): 
-                if type(v_beh[field]) in ['list', 'dict']:
+                if (field in ['max_num_partials'] or
+                    type(v_beh[field]) in ['list', 'dict']):
                     continue
                 name =  prefix + field
                 self.send({name: v_beh[field]})
             for field in ['num_partials', 'wavetable_generation_type', 'partial_pool']:
                 do = {prefix + field: getattr(voice, field)}
-                print "update gui: ", do
+                #print "update gui: ", do
                 self.send(do)
         self.send({'scale': director.composer.scale})
