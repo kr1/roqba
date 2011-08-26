@@ -101,11 +101,7 @@ class Director(object):
                 self.composer.set_scale(random.choice(
                                             composer.SCALES_BY_FREQUENCY))
                 if self.automate_meters:
-                    new_meter = random.choice(self.composer.selected_meters)
-                    self.set_meter(new_meter)
-                    self.gateway.pd.send(["sys", "meter",
-                                           str(new_meter).replace(",", " ").
-                                           replace(" ", "_")])
+                    self.new_random_meter()
                 voices = self.composer.voices.values()
                 if self.behaviour["automate_pan"]:
                     for v in voices:
@@ -202,7 +198,7 @@ class Director(object):
               fun = getattr(wavetables, wt_item[0] + '_wavetable')
               num_partials = (self.behaviour["automate_num_partials"] and
                               random.randint(1, self.behaviour["max_num_partials"])  or
-                              self.behaviour["default_num_partials"])
+                              self.behaviour["default_num_partial"])
               partial_pool =  random.choice(wt_item[1])
               wavetable = fun(num_partials, partial_pool)
       else:
@@ -219,7 +215,7 @@ class Director(object):
                   max_partials =  self.behaviour.voice_get(v.id, "max_num_partials")
                   num_partials = (self.behaviour.voice_get(v.id, "automate_num_partials") and
                                   random.randint(1, max_partials)  or
-                                  self.behaviour.voice_get(v.id, "default_num_partials"))
+                                  self.behaviour.voice_get(v.id, "default_num_partial"))
                   partial_pool =  random.choice(wt_item[1])
                   
                   wavetable = fun(v.num_partials, v.partial_pool)
@@ -232,6 +228,12 @@ class Director(object):
               self.gateway.pd_send_wavetable(v.id, wavetable)
               wavetable = wt
               
+    def new_random_meter(self):
+        new_meter = random.choice(self.composer.selected_meters)
+        self.set_meter(new_meter)
+        self.gateway.pd.send(["sys", "meter",
+                             str(new_meter).replace(",", " ").
+                             replace(" ", "_")])
 
     def new_speed(self, val=None):
         if val:
