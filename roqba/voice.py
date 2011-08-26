@@ -39,6 +39,7 @@ class Voice(object):
         self.generator = self.voice()
         self.generator.next()  # set the coroutine to the yield-point
         self.counter = 0
+        self.volume = composer.behaviour.voice_get(self.id, "default_volume")
         self.scale = composer.scale
         self.do_embellish = False
         self.note_delta = None

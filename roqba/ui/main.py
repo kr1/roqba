@@ -116,6 +116,7 @@ class Application(Frame):
         voice_ids = ['1','2','3','4']  
         SCALES = OrderedDict([
                   ('pan_pos', {'min': -1, 'max': 1, 'start': 0.5, 'res': 0.001}),
+                  ('volume', {'min': 0, 'max': 1, 'start': 0.666, 'res': 0.001}),
                   ('slide_duration_msecs', {'min': 0, 'max': 2000, 'start': 60, 'res': 1}),
                   ('slide_duration_prop', {'min': 0, 'max': 2, 'start': 0.666, 'res': 0.001}),
                   ('binaural_diff', {'min': 0, 'max': 66, 'start': 0.2, 'res': 0.01})

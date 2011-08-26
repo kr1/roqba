@@ -272,11 +272,16 @@ class Director(object):
                 wavetable = voice.make_wavetable()
                 self.set_wavetables(manual=True, wavetable=wavetable, vid=vid)
                 return
+            if v_key in ['volume']:
+                voice.volume = val
+                self.gateway.send_voice_volume(voice, val)
+                return
             self.behaviour["per_voice"][vid][v_key] = val
             if v_key == "mute":
                 self.gateway.mute_voice(vid, val == True)
             elif v_key == "trigger_wavetable":
                 self.set_wavetables(vid=vid, manual=True)
+                self.gui_sender.update_gui(self)
         if key in self.allowed_incoming_messages:
             if key in self.behaviour.keys():
                 print "setting {0} to {1}".format(key, val)

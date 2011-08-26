@@ -17,7 +17,8 @@ settings = {'number_of_voices': 4,
             'highest_note_num': 127,
             }
 
-behaviour = {"speed": 0.3,
+behaviour = {'default_volume': 0.666,
+             "speed": 0.3,
              'automate_speed_change': True,
              "max_speed": 0.3,
              "min_speed": 0.12,
