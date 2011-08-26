@@ -161,33 +161,43 @@ class Application(Frame):
                 self.this_cb.ref = name
                 counter += 1
             # add trigger wavetable-button
-            trigWavetableButton = Button(cb_frame, text='Random Wavetable')
+            trigWavetableButton = Button(cb_frame, text='Next Wavetable')
             trigWavetableButton.bind('<Button-1>', self.trigger_waveform_handler)
             trigWavetableButton.ref = 'voice_' + vid + "_trigger_wavetable"
             trigWavetableButton.grid(row=counter)
-            cb_frame.grid(column=int(vid) + 2, row=4, sticky=N, rowspan=8)
+            cb_frame.grid(column=int(vid) + 2, row=5, sticky=E+W+N, rowspan=8)
         for vid in voice_ids:
             generation_types =  ["random", "random_harmonic", "harmonic"]
             partial_pools = ["even", "odd", "all"]
-            types_name = 'voice_' + vid + '_' + 'wavetable_generation_type'
-            pools_name = 'voice_' + vid + '_' + 'partial_pool'
+            prefix = 'voice_' + vid + '_'
+            types_name = prefix + 'wavetable_generation_type'
+            pools_name = prefix + 'partial_pool'
             setattr(self, types_name , StringVar())
             getattr(self, types_name).set("random")
             setattr(self, pools_name , StringVar())
             getattr(self, pools_name).set("all")
             target_frame = getattr(self, 'voice_' + vid + '_cb_frame')
+            gen_typ_frame = LabelFrame(target_frame, text="type")
+            gen_typ_frame.grid(row=len(target_frame.winfo_children()), sticky=W)
             for gen_t in generation_types:
-                gen_t_entry = Radiobutton(target_frame, value=gen_t, text=gen_t, anchor=W,
+                gen_t_entry = Radiobutton(gen_typ_frame, value=gen_t, text=gen_t, anchor=W,
                                           variable=getattr(self, types_name))
                 gen_t_entry.bind('<ButtonRelease-1>', self.wt_handler)
                 gen_t_entry.ref = types_name
-                gen_t_entry.grid(row=len(target_frame.winfo_children()), sticky=W)
+                gen_t_entry.grid(row=len(gen_typ_frame.winfo_children()), sticky=W)
+            pp_frame = LabelFrame(target_frame, text="harmonics")
             for pp in partial_pools:
-                pp_entry = Radiobutton(target_frame, value=pp, text=pp, anchor=W,
+                pp_entry = Radiobutton(pp_frame, value=pp, text=pp, anchor=W,
                                         variable=getattr(self, pools_name))
                 pp_entry.bind('<ButtonRelease-1>', self.wt_handler)
                 pp_entry.ref = pools_name
-                pp_entry.grid(row=len(target_frame.winfo_children()), sticky=W)
+                pp_entry.grid(row=len(pp_frame.winfo_children()), sticky=E+W)
+            this_num_partials = Scale(pp_frame, label='number of harmonics', orient=HORIZONTAL,
+                             from_=1, to=24, resolution=1)
+            this_num_partials.ref = prefix + 'num_partials'
+            this_num_partials.grid(column=0, row=len(pp_frame.winfo_children()), sticky=E+W)
+            this_num_partials.bind("<ButtonRelease>", self.scale_handler)
+            pp_frame.grid(row=len(target_frame.winfo_children()), sticky=E+W)
 
     def wt_handler(self, event):
         print event.widget.tk
