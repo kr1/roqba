@@ -29,6 +29,11 @@ CHECK_BUTTONS = OrderedDict([
                  ('play', {'val': True, 'sub_frame': 'monitor_frame'})
                ])
 
+GLOBAL_BUTTONS = OrderedDict([
+                ('trigger_wavetable', {'handler': 'trigger_waveform_handler',
+                                       'label': "Next Wavetable"}  )
+              ])
+
 SCALES = {'caesura_prob': {'min': 0.01, 'max': 1, 'start': 0.666, 'res': 0.001, 'label': 'probability of a caesura'},
           'slide_duration_msecs': {'min': 0, 'max': 5000, 'start': 200, 'res': 1, 'enable':'automate_slide', 'label': 'slide duration in msecs'},
           'transpose': {'min': -24, 'max': 24, 'start': 12, 'res': 1},
@@ -201,6 +206,13 @@ class Application(Frame):
             self.this_cb.disable = type(CHECK_BUTTONS[cb]) == dict and 'disable' in CHECK_BUTTONS[cb].keys()
             self.this_cb.grid(sticky=W, column=0, row=len(target_parent.winfo_children()))
             self.this_cb.ref = cb
+        for but in GLOBAL_BUTTONS:
+            label = but
+            ele = GLOBAL_BUTTONS[but]
+            this_but = Button(self.cb_frame, text=but)
+            this_but.bind('<ButtonRelease-1>', getattr(self, ele['handler']))
+            this_but.ref = but
+            this_but.grid(sticky=W, column=0, row=len(self.cb_frame.winfo_children()))
         self.cb_frame.grid(column=0, row=0, rowspan=10, sticky=N)
 
     def set_value(self, name, val):

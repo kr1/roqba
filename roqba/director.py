@@ -30,7 +30,7 @@ class Director(object):
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (self.has_gui and 
-                        self.behaviour.keys() +  ['play', 'sys', 'scale', 'force_caesura']
+                        self.behaviour.keys() +  ['play', 'sys', 'scale', 'force_caesura', 'trigger_wavetable']
                         or None)
         if self.has_gui:
             self.incoming = deque()
@@ -288,3 +288,7 @@ class Director(object):
                 self.composer.set_scale(val)
             elif key == "force_caesura":
                 self.force_caesura = True
+            elif key == "trigger_wavetable":
+                print "setting wavetable for all"
+                self.set_wavetables(manual=True, voices=self.composer.voices.values())
+                self.gui_sender.update_gui(self)
