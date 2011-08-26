@@ -113,10 +113,7 @@ behaviour = {'default_volume': 0.666,
                     'max_binaural_diff': 15,
                     'slide_duration_prop': 0.666,  # proportion
                     'use_proportional_slide_duration': False,  # proportion or msecs
-                    #'should_play_a_melody': [0, [0, 1, 1, 2, -2, -1, -1, -3, 3, -3, 3]],  #alt: False
-                    'should_play_a_melody': [4, [[0, 3], [0, 3], [0, 2], [1, 2], [-2, 2], 
-                                                 [1, 3], [-2, 3], [-2, 6], [4, 3], [0, 3], 
-                                                 [0, 2], [3, 2], [-2, 2], [-1, 6], [-2, 6]]],  #alt: False
+                    'should_play_a_melody': True,
                     'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
                 })
