@@ -1,6 +1,7 @@
 import socket
 import json
 from collections import OrderedDict
+from re import match
 from Tkinter import tkinter
 from Tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
 from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
@@ -204,8 +205,8 @@ class Application(Frame):
 
     def set_value(self, name, val):
         '''set a widget to the specified value'''
-        direct = ['scale', 'wavetable_generation_type', 'partial_pool']#, 'num_partials']
-        if filter(lambda x: x in name, direct):
+        direct = ['scale', 'wavetable_generation_type', 'partial_pool']
+        if filter(lambda x: match("(voice_\d_|)" + x, name), direct):
             print "setting:" , name, " to: ", val
             getattr(self, name).set(val)
             return
@@ -285,12 +286,12 @@ class Application(Frame):
 
     def trigger_waveform_handler(self, event):
         self.send({event.widget.ref: True})
-        print event.widget.ref, "- triggering wavetable"
+        #print event.widget.ref, "- triggering wavetable"
 
     def send_scale(self):
         do = {'scale':self.scale.get()}
         self.send(do)
-        print do
+        #print do
 
     def send(self, msg):
         print "sending: ", msg
