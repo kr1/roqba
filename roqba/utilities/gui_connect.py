@@ -49,7 +49,7 @@ class GuiConnect(object):
     def update_gui(self, director):
         beh = director.behaviour
         for field in beh.keys():
-            if (field in ['per_voice', 'meter', 'meters'] or
+            if (field in ['per_voice', 'meter', 'meters', 'speed'] or
                 type(beh[field]).__name__ in ['list', 'dict']):
                 continue
             self.send({field: beh[field]})
