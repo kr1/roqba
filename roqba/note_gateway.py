@@ -14,6 +14,7 @@ class NoteGateway(object):
         self.voice_ids = []
         self.block_messages = False
         self.transpose = behaviour["transpose"]
+        self.behaviour = behaviour
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
 
     def pause(self):
@@ -111,12 +112,13 @@ class NoteGateway(object):
                             #                  voice: {1}: {0}".\
                             #                  format(msg, v.id))
                             if self.slide and v.slide:
-                                if v.slide_duration_prop:
+                                if self.behaviour.voice_get(v.id, "use_proportional_slide_duration"):
+                                    #print "{0} has slide_prop: {1}".format(v.id, v.slide_duration_prop)
                                     dur_prop = v.slide_duration_prop
+                                    slide_length = v.duration_in_msec * dur_prop
                                 else:
-                                    dur_prop = self.slide_duration_prop
-                                self.set_slide_msecs(v.id,
-                                              (v.duration_in_msec * dur_prop))
+                                    slide_length =  self.behaviour.voice_get(v.id, "slide_duration_msecs")
+                                self.set_slide_msecs(v.id, slide_length)
                             self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
                             self.pd_send_note(v.id, msg)
                             if v.weight == HEAVY:
