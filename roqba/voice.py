@@ -154,7 +154,7 @@ class Voice(object):
                     # regarding the on-off pattern we try a minimum invasive strategy
                     # by modifying only those indexes of the pattern covered by the 
                     # current note and the start of the following note 
-                print "searching for a suitable melody"
+                #print "searching for a suitable melody"
                 self.melody = self.search_suitable_melody(speed)
                 if self.melody:
                     print "starting the melody: ", self.melody
