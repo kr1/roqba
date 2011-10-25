@@ -10,7 +10,8 @@ class NoteGateway(object):
         self.logger = logging.getLogger("sender")
         self.settings = settings
         self.slide = True
-        self.slide_duration_prop = behaviour['default_slide_duration_prop']
+        self.behaviour = behaviour
+        self.slide_duration_prop = behaviour['slide_duration_prop']
         self.voice_ids = []
         self.block_messages = False
         self.transpose = behaviour["transpose"]
@@ -35,7 +36,23 @@ class NoteGateway(object):
     def stop_all_notes(self):
         '''sends a stop message to all active voices'''
         for v in self.voice_ids:
-            self.pd.send(["voice", v, 0])
+            self.stop_notes_of_voice(v)
+
+    def stop_notes_of_voice(self, vid):
+        '''sends the stop message to a specified voice'''
+        self.pd.send(["voice", vid, 0])
+
+    def mute_voice(self, vid, val):
+        '''sends a message to mute/unmute a voice to pd
+        
+        use vid=drums to mute/unmute the drums
+        '''
+        val = 1 if val else 0
+        if vid == "drums":  
+            msg = ["perc", "mute", val]
+        else:
+            msg = ["voice", vid, "mute", val]
+        self.pd.send(msg)
 
     def set_slide_to_0(self):
         '''this method bypasses the slide functionality
@@ -72,6 +89,20 @@ class NoteGateway(object):
         '''send out the duration for a given voice'''
         self.pd.send(["voice", voice_id, "wavetable", wavetable])
         return True
+
+    def send_voice_pan(self, voice, pan):
+        '''sends a pan-message for a voice'''
+        args = ["sound", "pan", voice.id, pan]
+        self.pd.send(args)
+
+    def send_voice_volume(self, voice, val):
+        '''sends a volume message for a voice
+        
+        use values from 0 to 1'''
+        args = ["voice", voice.id, "volume", val]
+        print "sending: ", args
+        self.pd.send(args)
+        
 
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
@@ -132,3 +163,6 @@ class NoteGateway(object):
                     #msg = data["message"]
                 else:
                     msg = str(data)
+
+    def set_transpose(self, val):
+        self.transpose = val

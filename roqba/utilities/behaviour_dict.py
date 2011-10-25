@@ -20,8 +20,21 @@ class BehaviourDict(dict):
 
         and calls a setter method registered for the given key'''
         dict.__setitem__(self, item, value)
+        #print "behaviour dict-{0}: setting {1} to {2}".format(self, item, value)
         if item in self.real_setters.keys():
-            self.real_setters[item](value)
+            instructions = self.real_setters[item]
+            #print "with instructions", instructions, "of type: ", type(instructions)
+            if type(instructions).__name__ == 'instancemethod':
+                self.real_setters[item](value)
+            elif type(instructions).__name__ == 'list': 
+                callable = self.real_setters[item][0] # first argument is the callable
+                #print "callable: ", callable
+                if len(instructions) == 2:
+                    #print "calling {0} with {1} and {2}".format(callable, instructions[1], value)
+                    callable(instructions[1], value)
+                elif len(instructions) == 3:
+                    #print "calling {0} with {1} and {2} and {3}".format(callable, instructions[1], instructions[2], value)
+                    callable(instructions[1], instructions[2], value)
 
     def _update(self, *args, **kwargs):
         '''assures that __setitem__  is called from __init__'''

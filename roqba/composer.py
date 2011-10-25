@@ -246,12 +246,18 @@ class Composer(object):
         '''
         if val and val != 'random':
             if voice:
-                self.gateway.pd.send(["voice", "binaural", voice, val])
+                voice.binaural_diff = val
+                self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
             else:
                 self.gateway.pd.send(["voice", "binaural", -1, val])
+                for v in self.voices.values():
+                    v.binaural_diff = val
         else:
             for v in self.voices.values():
+                if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+                    continue
                 val = random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
+                v.binaural_diff = val
                 self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def drum_fill_handler(self, v, state):
@@ -288,7 +294,7 @@ class Composer(object):
         if key in ORNAMENTS:
             notes = sample(ORNAMENTS[key])
 
-            ## check for the speed limit, if ornaments wold be too fast,
+            ## check for the speed limit, if ornaments would be too fast,
             ## don't embellish
             if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return
@@ -303,11 +309,14 @@ class Composer(object):
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
                 dur_prop = (v.slide_duration_prop or
-                            behaviour.voice_get(v.id, "default_slide_duration_prop"))
+                            behaviour.voice_get(v.id, "slide_duration_prop"))
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))
                 self.gateway.pd_send_note(v.id, real_note)
+            self.gateway.set_slide_msecs(v.id, self.behaviour.voice_get(v.id, "use_proportional_slide_duration") 
+                                            and self.behaviour.voice_get(v.id, "slide_duration_prop") or
+                                            self.behaviour.voice_get(v.id, "slide_duration_msecs"))
 
     def stream_analyzer(self):
         """analyses the stream of notes.
