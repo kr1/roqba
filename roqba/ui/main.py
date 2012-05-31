@@ -1,3 +1,4 @@
+import os
 import socket
 import json
 from collections import OrderedDict
@@ -9,7 +10,9 @@ from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
 # TODO?: integration into roqba
 #from roqba.static.settings import settings
 
-host = "localhost"
+remote_host = os.environ["ROQBA_HOST"] if os.environ.has_key("ROQBA_HOST") else "127.0.0.1"
+host = "0.0.0.0"
+print "listening on:", host, "sending to: ", remote_host
 port = 12322
 send_port = 12323
 
@@ -318,7 +321,7 @@ class Application(Frame):
 
     def send(self, msg):
         print "sending: ", msg
-        self.send_sock.sendto(json.dumps(msg), (host, send_port))
+        self.send_sock.sendto(json.dumps(msg), (remote_host, send_port))
 
     def create_ranges(self): 
         counter = 0
@@ -351,8 +354,9 @@ class Application(Frame):
         #print do
         self.set_value(do[0], do[1])
 
+
 app = Application()
-tkinter.createfilehandler(app.sock, tkinter.READABLE, app.socket_read_handler)
+app.tk.createfilehandler(app.sock, tkinter.READABLE, app.socket_read_handler)
 app.master.title("Roqba Controls")
 app.mainloop()
 
