@@ -7,6 +7,7 @@ class PdSender(object):
     def __init__(self, host, port):
         self.host = host
         self.port = port
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.logger = logging.getLogger("sender")
         self.send("sound 1")
 
@@ -23,8 +24,7 @@ class PdSender(object):
         as a UDP Datagram
         msg -> list'''
         msg = self.format_msg_list(msg)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto("{0}\n".format(msg) + "\n", (self.host, self.port))
+        self.sock.sendto("{0}\n".format(msg) + "\n", (self.host, self.port))
 
     def __del__(self):
         print "switching off the lights...."
