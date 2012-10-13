@@ -29,7 +29,7 @@ behaviour = {'default_volume': 0.666,
              # quarter of the range
              "speed_target": 0.25,
              "speed_change": "leap",  # alt:"transition"
-             'caesura_prob': 0.9,   
+             'caesura_prob': 0.9,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
              "max_shuffle": 0.1,
@@ -45,7 +45,7 @@ behaviour = {'default_volume': 0.666,
              'automate_wavetables': True,
              'wavetable_specs': sum([[['random', ['all', 'even', 'odd']]] * 2,
                                          [['random_harmonic', ['all', 'even', 'odd']]] * 5,
-                                         [['harmonic', ['all', 'even', 'odd']]] * 10], 
+                                         [['harmonic', ['all', 'even', 'odd']]] * 10],
                                          []),
              'automate_num_partials': True,
              'default_num_partial': 13,
@@ -93,7 +93,7 @@ behaviour = {'default_volume': 0.666,
                     'automate_note_duration_min_max': [0.1, 3.3]
                     }),
                 2: BehaviourDict({
-                    'automate_wavetables': True, 
+                    'automate_wavetables': True,
                     'wavetable_specs': sum([[['random', ['even']]] * 2,
                                          [['random_harmonic', ['even']]] * 5],
                                          []),
@@ -101,7 +101,7 @@ behaviour = {'default_volume': 0.666,
                     'automate_pan' : 0.75
                     }),
                 3: BehaviourDict({
-                    'automate_wavetables': True, 
+                    'automate_wavetables': True,
                     'wavetable_specs': sum([[['random', ['odd', 'all']]] * 2,
                                          [['random_harmonic', ['odd', 'all']]] * 5],
                                          []),
@@ -117,7 +117,7 @@ behaviour = {'default_volume': 0.666,
                     'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
                 })
-              } 
+              }
             }
 
 styles = {"bulgarian": {
@@ -195,4 +195,4 @@ if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
 
 if __name__ == "__main__":
     print styles
-    print behaviour 
+    print behaviour

@@ -8,7 +8,7 @@ the given key if the setter method has been registered before'''
 class BehaviourDict(dict):
     '''defines a dictionary-class with custom setter methods
 
-    upon every __setitem__ call it checks if it has registered setter 
+    upon every __setitem__ call it checks if it has registered setter
     methods and calls them with the given value'''
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
@@ -26,14 +26,16 @@ class BehaviourDict(dict):
             #print "with instructions", instructions, "of type: ", type(instructions)
             if type(instructions).__name__ == 'instancemethod':
                 self.real_setters[item](value)
-            elif type(instructions).__name__ == 'list': 
-                callable = self.real_setters[item][0] # first argument is the callable
+            elif type(instructions).__name__ == 'list':
+                callable = self.real_setters[item][0]  # first argument is the callable
                 #print "callable: ", callable
                 if len(instructions) == 2:
-                    #print "calling {0} with {1} and {2}".format(callable, instructions[1], value)
+                    #print "calling {0} with {1} and {2}".format(callable,
+                    # instructions[1], value)
                     callable(instructions[1], value)
                 elif len(instructions) == 3:
-                    #print "calling {0} with {1} and {2} and {3}".format(callable, instructions[1], instructions[2], value)
+                    #print "calling {0} with {1} and {2} and {3}".format(
+                    # callable, instructions[1], instructions[2], value)
                     callable(instructions[1], instructions[2], value)
 
     def _update(self, *args, **kwargs):
@@ -50,13 +52,13 @@ class BehaviourDict(dict):
         '''returns the value for the specified key.
 
         if the value is present for the voice, this value is returned
-        otherwise the defaukt value for this key is returned'''
+        otherwise the default value for this key is returned'''
         if vid in self["per_voice"].keys():
                 if key in self["per_voice"][vid].keys():
                     return self["per_voice"][vid][key]
                 else:
                     try:
-                        return self[key] 
+                        return self[key]
                     except KeyError:
                         msg = "inexistent key: "
                         msg += "{0} for both voice: {1} and default"
@@ -65,8 +67,10 @@ class BehaviourDict(dict):
             msg = "voice_get() called for unregistered voice: {0}"
             raise RuntimeError(msg.format(vid))
 
+
 def test_setter(val):
     print "from test_setter, val:", val
+
 
 if __name__ == "__main__":
     kd = BehaviourDict({"erre": {'val': [34, 56], 'setter': test_setter},
