@@ -29,14 +29,17 @@ class Director(object):
         self.speed = state["speed"]
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
-        self.allowed_incoming_messages = (self.has_gui and 
-                        self.behaviour.keys() +  ['play', 'sys', 'scale', 'force_caesura', 'trigger_wavetable']
+        self.allowed_incoming_messages = (self.has_gui and
+                        self.behaviour.keys() + ['play', 'sys', 'scale',
+                                                 'force_caesura',
+                                                 'trigger_wavetable']
                         or None)
         if self.has_gui:
             self.incoming = deque()
             self.gui_sender.update_gui(self)
             #start the reader thread
-            thre = threading.Thread(target=self.gui_sender.read_incoming_messages, args=(self.incoming,))
+            thre = threading.Thread(target=self.gui_sender.read_incoming_messages,
+                                    args=(self.incoming,))
             thre.daemon = True
             thre.start()
 
@@ -86,9 +89,10 @@ class Director(object):
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
             if ((comment == 'caesura' and
-               random.random() < self.behaviour["caesura_prob"]) or 
+               random.random() < self.behaviour["caesura_prob"]) or
                self.force_caesura):
-                if self.force_caesura: self.force_caesura = False
+                if self.force_caesura:
+                    self.force_caesura = False
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
                 self.shuffle_delay = random.random() * self.MAX_SHUFFLE
@@ -106,7 +110,8 @@ class Director(object):
                 if self.behaviour["automate_pan"]:
                     for v in voices:
                         if self.behaviour.voice_get(v.id, "automate_pan"):
-                            max_pos = self.behaviour.voice_get(v.id, "automate_pan")
+                            max_pos = self.behaviour.voice_get(v.id,
+                                                               "automate_pan")
                             v.pan_pos = (random.random() * max_pos) - max_pos / 2.0
                             self.gateway.send_voice_pan(v, v.pan_pos)
                 if self.behaviour["automate_binaural_diffs"]:
@@ -128,7 +133,8 @@ class Director(object):
                                       in self.composer.voices.values()]
                     else:
                         for v in self.composer.voices.values():
-                            min_, max_ = self.behaviour.voice_get(v.id, "automate_note_duration_min_max")
+                            min_, max_ = self.behaviour.voice_get(v.id,
+                                          "automate_note_duration_min_max")
                             prop = random_between(min_, max_, 0.3)
                             v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
@@ -144,9 +150,9 @@ class Director(object):
                               if weight == metronome.LIGHT
                                 else 0)
             time.sleep(self.speed + shuffle_delta)
-    
+
     def check_incoming_messages(self):
-        '''checks if there are incoming messages in the queue''' 
+        '''checks if there are incoming messages in the queue'''
         if self.has_gui:
             if self.playing:
                 self.gui_sender.send_cycle_pos(self)
@@ -183,51 +189,51 @@ class Director(object):
         delta = int(time.time() - self.start_time)
         return "{0}:{1}".format(int(delta / 60),
                                 str(delta % 60).zfill(2))
-    
+
     def set_wavetables(self, vid=None, voices=None, manual=False, wavetable=None):
-      '''sets new wavetables for those voices that have the
-      
-      wavetable automation flag turned on (or the manual flag set).
-      when a voice-id is specified only this voice is considered'''
-      incoming_wavetable = wavetable
-      voices = voices if voices else [self.composer.voices[vid]]
-      if self.behaviour["common_wavetables"] and not vid:
-          if not wavetable:
-              wt_item = random.choice(self.behaviour["wavetable_specs"])
-              wavetable_generation_type = wt_item[0]
-              fun = getattr(wavetables, wt_item[0] + '_wavetable')
-              num_partials = (self.behaviour["automate_num_partials"] and
-                              random.randint(1, self.behaviour["max_num_partials"])  or
-                              self.behaviour["default_num_partial"])
-              partial_pool =  random.choice(wt_item[1])
-              wavetable = fun(num_partials, partial_pool)
-      else:
-          wavetable = None
-      for v in voices:
-          wt = wavetable  # this is used to maintain the original state for every voice
-          if self.behaviour.voice_get(v.id, "automate_wavetables") or manual:
-              if not wavetable:
-                  wt_sample = self.behaviour.voice_get(v.id, "wavetable_specs")
-                  wt_item = random.choice(wt_sample)
-                  #print "set wavetables, voice: ", v.id, wt_item
-                  wavetable_generation_type = wt_item[0]
-                  fun = getattr(wavetables, v.wavetable_generation_type + '_wavetable')
-                  max_partials =  self.behaviour.voice_get(v.id, "max_num_partials")
-                  num_partials = (self.behaviour.voice_get(v.id, "automate_num_partials") and
-                                  random.randint(1, max_partials)  or
-                                  self.behaviour.voice_get(v.id, "default_num_partial"))
-                  partial_pool =  random.choice(wt_item[1])
-                  
-                  wavetable = fun(v.num_partials, v.partial_pool)
-              if not incoming_wavetable:
-                  v.num_partials = num_partials
-                  v.partial_pool = partial_pool
-                  v.wavetable_generation_type = wavetable_generation_type
-              self.gateway.stop_notes_of_voice(v.id)
-              #print v.id, wavetable
-              self.gateway.pd_send_wavetable(v.id, wavetable)
-              wavetable = wt
-              
+        '''sets new wavetables for those voices that have the
+
+        wavetable automation flag turned on (or the manual flag set).
+        when a voice-id is specified only this voice is considered'''
+        incoming_wavetable = wavetable
+        voices = voices if voices else [self.composer.voices[vid]]
+        if self.behaviour["common_wavetables"] and not vid:
+            if not wavetable:
+                wt_item = random.choice(self.behaviour["wavetable_specs"])
+                wavetable_generation_type = wt_item[0]
+                fun = getattr(wavetables, wt_item[0] + '_wavetable')
+                num_partials = (self.behaviour["automate_num_partials"] and
+                                random.randint(1, self.behaviour["max_num_partials"])  or
+                                self.behaviour["default_num_partial"])
+                partial_pool = random.choice(wt_item[1])
+                wavetable = fun(num_partials, partial_pool)
+        else:
+            wavetable = None
+        for v in voices:
+            wt = wavetable  # this is used to maintain the original state for every voice
+            if self.behaviour.voice_get(v.id, "automate_wavetables") or manual:
+                if not wavetable:
+                    wt_sample = self.behaviour.voice_get(v.id, "wavetable_specs")
+                    wt_item = random.choice(wt_sample)
+                    #print "set wavetables, voice: ", v.id, wt_item
+                    wavetable_generation_type = wt_item[0]
+                    fun = getattr(wavetables, v.wavetable_generation_type + '_wavetable')
+                    max_partials = self.behaviour.voice_get(v.id, "max_num_partials")
+                    num_partials = (self.behaviour.voice_get(v.id, "automate_num_partials") and
+                                    random.randint(1, max_partials)  or
+                                    self.behaviour.voice_get(v.id, "default_num_partial"))
+                    partial_pool = random.choice(wt_item[1])
+
+                    wavetable = fun(v.num_partials, v.partial_pool)
+                if not incoming_wavetable:
+                    v.num_partials = num_partials
+                    v.partial_pool = partial_pool
+                    v.wavetable_generation_type = wavetable_generation_type
+                self.gateway.stop_notes_of_voice(v.id)
+                #print v.id, wavetable
+                self.gateway.pd_send_wavetable(v.id, wavetable)
+                wavetable = wt
+
     def new_random_meter(self):
         new_meter = random.choice(self.composer.selected_meters)
         self.set_meter(new_meter)
@@ -244,7 +250,7 @@ class Director(object):
                 self.speed += random.randint(-1000, 1000) / 66666.
             else:  # if self.speed_change == 'leap':
                 if self.behaviour['speed_target'] != 0.5:
-                    target =  self.behaviour['speed_target']
+                    target = self.behaviour['speed_target']
                     if  target < 0.3:
                         target = target ** 2
                     speed_tmp = random.random() ** math.log(target, 0.5)
@@ -253,7 +259,8 @@ class Director(object):
                                   speed_tmp))
                 else:
                     self.speed = self.behaviour["min_speed"] + (random.random() *
-                                        (self.behaviour["max_speed"] - self.behaviour["min_speed"]))
+                                        (self.behaviour["max_speed"] -
+                                         self.behaviour["min_speed"]))
             #print "new speed values: {0}\n resetting metronome.".format(
             #                                                self.speed)
         return self.speed

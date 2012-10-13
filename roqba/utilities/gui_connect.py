@@ -5,14 +5,15 @@ import json
 
 from roqba.static.settings import settings
 
+
 class GuiConnect(object):
     def __init__(self):
         self.gui_host = settings['GUI_HOST']
         self.send_port = settings['TO_GUI_PORT']
         print "GUI: sending to:", self.gui_host, self.send_port
         self.receive_port = settings['FROM_GUI_PORT']
-        self.sock = socket.socket(socket.AF_INET, # Internet
-                                   socket.SOCK_DGRAM) # UDP
+        self.sock = socket.socket(socket.AF_INET,  # Internet
+                                   socket.SOCK_DGRAM)  # UDP
         self.receiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.receiver.bind(('0.0.0.0', self.receive_port))
         self.receive_exit_requested = False
@@ -22,9 +23,9 @@ class GuiConnect(object):
 
     def handle_caesura(self, director):
         print "caesura"
-        director_fields_to_transmit = ['speed']#,'transpose']
+        director_fields_to_transmit = ['speed']  # ,'transpose']
         for field in director_fields_to_transmit:
-            self.send({field:getattr(director, field)})
+            self.send({field: getattr(director, field)})
         voice_fields_to_transmit = ['pan_pos', 'binaural_diff']
         for field in voice_fields_to_transmit:
             for v in director.composer.voices.values():
@@ -34,7 +35,8 @@ class GuiConnect(object):
         self.update_gui(director)
 
     def send_cycle_pos(self, director):
-        director_state_fields_to_transmit = ['weight', 'cycle_pos']#,'transpose']
+        director_state_fields_to_transmit = ['weight',
+                                             'cycle_pos']  # ,'transpose']
         for field in director_state_fields_to_transmit:
             val = director.state[field]
             if field == 'cycle_pos':
@@ -56,15 +58,17 @@ class GuiConnect(object):
             self.send({field: beh[field]})
         for vid in beh['per_voice'].keys():
             voice = director.composer.voices[vid]
-            v_beh =  beh['per_voice'][vid]
+            v_beh = beh['per_voice'][vid]
             prefix = 'voice_' + str(vid) + '_'
             for field in v_beh.keys():
                 if (field in ['max_num_partials'] or
                     type(v_beh[field]) in ['list', 'dict']):
                     continue
-                name =  prefix + field
+                name = prefix + field
                 self.send({name: v_beh[field]})
-            for field in ['num_partials', 'wavetable_generation_type', 'partial_pool']:
+            for field in ['num_partials',
+                          'wavetable_generation_type',
+                          'partial_pool']:
                 do = {prefix + field: getattr(voice, field)}
                 #print "update gui: ", do
                 self.send(do)
