@@ -1,8 +1,8 @@
 import time
 import logging
-import random
 import math
 import threading
+from random import random, choice, randint
 from Queue import deque
 
 import metronome
@@ -89,20 +89,20 @@ class Director(object):
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
             if ((comment == 'caesura' and
-               random.random() < self.behaviour["caesura_prob"]) or
+               random() < self.behaviour["caesura_prob"]) or
                self.force_caesura):
                 if self.force_caesura:
                     self.force_caesura = False
                 # take 5 + 1 times out....
                 time.sleep(self.speed * 4)
-                self.shuffle_delay = random.random() * self.MAX_SHUFFLE
+                self.shuffle_delay = random() * self.MAX_SHUFFLE
                 logger.info("shuffle delay set to: {0}".format(
                                                   self.shuffle_delay))
                 self.new_speed()
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
-                self.composer.set_scale(random.choice(
+                self.composer.set_scale(choice(
                                             composer.SCALES_BY_FREQUENCY))
                 if self.automate_meters:
                     self.new_random_meter()
@@ -112,7 +112,7 @@ class Director(object):
                         if self.behaviour.voice_get(v.id, "automate_pan"):
                             max_pos = self.behaviour.voice_get(v.id,
                                                                "automate_pan")
-                            v.pan_pos = (random.random() * max_pos) - max_pos / 2.0
+                            v.pan_pos = (random() * max_pos) - max_pos / 2.0
                             self.gateway.send_voice_pan(v, v.pan_pos)
                 if self.behaviour["automate_binaural_diffs"]:
                     if self.behaviour["pan_controls_binaural_diff"]:
@@ -139,7 +139,7 @@ class Director(object):
                             v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
                     sample = self.behaviour["transposings"]
-                    self.gateway.transpose = random.choice(sample)
+                    self.gateway.transpose = choice(sample)
                 time.sleep(self.speed)
                 if self.behaviour["automate_wavetables"]:
                     self.set_wavetables(voices=voices)
@@ -199,13 +199,13 @@ class Director(object):
         voices = voices if voices else [self.composer.voices[vid]]
         if self.behaviour["common_wavetables"] and not vid:
             if not wavetable:
-                wt_item = random.choice(self.behaviour["wavetable_specs"])
+                wt_item = choice(self.behaviour["wavetable_specs"])
                 wavetable_generation_type = wt_item[0]
                 fun = getattr(wavetables, wt_item[0] + '_wavetable')
                 num_partials = (self.behaviour["automate_num_partials"] and
-                                random.randint(1, self.behaviour["max_num_partials"])  or
+                                randint(1, self.behaviour["max_num_partials"])  or
                                 self.behaviour["default_num_partial"])
-                partial_pool = random.choice(wt_item[1])
+                partial_pool = choice(wt_item[1])
                 wavetable = fun(num_partials, partial_pool)
         else:
             wavetable = None
@@ -214,15 +214,15 @@ class Director(object):
             if self.behaviour.voice_get(v.id, "automate_wavetables") or manual:
                 if not wavetable:
                     wt_sample = self.behaviour.voice_get(v.id, "wavetable_specs")
-                    wt_item = random.choice(wt_sample)
+                    wt_item = choice(wt_sample)
                     #print "set wavetables, voice: ", v.id, wt_item
                     wavetable_generation_type = wt_item[0]
                     fun = getattr(wavetables, v.wavetable_generation_type + '_wavetable')
                     max_partials = self.behaviour.voice_get(v.id, "max_num_partials")
                     num_partials = (self.behaviour.voice_get(v.id, "automate_num_partials") and
-                                    random.randint(1, max_partials)  or
+                                    randint(1, max_partials)  or
                                     self.behaviour.voice_get(v.id, "default_num_partial"))
-                    partial_pool = random.choice(wt_item[1])
+                    partial_pool = choice(wt_item[1])
 
                     wavetable = fun(v.num_partials, v.partial_pool)
                 if not incoming_wavetable:
@@ -235,7 +235,7 @@ class Director(object):
                 wavetable = wt
 
     def new_random_meter(self):
-        new_meter = random.choice(self.composer.selected_meters)
+        new_meter = choice(self.composer.selected_meters)
         self.set_meter(new_meter)
         self.gateway.pd.send(["sys", "meter",
                              str(new_meter).replace(",", " ").
@@ -247,18 +247,18 @@ class Director(object):
             return self.speed
         if self.behaviour['automate_speed_change']:
             if self.speed_change == 'transition':
-                self.speed += random.randint(-1000, 1000) / 66666.
+                self.speed += randint(-1000, 1000) / 66666.
             else:  # if self.speed_change == 'leap':
                 if self.behaviour['speed_target'] != 0.5:
                     target = self.behaviour['speed_target']
                     if  target < 0.3:
                         target = target ** 2
-                    speed_tmp = random.random() ** math.log(target, 0.5)
+                    speed_tmp = random() ** math.log(target, 0.5)
                     self.speed = (self.behaviour["min_speed"] +
                                   ((self.behaviour["max_speed"] - self.behaviour["min_speed"]) *
                                   speed_tmp))
                 else:
-                    self.speed = self.behaviour["min_speed"] + (random.random() *
+                    self.speed = self.behaviour["min_speed"] + (random() *
                                         (self.behaviour["max_speed"] -
                                          self.behaviour["min_speed"]))
             #print "new speed values: {0}\n resetting metronome.".format(
@@ -266,6 +266,12 @@ class Director(object):
         return self.speed
 
     def handle_incoming_message(self, msg):
+        """handles incoming messages from the gui interface
+
+        TODO: keep a current-settings dataobject where to track
+        all current settings and which can be used to write a snapshot 
+        of a particular moment
+        """
         key, val = msg.items()[0]
         print key, ": ", val
         if key[0:6] == 'voice_':
@@ -274,22 +280,26 @@ class Director(object):
             voice = self.composer.voices[vid]
             v_key = "_".join(split[2:])
             print "setting {0} of voice {1} to {2}".format(v_key, vid, val)
-            if v_key in ['wavetable_generation_type', 'num_partials', 'partial_pool']:
+            if v_key in ['wavetable_generation_type',
+                         'num_partials',
+                         'partial_pool']:
                 setattr(self.composer.voices[vid], v_key, val)
                 wavetable = voice.make_wavetable()
                 self.set_wavetables(manual=True, wavetable=wavetable, vid=vid)
                 return
+            # settings that must be transmitted to the sound-engine
             if v_key in ['volume']:
                 voice.volume = val
                 self.gateway.send_voice_volume(voice, val)
                 return
+            # this is the standard handling
             self.behaviour["per_voice"][vid][v_key] = val
             if v_key == "mute":
                 self.gateway.mute_voice(vid, val == True)
             elif v_key == "trigger_wavetable":
                 self.set_wavetables(vid=vid, manual=True)
                 self.gui_sender.update_gui(self)
-        if key in self.allowed_incoming_messages:
+        elif key in self.allowed_incoming_messages:
             if key in self.behaviour.keys():
                 print "setting {0} to {1}".format(key, val)
                 self.behaviour[key] = val
