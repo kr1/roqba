@@ -103,14 +103,25 @@ class Application(Frame):
         this_cycle.disable, this_cycle.enable = (None, None)
         this_cycle.ref = 'cycle_pos'
         this_cycle.grid(column=0, row=0, sticky=E+W)
-        self.updateButton = Button(self.monitor_frame, text='Reload all Settings', command=self.request_update)
+        self.updateButton = Button(self.monitor_frame,
+                                   text='Reload all Settings',
+                                   command=self.request_update)
         self.updateButton.grid(row=1, sticky=E+W)
-        self.ForceCaesuraButton = Button(self.monitor_frame, text='Force Caesura', command=self.force_caesura)
+        self.ForceCaesuraButton = Button(self.monitor_frame,
+                                         text='Force Caesura',
+                                         command=self.force_caesura)
         self.ForceCaesuraButton.grid(row=2, sticky=E+W)
+        self.saveBehaviourButton = Button(self.monitor_frame,
+                                        text='Save current behaviour',
+                                        command=self.request_saving_behaviour)
+        self.saveBehaviourButton.grid(row=3, sticky=E+W)
         self.monitor_frame.grid(column=0, row=10, sticky=E+W)
 
     def request_update(self):
         self.send({'sys': 'update'})
+
+    def request_saving_behaviour(self):
+        self.send({'sys': 'save_behaviour'})
 
     def force_caesura(self):
       self.send({'force_caesura': True})

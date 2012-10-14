@@ -308,6 +308,8 @@ class Director(object):
             elif key == "sys":
                 if val == 'update':
                     self.gui_sender.update_gui(self)
+                if val == 'save_behaviour':
+                    self.behaviour.save_current_behaviour()
             elif key == 'scale':
                 self.composer.set_scale(val)
             elif key == "force_caesura":
