@@ -6,6 +6,7 @@ from re import match
 from Tkinter import tkinter
 from Tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
 from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
+from Tkinter import Entry
 
 # TODO?: integration into roqba
 #from roqba.static.settings import settings
@@ -115,13 +116,25 @@ class Application(Frame):
                                         text='Save current behaviour',
                                         command=self.request_saving_behaviour)
         self.saveBehaviourButton.grid(row=3, sticky=E+W)
+        self.saveBehaviourNameEntry = Entry(self.monitor_frame)
+        self.saveBehaviourNameEntry.grid(row=4, sticky=E+W)
+        self.saveBehaviourNameEntry.bind('<KeyRelease>', self.request_saving_behaviour)
         self.monitor_frame.grid(column=0, row=10, sticky=E+W)
 
     def request_update(self):
         self.send({'sys': 'update'})
 
-    def request_saving_behaviour(self):
-        self.send({'sys': 'save_behaviour'})
+    def request_saving_behaviour(self, event=None):
+        """callback for save behaviour button and textentry"""
+        if event and event.widget == self.saveBehaviourNameEntry:
+            if event.keysym == 'Return':
+                name = self.saveBehaviourNameEntry.get()
+            else:
+                return
+        else:  # button was pressed
+            name = self.saveBehaviourNameEntry.get()
+        if name:
+            self.send({'sys': ['save_behaviour', name]})
 
     def force_caesura(self):
       self.send({'force_caesura': True})
