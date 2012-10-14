@@ -1,5 +1,6 @@
 import socket
 import time
+import logging
 
 import json
 
@@ -17,12 +18,13 @@ class GuiConnect(object):
         self.receiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.receiver.bind(('0.0.0.0', self.receive_port))
         self.receive_exit_requested = False
+        self.musical_logger = logging.getLogger('musical')
 
     def send(self, msg):
         self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
 
     def handle_caesura(self, director):
-        print "caesura"
+        self.musical_logger.info('caesura')
         director_fields_to_transmit = ['speed']  # ,'transpose']
         for field in director_fields_to_transmit:
             self.send({field: getattr(director, field)})

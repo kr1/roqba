@@ -6,6 +6,7 @@ the given key if the setter method has been registered before'''
 
 import pprint
 import time
+import logging
 
 
 class BehaviourDict(dict):
@@ -16,7 +17,12 @@ class BehaviourDict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.real_setters = {}
+        if 'name' in kwargs.keys():
+            self.name = kwargs['name']
+        else:
+            self.name = None
         self.saved_behaviours = self.read_or_create_saved_behaviours()
+        self.behaviour_logger = logging.getLogger('behaviour')
         self._update(*args, **kwargs)
 
     def read_or_create_saved_behaviours(self, name='.saved_behaviours'):
@@ -50,7 +56,7 @@ class BehaviourDict(dict):
 
         and calls a setter method registered for the given key'''
         dict.__setitem__(self, item, value)
-        #print "behaviour dict-{0}: setting {1} to {2}".format(self, item, value)
+        self.behaviour_logger.info("behaviour dict-{0}: setting '{1}' to '{2}'".format(self.name, item, value))
         if item in self.real_setters.keys():
             instructions = self.real_setters[item]
             #print "with instructions", instructions, "of type: ", type(instructions)

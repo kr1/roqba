@@ -20,7 +20,7 @@ default_settings.settings.update(local_settings.settings)
 default_settings.behaviour.update(local_settings.behaviour)
 
 settings = default_settings.settings
-behaviour = BehaviourDict(default_settings.behaviour.items())
+behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
 gateway = NoteGateway(settings, behaviour)
 gateway.hub().next()

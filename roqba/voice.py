@@ -1,4 +1,5 @@
 import random
+import logging
 from Queue import deque
 from random import choice as sample
 
@@ -86,6 +87,7 @@ class Voice(object):
 
         self.set_state(register)
         self.add_setters_for_behaviour_dict()
+        self.musical_logger = logging.getLogger('musical')
     
     def add_setters_for_behaviour_dict(self):
         beh = self.composer.behaviour['per_voice'][self.id]
@@ -145,7 +147,7 @@ class Voice(object):
                 move = self.manage_melody_note(meter_pos)
                 #print "move {0} ".format(move)
             except StopIteration:
-                print "melody finished"
+                self.musical_logger.info("melody finished")
                 self.playing_a_melody = False
         else:
             if (self.should_play_a_melody and self.note != 0 and
@@ -157,7 +159,7 @@ class Voice(object):
                 #print "searching for a suitable melody"
                 self.melody = self.search_suitable_melody(speed)
                 if self.melody:
-                    print "starting the melody: ", self.melody
+                    self.musical_logger.info("starting the melody: {0}".format(self.melody))
                     self.melody_iterator = iter(self.melody["melody"])
                     move = self.manage_melody_note(meter_pos)
                     self.playing_a_melody = True
@@ -186,7 +188,7 @@ class Voice(object):
               candidates.append({melody_name: melody})
         if len(candidates) > 0:
             chosen = sample(candidates).items()[0]
-            print "new melody: ", chosen[0]
+            self.musical_logger.info("new melody: {0}".format(chosen[0]))
             return chosen[1]
               
     def manage_melody_note(self, meter_pos):
@@ -196,7 +198,7 @@ class Voice(object):
         specified length of the note.
         returns the pitch-related move (delta)"""
         move, length = self.melody_iterator.next()
-        print move
+        self.musical_logger.info("melody move: {0}".format(move))
         oop = self.on_off_pattern
         oop[meter_pos] = 1
         remaining = len(oop) - meter_pos

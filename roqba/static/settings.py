@@ -91,7 +91,7 @@ behaviour = {'default_volume': 0.666,
                     'max_binaural_diff': 5,
                     'automate_note_duration_prop': True,
                     'automate_note_duration_min_max': [0.1, 3.3]
-                    }),
+                    }, name='voice 1'),
                 2: BehaviourDict({
                     'automate_wavetables': True,
                     'wavetable_specs': sum([[['random', ['even']]] * 2,
@@ -99,7 +99,7 @@ behaviour = {'default_volume': 0.666,
                                          []),
                     'max_num_partials': 5,
                     'automate_pan' : 0.75
-                    }),
+                    }, name='voice 2'),
                 3: BehaviourDict({
                     'automate_wavetables': True,
                     'wavetable_specs': sum([[['random', ['odd', 'all']]] * 2,
@@ -107,7 +107,7 @@ behaviour = {'default_volume': 0.666,
                                          []),
                     'max_num_partials': 5,
                     'automate_pan' : 0.75
-                    }),
+                    }, name='voice 3'),
                 4: BehaviourDict({
                     'automate_pan' : 1.0,
                     'max_binaural_diff': 15,
@@ -116,7 +116,7 @@ behaviour = {'default_volume': 0.666,
                     'should_play_a_melody': True,
                     'max_num_partials': 3,
                     'automate_note_duration_min_max': [0.6, 9.3]
-                })
+                }, name='voice 4')
               }
             }
 

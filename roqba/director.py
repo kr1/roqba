@@ -53,6 +53,7 @@ class Director(object):
         self.MIN_SPEED = behaviour["min_speed"]
         self.MAX_SPEED = behaviour["max_speed"]
         self.MAX_SHUFFLE = behaviour["max_shuffle"]
+        self.musical_logger = logging.getLogger('musical')
 
     def set_meter(self, meter):
         self.composer.set_meter(meter)
@@ -65,8 +66,7 @@ class Director(object):
         """
         self.start_time = time.time()
         self.playing = True
-        logger.info("<<<<<<<<<<<<<<<<<<<<<<   start playing  >>>>>>>>>>>>>>>>\
->>>>>>>>>>>>>>")
+        self.musical_logger.info("<<<<<   start playing   >>>>>>")
         pos = 0
 
         while not self.stopped:
@@ -78,8 +78,7 @@ class Director(object):
                 pos += self.speed
                 if pos > duration:
                     self.playing = False
-                    logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<   stop playing  \
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    self.musical_logger.info("<<<<<   stop playing  >>>>>")
 
             cycle_pos, weight = self.metronome.beat()
             self.state.update({'weight': weight,
@@ -175,8 +174,8 @@ class Director(object):
 
     def stop(self):
         if self.playing:
-            logger.info("<<<<<<<<<<<<<<   stop playing = length: '{0}' >>>>>>>\
->>>>>>>>>>>>>>>>>>".format(self.make_length()))
+            logger.info("<<<<   stop playing = length: '{0}'   >>>>".format(
+                            self.make_length()))
         self.playing = False
         self.stopped = True
         self.gui_sender.receive_exit_requested = True
