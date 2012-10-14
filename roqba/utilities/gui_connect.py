@@ -19,6 +19,7 @@ class GuiConnect(object):
         self.receiver.bind(('0.0.0.0', self.receive_port))
         self.receive_exit_requested = False
         self.musical_logger = logging.getLogger('musical')
+        self.gui_logger = logging.getLogger('gui')
 
     def send(self, msg):
         self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
@@ -74,4 +75,6 @@ class GuiConnect(object):
                 do = {prefix + field: getattr(voice, field)}
                 #print "update gui: ", do
                 self.send(do)
+        # self.gui_logger.info("sending behaviours: {}".format(beh.saved_behaviours.keys()))
+        self.send({'saved_behaviours': beh.saved_behaviours.keys()})
         self.send({'scale': director.composer.scale})

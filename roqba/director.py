@@ -54,6 +54,7 @@ class Director(object):
         self.MAX_SPEED = behaviour["max_speed"]
         self.MAX_SHUFFLE = behaviour["max_shuffle"]
         self.musical_logger = logging.getLogger('musical')
+        self.gui_logger = logging.getLogger('gui')
 
     def set_meter(self, meter):
         self.composer.set_meter(meter)
@@ -272,7 +273,7 @@ class Director(object):
         of a particular moment
         """
         key, val = msg.items()[0]
-        print key, ": ", val
+        self.gui_logger.info("incoming message '{0}' with value '{1}'".format(key, val))
         if key[0:6] == 'voice_':
             split = key.split("_")
             vid = int(split[1])
@@ -309,6 +310,8 @@ class Director(object):
                     self.gui_sender.update_gui(self)
                 if val == 'save_behaviour':
                     self.behaviour.save_current_behaviour()
+                if val[0] == 'save_behaviour':
+                    self.behaviour.save_current_behaviour(name=val[1])
             elif key == 'scale':
                 self.composer.set_scale(val)
             elif key == "force_caesura":

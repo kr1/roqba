@@ -1,12 +1,13 @@
 import os
 import socket
 import json
+import logging
 from collections import OrderedDict
 from re import match
 from Tkinter import tkinter
 from Tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
 from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
-from Tkinter import Entry
+from Tkinter import Entry, OptionMenu
 
 # TODO?: integration into roqba
 #from roqba.static.settings import settings
@@ -68,6 +69,7 @@ class Application(Frame):
         self.columnconfigure(6, minsize=150)
         self.create_widgets()
         self.settables = self.assemble_settables()
+        self.gui_logger = logging.getLogger('gui')
         self.request_update()
 
     def create_widgets(self):
@@ -119,6 +121,11 @@ class Application(Frame):
         self.saveBehaviourNameEntry = Entry(self.monitor_frame)
         self.saveBehaviourNameEntry.grid(row=4, sticky=E+W)
         self.saveBehaviourNameEntry.bind('<KeyRelease>', self.request_saving_behaviour)
+        self.selected_behaviour = StringVar()
+        self.selected_behaviour.trace('w', self.new_behaviour_chosen)
+        self.savedBehavioursMenu= OptionMenu(self.monitor_frame,
+                                            self.selected_behaviour, None,)
+        self.savedBehavioursMenu.grid(row=5, sticky=E+W)
         self.monitor_frame.grid(column=0, row=10, sticky=E+W)
 
     def request_update(self):
@@ -129,6 +136,7 @@ class Application(Frame):
         if event and event.widget == self.saveBehaviourNameEntry:
             if event.keysym == 'Return':
                 name = self.saveBehaviourNameEntry.get()
+                self.saveBehaviourNameEntry.delete(0, len(name))
             else:
                 return
         else:  # button was pressed
@@ -253,13 +261,25 @@ class Application(Frame):
             this_but.grid(sticky=W, column=0, row=len(self.cb_frame.winfo_children()))
         self.cb_frame.grid(column=0, row=0, rowspan=10, sticky=N)
 
+    def new_behaviour_chosen(self, a, b, c):
+        self.send({'change_behaviour': self.selected_behaviour.get()})
+
     def set_value(self, name, val):
-        '''set a widget to the specified value'''
+        '''sets a widget to the specified value
+        
+        various different widget types need custum setting functionality'''
         direct = ['scale', 'wavetable_generation_type', 'partial_pool']
         if filter(lambda x: match("(voice_\d_|)" + x, name), direct):
-            print "setting:" , name, " to: ", val
+            self.gui_logger.info("setting: '{0}' to '{1}' in GUI".format(name, val))
             getattr(self, name).set(val)
             return
+        if name == 'saved_behaviours':
+            self.savedBehavioursMenu.destroy()
+            self.savedBehavioursMenu = OptionMenu(self.monitor_frame,
+                                            self.selected_behaviour, *sorted(val))
+            self.savedBehavioursMenu.grid(row=5, sticky=E+W)
+            return
+
         for w in self.settables:
             typ = w.__class__.__name__
             if w.ref == name:
@@ -344,7 +364,7 @@ class Application(Frame):
         #print do
 
     def send(self, msg):
-        print "sending: ", msg
+        self.gui_logger.info("sending: {0}".format(msg))
         self.send_sock.sendto(json.dumps(msg), (remote_host, send_port))
 
     def create_ranges(self): 
