@@ -3,6 +3,7 @@
 *.pyc
 *.wav
 .gitattributes
+.saved_behaviours
 .screenrc
 class\ diagram.png
 docs/build

@@ -4,6 +4,9 @@ BehaviourDict is a subclass of dict and modifies mainly the
 __setitem__ method by calling a setter method for
 the given key if the setter method has been registered before'''
 
+import pprint
+import time
+
 
 class BehaviourDict(dict):
     '''defines a dictionary-class with custom setter methods
@@ -13,7 +16,34 @@ class BehaviourDict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.real_setters = {}
+        self.saved_behaviours = self.read_or_create_saved_behaviours()
         self._update(*args, **kwargs)
+
+    def read_or_create_saved_behaviours(self, name='.saved_behaviours'):
+        """reads saved behaviours if there are, otherwise creates them"""
+        try:
+            with open(name, 'r+') as behaviour_file:
+                try:
+                    saved_behaviours = eval(behaviour_file.read())
+                except SyntaxError:
+                    saved_behaviours = {}
+        except IOError:
+            open(name, 'w').close()
+            saved_behaviours = {}
+        return saved_behaviours
+
+    def write_saved_behaviours(self, name='.saved_behaviours'):
+        """writes the saved behaviours to file"""
+        with open(name, 'w+') as behaviour_file:
+            print pprint.pformat(self.saved_behaviours)
+            behaviour_file.write(pprint.pformat(self.saved_behaviours))
+
+    def save_current_behaviour(self, name=None, write_to_file=True):
+        """adds current behaviour to the saved behaviours dict"""
+        time_key = time.strftime('%Y-%m-%d--%H:%M:%S', time.localtime())
+        self.saved_behaviours[name or time_key] = self
+        if write_to_file:
+            self.write_saved_behaviours()
 
     def __setitem__(self, item, value):
         '''sets the specified key to the given value
