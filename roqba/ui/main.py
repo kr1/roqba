@@ -279,7 +279,7 @@ class Application(Frame):
         self.cb_frame.grid(column=0, row=0, rowspan=10, sticky=N)
 
     def new_behaviour_chosen(self, a, b, c):
-        self.send({'change_behaviour': self.selected_behaviour.get()})
+        self.send({'sys': ['change_behaviour', self.selected_behaviour.get()]})
 
     def set_value(self, name, val):
         '''sets a widget to the specified value
@@ -314,7 +314,7 @@ class Application(Frame):
         ref = event.widget.ref
         val = not getattr(self, ref).get()  # because is read before the var is changed
         self.send({ref: val})
-        print ref, val
+        #print ref, val
         # handle gui elements
         # enable/disable functionality temporarily(?) commented on:
         # Wed Aug 17 09:39:54 CEST 2011
@@ -370,7 +370,8 @@ class Application(Frame):
 
     def scale_handler(self, event):
         self.send({event.widget.ref: event.widget.get()})
-        print event.widget.ref, event.widget.get()
+        self.gui_logger.info("handling scale: {0}, with new value: {1}".format(
+                  event.widget.ref, event.widget.get()))
 
     def trigger_waveform_handler(self, event):
         self.send({event.widget.ref: True})

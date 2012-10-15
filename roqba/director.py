@@ -54,6 +54,7 @@ class Director(object):
         self.MAX_SPEED = behaviour["max_speed"]
         self.MAX_SHUFFLE = behaviour["max_shuffle"]
         self.musical_logger = logging.getLogger('musical')
+        self.behaviour_logger = logging.getLogger('behaviour')
         self.gui_logger = logging.getLogger('gui')
 
     def set_meter(self, meter):
@@ -279,7 +280,7 @@ class Director(object):
             vid = int(split[1])
             voice = self.composer.voices[vid]
             v_key = "_".join(split[2:])
-            print "setting {0} of voice {1} to {2}".format(v_key, vid, val)
+            self.behaviour_logger.info("setting {0} of voice {1} to {2}".format(v_key, vid, val))
             if v_key in ['wavetable_generation_type',
                          'num_partials',
                          'partial_pool']:
@@ -301,22 +302,25 @@ class Director(object):
                 self.gui_sender.update_gui(self)
         elif key in self.allowed_incoming_messages:
             if key in self.behaviour.keys():
-                print "setting {0} to {1}".format(key, val)
+                self.behaviour_logger.info("setting {0} to {1}".format(key, val))
                 self.behaviour[key] = val
             elif key == "play":
                 val and self.unpause() or self.pause()
             elif key == "sys":
                 if val == 'update':
                     self.gui_sender.update_gui(self)
-                if val == 'save_behaviour':
+                elif val == 'save_behaviour':
                     self.behaviour.save_current_behaviour()
-                if val[0] == 'save_behaviour':
+                elif val[0] == 'save_behaviour':
                     self.behaviour.save_current_behaviour(name=val[1])
+                elif val[0] == 'change_behaviour':
+                    pass
+                    #TODO: apply new behaviour (attention recreation of behaviour dicts?)
             elif key == 'scale':
                 self.composer.set_scale(val)
             elif key == "force_caesura":
                 self.force_caesura = True
             elif key == "trigger_wavetable":
-                print "setting wavetable for all"
+                self.behaviour_logger.info("setting a new wavetable for all voices")
                 self.set_wavetables(manual=True, voices=self.composer.voices.values())
                 self.gui_sender.update_gui(self)

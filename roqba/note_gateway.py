@@ -1,3 +1,11 @@
+"""the purpose of this class is to communicate with the sound-engine.
+
+its main concerns are:
+- starting, stopping, pausing the engine
+- sending notes
+- sending controlling messages
+"""
+
 import logging
 import time
 
