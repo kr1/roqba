@@ -10,6 +10,8 @@ import composer
 from roqba.utilities import random_between
 from roqba.utilities import pd_wavetables as wavetables
 from roqba.utilities.gui_connect import GuiConnect
+from roqba.utilities.behaviour_dict import BehaviourDict
+
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
@@ -314,7 +316,12 @@ class Director(object):
                 elif val[0] == 'save_behaviour':
                     self.behaviour.save_current_behaviour(name=val[1])
                 elif val[0] == 'change_behaviour':
-                    pass
+                    new_behaviour = val[1]
+                    self.behaviour_logger.info("setting behaviour to: {0}".format(new_behaviour))
+                    self.behaviour = BehaviourDict(self.behaviour.saved_behaviours[new_behaviour])
+                    for key, per_voice in self.behaviour['per_voice'].items():
+                        per_voice = BehaviourDict(per_voice)
+                    self.gui_sender.update_gui(self)
                     #TODO: apply new behaviour (attention recreation of behaviour dicts?)
             elif key == 'scale':
                 self.composer.set_scale(val)

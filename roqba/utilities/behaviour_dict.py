@@ -41,7 +41,7 @@ class BehaviourDict(dict):
     def write_saved_behaviours(self, name='.saved_behaviours'):
         """writes the saved behaviours to file"""
         with open(name, 'w+') as behaviour_file:
-            print pprint.pformat(self.saved_behaviours)
+            #print pprint.pformat(self.saved_behaviours)
             behaviour_file.write(pprint.pformat(self.saved_behaviours))
 
     def save_current_behaviour(self, name=None, write_to_file=True):
