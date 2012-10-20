@@ -1,20 +1,25 @@
-class Melody(object):
-    def __init__(self, mel_dict):
-        self.melody = mel_dict['melody']
+"""defines a dict of melodies and their contexts.
+
+during playing melodies can be chosen for playback
+if the current playing context matches the specified
+context of a melody
+"""
 
 melodies = {
     "viel": {
         "melody": [
-            [0, 2], [3, 2], [-1 ,2], [-1, 1] , [1, 1],
+            [0, 2], [3, 2], [-1, 2], [-1, 1], [1, 1],
             #G       C      B         A         B
-            [1, 2], [-3, 2], [0, 2], [1, 2] , [-1, 2], [-1, 2], [-1, 2], [2, 2],
+            [1, 2], [-3, 2], [0, 2], [1, 2], [-1, 2], [-1, 2], [-1, 2], [2, 2],
             #C        G       G       A         G        F       E        G
-            [-2, 2], [1, 2], [1, 2], [1, 2] , [-1, 2], [-2, 2],
+            [-2, 2], [1, 2], [1, 2], [1, 2], [-1, 2], [-2, 2],
             #E        F       G       A         G        E
-            [2, 2], [-1, 1], [-1, 1], [-1, 2] , [0, 2], [-1, 6],
+            [2, 2], [-1, 1], [-1, 1], [-1, 2], [0, 2], [-1, 6],
             #G        F        E        D       D        C
         ],
-        "start_note": 4,  # diatonic major scale starting with 0 (i.e. 4 would mean starting on the quint)
+        # diatonic major scale starting with 0
+        # (i.e. 4 would mean starting on the quint)
+        "start_note": 4,
         "meters": [
            (12, (2, 2, 2, 3, 3)),
            (12, (3, 3, 2, 2, 2)),

@@ -8,6 +8,7 @@ from roqba.static.settings import settings
 
 
 class GuiConnect(object):
+    '''synchronizing the GUI'''
     def __init__(self):
         self.gui_host = settings['GUI_HOST']
         self.send_port = settings['TO_GUI_PORT']
@@ -22,9 +23,13 @@ class GuiConnect(object):
         self.gui_logger = logging.getLogger('gui')
 
     def send(self, msg):
+        '''send 'raw' messages over the socket
+
+        message should be a dict {key: value} for json encoding'''
         self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
 
     def handle_caesura(self, director):
+        '''update the GUI when a caesura happens'''
         director_fields_to_transmit = ['speed']  # ,'transpose']
         for field in director_fields_to_transmit:
             self.send({field: getattr(director, field)})
@@ -37,6 +42,7 @@ class GuiConnect(object):
         self.update_gui(director)
 
     def send_cycle_pos(self, director):
+        '''sends a position int on every beat'''
         director_state_fields_to_transmit = ['weight',
                                              'cycle_pos']  # ,'transpose']
         for field in director_state_fields_to_transmit:
@@ -46,12 +52,14 @@ class GuiConnect(object):
             self.send({field: val})
 
     def read_incoming_messages(self, q):
+        '''reads incoming messages on the socket'''
         while not self.receive_exit_requested:
             time.sleep(0.2)
             msg = self.receiver.recv(1024)
             q.append(json.loads(msg))
 
     def update_gui(self, director):
+        '''sends messages for a complete update of the GUI'''
         beh = director.behaviour
         for field in beh.keys():
             if (field in ['per_voice', 'meter', 'meters', 'speed'] or
@@ -74,6 +82,7 @@ class GuiConnect(object):
                 do = {prefix + field: getattr(voice, field)}
                 #print "update gui: ", do
                 self.send(do)
-        # self.gui_logger.info("sending behaviours: {}".format(beh.saved_behaviours.keys()))
+        # self.gui_logger.info("sending behaviours: {0}".format(
+        #         beh.saved_behaviours.keys()))
         self.send({'saved_behaviours': beh.saved_behaviours.keys()})
         self.send({'scale': director.composer.scale})
