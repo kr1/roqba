@@ -20,7 +20,7 @@ default_settings.settings.update(local_settings.settings)
 default_settings.behaviour.update(local_settings.behaviour)
 
 settings = default_settings.settings
-behaviour = BehaviourDict(default_settings.behaviour.items())
+behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
 gateway = NoteGateway(settings, behaviour)
 gateway.hub().next()
@@ -47,8 +47,13 @@ director = Director(composer, state, behaviour, settings)
 
 def add_setters():
     behaviour.real_setters["meter"] = director.set_meter
+    behaviour.real_setters["transpose"] = director.gateway.set_transpose
+    behaviour.real_setters["speed"] = director.new_speed
     behaviour.real_setters["binaural_diff"] = composer.set_binaural_diffs
     behaviour.real_setters["slide_duration_msecs"] = gateway.set_slide_msecs_for_all_voices
+    for vid in behaviour['per_voice'].keys():
+        behaviour['per_voice'][vid].real_setters["pan_pos"] = [composer.voices[vid].set_pan_pos, director.gateway]
+        behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = [director.gateway.set_slide_msecs, vid]
 
 def main():
     '''starts the main thread of the application'''
@@ -58,7 +63,7 @@ def main():
 
 if __name__ == "__main__":
     print '''please run this app from the interpreter as:
-    \b\b\b\bimport main
+    \b\b\b\bfrom roqba import main
     \b\b\b\bmain.main()
     \b\b\bstop it with:
     \b\b\b\bmain.director.stop()

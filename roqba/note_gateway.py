@@ -1,3 +1,11 @@
+"""the purpose of this class is to communicate with the sound-engine.
+
+its main concerns are:
+- starting, stopping, pausing the engine
+- sending notes
+- sending controlling messages
+"""
+
 import logging
 import time
 
@@ -10,10 +18,12 @@ class NoteGateway(object):
         self.logger = logging.getLogger("sender")
         self.settings = settings
         self.slide = True
-        self.slide_duration_prop = behaviour['default_slide_duration_prop']
+        self.behaviour = behaviour
+        self.slide_duration_prop = behaviour['slide_duration_prop']
         self.voice_ids = []
         self.block_messages = False
         self.transpose = behaviour["transpose"]
+        self.behaviour = behaviour
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
 
     def pause(self):
@@ -34,7 +44,23 @@ class NoteGateway(object):
     def stop_all_notes(self):
         '''sends a stop message to all active voices'''
         for v in self.voice_ids:
-            self.pd.send(["voice", v, 0])
+            self.stop_notes_of_voice(v)
+
+    def stop_notes_of_voice(self, vid):
+        '''sends the stop message to a specified voice'''
+        self.pd.send(["voice", vid, 0])
+
+    def mute_voice(self, vid, val):
+        '''sends a message to mute/unmute a voice to pd
+        
+        use vid=drums to mute/unmute the drums
+        '''
+        val = 1 if val else 0
+        if vid == "drums":  
+            msg = ["perc", "mute", val]
+        else:
+            msg = ["voice", vid, "mute", val]
+        self.pd.send(msg)
 
     def set_slide_to_0(self):
         '''this method bypasses the slide functionality
@@ -66,6 +92,25 @@ class NoteGateway(object):
             self.voice_ids.append(voice_id)
         self.pd.send(["voice", voice_id, "dur", val])
         return True
+
+    def pd_send_wavetable(self, voice_id, wavetable):
+        '''send out the duration for a given voice'''
+        self.pd.send(["voice", voice_id, "wavetable", wavetable])
+        return True
+
+    def send_voice_pan(self, voice, pan):
+        '''sends a pan-message for a voice'''
+        args = ["sound", "pan", voice.id, pan]
+        self.pd.send(args)
+
+    def send_voice_volume(self, voice, val):
+        '''sends a volume message for a voice
+        
+        use values from 0 to 1'''
+        args = ["voice", voice.id, "volume", val]
+        print "sending: ", args
+        self.pd.send(args)
+        
 
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
@@ -106,12 +151,13 @@ class NoteGateway(object):
                             #                  voice: {1}: {0}".\
                             #                  format(msg, v.id))
                             if self.slide and v.slide:
-                                if v.slide_duration_prop:
+                                if self.behaviour.voice_get(v.id, "use_proportional_slide_duration"):
+                                    #print "{0} has slide_prop: {1}".format(v.id, v.slide_duration_prop)
                                     dur_prop = v.slide_duration_prop
+                                    slide_length = v.duration_in_msec * dur_prop
                                 else:
-                                    dur_prop = self.slide_duration_prop
-                                self.set_slide_msecs(v.id,
-                                              (v.duration_in_msec * dur_prop))
+                                    slide_length =  self.behaviour.voice_get(v.id, "slide_duration_msecs")
+                                self.set_slide_msecs(v.id, slide_length)
                             self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
                             self.pd_send_note(v.id, msg)
                             if v.weight == HEAVY:
@@ -125,3 +171,6 @@ class NoteGateway(object):
                     #msg = data["message"]
                 else:
                     msg = str(data)
+
+    def set_transpose(self, val):
+        self.transpose = val

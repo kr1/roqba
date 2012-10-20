@@ -22,7 +22,6 @@ class Composer(object):
                  gateway,
                  settings,
                  behaviour,
-                 num_voices=3,
                  scale="DIATONIC"):
                  #scale="PENTATONIC"):
                  #scale="PENTA_MINOR"):
@@ -66,6 +65,7 @@ class Composer(object):
 
         calls reload_register method of the voices and creates and
         sets the new meter also for the drummer-instance'''
+        self.meter = meter
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                     "terns")
         self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
@@ -168,17 +168,22 @@ class Composer(object):
         self.scale = name
         self.generate_real_scale(min, max)
 
-    def generate_real_scale(self, min=0, max=128):
+    @staticmethod
+    def assemble_real_scale(scale, min=0, max=128):
         '''extends the one-octave scale over the specified range'''
-        scale = SCALES[self.scale]
-        self.real_scale = []
+        real_scale = []
         value = 0
         for n in xrange(min, max):
             value += 1
             index = n % len(scale)
             if scale[index]:
-                self.real_scale.append(value)
-        #print self.real_scale
+                real_scale.append(value)
+        return real_scale
+
+    def generate_real_scale(self, min=0, max=128):
+        '''extends the one-octave scale over the specified range'''
+        scale = SCALES[self.scale]
+        self.real_scale = self.assemble_real_scale(scale, min, max)
 
     def acceptable_harm_for_length(self, harm, length):
         '''checks if the specified (interval-set) are "harmonic"'''
@@ -191,14 +196,32 @@ class Composer(object):
             else:
                 return set(deltas) in ALL_STRICT_HARMONIES
 
-    def sort_voices_by_importance(self):
+    def sort_voices_by_importance(self, by='imp'):
         '''sorts the voices according to their importance.
 
-        having a registered direction is the only determinant of importace
-        for the tim being'''
-        dirs = filter(lambda x: x.dir, self.voices.values())
-        no_dirs = list(set(self.voices.values()) - set(dirs))
-        return dirs + no_dirs
+        by: 'imp':
+            - importance according to register
+
+        by: 'dir':
+            - voices having a registered direction first
+        
+        '''
+        voices = self.voices.values()
+        if by == 'imp': 
+            register_sort_dict = {}
+            [register_sort_dict.__setitem__(reg["name"], 
+                                            reg["sort_importance"]) for 
+             reg in self.registers.values()] 
+            voices.sort(key=lambda x: register_sort_dict[x.register["name"]])
+        else:
+            dirs = filter(lambda x: x.dir, voices)
+            no_dirs = list(set(voices) - set(dirs))
+            voices =  dirs + no_dirs
+        melodic = filter(lambda v: v.playing_a_melody, voices)
+        if len(melodic) > 0:
+            voices.remove(melodic[0])
+            voices = [melodic[0]] + voices
+        return voices
 
     def choose_rhythm(self):
         '''chooses a new rhythm randomly from each voices groupings'''
@@ -228,12 +251,18 @@ class Composer(object):
         '''
         if val and val != 'random':
             if voice:
-                self.gateway.pd.send(["voice", "binaural", voice, val])
+                voice.binaural_diff = val
+                self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
             else:
                 self.gateway.pd.send(["voice", "binaural", -1, val])
+                for v in self.voices.values():
+                    v.binaural_diff = val
         else:
             for v in self.voices.values():
-                val = random.random() * self.max_binaural_diff
+                if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+                    continue
+                val = random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
+                v.binaural_diff = val
                 self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def drum_fill_handler(self, v, state):
@@ -270,7 +299,7 @@ class Composer(object):
         if key in ORNAMENTS:
             notes = sample(ORNAMENTS[key])
 
-            ## check for the speed limit, if ornaments wold be too fast,
+            ## check for the speed limit, if ornaments would be too fast,
             ## don't embellish
             if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return
@@ -285,11 +314,14 @@ class Composer(object):
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
                 dur_prop = (v.slide_duration_prop or
-                            behaviour["default_slide_duration_prop"])
+                            behaviour.voice_get(v.id, "slide_duration_prop"))
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))
                 self.gateway.pd_send_note(v.id, real_note)
+            self.gateway.set_slide_msecs(v.id, self.behaviour.voice_get(v.id, "use_proportional_slide_duration") 
+                                            and self.behaviour.voice_get(v.id, "slide_duration_prop") or
+                                            self.behaviour.voice_get(v.id, "slide_duration_msecs"))
 
     def stream_analyzer(self):
         """analyses the stream of notes.
@@ -304,7 +336,8 @@ class Composer(object):
         if all_notes_change:
             harmony = map(lambda x: x.note, self.voices.values())
             #print "all_notes_change: harmony {0}".format(harmony)
-            if self.is_base_harmony(harmony):
+            if (self.is_base_harmony(harmony) and
+                not filter(lambda v: v.playing_a_melody, self.voices.values())):
                 self.comment = "caesura"
                 #print "all notes change to a base harmony"
 

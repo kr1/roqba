@@ -1,14 +1,17 @@
 *.swp
+*.swo
 *.pyc
 *.wav
 .gitattributes
+.saved_behaviours
 .screenrc
 class\ diagram.png
+docs/build
 scrolling.txt
 sound_files
 webserver
 log.txt
 tags
 roqba/static/local_settings.py
-docs/build/doctrees
-docs/build/linkcheck
+docs/build
+docs/build/
