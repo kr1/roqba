@@ -22,7 +22,6 @@ class Composer(object):
                  gateway,
                  settings,
                  behaviour,
-                 num_voices=3,
                  scale="DIATONIC"):
                  #scale="PENTATONIC"):
                  #scale="PENTA_MINOR"):
@@ -169,17 +168,22 @@ class Composer(object):
         self.scale = name
         self.generate_real_scale(min, max)
 
-    def generate_real_scale(self, min=0, max=128):
+    @staticmethod
+    def assemble_real_scale(scale, min=0, max=128):
         '''extends the one-octave scale over the specified range'''
-        scale = SCALES[self.scale]
-        self.real_scale = []
+        real_scale = []
         value = 0
         for n in xrange(min, max):
             value += 1
             index = n % len(scale)
             if scale[index]:
-                self.real_scale.append(value)
-        #print self.real_scale
+                real_scale.append(value)
+        return real_scale
+
+    def generate_real_scale(self, min=0, max=128):
+        '''extends the one-octave scale over the specified range'''
+        scale = SCALES[self.scale]
+        self.real_scale = self.assemble_real_scale(scale, min, max)
 
     def acceptable_harm_for_length(self, harm, length):
         '''checks if the specified (interval-set) are "harmonic"'''

@@ -25,7 +25,6 @@ class GuiConnect(object):
         self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
 
     def handle_caesura(self, director):
-        self.musical_logger.info('caesura')
         director_fields_to_transmit = ['speed']  # ,'transpose']
         for field in director_fields_to_transmit:
             self.send({field: getattr(director, field)})
