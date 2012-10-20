@@ -19,3 +19,8 @@ _`introduction`
 | the stream-analyzer (and performer) controls if there are drum-fills or embellishments to be added. it also checks for conditions of a ceasura.
 | If a caesura is given, a flag is set which the director uses to modify its behaviour.
 | Finally the musical frame is sent to both the Note-Gateway and the Notator module.
+
+.. toctree::
+    :maxdepth: 1
+
+    events_and_messages
