@@ -1,5 +1,5 @@
-CALL CHAIN
-==========
+CALL CHAINS
+===========
 
 **director**: meter-position is HEAVY (a ***2*** n the meter):
   - **composer**: choose_rhythm

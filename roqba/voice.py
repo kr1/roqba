@@ -201,6 +201,9 @@ class Voice(object):
         specified length of the note.
         returns the pitch-related move (delta)"""
         move, length = self.melody_iterator.next()
+        if self.melody_iterator.__length_hint__() == 1:
+            # TODO: communicate to director that a caesura is required
+            pass
         self.musical_logger.info("melody move: {0} \tof length: {1} ".format(move, length))
         oop = self.on_off_pattern
         oop[meter_pos] = 1

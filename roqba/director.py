@@ -272,6 +272,7 @@ class Director(object):
                                          self.behaviour["min_speed"]))
             #print "new speed values: {0}\n resetting metronome.".format(
             #                                                self.speed)
+        self.gateway.pd.send(['sys', 'speed', str(self.speed * 1000)])
         return self.speed
 
     def handle_incoming_message(self, msg):
