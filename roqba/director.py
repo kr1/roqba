@@ -142,7 +142,10 @@ class Director(object):
                             v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
                     sample = self.behaviour["transposings"]
-                    self.gateway.transpose = choice(sample)
+                    new_transpose = choice(sample)
+                    self.gateway.transpose = new_transpose
+                    self.behaviour["transpose"] = new_transpose
+                    self.gui_sender.send({'transpose': new_transpose})
                 time.sleep(self.speed)
                 if self.behaviour["automate_wavetables"]:
                     self.set_wavetables(voices=voices)
