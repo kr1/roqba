@@ -58,13 +58,33 @@
 <dt id="roqba.director.Director">
 <em class="property">class </em><tt class="descclassname">roqba.director.</tt><tt class="descname">Director</tt><big>(</big><em>composer</em>, <em>state</em>, <em>behaviour</em>, <em>settings</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="roqba.director.Director.check_incoming_messages">
+<tt class="descname">check_incoming_messages</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.Director.check_incoming_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if there are incoming messages in the queue</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.director.Director.handle_incoming_message">
+<tt class="descname">handle_incoming_message</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#roqba.director.Director.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>handles incoming messages from the gui interface</p>
+<p>TODO: keep a current-settings dataobject where to track
+all current settings and which can be used to write a snapshot 
+of a particular moment</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="roqba.director.Director.make_length">
 <tt class="descname">make_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.make_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.make_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="roqba.director.Director.new_random_meter">
+<tt class="descname">new_random_meter</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.Director.new_random_meter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="roqba.director.Director.new_speed">
-<tt class="descname">new_speed</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.new_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_speed" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">new_speed</tt><big>(</big><em>val=None</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.new_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_speed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -78,6 +98,14 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="roqba.director.Director.set_wavetables">
+<tt class="descname">set_wavetables</tt><big>(</big><em>vid=None</em>, <em>voices=None</em>, <em>manual=False</em>, <em>wavetable=None</em><big>)</big><a class="headerlink" href="#roqba.director.Director.set_wavetables" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets new wavetables for those voices that have the</p>
+<p>wavetable automation flag turned on (or the manual flag set).
+when a voice-id is specified only this voice is considered</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="roqba.director.Director.stop">
 <tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.stop" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -87,6 +115,12 @@
 <tt class="descname">unpause</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.unpause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.unpause" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="roqba.director.random">
+<tt class="descclassname">roqba.director.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
 </dd></dl>
 
 </div>
@@ -118,7 +152,7 @@
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -150,7 +184,7 @@
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

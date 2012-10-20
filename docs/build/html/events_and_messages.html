@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Main Call Chains and Sequences &mdash; Roqba v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Roqba v1.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+        <h1><a href="index.html">Roqba v1.0 documentation</a></h1>
+        <div class="rel">
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="main-call-chains-and-sequences">
+<h1>Main Call Chains and Sequences<a class="headerlink" href="#main-call-chains-and-sequences" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt><strong>director</strong>: <em>_play</em></dt>
+<dd><ul class="first last">
+<li><p class="first">cycle_pos, weight = <strong>metronome</strong>.*beat*()</p>
+</li>
+<li><dl class="first docutils">
+<dt>IF meter-position is HEAVY (a <strong>*2*</strong> n the meter):</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><strong>composer</strong>: <em>choose_rhythm</em></dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><strong>voice</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li><em>set_rhythm_grouping</em></li>
+<li><em>apply_overhanging_notes</em></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>composer</strong>: <em>generate</em> (main method - coroutine - that generates the next polyphonic step)</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><strong>voices</strong>:</dt>
+<dd><ul class="first last simple">
+<li><em>generate</em> (the single voices generate their next step)
+the harmony is cumulatively created and later voices have to move their notes
+to comply with harmonic necessities</li>
+<li>eventual &#8220;SLAVE&#8221; voice is made to follow another voice for some notes</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">note duration is registered for the each note</p>
+</li>
+<li><p class="first"><em>apply_scale()</em></p>
+</li>
+<li><p class="first"><em>embellish(state)</em></p>
+</li>
+<li><p class="first"><em>stream_analyzer()</em> : decision if a caesura should take place (by setting &lt;comment&gt;-attribute to &#8216;caesura&#8217;)</p>
+</li>
+<li><p class="first"><strong>drummer</strong>: <em>generate</em></p>
+</li>
+<li><p class="first"><strong>percussion_hub</strong>: send drum-frame to sound-engine</p>
+</li>
+<li><p class="first"><strong>hub</strong>: send voices to sound-engine</p>
+</li>
+<li><p class="first"><strong>notator</strong>: <em>note_to_file</em></p>
+</li>
+<li><p class="first"><strong>returns &#8220;caesura&#8221; or &#8220;normal&#8221;</strong></p>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IF &#8220;caesura&#8221;:</dt>
+<dd><ul class="first last">
+<li><p class="first"><em>sleep</em>: 6 basic time-units</p>
+</li>
+<li><p class="first">new <em>shuffle_delay</em></p>
+</li>
+<li><p class="first">new speed</p>
+</li>
+<li><p class="first"><strong>metronome</strong>: reset</p>
+</li>
+<li><dl class="first docutils">
+<dt><strong>composer</strong></dt>
+<dd><ul class="first last">
+<li><p class="first"><em>gateway.stop_all_notes</em></p>
+</li>
+<li><p class="first"><em>set_scale</em> (choice(composer.SCALES_BY_FREQUENCY))</p>
+</li>
+<li><p class="first"><em>new_random_meter</em></p>
+</li>
+<li><dl class="first docutils">
+<dt>IF automate pan:</dt>
+<dd><ul class="first last simple">
+<li>each voice new pan</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IF automate binaural diffs:</dt>
+<dd><ul class="first last simple">
+<li>each voice new binaural diff</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IF automate note duration prop:</dt>
+<dd><ul class="first last simple">
+<li>each voice new note_duration_prop</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IF automate transpose:</dt>
+<dd><ul class="first last simple">
+<li>new transpose</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IF automate wavetables</dt>
+<dd><ul class="first last simple">
+<li>each voice new wavetable</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><em>check_incoming_messages</em></p>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roqba.html">roqba</a></li>
+</ul>
+
+          <h3 style="margin-top: 1.5em;">Search</h3>
+          <form class="search" action="search.html" method="get">
+            <input type="text" name="q" />
+            <input type="submit" value="Go" />
+            <input type="hidden" name="check_keywords" value="yes" />
+            <input type="hidden" name="area" value="default" />
+          </form>
+          <p class="searchtip" style="font-size: 90%">
+            Enter search terms or a module, class or function name.
+          </p>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |
+          <a href="genindex.html" title="General Index"
+             >index</a>
+            <br/>
+            <a href="_sources/events_and_messages.txt"
+               rel="nofollow">Show Source</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

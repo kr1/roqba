@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba v1.0 documentation" href="index.html" />
     <link rel="up" title="utilities" href="utilities.html" />
-    <link rel="next" title="pdsender" href="pdsender.html" />
+    <link rel="next" title="pd_wavetables" href="pd_wavetables.html" />
     <link rel="prev" title="utilities" href="utilities.html" /> 
   </head>
   <body>
@@ -34,7 +34,7 @@
         <div class="rel">
           <a href="utilities.html" title="utilities"
              accesskey="P">previous</a> |
-          <a href="pdsender.html" title="pdsender"
+          <a href="pd_wavetables.html" title="pd_wavetables"
              accesskey="N">next</a> |
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -54,16 +54,42 @@
             
   <div class="section" id="module-roqba.utilities.behaviour_dict">
 <span id="behaviour-dict"></span><h1>behaviour_dict<a class="headerlink" href="#module-roqba.utilities.behaviour_dict" title="Permalink to this headline">¶</a></h1>
-<p>this module defines a behaviour dict class</p>
+<p>this module defines a custom dict</p>
 <p>BehaviourDict is a subclass of dict and modifies mainly the
 __setitem__ method by calling a setter method for
 the given key if the setter method has been registered before</p>
 <dl class="class">
 <dt id="roqba.utilities.behaviour_dict.BehaviourDict">
 <em class="property">class </em><tt class="descclassname">roqba.utilities.behaviour_dict.</tt><tt class="descname">BehaviourDict</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>defines a dictionary-class with custum setter methods</p>
-<p>upon every call it checks if it has registered setter methods to be
-called and calls them with the given value</p>
+<dd><p>defines a dictionary-class with custom setter methods</p>
+<p>upon every __setitem__ call it checks if it has registered setter
+methods and calls them with the given value</p>
+<dl class="method">
+<dt id="roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours">
+<tt class="descname">read_or_create_saved_behaviours</tt><big>(</big><em>name='.saved_behaviours'</em><big>)</big><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads saved behaviours if there are, otherwise creates them</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.behaviour_dict.BehaviourDict.save_current_behaviour">
+<tt class="descname">save_current_behaviour</tt><big>(</big><em>name=None</em>, <em>write_to_file=True</em><big>)</big><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.save_current_behaviour" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds current behaviour to the saved behaviours dict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.behaviour_dict.BehaviourDict.voice_get">
+<tt class="descname">voice_get</tt><big>(</big><em>vid</em>, <em>key</em><big>)</big><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.voice_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the value for the specified key.</p>
+<p>if the value is present for the voice, this value is returned
+otherwise the default value for this key is returned</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours">
+<tt class="descname">write_saved_behaviours</tt><big>(</big><em>name='.saved_behaviours'</em><big>)</big><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours" title="Permalink to this definition">¶</a></dt>
+<dd><p>writes the saved behaviours to file</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
@@ -94,6 +120,7 @@ called and calls them with the given value</p>
 <li class="toctree-l2"><a class="reference internal" href="static.html">static</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="utilities.html">utilities</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="">behaviour_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pd_wavetables.html">pd_wavetables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pdsender.html">pdsender</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sine_controllers.html">sine_controllers</a></li>
 </ul>
@@ -105,7 +132,7 @@ called and calls them with the given value</p>
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -123,7 +150,7 @@ called and calls them with the given value</p>
         <div class="left">
           <a href="utilities.html" title="utilities"
              >previous</a> |
-          <a href="pdsender.html" title="pdsender"
+          <a href="pd_wavetables.html" title="pd_wavetables"
              >next</a> |
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -137,7 +164,7 @@ called and calls them with the given value</p>
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

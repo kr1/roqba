@@ -54,19 +54,27 @@
             
   <div class="section" id="module-roqba.static.settings">
 <span id="settings"></span><h1>settings<a class="headerlink" href="#module-roqba.static.settings" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">roqba.static.meters</span> <span class="kn">import</span> <span class="n">METERS</span>
+<span class="kn">from</span> <span class="nn">roqba.utilities.behaviour_dict</span> <span class="kn">import</span> <span class="n">BehaviourDict</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
             <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BASS&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
             <span class="c">#&#39;voice_registers&#39;: [&#39;ROCK_BASS&#39;, &#39;MID&#39;, &#39;MID&#39;, &#39;HIGH&#39;],</span>
             <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
                                  <span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
             <span class="s">&#39;PD_HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>
             <span class="s">&#39;PD_PORT&#39;</span><span class="p">:</span> <span class="mi">12321</span><span class="p">,</span>
+            <span class="s">&#39;gui&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;GUI_HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>
+            <span class="s">&#39;TO_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12322</span><span class="p">,</span>
+            <span class="s">&#39;FROM_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12323</span><span class="p">,</span>
             <span class="s">&#39;track_voices_length&#39;</span><span class="p">:</span> <span class="mi">666</span><span class="p">,</span>
             <span class="s">&#39;lowest_note_num&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
             <span class="s">&#39;highest_note_num&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span>
             <span class="p">}</span>
 
-<span class="n">behaviour</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+<span class="n">behaviour</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;default_volume&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+             <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
              <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
              <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">,</span>
@@ -77,31 +85,95 @@
              <span class="c"># quarter of the range</span>
              <span class="s">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
              <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
-             <span class="s">&#39;slide_in_msecs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+             <span class="s">&#39;caesura_prob&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
              <span class="s">&quot;shuffle_delay&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c"># keep this between 0 and MAX_SHUFFLE</span>
              <span class="s">&#39;default_behaviour&#39;</span><span class="p">:</span> <span class="s">&quot;AUTONOMOUS&quot;</span><span class="p">,</span>
              <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+             <span class="c"># METERS</span>
              <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+             <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
              <span class="c">#&#39;meters&#39;: [(12, (1, 2, 2, 1, 2, 2, 2)), 8],</span>
-             <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="p">[[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
-                        <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">],</span>
+             <span class="c">#&#39;meters&#39;: [[(12, (1, 2, 2, 1, 2, 2, 2))] * 4,</span>
+             <span class="c">#           [(7, (3, 2, 2))] * 10],</span>
              <span class="c">#&#39;meter&#39;: (5, (2, 3)),</span>
+             <span class="c"># WAVETABLES</span>
+             <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+             <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                                         <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                                         <span class="p">[[</span><span class="s">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">],</span>
+                                         <span class="p">[]),</span>
+             <span class="s">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+             <span class="s">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+             <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+             <span class="s">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+             <span class="c"># TRANSPOSING</span>
              <span class="s">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
              <span class="s">&#39;automate_transpose&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+             <span class="c"># PAN RELATED</span>
+             <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="s">&#39;automate_pan&#39;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+             <span class="c"># BINAURAL DIFF RELATED</span>
+             <span class="s">&#39;pan_controls_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
              <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
              <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-             <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-             <span class="s">&#39;default_slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+             <span class="c"># SLIDE RELATED</span>
+             <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+             <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="c">#TODO : defined twice - which is read?</span>
+             <span class="s">&#39;slide_in_msecs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+             <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+             <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+             <span class="c"># NOTE DURATION RELATED</span>
              <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
              <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
-             <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+             <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
              <span class="s">&#39;default_note_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c"># proportion</span>
+
              <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
              <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
-             <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.005</span>
+             <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+             <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c">#alt: melody as list</span>
+             <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                    <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+                    <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+                    <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+                    <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                    <span class="s">&#39;automate_pan&#39;</span> <span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+                    <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                    <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">]</span>
+                    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 1&#39;</span><span class="p">),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                                         <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
+                                         <span class="p">[]),</span>
+                    <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                    <span class="s">&#39;automate_pan&#39;</span> <span class="p">:</span> <span class="mf">0.75</span>
+                    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 2&#39;</span><span class="p">),</span>
+                <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;odd&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                                         <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;odd&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
+                                         <span class="p">[]),</span>
+                    <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                    <span class="s">&#39;automate_pan&#39;</span> <span class="p">:</span> <span class="mf">0.75</span>
+                    <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 3&#39;</span><span class="p">),</span>
+                <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;automate_pan&#39;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                    <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                    <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+                    <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">]</span>
+                <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 4&#39;</span><span class="p">)</span>
+              <span class="p">}</span>
             <span class="p">}</span>
 
 <span class="n">styles</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;bulgarian&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -157,6 +229,8 @@
                    <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
                    <span class="c">## constraints on dual and triple grouping</span>
                    <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                   <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                   <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
                    <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
                    <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span>
                <span class="p">}</span>
@@ -164,7 +238,8 @@
          <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="n">style</span> <span class="o">=</span> <span class="s">&#39;rock&#39;</span>
+<span class="c">#style = &#39;rock&#39;</span>
+<span class="n">style</span> <span class="o">=</span> <span class="bp">None</span>
 
 <span class="k">if</span> <span class="n">style</span><span class="p">:</span>
     <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s">&quot;settings&quot;</span><span class="p">])</span>
@@ -176,6 +251,7 @@
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">styles</span>
+    <span class="k">print</span> <span class="n">behaviour</span>
 </pre></div>
 </div>
 <p>settings can be overridden by creating a local file:
@@ -218,7 +294,7 @@ settings in that file will prevail over settings in the versioned roqba/static/s
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -250,7 +326,7 @@ settings in that file will prevail over settings in the versioned roqba/static/s
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

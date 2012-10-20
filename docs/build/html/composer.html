@@ -56,7 +56,7 @@
 <span id="composer"></span><h1>composer<a class="headerlink" href="#module-roqba.composer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.composer.Composer">
-<em class="property">class </em><tt class="descclassname">roqba.composer.</tt><tt class="descname">Composer</tt><big>(</big><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>num_voices=3</em>, <em>scale='DIATONIC'</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">roqba.composer.</tt><tt class="descname">Composer</tt><big>(</big><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='DIATONIC'</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.composer.Composer.acceptable_harm_for_length">
 <tt class="descname">acceptable_harm_for_length</tt><big>(</big><em>harm</em>, <em>length</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.acceptable_harm_for_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.acceptable_harm_for_length" title="Permalink to this definition">¶</a></dt>
@@ -85,6 +85,12 @@
 <dt id="roqba.composer.Composer.apply_scale">
 <tt class="descname">apply_scale</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.apply_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.apply_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets the real note for</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="roqba.composer.Composer.assemble_real_scale">
+<em class="property">static </em><tt class="descname">assemble_real_scale</tt><big>(</big><em>scale</em>, <em>min=0</em>, <em>max=128</em><big>)</big><a class="headerlink" href="#roqba.composer.Composer.assemble_real_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>extends the one-octave scale over the specified range</p>
 </dd></dl>
 
 <dl class="method">
@@ -192,10 +198,20 @@ sets the new meter also for the drummer-instance</p>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.sort_voices_by_importance">
-<tt class="descname">sort_voices_by_importance</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.sort_voices_by_importance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.sort_voices_by_importance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sort_voices_by_importance</tt><big>(</big><em>by='imp'</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.sort_voices_by_importance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.sort_voices_by_importance" title="Permalink to this definition">¶</a></dt>
 <dd><p>sorts the voices according to their importance.</p>
-<p>having a registered direction is the only determinant of importace
-for the tim being</p>
+<dl class="docutils">
+<dt>by: &#8216;imp&#8217;:</dt>
+<dd><ul class="first last simple">
+<li>importance according to register</li>
+</ul>
+</dd>
+<dt>by: &#8216;dir&#8217;:</dt>
+<dd><ul class="first last simple">
+<li>voices having a registered direction first</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -236,7 +252,7 @@ for the tim being</p>
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -268,7 +284,7 @@ for the tim being</p>
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

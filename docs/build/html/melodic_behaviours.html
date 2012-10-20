@@ -66,13 +66,14 @@ various melodic environments</p>
 <span class="n">registers</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;BASS&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;BASS&quot;</span><span class="p">,</span>
+        <span class="s">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
         <span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
               <span class="s">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s">&quot;HEAVY_GROUPINGS&quot;</span><span class="p">},</span>
         <span class="s">&quot;voice_attrs&quot;</span><span class="p">:{</span>
               <span class="s">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
               <span class="s">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
               <span class="s">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-              <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> 
+              <span class="c">#&quot;slide_duration_prop&quot;: 0.1, </span>
               <span class="s">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
               <span class="s">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">BASS_MOVEMENT_PROBS</span><span class="p">,</span>
               <span class="s">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -81,13 +82,14 @@ various melodic environments</p>
     <span class="p">},</span> 
     <span class="s">&quot;ROCK_BASS&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;ROCK_BASS&quot;</span><span class="p">,</span>
+        <span class="s">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
         <span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
               <span class="s">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s">&quot;FAST_GROUPINGS&quot;</span><span class="p">},</span>
         <span class="s">&quot;voice_attrs&quot;</span><span class="p">:{</span>
               <span class="s">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span>
               <span class="s">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
               <span class="s">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-              <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> 
+              <span class="c">#&quot;slide_duration_prop&quot;: 0.1, </span>
               <span class="s">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
               <span class="s">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">ROCK_BASS_MOVEMENT_PROBS</span><span class="p">,</span>
               <span class="s">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -96,13 +98,14 @@ various melodic environments</p>
     <span class="p">},</span> 
     <span class="s">&quot;MID&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;MID&quot;</span><span class="p">,</span>
+        <span class="s">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
         <span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
               <span class="s">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s">&quot;DEFAULT_GROUPINGS&quot;</span><span class="p">},</span>
         <span class="s">&quot;voice_attrs&quot;</span><span class="p">:{</span>
               <span class="s">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
               <span class="s">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
               <span class="s">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-              <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> 
+              <span class="c">#&quot;slide_duration_prop&quot;: 0.1, </span>
               <span class="s">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
               <span class="s">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
               <span class="s">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -110,13 +113,14 @@ various melodic environments</p>
     <span class="p">},</span>
     <span class="s">&quot;FLAT_MID&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;FLAT_MID&quot;</span><span class="p">,</span>
+        <span class="s">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
         <span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
               <span class="s">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s">&quot;FAST_GROUPINGS&quot;</span><span class="p">},</span>
         <span class="s">&quot;voice_attrs&quot;</span><span class="p">:{</span>
               <span class="s">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
               <span class="s">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
               <span class="s">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-              <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> 
+              <span class="c">#&quot;slide_duration_prop&quot;: 0.1, </span>
               <span class="s">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
               <span class="s">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">FLAT_MID_MOVEMENT_PROBS</span><span class="p">,</span>
               <span class="s">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -125,13 +129,14 @@ various melodic environments</p>
     <span class="p">},</span> 
     <span class="s">&quot;HIGH&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;HIGH&quot;</span><span class="p">,</span>
+        <span class="s">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s">&quot;TERNARY_GROUPINGS&quot;</span><span class="p">},</span>
         <span class="s">&quot;voice_attrs&quot;</span><span class="p">:{</span>
             <span class="s">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
             <span class="s">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
             <span class="s">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> 
+            <span class="c">#&quot;slide_duration_prop&quot;: 0.2, </span>
             <span class="s">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
             <span class="s">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span><span class="p">,</span>
             <span class="s">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
@@ -268,7 +273,7 @@ various melodic environments</p>
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -300,7 +305,7 @@ various melodic environments</p>
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

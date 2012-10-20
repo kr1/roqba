@@ -54,6 +54,11 @@
             
   <div class="section" id="module-roqba.note_gateway">
 <span id="note-gateway"></span><h1>note_gateway<a class="headerlink" href="#module-roqba.note_gateway" title="Permalink to this headline">¶</a></h1>
+<p>the purpose of this class is to communicate with the sound-engine.</p>
+<p>its main concerns are:
+- starting, stopping, pausing the engine
+- sending notes
+- sending controlling messages</p>
 <dl class="class">
 <dt id="roqba.note_gateway.NoteGateway">
 <em class="property">class </em><tt class="descclassname">roqba.note_gateway.</tt><tt class="descname">NoteGateway</tt><big>(</big><em>settings</em>, <em>behaviour</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway" title="Permalink to this definition">¶</a></dt>
@@ -69,6 +74,13 @@
 <tt class="descname">hub</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.hub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.hub" title="Permalink to this definition">¶</a></dt>
 <dd><p>generator method that sends notes to all melodic voices</p>
 <p>according to the present state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.mute_voice">
+<tt class="descname">mute_voice</tt><big>(</big><em>vid</em>, <em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.mute_voice" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a message to mute/unmute a voice to pd</p>
+<p>use vid=drums to mute/unmute the drums</p>
 </dd></dl>
 
 <dl class="method">
@@ -96,6 +108,25 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pd_send_wavetable">
+<tt class="descname">pd_send_wavetable</tt><big>(</big><em>voice_id</em>, <em>wavetable</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_wavetable" title="Permalink to this definition">¶</a></dt>
+<dd><p>send out the duration for a given voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_pan">
+<tt class="descname">send_voice_pan</tt><big>(</big><em>voice</em>, <em>pan</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_pan" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a pan-message for a voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_volume">
+<tt class="descname">send_voice_volume</tt><big>(</big><em>voice</em>, <em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a volume message for a voice</p>
+<p>use values from 0 to 1</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.set_slide_msecs">
 <tt class="descname">set_slide_msecs</tt><big>(</big><em>voice_id</em>, <em>msecs</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_slide_msecs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_slide_msecs" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a message containing the general slide-time in millisecs</p>
@@ -115,6 +146,11 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.set_transpose">
+<tt class="descname">set_transpose</tt><big>(</big><em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_transpose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.stop">
 <tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>destroys the puredata-sender object</p>
@@ -124,6 +160,12 @@
 <dt id="roqba.note_gateway.NoteGateway.stop_all_notes">
 <tt class="descname">stop_all_notes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop_all_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_all_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a stop message to all active voices</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.stop_notes_of_voice">
+<tt class="descname">stop_notes_of_voice</tt><big>(</big><em>vid</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_notes_of_voice" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends the stop message to a specified voice</p>
 </dd></dl>
 
 <dl class="method">
@@ -163,7 +205,7 @@
 
           <h3 style="margin-top: 1.5em;">Search</h3>
           <form class="search" action="search.html" method="get">
-            <input type="text" name="q" size="18" />
+            <input type="text" name="q" />
             <input type="submit" value="Go" />
             <input type="hidden" name="check_keywords" value="yes" />
             <input type="hidden" name="area" value="default" />
@@ -195,7 +237,7 @@
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
         </div>
         <div class="clearer"></div>

@@ -175,6 +175,10 @@ div.body {
   text-align: justify;
 }
 
+div.document h1 {
+  line-height: 120%;
+}
+
 div.document ul {
   margin: 1.5em;
   list-style-type: square;
@@ -300,6 +304,14 @@ div.sidebar li.toctree-l1.current li.toctree-l2 a {
   border-right: none;
 }
 
+div.sidebar input[type="text"] {
+  width: 170px;
+}
+
+div.sidebar input[type="submit"] {
+  width: 30px;
+}
+
 
 /* Footer */
 
@@ -349,7 +361,6 @@ img.align-center, .figure.align-center, object.align-center {
 }
 
 .align-center {
-    clear: both;
     text-align: center;
 }
 
