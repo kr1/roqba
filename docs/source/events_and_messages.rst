@@ -1,4 +1,4 @@
-MAIN CALL CHAINS AND SEQUENCES
+Main Call Chains and Sequences
 ==============================
 
 **director**: *_play*
