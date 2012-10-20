@@ -148,6 +148,9 @@ class Director(object):
                     self.set_wavetables(voices=voices)
                 if self.has_gui:
                     self.gui_sender.handle_caesura(self)
+                self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(self.composer.meter,
+                                                               self.speed,
+                                                               self.composer.scale))
             self.check_incoming_messages()
             shuffle_delta = (self.speed * self.shuffle_delay
                               if weight == metronome.LIGHT

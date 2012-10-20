@@ -3,6 +3,29 @@ class Melody(object):
         self.melody = mel_dict['melody']
 
 melodies = {
+    "viel": {
+        "melody": [
+            [0, 2], [3, 2], [-1 ,2], [-1, 1] , [1, 1],
+            #G       C      B         A         B
+            [1, 2], [-3, 2], [0, 2], [1, 2] , [-1, 2], [-1, 2], [-1, 2], [2, 2],
+            #C        G       G       A         G        F       E        G
+            [-2, 2], [1, 2], [1, 2], [1, 2] , [-1, 2], [-2, 2],
+            #E        F       G       A         G        E
+            [2, 2], [-1, 1], [-1, 1], [-1, 2] , [0, 2], [-1, 6],
+            #G        F        E        D       D        C
+        ],
+        "start_note": 4,  # diatonic major scale starting with 0 (i.e. 4 would mean starting on the quint)
+        "meters": [
+           (12, (2, 2, 2, 3, 3)),
+           (12, (3, 3, 2, 2, 2)),
+           (12, (1, 2, 2, 1, 2, 2, 2)),
+           (8, (4, 4)),
+           (8, (3, 2, 2)),
+           (8, (2, 2, 2, 2))
+        ],
+        "scale": "DIATONIC",
+        "speed_range": [0.2, 0.4]
+    },
     "lull1": {
         "melody":
             [[0, 3], [0, 3], [0, 2], [1, 2], [-2, 2],
@@ -14,7 +37,7 @@ melodies = {
              [3, 3], [0, 3], [3, 2], [-1, 2], [-2, 2], [-1, 2],
              [2, 2], [-1, 2], [-1, 8], [-1, 2], [-1, 2], [0, 2],
              [-1, 2], [-1, 2], [1, 6], [-1, 6]],
-        "start_note": 4,  # diatonic major scale starting with 0 (i.e. 4 would mean starting on the quint)
+        "start_note": 4,
         "meters": [(6, (3, 3)), (6, (2, 2, 2)), (9, (3, 3, 3)),
                    (12, (3, 3, 2, 2, 2)), (12, (2, 2, 2, 3, 3))],
         "scale": "DIATONIC",

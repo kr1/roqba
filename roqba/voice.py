@@ -165,14 +165,17 @@ class Voice(object):
                     self.playing_a_melody = True
         res = self.note + move
         exceed = self.exceeds(res)
-        if exceed:
-            #print "exceed"
-            res, self.dir = exceed
-        if self.in_the_middle(res):
-            self.dir = 0
-        if self.exceeds(res):
-            raise RuntimeError('''diabolus in musica: {0} is too low/high,
-                         dir:{1}'''.format(res, self.dir))
+        if not self.playing_a_melody:
+            if exceed:
+                res, self.dir = exceed
+                #self.musical_logger.info("exceeding note of voice {2}: '{0}', going: \t{1}".format(res,
+                #            self.dir > 0 and 'up' or 'down',
+                #            self.id))
+            if self.in_the_middle(res):
+                self.dir = 0
+            if self.exceeds(res):
+                raise RuntimeError('''diabolus in musica: {0} is too low/high,
+                             dir:{1}'''.format(res, self.dir))
         return res
 
     def search_suitable_melody(self, speed):
@@ -198,12 +201,13 @@ class Voice(object):
         specified length of the note.
         returns the pitch-related move (delta)"""
         move, length = self.melody_iterator.next()
-        self.musical_logger.info("melody move: {0}".format(move))
+        self.musical_logger.info("melody move: {0} \tof length: {1} ".format(move, length))
         oop = self.on_off_pattern
         oop[meter_pos] = 1
         remaining = len(oop) - meter_pos
         if remaining < length:
             this_pat_length = remaining
+            self.musical_logger.info("dbg: overhanging note")
             self.next_pat_length = length - remaining
             self.apply_overhanging_notes()
         else:
@@ -223,10 +227,14 @@ class Voice(object):
         return move 
 
     def apply_overhanging_notes(self):
+        """applies overhanging notes of a registered melody
+        
+        to the next <on_off_pattern>"""
         if len(self.on_off_pattern) > self.next_pat_length:
             for idx in range(self.next_pat_length):
                 self.on_off_pattern[idx] = 0
-            self.on_off_pattern[idx + 1] = 1
+            # this might do the roundtrip.....
+            # self.on_off_pattern[idx + 1] = 1
             self.next_pat_length = None
         else:
             self.next_pat_length -= len(self.on_off_pattern)
