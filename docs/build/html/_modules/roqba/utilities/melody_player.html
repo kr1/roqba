@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>roqba.utilities.melody_player &mdash; Roqba v1.0 documentation</title>
+    <title>roqba.utilities.melody_player &mdash; Roqba 1.0 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
@@ -22,13 +25,14 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="Roqba v1.0 documentation" href="../../../index.html" />
+    <link rel="top" title="Roqba 1.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
     <div class="header-wrapper">
       <div class="header">
-        <h1><a href="../../../index.html">Roqba v1.0 documentation</a></h1>
+        <div class="headertitle"><a
+          href="../../../index.html">Roqba 1.0 documentation</a></div>
         <div class="rel">
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -46,52 +50,54 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>Source code for roqba.utilities.melody_player</h1><pre>
-
-its main target is to play melodies defined in static.melodies
-NB: the sound-engine has to be on to hear the melody
-usage:
-  1. create an instance of melody player.
-  2. set its melody attribute
-  3. call play()
-"""
-import time
-from roqba.composer import Composer
-from roqba.static.scales_and_harmonies import SCALES
-from roqba.static.settings import settings
-from roqba.utilities.pdsender import PdSender
+  <h1>Source code for roqba.utilities.melody_player</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;this file defines a utility class that can be used in writing melodies</span>
 
 
-class MelodyPlayer():
-    def __init__(self, speed=0.1):
-<div class="viewcode-block" id="MelodyPlayer"><a class="viewcode-back" href="../../../melody_player.html#roqba.utilities.melody_player.MelodyPlayer">[docs]</a>        self.melody = None
-        self.speed = speed
-        self.static_start_note = 61
-        self.transpose = 0
-        self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
+<span class="sd">its main target is to play melodies defined in static.melodies</span>
+<span class="sd">NB: the sound-engine has to be on to hear the melody</span>
+<span class="sd">usage:</span>
+<span class="sd">  1. create an instance of melody player.</span>
+<span class="sd">  2. set its melody attribute</span>
+<span class="sd">  3. call play()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">roqba.composer</span> <span class="kn">import</span> <span class="n">Composer</span>
+<span class="kn">from</span> <span class="nn">roqba.static.scales_and_harmonies</span> <span class="kn">import</span> <span class="n">SCALES</span>
+<span class="kn">from</span> <span class="nn">roqba.static.settings</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">roqba.utilities.pdsender</span> <span class="kn">import</span> <span class="n">PdSender</span>
 
-    def play(self):
-        """plays the melody given in the self.melody attribute
-<div class="viewcode-block" id="MelodyPlayer.play"><a class="viewcode-back" href="../../../melody_player.html#roqba.utilities.melody_player.MelodyPlayer.play">[docs]</a>
-        by sending the necessary messages to the roqba-sound-engine"""
-        if not self.melody:
-            raise "ImpossibleRequestError", "no melody given"
-        self.real_scale = Composer.assemble_real_scale(
-                              SCALES[self.melody['scale']])
-        start_note_index = (self.real_scale.index(self.static_start_note) +
-                            self.melody['start_note'])
-        real_start_note = self.real_scale[start_note_index]
-        current_note = real_start_note
-        self.pd.send("sound 1")
-        for note in self.melody['melody']:
-            next_note_idx = self.real_scale.index(current_note) + note[0]
-            next_note = self.real_scale[next_note_idx]
-            print next_note + self.transpose,
-            self.pd.send(["voice", 1, "dur", self.speed * note[1] * 1000])
-            self.pd.send(["voice", 1, next_note + self.transpose])
-            time.sleep(self.speed * note[1])
-            current_note = next_note
-</pre></div></div>
+
+<div class="viewcode-block" id="MelodyPlayer"><a class="viewcode-back" href="../../../melody_player.html#roqba.utilities.melody_player.MelodyPlayer">[docs]</a><span class="k">class</span> <span class="nc">MelodyPlayer</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">melody</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_start_note</span> <span class="o">=</span> <span class="mi">61</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span> <span class="o">=</span> <span class="n">PdSender</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s">&quot;PD_HOST&quot;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s">&quot;PD_PORT&quot;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="MelodyPlayer.play"><a class="viewcode-back" href="../../../melody_player.html#roqba.utilities.melody_player.MelodyPlayer.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;plays the melody given in the self.melody attribute</span>
+
+<span class="sd">        by sending the necessary messages to the roqba-sound-engine&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="s">&quot;ImpossibleRequestError&quot;</span><span class="p">,</span> <span class="s">&quot;no melody given&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span> <span class="o">=</span> <span class="n">Composer</span><span class="o">.</span><span class="n">assemble_real_scale</span><span class="p">(</span>
+                              <span class="n">SCALES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">[</span><span class="s">&#39;scale&#39;</span><span class="p">]])</span>
+        <span class="n">start_note_index</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_start_note</span><span class="p">)</span> <span class="o">+</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">[</span><span class="s">&#39;start_note&#39;</span><span class="p">])</span>
+        <span class="n">real_start_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span><span class="p">[</span><span class="n">start_note_index</span><span class="p">]</span>
+        <span class="n">current_note</span> <span class="o">=</span> <span class="n">real_start_note</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;sound 1&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">[</span><span class="s">&#39;melody&#39;</span><span class="p">]:</span>
+            <span class="n">next_note_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_note</span><span class="p">)</span> <span class="o">+</span> <span class="n">note</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">next_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span><span class="p">[</span><span class="n">next_note_idx</span><span class="p">]</span>
+            <span class="k">print</span> <span class="n">next_note</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;dur&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">note</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">next_note</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transpose</span><span class="p">])</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">note</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">current_note</span> <span class="o">=</span> <span class="n">next_note</span></div></div>
+</pre></div>
 
           </div>
         </div>
@@ -132,7 +138,7 @@ class MelodyPlayer():
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>
         <div class="clearer"></div>

@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>director &mdash; Roqba v1.0 documentation</title>
+    <title>director &mdash; Roqba 1.0 documentation</title>
+    
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Roqba v1.0 documentation" href="index.html" />
+    <link rel="top" title="Roqba 1.0 documentation" href="index.html" />
     <link rel="up" title="roqba" href="roqba.html" />
     <link rel="next" title="drummer" href="drummer.html" />
     <link rel="prev" title="composer" href="composer.html" /> 
@@ -30,7 +33,8 @@
   <body>
     <div class="header-wrapper">
       <div class="header">
-        <h1><a href="index.html">Roqba v1.0 documentation</a></h1>
+        <div class="headertitle"><a
+          href="index.html">Roqba 1.0 documentation</a></div>
         <div class="rel">
           <a href="composer.html" title="composer"
              accesskey="P">previous</a> |
@@ -59,13 +63,13 @@
 <em class="property">class </em><tt class="descclassname">roqba.director.</tt><tt class="descname">Director</tt><big>(</big><em>composer</em>, <em>state</em>, <em>behaviour</em>, <em>settings</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.director.Director.check_incoming_messages">
-<tt class="descname">check_incoming_messages</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.Director.check_incoming_messages" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check_incoming_messages</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.check_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.check_incoming_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if there are incoming messages in the queue</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.handle_incoming_message">
-<tt class="descname">handle_incoming_message</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#roqba.director.Director.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">handle_incoming_message</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.handle_incoming_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>handles incoming messages from the gui interface</p>
 <p>TODO: keep a current-settings dataobject where to track
 all current settings and which can be used to write a snapshot 
@@ -79,7 +83,7 @@ of a particular moment</p>
 
 <dl class="method">
 <dt id="roqba.director.Director.new_random_meter">
-<tt class="descname">new_random_meter</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.Director.new_random_meter" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">new_random_meter</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.new_random_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_random_meter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -99,7 +103,7 @@ of a particular moment</p>
 
 <dl class="method">
 <dt id="roqba.director.Director.set_wavetables">
-<tt class="descname">set_wavetables</tt><big>(</big><em>vid=None</em>, <em>voices=None</em>, <em>manual=False</em>, <em>wavetable=None</em><big>)</big><a class="headerlink" href="#roqba.director.Director.set_wavetables" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_wavetables</tt><big>(</big><em>vid=None</em>, <em>voices=None</em>, <em>manual=False</em>, <em>wavetable=None</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.set_wavetables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.set_wavetables" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets new wavetables for those voices that have the</p>
 <p>wavetable automation flag turned on (or the manual flag set).
 when a voice-id is specified only this voice is considered</p>
@@ -119,9 +123,8 @@ when a voice-id is specified only this voice is considered</p>
 
 <dl class="function">
 <dt id="roqba.director.random">
-<tt class="descclassname">roqba.director.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#roqba.director.random" title="Permalink to this definition">¶</a></dt>
-<dd><p>random() -&gt; x in the interval [0, 1).</p>
-</dd></dl>
+<tt class="descclassname">roqba.director.</tt><tt class="descname">random</tt><big>(</big><big>)</big> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.director.random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
@@ -184,7 +187,7 @@ when a voice-id is specified only this voice is considered</p>
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>
         <div class="clearer"></div>

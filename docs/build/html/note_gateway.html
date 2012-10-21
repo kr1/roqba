@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>note_gateway &mdash; Roqba v1.0 documentation</title>
+    <title>note_gateway &mdash; Roqba 1.0 documentation</title>
+    
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Roqba v1.0 documentation" href="index.html" />
+    <link rel="top" title="Roqba 1.0 documentation" href="index.html" />
     <link rel="up" title="roqba" href="roqba.html" />
     <link rel="next" title="static" href="static.html" />
     <link rel="prev" title="notator" href="notator.html" /> 
@@ -30,7 +33,8 @@
   <body>
     <div class="header-wrapper">
       <div class="header">
-        <h1><a href="index.html">Roqba v1.0 documentation</a></h1>
+        <div class="headertitle"><a
+          href="index.html">Roqba 1.0 documentation</a></div>
         <div class="rel">
           <a href="notator.html" title="notator"
              accesskey="P">previous</a> |
@@ -78,7 +82,7 @@
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.mute_voice">
-<tt class="descname">mute_voice</tt><big>(</big><em>vid</em>, <em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.mute_voice" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mute_voice</tt><big>(</big><em>vid</em>, <em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.mute_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.mute_voice" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a message to mute/unmute a voice to pd</p>
 <p>use vid=drums to mute/unmute the drums</p>
 </dd></dl>
@@ -97,7 +101,7 @@
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.pd_send_duration">
-<tt class="descname">pd_send_duration</tt><big>(</big><em>voice_id</em>, <em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_duration" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">pd_send_duration</tt><big>(</big><em>voice_id</em>, <em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>send out the duration for a given voice</p>
 </dd></dl>
 
@@ -109,19 +113,19 @@
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.pd_send_wavetable">
-<tt class="descname">pd_send_wavetable</tt><big>(</big><em>voice_id</em>, <em>wavetable</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_wavetable" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">pd_send_wavetable</tt><big>(</big><em>voice_id</em>, <em>wavetable</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_wavetable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_wavetable" title="Permalink to this definition">¶</a></dt>
 <dd><p>send out the duration for a given voice</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.send_voice_pan">
-<tt class="descname">send_voice_pan</tt><big>(</big><em>voice</em>, <em>pan</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_pan" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">send_voice_pan</tt><big>(</big><em>voice</em>, <em>pan</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_pan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_pan" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a pan-message for a voice</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.send_voice_volume">
-<tt class="descname">send_voice_volume</tt><big>(</big><em>voice</em>, <em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_volume" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">send_voice_volume</tt><big>(</big><em>voice</em>, <em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_volume" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a volume message for a voice</p>
 <p>use values from 0 to 1</p>
 </dd></dl>
@@ -147,7 +151,7 @@
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.set_transpose">
-<tt class="descname">set_transpose</tt><big>(</big><em>val</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_transpose" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_transpose</tt><big>(</big><em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_transpose" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -164,7 +168,7 @@
 
 <dl class="method">
 <dt id="roqba.note_gateway.NoteGateway.stop_notes_of_voice">
-<tt class="descname">stop_notes_of_voice</tt><big>(</big><em>vid</em><big>)</big><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_notes_of_voice" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stop_notes_of_voice</tt><big>(</big><em>vid</em><big>)</big><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop_notes_of_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_notes_of_voice" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends the stop message to a specified voice</p>
 </dd></dl>
 
@@ -237,7 +241,7 @@
         <div class="right">
           
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
         </div>
         <div class="clearer"></div>
