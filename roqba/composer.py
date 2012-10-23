@@ -113,8 +113,8 @@ class Composer(object):
                     patience += 1
             counter += 1
         for v in self.voices.values():
-            if v.behaviour == "SLAVE": 
-                follow =  self.voices[v.followed_voice_id]
+            if v.behaviour == "SLAVE":
+                follow = self.voices[v.followed_voice_id]
                 if follow.note_change:
                     if follow.note == 0:
                         v.note = 0
@@ -208,19 +208,19 @@ class Composer(object):
 
         by: 'dir':
             - voices having a registered direction first
-        
+
         '''
         voices = self.voices.values()
-        if by == 'imp': 
+        if by == 'imp':
             register_sort_dict = {}
-            [register_sort_dict.__setitem__(reg["name"], 
-                                            reg["sort_importance"]) for 
-             reg in self.registers.values()] 
+            [register_sort_dict.__setitem__(reg["name"],
+                                            reg["sort_importance"]) for
+             reg in self.registers.values()]
             voices.sort(key=lambda x: register_sort_dict[x.register["name"]])
         else:
             dirs = filter(lambda x: x.dir, voices)
             no_dirs = list(set(voices) - set(dirs))
-            voices =  dirs + no_dirs
+            voices = dirs + no_dirs
         melodic = filter(lambda v: v.playing_a_melody, voices)
         if len(melodic) > 0:
             voices.remove(melodic[0])
@@ -322,9 +322,10 @@ class Composer(object):
                                                     dur_fraction *
                                                     dur_prop))
                 self.gateway.pd_send_note(v.id, real_note)
-            self.gateway.set_slide_msecs(v.id, self.behaviour.voice_get(v.id, "use_proportional_slide_duration") 
-                                            and self.behaviour.voice_get(v.id, "slide_duration_prop") or
-                                            self.behaviour.voice_get(v.id, "slide_duration_msecs"))
+            self.gateway.set_slide_msecs(v.id,
+                (self.behaviour.voice_get(v.id, "use_proportional_slide_duration") and
+                 self.behaviour.voice_get(v.id, "slide_duration_prop") or
+                 self.behaviour.voice_get(v.id, "slide_duration_msecs")))
 
     def stream_analyzer(self):
         """analyses the stream of notes.

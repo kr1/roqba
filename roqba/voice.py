@@ -64,7 +64,7 @@ class Voice(object):
         #if mel:
         #    self.melody = mel[1]
         #    self.melody_starts_on = mel[0]
-        self.playing_a_melody = False 
+        self.playing_a_melody = False
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
@@ -75,24 +75,25 @@ class Voice(object):
         # probability to have an embellishment-ornament during the current note
         self.embellishment_prob = composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
-        self.binaural_diff = 0 # this is not used in this module directly, but serves to track 
+        self.binaural_diff = 0  # this is not used in this module directly, but serves to track
         self.slide = composer.behaviour.voice_get(id, "automate_slide")
         self.slide_duration_prop = composer.behaviour.voice_get(id, 'slide_duration_prop')
         self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         # WAVETABLE - this is used for non-automated wavetables
-        self.wavetable_generation_type = sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
+        self.wavetable_generation_type = sample(
+                      composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
         self.partial_pool = sample(sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[1])
         self.num_partials = composer.behaviour.voice_get(id, 'default_num_partial')
 
         self.set_state(register)
         self.add_setters_for_behaviour_dict()
         self.musical_logger = logging.getLogger('musical')
-    
+
     def add_setters_for_behaviour_dict(self):
         beh = self.composer.behaviour['per_voice'][self.id]
-        beh.real_setters["slide_duration_prop"] = [setattr, self, "slide_duration_prop"] 
-        beh.real_setters["binaural_diff"] = [setattr, self, "binaural_diff"] 
+        beh.real_setters["slide_duration_prop"] = [setattr, self, "slide_duration_prop"]
+        beh.real_setters["binaural_diff"] = [setattr, self, "binaural_diff"]
 
     def set_pan_pos(self, gateway, pan_pos):
         self.pan_pos = pan_pos
@@ -154,8 +155,8 @@ class Voice(object):
                     self.weight in [HEAVY, MEDIUM]):
                 #if (self.melody_starts_on == (self.note % 7) and
                     # regarding the on-off pattern we try a minimum invasive strategy
-                    # by modifying only those indexes of the pattern covered by the 
-                    # current note and the start of the following note 
+                    # by modifying only those indexes of the pattern covered by the
+                    # current note and the start of the following note
                 #print "searching for a suitable melody"
                 self.melody = self.search_suitable_melody(speed)
                 if self.melody:
@@ -168,9 +169,10 @@ class Voice(object):
         if not self.playing_a_melody:
             if exceed:
                 res, self.dir = exceed
-                #self.musical_logger.info("exceeding note of voice {2}: '{0}', going: \t{1}".format(res,
-                #            self.dir > 0 and 'up' or 'down',
-                #            self.id))
+                # self.musical_logger.info(
+                #     "exceeding note of voice {2}: '{0}', going: \t{1}".format(res,
+                #      self.dir > 0 and 'up' or 'down',
+                #      self.id))
             if self.in_the_middle(res):
                 self.dir = 0
             if self.exceeds(res):
@@ -188,16 +190,16 @@ class Voice(object):
             right_meter = self.composer.meter in melody["meters"]
             #print 'note: ', right_note, 'speed: ', right_speed, 'scale: ', right_scale
             if right_note and right_scale and right_speed and right_meter:
-              candidates.append({melody_name: melody})
+                candidates.append({melody_name: melody})
         if len(candidates) > 0:
             chosen = sample(candidates).items()[0]
             self.musical_logger.info("new melody: {0}".format(chosen[0]))
             return chosen[1]
-              
+
     def manage_melody_note(self, meter_pos):
         """retrieves next note-delta and length belonging to the melody.
 
-        sets the following 'bits' of the off-on-pattern according to the 
+        sets the following 'bits' of the off-on-pattern according to the
         specified length of the note.
         returns the pitch-related move (delta)"""
         move, length = self.melody_iterator.next()
@@ -221,17 +223,17 @@ class Voice(object):
             try:
                 self.on_off_pattern[meter_pos + length] = 1
             except IndexError:
-                pass 
+                pass
         for note_unit in range(1, this_pat_length):
             self.on_off_pattern[meter_pos + note_unit] = 0
-        # Note: we set next_pat_length int if note is longer than the remaining 
-        # part of the cycle. upon next cycle the rest of the note is 
+        # Note: we set next_pat_length int if note is longer than the remaining
+        # part of the cycle. upon next cycle the rest of the note is
         # applied to the new on-off-pattern.
-        return move 
+        return move
 
     def apply_overhanging_notes(self):
         """applies overhanging notes of a registered melody
-        
+
         to the next <on_off_pattern>"""
         if len(self.on_off_pattern) > self.next_pat_length:
             for idx in range(self.next_pat_length):
@@ -339,10 +341,10 @@ class Voice(object):
         for k, v in self.register["voice_composer_attrs"].items():
             setattr(self, k, getattr(self.composer, v))
         self.counter = 0
-    
+
     def make_wavetable(self):
-        '''assembles a wavetable 
-        
+        '''assembles a wavetable
+
         using the registered wavetable-related params'''
         fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
         return fun(self.num_partials, self.partial_pool)
