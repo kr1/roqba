@@ -50,6 +50,9 @@ class Composer(object):
         self.hub.next()
         self.registers = registers
         self.notator = Notator(self.num_voices)
+        self.musical_logger = logging.getLogger("musical")
+        # change INFO to DEBUG for debugging output
+        self.musical_logger.setLevel(logging.INFO)
 
     def __repr__(self):
         return "<Composer-Inst with {0}>".format(self.harm)
@@ -93,6 +96,7 @@ class Composer(object):
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
             v.generator.send(state)
+            self.musical_logger.debug("note {0}".format(v.note))
             tmp_harm.append(v.note)
             if v.note == 0 or not v.note_change:
                 continue
