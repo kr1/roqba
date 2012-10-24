@@ -33,6 +33,7 @@ behaviour = {'default_volume': 0.666,
              "shuffle_delay": 0.1,  # keep this between 0 and MAX_SHUFFLE
              'default_behaviour': "AUTONOMOUS",
              "max_shuffle": 0.1,
+             "automate_scale": True,
              # METERS
              'automate_meters': True,
              'meter': (12, (1, 2, 2, 1, 2, 2, 2)),

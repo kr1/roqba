@@ -38,6 +38,7 @@ class Composer(object):
         self.scale = scale
         self.selected_meters = ("meters" in self.behaviour.keys() and
                         self.behaviour["meters"] or METERS.keys())
+        self.modified_note_in_current_frame = None
         self.meter = behaviour['meter']
         self.set_meter(self.meter)
         self.applied_meter = METERS[self.meter]['applied']
@@ -92,6 +93,7 @@ class Composer(object):
         """
         tmp_harm = []
         counter = 0
+        self.modified_note_in_current_frame = None
         for v in self.sort_voices_by_importance():
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
@@ -153,20 +155,35 @@ class Composer(object):
         return self.comment
 
     def apply_scale(self):
-        '''sets the real note for '''
+        '''sets the real note for the scale-bound notes in each voice'''
         for v in self.voices.values():
             if v.note == 0:
                 v.real_note = 0
                 continue
             if v.note_change:
                 v.real_note = self.real_scale[v.note]
-
+        if self.modified_note_in_current_frame:
+            self.musical_logger.info(
+                        "modified note: '{0}'".format(
+                        self.modified_note_in_current_frame))
+            which = self.modified_note_in_current_frame[0]
+            for v in self.voices.values():
+                num_notes = NOTES_PER_SCALE[self.scale]
+                if v.note % num_notes == which % num_notes:
+                    direction = self.modified_note_in_current_frame[1]
+                    was_note = v.real_note
+                    if direction == '-':
+                        v.real_note -= 1
+                    else:
+                        v.real_note += 1
+                    self.musical_logger.info(
+                                "modified note: {0} from '{1}' to '{2}'".format(
+                                v.note, was_note, v.real_note))
 #        for v in self.voices.values():
 #            if v.note_change:
 #                v.real_note = self.scale_walker(self.scale,
 #                                                v.real_note,
 #                                                v.note_delta)
-
     def set_scale(self, name, min=0, max=128):
         '''sets the specified scale and generates a new real scale'''
         self.scale = name

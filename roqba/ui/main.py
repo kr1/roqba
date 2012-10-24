@@ -23,6 +23,7 @@ CHECK_BUTTONS = OrderedDict([
                  ('automate_speed_change', {'val': True, 'disable': True}),
                  ('automate_shuffle', True),
                  ('automate_meters', True),
+                 ('automate_scale', True),
                  ('automate_wavetables', True),
                  ('automate_num_partials', False),
                  ('automate_transpose', True),

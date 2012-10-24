@@ -105,9 +105,10 @@ class Director(object):
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
-                self.composer.set_scale(choice(
+                if self.behaviour['automate_scale']:
+                    self.composer.set_scale(choice(
                                             composer.SCALES_BY_FREQUENCY))
-                if self.automate_meters:
+                if self.behaviour['automate_meters']:
                     self.new_random_meter()
                 voices = self.composer.voices.values()
                 if self.behaviour["automate_pan"]:

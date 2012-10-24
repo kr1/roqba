@@ -7,6 +7,7 @@ from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import  analyze_grouping
 from static.melodies import melodies
+from utilities import melody_player
 from utilities import pd_wavetables as wavetables
 from metronome import MEDIUM, HEAVY
 
@@ -201,8 +202,14 @@ class Voice(object):
 
         sets the following 'bits' of the off-on-pattern according to the
         specified length of the note.
-        returns the pitch-related move (delta)"""
+        returns the pitch-related move (delta) and sets eventual modifier
+        attribute on the composer"""
         move, length = self.melody_iterator.next()
+        if type(move) ==  str:
+            number, modifier = melody_player.extract_modified_move(move)
+            self.composer.modified_note_in_current_frame = (number,
+                                                            modifier)
+            move = number
         if self.melody_iterator.__length_hint__() == 1:
             # TODO: communicate to director that a caesura is required
             pass
