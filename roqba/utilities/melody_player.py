@@ -33,7 +33,7 @@ class MelodyPlayer():
         self.transpose = 0
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
 
-    def play(self):
+    def play(self, start=0):
         """plays the melody given in the self.melody attribute
 
         by sending the necessary messages to the roqba-sound-engine"""
@@ -44,7 +44,7 @@ class MelodyPlayer():
         start_note = (self.static_start_note + self.melody['start_note'])
         current_note = start_note
         self.pd.send("sound 1")
-        for note in self.melody['melody']:
+        for counter, note in enumerate(self.melody['melody']):
             move = note[0]
             modifier = None
             if type(move) == str:
@@ -55,7 +55,8 @@ class MelodyPlayer():
             if modifier:
                 next_real_note += modifier
             print next_real_note + self.transpose,
-            self.pd.send(["voice", 1, "dur", self.speed * note[1] * 1000])
-            self.pd.send(["voice", 1, next_real_note + self.transpose])
-            time.sleep(self.speed * note[1])
+            if counter >= start:
+                self.pd.send(["voice", 1, "dur", self.speed * note[1] * 1000])
+                self.pd.send(["voice", 1, next_real_note + self.transpose])
+                time.sleep(self.speed * note[1])
             current_note = next_note
