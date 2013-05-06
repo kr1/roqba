@@ -57,7 +57,7 @@ melodies = {
            (8, (2, 2, 2, 2))
         ],
         "scale": "DIATONIC",
-        "speed_range": [0.1, 0.15]
+        "speed_range": [0.1, 0.2]
     },
     "meadows_fast": {
         "melody": [
