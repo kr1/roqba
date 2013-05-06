@@ -125,9 +125,10 @@ class Voice(object):
                 if 1 in tmp_list:
                     self.note_duration_steps = tmp_list.index(1) + 1
                 else:
-                    self.note_duration_steps = 1
+                    #self.note_duration_steps = 1
+                    self.note_duration_steps = len(self.on_off_pattern) - meter_pos
                 self.prior_note = self.note
-                if random.random() < self.pause_prob:
+                if random.random() < self.pause_prob and not self.playing_a_melody:
                     self.note = 0
                 else:
                     self.note = self.next_note(state)
@@ -220,8 +221,9 @@ class Voice(object):
         if remaining < length:
             this_pat_length = remaining
             self.musical_logger.info("dbg: overhanging note")
+            oop += [0] * (length - remaining) + [1]
             self.next_pat_length = length - remaining
-            self.apply_overhanging_notes()
+            # self.apply_overhanging_notes()
         else:
             this_pat_length = length
             # this is for the following note,

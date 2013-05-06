@@ -247,7 +247,8 @@ class Composer(object):
     def choose_rhythm(self):
         '''chooses a new rhythm randomly from each voices groupings'''
         for v in self.voices.values():
-            v.set_rhythm_grouping(sample(v.note_length_groupings))
+            if not v.playing_a_melody:
+                v.set_rhythm_grouping(sample(v.note_length_groupings))
 
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
