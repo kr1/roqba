@@ -1,4 +1,3 @@
-
 import logging
 import threading
 import logging.config
@@ -8,6 +7,7 @@ from composer import Composer
 from director import Director
 from note_gateway import NoteGateway
 from utilities.behaviour_dict import BehaviourDict
+from webserver.rogba_server import start_server
 import static.settings as default_settings
 
 try:
@@ -24,6 +24,7 @@ behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
 gateway = NoteGateway(settings, behaviour)
 gateway.hub().next()
+
 
 def startup():
     '''creates the composer instance and the voices'''
@@ -59,6 +60,7 @@ def main():
     '''starts the main thread of the application'''
     add_setters()
     threading.Thread(target=director._play, args=()).start()
+    threading.Thread(target=start_server, args=(gateway.pd.msg_queue,)).start()
     composer.report()
 
 if __name__ == "__main__":
