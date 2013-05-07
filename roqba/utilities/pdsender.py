@@ -1,10 +1,17 @@
 import time
 import logging
 import socket
+from Queue import deque
 
+class Sender(object):
+    def __init__(self):
+        self.msg_queue = deque([], 3000)
+    def trace_send(self, msg):
+        self.msg_queue.append((int(time.time() * 1000), msg))
 
-class PdSender(object):
+class PdSender(Sender):
     def __init__(self, host, port):
+        super(PdSender, self).__init__()
         self.host = host
         self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -24,6 +31,7 @@ class PdSender(object):
         as a UDP Datagram
         msg -> list'''
         msg = self.format_msg_list(msg)
+        self.trace_send(msg)
         self.sock.sendto("{0}\n".format(msg) + "\n", (self.host, self.port))
 
     def __del__(self):
