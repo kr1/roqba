@@ -60,7 +60,8 @@ def main():
     '''starts the main thread of the application'''
     add_setters()
     threading.Thread(target=director._play, args=()).start()
-    threading.Thread(target=start_server, args=(gateway.pd.msg_queue,)).start()
+    if settings['run_webserver']:
+        threading.Thread(target=start_server, args=(gateway.pd.msg_queue,)).start()
     composer.report()
 
 if __name__ == "__main__":
