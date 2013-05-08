@@ -16,3 +16,5 @@ tags
 roqba/static/local_settings.py
 docs/build
 docs/build/
+web_access.log
+web_error.log
