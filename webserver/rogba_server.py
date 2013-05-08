@@ -7,7 +7,8 @@ cherrypy_config = {'global': {
                       'server.socket_port': 8088,
                       'server.log_to_screen': False,
                       'log.log_to_screen': False,
-                      'log.access_file': os.path.join(".", "access.log"),
+                      'log.access_file': os.path.join(".", "web_access.log"),
+                      'log.error_file': os.path.join(".", "web_error.log"),
                       'log.screen': False},
                    '/': {
                       'tools.staticdir.root': os.path.join(os.getcwd(), '.')},
