@@ -8,6 +8,7 @@ its main concerns are:
 
 import logging
 import time
+import json
 
 from metronome import HEAVY
 from utilities.pdsender import PdSender
@@ -140,11 +141,13 @@ class NoteGateway(object):
 
         according to the present state'''
         while True:
-            data = (yield)
+            state, voices = (yield)
             if not self.block_messages:
-                self.logger.info("sending out: {0}".format(data))
-                if type(data) == dict:
-                    for v in data.values():
+                self.logger.info("sending out: {0}".format(voices))
+                assembledFrame = json.dumps(map(lambda v: v.note, voices.values()) + [state['weight']])
+                self.pd.send(["sys","noteFrame", assembledFrame.replace(" ","")])
+                if type(voices) == dict:
+                    for v in voices.values():
                         if v.note_change:
                             msg = v.real_note if v.real_note else 0
                             #self.logger.info("sending out:\
@@ -167,10 +170,10 @@ class NoteGateway(object):
                                               str(v.note_length_grouping).\
                                                   replace(",", "_")])
                                 
-                    #address = data["voice"]
-                    #msg = data["message"]
+                    #address = voices["voice"]
+                    #msg = voices["message"]
                 else:
-                    msg = str(data)
+                    msg = str(voices)
 
     def set_transpose(self, val):
         self.transpose = val

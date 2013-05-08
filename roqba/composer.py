@@ -148,7 +148,7 @@ class Composer(object):
                                      args=(k, state)).start()
         self.percussion_hub.send(self.drummer.frame)
         # send the voices to the note-hub
-        self.hub.send(self.voices)  # this sends the voices to the hub
+        self.hub.send([state, self.voices])  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
                                    "cycle_pos": state["cycle_pos"]})
