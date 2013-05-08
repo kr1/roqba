@@ -25,21 +25,21 @@ behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 gateway = NoteGateway(settings, behaviour)
 gateway.hub().next()
 
+
 def startup():
     '''creates the composer instance and the voices'''
     logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
-    c = Composer(gateway, settings, behaviour)
+    composer = Composer(gateway, settings, behaviour)
     for voice_idx in xrange(settings["number_of_voices"]):
-        Voice(voice_idx + 1, c,
+        Voice(voice_idx + 1, composer,
               note_length_grouping=behaviour["meter"][1],
               register=settings["voice_registers"][voice_idx],
               behaviour=settings['voice_behaviours'][voice_idx])
-    return c
+    return composer
 
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
 
-go = True
 composer = startup()
 state = {"comp": composer, "speed": behaviour["speed"]}
 director = Director(composer, state, behaviour, settings)
@@ -54,6 +54,7 @@ def add_setters():
     for vid in behaviour['per_voice'].keys():
         behaviour['per_voice'][vid].real_setters["pan_pos"] = [composer.voices[vid].set_pan_pos, director.gateway]
         behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = [director.gateway.set_slide_msecs, vid]
+
 
 def main():
     '''starts the main thread of the application'''
