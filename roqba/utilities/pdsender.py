@@ -1,13 +1,14 @@
 import time
 import logging
 import socket
+import json
 from Queue import deque
 
 class Sender(object):
     def __init__(self):
-        self.msg_queue = deque([], 3000)
+        self.msg_queue = deque([], 1500)
     def trace_send(self, msg):
-        self.msg_queue.append((int(time.time() * 1000), msg))
+        self.msg_queue.appendleft((int(time.time() * 1000 * 1000 * 1000), json.dumps(msg)))
 
 class PdSender(Sender):
     def __init__(self, host, port):
