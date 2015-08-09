@@ -1,4 +1,3 @@
-
 import logging
 import threading
 import logging.config
@@ -63,9 +62,14 @@ def main():
     composer.report()
 
 if __name__ == "__main__":
-    print '''please run this app from the interpreter as:
+    print '''running this application from the interpreter lets you interact with it directly.
+
+    In the interpreter - from the project - root run as:
     \b\b\b\bfrom roqba import main
     \b\b\b\bmain.main()
     \b\b\bstop it with:
     \b\b\b\bmain.director.stop()
+
+    There is also a tk based gui available (start with python rogba/ui/main.py)
     '''
+    main()
