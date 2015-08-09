@@ -2,12 +2,12 @@ import logging
 import threading
 import logging.config
 
-from voice import Voice
-from composer import Composer
-from director import Director
-from note_gateway import NoteGateway
-from utilities.behaviour_dict import BehaviourDict
-import static.settings as default_settings
+from roqba.voice import Voice
+from roqba.composer import Composer
+from roqba.director import Director
+from roqba.note_gateway import NoteGateway
+from roqba.utilities.behaviour_dict import BehaviourDict
+import roqba.static.settings as default_settings
 
 try:
     import static.local_settings as local_settings
@@ -58,7 +58,8 @@ def add_setters():
 def main():
     '''starts the main thread of the application'''
     add_setters()
-    threading.Thread(target=director._play, args=()).start()
+    director_thread = threading.Thread(target=director._play, args=())
+    director_thread.start()
     composer.report()
 
 if __name__ == "__main__":

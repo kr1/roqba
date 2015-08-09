@@ -31,11 +31,12 @@ class Director(object):
         self.speed = state["speed"]
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
-        self.allowed_incoming_messages = (self.has_gui and
-                        self.behaviour.keys() + ['play', 'sys', 'scale',
-                                                 'force_caesura',
-                                                 'trigger_wavetable']
-                        or None)
+        self.allowed_incoming_messages = (
+            self.has_gui and
+            self.behaviour.keys() + ['play', 'sys', 'scale',
+                                     'force_caesura',
+                                     'trigger_wavetable']
+            or None)
         if self.has_gui:
             self.incoming = deque()
             self.gui_sender.update_gui(self)
@@ -100,7 +101,7 @@ class Director(object):
                 time.sleep(self.speed * 4)
                 self.shuffle_delay = random() * self.MAX_SHUFFLE
                 logger.info("shuffle delay set to: {0}".format(
-                                                  self.shuffle_delay))
+                    self.shuffle_delay))
                 self.new_speed()
                 self.state["speed"] = self.speed
                 self.metronome.reset()
@@ -134,11 +135,11 @@ class Director(object):
                         prop = random_between(min_, max_, 0.3)
                         #print "note duration proportion: ", prop
                         [setattr(v, 'note_duration_prop', prop) for v
-                                      in self.composer.voices.values()]
+                            in self.composer.voices.values()]
                     else:
                         for v in self.composer.voices.values():
                             min_, max_ = self.behaviour.voice_get(v.id,
-                                          "automate_note_duration_min_max")
+                                                                  "automate_note_duration_min_max")
                             prop = random_between(min_, max_, 0.3)
                             v.note_duration_prop = prop
                 if self.behaviour["automate_transpose"]:
@@ -152,13 +153,12 @@ class Director(object):
                     self.set_wavetables(voices=voices)
                 if self.has_gui:
                     self.gui_sender.handle_caesura(self)
-                self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(self.composer.meter,
-                                                               self.speed,
-                                                               self.composer.scale))
+                self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
+                    self.composer.meter, self.speed, self.composer.scale))
             self.check_incoming_messages()
             shuffle_delta = (self.speed * self.shuffle_delay
-                              if weight == metronome.LIGHT
-                                else 0)
+                             if weight == metronome.LIGHT
+                             else 0)
             time.sleep(self.speed + shuffle_delta)
 
     def check_incoming_messages(self):
@@ -186,7 +186,7 @@ class Director(object):
     def stop(self):
         if self.playing:
             logger.info("<<<<   stop playing = length: '{0}'   >>>>".format(
-                            self.make_length()))
+                self.make_length()))
         self.playing = False
         self.stopped = True
         self.gui_sender.receive_exit_requested = True
@@ -213,7 +213,7 @@ class Director(object):
                 wavetable_generation_type = wt_item[0]
                 fun = getattr(wavetables, wt_item[0] + '_wavetable')
                 num_partials = (self.behaviour["automate_num_partials"] and
-                                randint(1, self.behaviour["max_num_partials"])  or
+                                randint(1, self.behaviour["max_num_partials"]) or
                                 self.behaviour["default_num_partial"])
                 partial_pool = choice(wt_item[1])
                 wavetable = fun(num_partials, partial_pool)
@@ -230,7 +230,7 @@ class Director(object):
                     fun = getattr(wavetables, v.wavetable_generation_type + '_wavetable')
                     max_partials = self.behaviour.voice_get(v.id, "max_num_partials")
                     num_partials = (self.behaviour.voice_get(v.id, "automate_num_partials") and
-                                    randint(1, max_partials)  or
+                                    randint(1, max_partials) or
                                     self.behaviour.voice_get(v.id, "default_num_partial"))
                     partial_pool = choice(wt_item[1])
 
@@ -261,7 +261,7 @@ class Director(object):
             else:  # if self.speed_change == 'leap':
                 if self.behaviour['speed_target'] != 0.5:
                     target = self.behaviour['speed_target']
-                    if  target < 0.3:
+                    if target < 0.3:
                         target = target ** 2
                     speed_tmp = random() ** math.log(target, 0.5)
                     self.speed = (self.behaviour["min_speed"] +
@@ -269,8 +269,8 @@ class Director(object):
                                   speed_tmp))
                 else:
                     self.speed = self.behaviour["min_speed"] + (random() *
-                                        (self.behaviour["max_speed"] -
-                                         self.behaviour["min_speed"]))
+                                                                (self.behaviour["max_speed"] -
+                                                                 self.behaviour["min_speed"]))
             #print "new speed values: {0}\n resetting metronome.".format(
             #                                                self.speed)
         self.gateway.pd.send(['sys', 'speed', str(self.speed * 1000)])
@@ -280,7 +280,7 @@ class Director(object):
         """handles incoming messages from the gui interface
 
         TODO: keep a current-settings dataobject where to track
-        all current settings and which can be used to write a snapshot 
+        all current settings and which can be used to write a snapshot
         of a particular moment
         """
         key, val = msg.items()[0]
@@ -306,7 +306,7 @@ class Director(object):
             # this is the standard handling
             self.behaviour["per_voice"][vid][v_key] = val
             if v_key == "mute":
-                self.gateway.mute_voice(vid, val == True)
+                self.gateway.mute_voice(vid, val is True)
             elif v_key == "trigger_wavetable":
                 self.set_wavetables(vid=vid, manual=True)
                 self.gui_sender.update_gui(self)

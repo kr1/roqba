@@ -16,14 +16,17 @@ from roqba.static.scales_and_harmonies import SCALES
 from roqba.static.settings import settings
 from roqba.utilities.pdsender import PdSender
 
+
 def extract_modified_move(move):
     try:
         number = int(match("-?\d+", move).group())
         modifier = match("-?\d+([-+]?)", move).groups()[0]
     except AttributeError, error:
-        raise RuntimeError("malformed melody move: {0}\nOriginal Error: {1}".format(
-            move, error))
+        raise RuntimeError(
+            "malformed melody move: {0}\nOriginal Error: {1}".format(
+                move, error))
     return (number, modifier)
+
 
 class MelodyPlayer():
     def __init__(self, speed=0.1):
@@ -40,7 +43,7 @@ class MelodyPlayer():
         if not self.melody:
             raise "ImpossibleRequestError", "no melody given"
         self.real_scale = Composer.assemble_real_scale(
-                              SCALES[self.melody['scale']])
+            SCALES[self.melody['scale']])
         start_note = (self.static_start_note + self.melody['start_note'])
         current_note = start_note
         self.pd.send("sound 1")
