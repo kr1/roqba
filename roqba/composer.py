@@ -7,7 +7,15 @@ from random import choice as sample
 import metronome
 from notator import Notator
 from static.movement_probabilities import ORNAMENTS, DRUM_FILLS
-from static.scales_and_harmonies import *
+from static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
+                                         BASE_HARMONIES,
+                                         FOLLOWINGS,
+                                         HARMONIC_INTERVALS,
+                                         HARMONIES,
+                                         NOTES_PER_SCALE,
+                                         SCALES,
+                                         SCALES_BY_FREQUENCY,
+                                         STRICT_HARMONIES)
 import static.note_length_groupings as note_length_groupings
 from static.melodic_behaviours import registers
 from drummer import Drummer
@@ -23,8 +31,6 @@ class Composer(object):
                  settings,
                  behaviour,
                  scale="DIATONIC"):
-                 #scale="PENTATONIC"):
-                 #scale="PENTA_MINOR"):
         # percussion
         self.settings = settings
         self.behaviour = behaviour
@@ -37,7 +43,7 @@ class Composer(object):
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.scale = scale
         self.selected_meters = ("meters" in self.behaviour.keys() and
-                        self.behaviour["meters"] or METERS.keys())
+                                self.behaviour["meters"] or METERS.keys())
         self.modified_note_in_current_frame = None
         self.meter = behaviour['meter']
         self.set_meter(self.meter)
@@ -58,7 +64,7 @@ class Composer(object):
         '''utility function that prints info on  harmonies and single voices'''
         print "harmonies: {0}".format(self.harm)
         print "voices: {0}\nnotes:{1}".format(self.voices,
-                            map(lambda x: x.note, self.voices.values()))
+                                              map(lambda x: x.note, self.voices.values()))
 
     def set_meter(self, meter):
         '''modifies composer-attributes for the specified meter.
@@ -71,9 +77,9 @@ class Composer(object):
         self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                   "heavy")
         self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                   "default")
+                                                                    "default")
         self.FAST_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                   "first")
+                                                                 "first")
         for v in self.voices.values():
             v.reload_register()
         self.drummer.create_pattern(METERS[meter]["applied"])
@@ -99,11 +105,11 @@ class Composer(object):
             if v.note == 0 or not v.note_change:
                 continue
             if (state["weight"] == metronome.HEAVY or
-                state["weight"] == metronome.MEDIUM):
+                    state["weight"] == metronome.MEDIUM):
                 patience = 0
-                while not self.acceptable_harm_for_length(tmp_harm,\
-                                                          counter) and\
-                                                          patience < 100:
+                while not (self.acceptable_harm_for_length(tmp_harm,
+                                                           counter) and
+                           patience < 100):
                     if len(tmp_harm) > counter:
                         tmp_harm.pop()
                     v.generator.send(state)
@@ -159,9 +165,8 @@ class Composer(object):
             if v.note_change:
                 v.real_note = self.real_scale[v.note]
         if self.modified_note_in_current_frame:
-            self.musical_logger.info(
-                        "modified note: '{0}'".format(
-                        self.modified_note_in_current_frame))
+            self.musical_logger.info("modified note: '{0}'".format(
+                                     self.modified_note_in_current_frame))
             which = self.modified_note_in_current_frame[0]
             for v in self.voices.values():
                 num_notes = NOTES_PER_SCALE[self.scale]
@@ -172,14 +177,14 @@ class Composer(object):
                         v.real_note -= 1
                     else:
                         v.real_note += 1
-                    self.musical_logger.info(
-                                "modified note: {0} from '{1}' to '{2}'".format(
-                                v.note, was_note, v.real_note))
+                    self.musical_logger.info("modified note: {0} from '{1}' to '{2}'".format(
+                                             v.note, was_note, v.real_note))
 #        for v in self.voices.values():
 #            if v.note_change:
 #                v.real_note = self.scale_walker(self.scale,
 #                                                v.real_note,
 #                                                v.note_delta)
+
     def set_scale(self, name, min=0, max=128):
         '''sets the specified scale and generates a new real scale'''
         self.scale = name
@@ -331,12 +336,13 @@ class Composer(object):
                 next_note = note + (orn_note[1] * multiplier)
                 real_note = self.real_scale[next_note]
                 dur_prop = (v.slide_duration_prop or
-                            behaviour.voice_get(v.id, "slide_duration_prop"))
+                            self.behaviour.voice_get(v.id, "slide_duration_prop"))
                 self.gateway.set_slide_msecs(v.id, (v.duration_in_msec *
                                                     dur_fraction *
                                                     dur_prop))
                 self.gateway.pd_send_note(v.id, real_note)
-            self.gateway.set_slide_msecs(v.id,
+            self.gateway.set_slide_msecs(
+                v.id,
                 (self.behaviour.voice_get(v.id, "use_proportional_slide_duration") and
                  self.behaviour.voice_get(v.id, "slide_duration_prop") or
                  self.behaviour.voice_get(v.id, "slide_duration_msecs")))
@@ -349,13 +355,13 @@ class Composer(object):
         self.comment = 'normal'
         note_changes = [v.note_change for v in self.voices.values()]
         all_notes_change = reduce(lambda x, y:
-                                 x and y,
-                                 note_changes)
+                                  x and y,
+                                  note_changes)
         if all_notes_change:
             harmony = map(lambda x: x.note, self.voices.values())
             #print "all_notes_change: harmony {0}".format(harmony)
             if (self.is_base_harmony(harmony) and
-                not filter(lambda v: v.playing_a_melody, self.voices.values())):
+                    not filter(lambda v: v.playing_a_melody, self.voices.values())):
                 self.comment = "caesura"
                 #print "all notes change to a base harmony"
 
@@ -414,10 +420,8 @@ class Composer(object):
                                      state["speed"] * 1000)
 
 if __name__ == "__main__":
-    print DIATONIC, len(DIATONIC)
-    print HARMONIC, len(HARMONIC)
-    print MELODIC, len(MELODIC)
     print HARMONIES
+    print SCALES_BY_FREQUENCY
     print STRICT_HARMONIES
 
     print Composer().get_deltas([12, 8, 10, 15])
