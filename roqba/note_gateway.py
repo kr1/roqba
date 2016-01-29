@@ -25,6 +25,10 @@ class NoteGateway(object):
         self.transpose = behaviour["transpose"]
         self.behaviour = behaviour
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
+        self.hub = self.hub_gen()
+        self.hub.next()
+        self.drum_hub = self.drum_hub_gen()
+        self.drum_hub.next()
 
     def pause(self):
         '''blocks new messages and turns off sound-production'''
@@ -52,7 +56,7 @@ class NoteGateway(object):
 
     def mute_voice(self, vid, val):
         '''sends a message to mute/unmute a voice to pd
-        
+
         use vid=drums to mute/unmute the drums
         '''
         val = 1 if val else 0
@@ -105,19 +109,19 @@ class NoteGateway(object):
 
     def send_voice_volume(self, voice, val):
         '''sends a volume message for a voice
-        
+
         use values from 0 to 1'''
         args = ["voice", voice.id, "volume", val]
         print "sending: ", args
         self.pd.send(args)
-        
+
 
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
         args = ["perc", voice, vol, pan, ctl]
         self.pd.send(args)
 
-    def drum_hub(self):
+    def drum_hub_gen(self):
         '''generator method that sends notes to all drum voices
 
         according to present state'''
@@ -135,7 +139,7 @@ class NoteGateway(object):
                             args.append(v["ctl"])
                         self.pd.send(args)
 
-    def hub(self):
+    def hub_gen(self):
         '''generator method that sends notes to all melodic voices
 
         according to the present state'''

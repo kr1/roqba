@@ -22,7 +22,6 @@ settings = default_settings.settings
 behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
 gateway = NoteGateway(settings, behaviour)
-gateway.hub().next()
 
 
 def startup():

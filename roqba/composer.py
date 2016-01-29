@@ -29,8 +29,8 @@ class Composer(object):
         self.settings = settings
         self.behaviour = behaviour
         self.drummer = Drummer(self)
-        self.percussion_hub = gateway.drum_hub()
-        self.percussion_hub.next()
+        self.gateway = gateway
+        # TODO: consider making NoteGateway a Singleton
         self.harm = {}
         self.voices = {}
         self.num_voices = settings['number_of_voices']
@@ -45,10 +45,6 @@ class Composer(object):
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
-        self.gateway = gateway
-        self.hub = gateway.hub()
-        # XxxxX consider making NoteGateway a Singleton
-        self.hub.next()
         self.registers = registers
         self.notator = Notator(self.num_voices)
         self.musical_logger = logging.getLogger("musical")
@@ -146,9 +142,9 @@ class Composer(object):
                 if v["meta"] == 'mark':
                     threading.Thread(target=self.drum_mark_handler,
                                      args=(k, state)).start()
-        self.percussion_hub.send(self.drummer.frame)
+        self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
-        self.hub.send(self.voices)  # this sends the voices to the hub
+        self.gateway.hub.send(self.voices)  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
                                    "cycle_pos": state["cycle_pos"]})
