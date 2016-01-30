@@ -141,7 +141,20 @@ class Voice(object):
     def next_note(self, state):
         """the next note is calculated/read here"""
         meter_pos = state["cycle_pos"]
-        speed = state["speed"]
+        if self.behaviour == "SLAVE":
+            follow = self.other_voices[self.followed_voice_id]
+            if follow.note_change:
+                if follow.note == 0:
+                    return 0
+                if self.following_counter == 0:
+                    self.follow_dist = sample(FOLLOWINGS)
+                elif self.following_counter < self.follow_limit:
+                    res = follow.note + self.follow_dist
+                    self.following_counter += 1
+                else:
+                    self.reset_slave()
+            return res
+
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
@@ -160,7 +173,7 @@ class Voice(object):
                     # by modifying only those indexes of the pattern covered by the
                     # current note and the start of the following note
                 #print "searching for a suitable melody"
-                self.melody = self.search_suitable_melody(speed)
+                self.melody = self.search_suitable_melody(state['speed'])
                 if self.melody:
                     self.musical_logger.info("starting the melody: {0}".format(self.melody))
                     self.melody_iterator = iter(self.melody["melody"])
@@ -336,7 +349,6 @@ class Voice(object):
         for k, v in self.composer.voices.items():
             if v != self:
                 res[k] = v
-        #print res
         return res
 
     def reload_register(self):
