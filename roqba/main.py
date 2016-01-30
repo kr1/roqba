@@ -64,7 +64,7 @@ def main():
 if __name__ == "__main__":
     print '''running this application from the interpreter lets you interact with it directly.
 
-    In the interpreter - from the project - root run as:
+    In the interpreter - from the project-root run as:
     \b\b\b\bfrom roqba import main
     \b\b\b\bmain.main()
     \b\b\bstop it with:
