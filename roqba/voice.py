@@ -153,12 +153,12 @@ class Voice(object):
                     return 0
                 if self.following_counter == 0:
                     self.follow_dist = sample(FOLLOWINGS)
-                elif self.following_counter < self.follow_limit:
+                if self.following_counter < self.follow_limit:
                     res = follow.note + self.follow_dist
                     self.following_counter += 1
+                    return res
                 else:
                     self.reset_slave()
-            return res
 
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
