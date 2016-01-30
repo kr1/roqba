@@ -51,15 +51,18 @@ class Voice(object):
         self.weight = MEDIUM
         self.note = note or int((max(self.range)
                                  - min(self.range)) / 2) + min(self.range)
-        self.real_note = real_note or int((max(self.range)
-                                 - min(self.range)) / 2) + min(self.range)
+        self.real_note = (real_note
+                          or int((max(self.range) - min(self.range)) / 2) + min(self.range))
 
         # BEHAVIOUR
         if behaviour:
-            self.behaviour = behaviour[0]
-            self.followed_voice_id = behaviour[1]
-            self.following_counter = 0
-            self.follow_limit = sample(range(3, 9))
+            if isinstance(behaviour, basestring):
+                self.behaviour = behaviour
+            else:
+                self.behaviour = behaviour[0]
+                self.followed_voice_id = behaviour[1]
+                self.following_counter = 0
+                self.follow_limit = sample(range(3, 9))
         else:
             self.behaviour = composer.behaviour["default_behaviour"]
         self.should_play_a_melody = composer.behaviour.voice_get(id, 'should_play_a_melody')
@@ -221,7 +224,7 @@ class Voice(object):
         returns the pitch-related move (delta) and sets eventual modifier
         attribute on the composer"""
         move, length = self.melody_iterator.next()
-        if type(move) ==  str:
+        if type(move) == str:
             number, modifier = melody_player.extract_modified_move(move)
             self.composer.modified_note_in_current_frame = (number,
                                                             modifier)
