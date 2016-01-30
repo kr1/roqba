@@ -18,17 +18,17 @@ logger.setLevel(logging.INFO)
 
 
 class Director(IncomingMessagesMixin, WavetableMixin):
-    def __init__(self, composer, state, behaviour, settings):
-        self.composer = composer
+    def __init__(self, gateway, behaviour, settings):
+        self.composer = composer.Composer(gateway, settings, behaviour)
+        self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
         self.force_caesura = False
-        self.state = state
         self.settings = settings
-        self.gateway = composer.gateway
+        self.gateway = self.composer.gateway
         self.speed_target = behaviour["speed_target"]
-        self.speed = state["speed"]
+        self.speed = self.state["speed"]
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (
@@ -48,7 +48,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
 
         # keep this between 0 and MAX_SHUFFLE
         self.shuffle_delay = behaviour["shuffle_delay"]
-        self.meter = composer.applied_meter
+        self.meter = self.composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
         self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
         self.automate_meters = behaviour["automate_meters"]
@@ -59,6 +59,19 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.musical_logger = logging.getLogger('musical')
         self.behaviour_logger = logging.getLogger('behaviour')
         self.gui_logger = logging.getLogger('gui')
+        self.add_setters()
+
+    def add_setters(self):
+        self.behaviour.real_setters["meter"] = self.set_meter
+        self.behaviour.real_setters["transpose"] = self.gateway.set_transpose
+        self.behaviour.real_setters["speed"] = self.new_speed
+        self.behaviour.real_setters["binaural_diff"] = self.composer.set_binaural_diffs
+        self.behaviour.real_setters["slide_duration_msecs"] = self.gateway.set_slide_msecs_for_all_voices
+        for vid in self.behaviour['per_voice'].keys():
+            self.behaviour['per_voice'][vid].real_setters["pan_pos"] = \
+                [self.composer.voices[vid].set_pan_pos, self.gateway]
+            self.behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = \
+                [self.gateway.set_slide_msecs, vid]
 
     def set_meter(self, meter):
         self.composer.set_meter(meter)

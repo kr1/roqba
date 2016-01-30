@@ -11,8 +11,6 @@ usage:
 import time
 from re import match
 
-from roqba.composer import Composer
-from roqba.static.scales_and_harmonies import SCALES
 from roqba.static.settings import settings
 from roqba.utilities.pdsender import PdSender
 
@@ -36,14 +34,12 @@ class MelodyPlayer():
         self.transpose = 0
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
 
-    def play(self, start=0):
+    def play(self, real_scale, start=0):
         """plays the melody given in the self.melody attribute
 
         by sending the necessary messages to the roqba-sound-engine"""
         if not self.melody:
             raise "ImpossibleRequestError", "no melody given"
-        self.real_scale = Composer.assemble_real_scale(
-            SCALES[self.melody['scale']])
         start_note = (self.static_start_note + self.melody['start_note'])
         current_note = start_note
         self.pd.send("sound 1")
@@ -54,7 +50,7 @@ class MelodyPlayer():
                 move, modifier = extract_modified_move(move)
                 modifier = (modifier == '-' and -1 or 1)
             next_note = current_note + move
-            next_real_note = self.real_scale[next_note]
+            next_real_note = real_scale[next_note]
             if modifier:
                 next_real_note += modifier
             print next_real_note + self.transpose,

@@ -20,7 +20,7 @@ from static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
 import static.note_length_groupings as note_length_groupings
 from static.melodic_behaviours import registers
 from drummer import Drummer
-import roqba
+from roqba.voice import Voice
 from static.meters import METERS
 
 comp_logger = logging.getLogger("composer")
@@ -60,7 +60,7 @@ class Composer(object):
         self.voices = {}
         for voice_idx in range(settings["number_of_voices"]):
             id_ = voice_idx + 1
-            self.voices[id_] = roqba.voice.Voice(
+            self.voices[id_] = Voice(
                 id_, self,
                 note_length_grouping=behaviour["meter"][1],
                 register=settings["voice_registers"][voice_idx],

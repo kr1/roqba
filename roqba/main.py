@@ -2,8 +2,6 @@ import logging
 import threading
 import logging.config
 
-from roqba.voice import Voice
-from roqba.composer import Composer
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
 from roqba.utilities.behaviour_dict import BehaviourDict
@@ -23,38 +21,16 @@ behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
 gateway = NoteGateway(settings, behaviour)
 
-
-def startup():
-    '''creates the composer instance and the voices'''
-    logger.info("starting up ============------------->>>>>>>>>>>>")
-    composer = Composer(gateway, settings, behaviour)
-    return composer
-
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
 
-composer = startup()
-state = {"comp": composer, "speed": behaviour["speed"]}
-director = Director(composer, state, behaviour, settings)
-
-
-def add_setters():
-    behaviour.real_setters["meter"] = director.set_meter
-    behaviour.real_setters["transpose"] = director.gateway.set_transpose
-    behaviour.real_setters["speed"] = director.new_speed
-    behaviour.real_setters["binaural_diff"] = composer.set_binaural_diffs
-    behaviour.real_setters["slide_duration_msecs"] = gateway.set_slide_msecs_for_all_voices
-    for vid in behaviour['per_voice'].keys():
-        behaviour['per_voice'][vid].real_setters["pan_pos"] = [composer.voices[vid].set_pan_pos, director.gateway]
-        behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = [director.gateway.set_slide_msecs, vid]
+director = Director(gateway, behaviour, settings)
 
 
 def main():
     '''starts the main thread of the application'''
-    add_setters()
     director_thread = threading.Thread(target=director._play, args=())
     director_thread.start()
-    composer.report()
 
 if __name__ == "__main__":
     print '''running this application from the interpreter lets you interact with it directly.
