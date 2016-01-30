@@ -26,13 +26,8 @@ gateway = NoteGateway(settings, behaviour)
 
 def startup():
     '''creates the composer instance and the voices'''
-    logger.info("starting up ===========------------------->>>>>>>>>>>>>>>")
+    logger.info("starting up ============------------->>>>>>>>>>>>")
     composer = Composer(gateway, settings, behaviour)
-    for voice_idx in xrange(settings["number_of_voices"]):
-        Voice(voice_idx + 1, composer,
-              note_length_grouping=behaviour["meter"][1],
-              register=settings["voice_registers"][voice_idx],
-              behaviour=settings['voice_behaviours'][voice_idx])
     return composer
 
 logging.config.fileConfig("logging.conf")

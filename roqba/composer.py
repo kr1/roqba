@@ -1,3 +1,4 @@
+import sys
 import logging
 import time
 import threading
@@ -19,6 +20,7 @@ from static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
 import static.note_length_groupings as note_length_groupings
 from static.melodic_behaviours import registers
 from drummer import Drummer
+import roqba
 from static.meters import METERS
 
 comp_logger = logging.getLogger("composer")
@@ -38,7 +40,6 @@ class Composer(object):
         self.gateway = gateway
         # TODO: consider making NoteGateway a Singleton
         self.harm = {}
-        self.voices = {}
         self.num_voices = settings['number_of_voices']
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.scale = scale
@@ -46,8 +47,8 @@ class Composer(object):
                                 self.behaviour["meters"] or METERS.keys())
         self.modified_note_in_current_frame = None
         self.meter = behaviour['meter']
-        self.set_meter(self.meter)
         self.applied_meter = METERS[self.meter]['applied']
+        self._update_groupings(self.meter)
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
@@ -56,22 +57,27 @@ class Composer(object):
         self.musical_logger = logging.getLogger("musical")
         # change INFO to DEBUG for debugging output
         self.musical_logger.setLevel(logging.INFO)
+        self.voices = {}
+        for voice_idx in range(settings["number_of_voices"]):
+            id_ = voice_idx + 1
+            self.voices[id_] = roqba.voice.Voice(
+                id_, self,
+                note_length_grouping=behaviour["meter"][1],
+                register=settings["voice_registers"][voice_idx],
+                behaviour=settings['voice_behaviours'][voice_idx])
+        [voice.register_other_voices() for voice in self.voices.values()]
+        self.set_meter(self.meter)
 
     def __repr__(self):
         return "<Composer-Inst with {0}>".format(self.harm)
 
     def report(self):
         '''utility function that prints info on  harmonies and single voices'''
-        print "harmonies: {0}".format(self.harm)
-        print "voices: {0}\nnotes:{1}".format(self.voices,
-                                              map(lambda x: x.note, self.voices.values()))
+        sys.stderr.write("harmonies: {0}\n".format(self.harm))
+        sys.stderr.write("voices: {0}\nnotes:{1}\n".format(self.voices,
+                                              map(lambda x: x.note, self.voices.values())))
 
-    def set_meter(self, meter):
-        '''modifies composer-attributes for the specified meter.
-
-        calls reload_register method of the voices and creates and
-        sets the new meter also for the drummer-instance'''
-        self.meter = meter
+    def _update_groupings(self, meter):
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                     "terns")
         self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
@@ -80,6 +86,13 @@ class Composer(object):
                                                                     "default")
         self.FAST_GROUPINGS = note_length_groupings.get_grouping(meter,
                                                                  "first")
+
+    def set_meter(self, meter):
+        '''modifies composer-attributes for the specified meter.
+
+        calls reload_register method of the voices and creates and
+        sets the new meter also for the drummer-instance'''
+        self.meter = meter
         for v in self.voices.values():
             v.reload_register()
         self.drummer.create_pattern(METERS[meter]["applied"])
@@ -121,8 +134,8 @@ class Composer(object):
         # now we set the "real note" field according to the present scale
         self.add_duration_in_msec(state)
         self.apply_scale()
-        # the stream analyzer can be used to check for chords, simultaneities
         self.embellish(state)
+        # the stream analyzer can be used to check for chords, simultaneities
         self.stream_analyzer()
         # percussion
         self.drummer.generator.send(state)

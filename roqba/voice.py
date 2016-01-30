@@ -5,30 +5,32 @@ from random import choice as sample
 
 from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
-from static.note_length_groupings import  analyze_grouping
+from static.note_length_groupings import analyze_grouping
 from static.melodies import melodies
+from static.scales_and_harmonies import FOLLOWINGS
 from utilities import melody_player
 from utilities import pd_wavetables as wavetables
 from metronome import MEDIUM, HEAVY
 
 
 class Voice(object):
-    def __init__(self, id,
-                       composer,
-                       note_range=[24, 48],
-                       register=None,
-                       behaviour=None,
-                       note=None,
-                       real_note=None,
-                       note_length_grouping=sample(GROUPINGS)):
+    def __init__(self,
+                 id,
+                 composer,
+                 note_range=[24, 48],
+                 register=None,
+                 behaviour=None,
+                 note=None,
+                 real_note=None,
+                 note_length_grouping=sample(GROUPINGS)):
         # AFFILIATION
         self.composer = composer  # store the composer
-        composer.add_voice(id, self)  # register with the composer
+        #composer.add_voice(id, self)  # register with the composer
         # IDENTITY
         self.id = id
         self.register = (self.composer.registers[register]
-                      if register else
-                  composer.registers[sample(self.composer.registers.keys())])
+                         if register else
+                         composer.registers[sample(self.composer.registers.keys())])
         # TECH
         self.track_me = False
         self.queue = deque([], composer.settings['track_voices_length'])
@@ -83,7 +85,7 @@ class Voice(object):
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         # WAVETABLE - this is used for non-automated wavetables
         self.wavetable_generation_type = sample(
-                      composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
+            composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
         self.partial_pool = sample(sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[1])
         self.num_partials = composer.behaviour.voice_get(id, 'default_num_partial')
 
@@ -308,13 +310,12 @@ class Voice(object):
         if <change_master> is 'True':
           - a new random master is chosen,
         """
-        self.others = self.other_voices()
         if change_master:
             if type(change_master) == int:
                 self.followed_voice_id = change_master
             else:
                 self.followed_voice_id = sample(self.others.keys())
-        follow = self.others[self.followed_voice_id]
+        follow = self.other_voices[self.followed_voice_id]
         self.slide_duration_prop = follow.slide_duration_prop
         self.slide = follow.slide
         self.following_counter = 0
@@ -343,13 +344,12 @@ class Voice(object):
             #self.behaviour = "AUTONOMOUS"
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
 
-    def other_voices(self):
+    def register_other_voices(self):
         '''returns the other voices registered in the app'''
-        res = {}
+        self.other_voices = {}
         for k, v in self.composer.voices.items():
             if v != self:
-                res[k] = v
-        return res
+                self.other_voices[k] = v
 
     def reload_register(self):
         '''reloads the current register and reapplies its settings

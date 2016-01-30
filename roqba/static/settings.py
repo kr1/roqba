@@ -5,7 +5,7 @@ settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
-                                 'SLAVE', 'AUTONOMOUS'],
+                                ['SLAVE', 2], 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
             'PD_PORT': 12321,
             'gui': True,
@@ -152,7 +152,7 @@ styles = {
             'number_of_voices': 4,
             'voice_registers': ['ROCK_BASS', 'FLAT_MID', 'FLAT_MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
-                                 ['SLAVE', 2], 'AUTONOMOUS'],
+                                ['SLAVE', 2], 'AUTONOMOUS'],
 
         },
         "behaviour": {
