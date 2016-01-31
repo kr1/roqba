@@ -194,28 +194,6 @@ class Composer(AbstractComposer):
                                        v.note_delta,
                                        state)).start()
 
-    def set_binaural_diffs(self, val=None, voice=None):
-        '''"de-tunes" the specified voice by the specified interval (in hertz)
-
-        - if no values are given, random values (in the configurated range)
-        are set for each voice.
-        '''
-        if val and val != 'random':
-            if voice:
-                voice.binaural_diff = val
-                self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
-            else:
-                self.gateway.pd.send(["voice", "binaural", -1, val])
-                for v in self.voices.values():
-                    v.binaural_diff = val
-        else:
-            for v in self.voices.values():
-                if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
-                    continue
-                val = random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
-                v.binaural_diff = val
-                self.gateway.pd.send(["voice", "binaural", v.id, val])
-
     def drum_fill_handler(self, v, state):
         '''handles the sending of drum-fill notes'''
         identifier = 'cont' if v == 'cont2' else 'cont2'

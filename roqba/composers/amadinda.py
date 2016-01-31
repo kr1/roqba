@@ -101,7 +101,3 @@ class Composer(AbstractComposer):
             3: [0,  27, 0,  29, 0,  19, 0,  22, 0,  21, 0,  22, 0,  19, 0,  27, 0,  22, 0,  25, 0,  22, 0,  24, 0, ],
             4: [0] * 24
         }
-
-    def set_binaural_diffs(self):
-        pass
-

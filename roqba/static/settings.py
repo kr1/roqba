@@ -63,6 +63,7 @@ behaviour = {
 
     # BINAURAL DIFF RELATED
     'pan_controls_binaural_diff': False,
+    'common_binaural_diff': True,
     'automate_binaural_diffs': True,  # alt: False
     'binaural_diff': 0.666,
     'max_binaural_diff': 10,

@@ -1,6 +1,7 @@
 import sys
 import logging
 from abc import ABCMeta, abstractmethod
+import random
 
 from roqba.voice import Voice
 from roqba.notator import Notator
@@ -80,9 +81,29 @@ class AbstractComposer(object):
     def choose_rhythm(self):
         pass
 
-    @abstractmethod
-    def set_binaural_diffs(self):
-        pass
+    def set_binaural_diffs(self, val=None, voice=None):
+        '''"de-tunes" the specified voice by the specified interval (in hertz)
+
+        - if no values are given, random values (in the configurated range)
+        are set for each voice.
+        '''
+        if val and val != 'random':
+            if voice:
+                voice.binaural_diff = val
+                self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
+            else:
+                self.gateway.pd.send(["voice", "binaural", -1, val])
+                for v in self.voices.values():
+                    v.binaural_diff = val
+        else:
+            if self.behaviour['common_binaural_diff']:
+                val = random.random() * self.behaviour.get("max_binaural_diff")
+            for v in self.voices.values():
+                if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+                    continue
+                val = val or random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
+                v.binaural_diff = val
+                self.gateway.pd.send(["voice", "binaural", v.id, val])
 
     def set_scale(self, name, min=0, max=128):
         '''sets the specified scale and generates a new real scale'''
