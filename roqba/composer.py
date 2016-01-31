@@ -21,13 +21,14 @@ import static.note_length_groupings as note_length_groupings
 from static.melodic_behaviours import registers
 from drummer import Drummer
 from roqba.voice import Voice
+from roqba.abstract_composer import AbstractComposer
 from static.meters import METERS
 
 comp_logger = logging.getLogger("composer")
 note_logger = logging.getLogger("transcriber")
 
 
-class Composer(object):
+class Composer(AbstractComposer):
     def __init__(self,
                  gateway,
                  settings,
@@ -68,14 +69,6 @@ class Composer(object):
         [voice.register_other_voices() for voice in self.voices.values()]
         self.set_meter(self.meter)
 
-    def __repr__(self):
-        return "<Composer-Inst with {0}>".format(self.harm)
-
-    def report(self):
-        '''utility function that prints info on  harmonies and single voices'''
-        sys.stderr.write("harmonies: {0}\n".format(self.harm))
-        sys.stderr.write("voices: {0}\nnotes:{1}\n".format(self.voices,
-                                              map(lambda x: x.note, self.voices.values())))
 
     def _update_groupings(self, meter):
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
@@ -96,10 +89,6 @@ class Composer(object):
         for v in self.voices.values():
             v.reload_register()
         self.drummer.create_pattern(METERS[meter]["applied"])
-
-    def add_voice(self, id, voice):
-        '''adds a voice to self.voices'''
-        self.voices.update({id: voice})
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
@@ -433,13 +422,3 @@ if __name__ == "__main__":
     print Composer().acceptable_harmony([2, 4, 6])
     from voice import Voice
     c = Composer()
-    v1 = Voice(1, None, c)
-    v1.dir = 1
-    c.add_voice(v1.id, v1)
-    v2 = Voice(2, None, c)
-    c.add_voice(v2.id, v2)
-    v3 = Voice(3, None, c)
-    v3.dir = 0
-    c.add_voice(v3.id, v3)
-
-    print c.sort_voices_by_importance()

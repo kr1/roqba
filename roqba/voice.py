@@ -25,7 +25,6 @@ class Voice(object):
                  note_length_grouping=sample(GROUPINGS)):
         # AFFILIATION
         self.composer = composer  # store the composer
-        #composer.add_voice(id, self)  # register with the composer
         # IDENTITY
         self.id = id
         self.register = (self.composer.registers[register]
