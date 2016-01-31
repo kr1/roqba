@@ -104,13 +104,43 @@ class Composer(AbstractComposer):
         next_note = self.pattern[voice.id][meter_pos] or None
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
-        self.pattern_played_times += 1.0/len(self.pattern[1])
+        self.pattern_played_times += 1.0 / len(self.pattern[1])
         return next_note
 
-    def make_new_pattern(self):
+    def _make_new_pattern(self):
         self.pattern = {
             1: [33, 0,  0,  32, 35, 0,  0,  0,  31, 39,  0,  0,  34, 0,  0,  30, 0, 0,  29, 0,  0,  35, 0,  32, 0],
             2: [23, 0,  25, 0,  22, 0,  25, 0,  24, 0,  25, 0,  27, 0,  29, 0,  21, 0,  24, 0,  21, 0,  25, 0,  27,],
             3: [0,  27, 0,  29, 0,  19, 0,  22, 0,  21, 0,  22, 0,  19, 0,  27, 0,  22, 0,  25, 0,  22, 0,  24, 0, ],
             4: [0] * 24
         }
+
+    def make_new_pattern(self):
+        num_tones = 12
+        tone_range = 12
+        transpose = 20
+        octave_offset = 7
+        number_of_tones_in_3rd_voice = 5
+        word1 = choice(self.words)
+        seq1 = list(itertools.chain(
+            *zip([(ord(char)%tone_range) + transpose for char in word1][:num_tones],
+                 [0] * num_tones)))
+        word2 = choice(self.words)
+        seq2 = list(itertools.chain(
+            *zip([0] * num_tones,
+                 [(ord(char)%tone_range) + transpose for char in word2][:num_tones])))
+        seq3 = []
+        for idx in range(num_tones * 2):
+            if seq1[idx] > (transpose + tone_range) - (number_of_tones_in_3rd_voice + 1):
+                seq3.append(seq1[idx] + octave_offset)
+            elif seq2[idx] > (transpose + tone_range) - (number_of_tones_in_3rd_voice + 1):
+                seq3.append(seq2[idx] + octave_offset)
+            else:
+                seq3.append(0)
+        self.pattern = {
+            1: seq1,
+            2: seq2,
+            3: seq3,
+            4: seq3
+        }
+
