@@ -23,20 +23,23 @@ class Voice(object):
                  note=None,
                  real_note=None,
                  note_length_grouping=sample(GROUPINGS)):
+
         # AFFILIATION
         self.composer = composer  # store the composer
+
         # IDENTITY
         self.id = id
         self.register = (self.composer.registers[register]
                          if register else
-                         composer.registers[sample(self.composer.registers.keys())])
+                         self.composer.registers[sample(self.composer.registers.keys())])
+
         # TECH
         self.track_me = False
         self.queue = deque([], composer.settings['track_voices_length'])
+
         # STARTUP
-        note_range.sort()
         self.pan_pos = composer.behaviour.voice_get(self.id, "default_pan_position")
-        self.range = note_range
+        self.range = sorted(note_range)
         self.dir = 0
         self.prior_note = None
         self.note_change = True
@@ -61,7 +64,7 @@ class Voice(object):
                 self.behaviour = behaviour[0]
                 self.followed_voice_id = behaviour[1]
                 self.following_counter = 0
-                self.follow_limit = sample(range(3, 9))
+                self.follow_limit = sample(range(5, 9))
         else:
             self.behaviour = composer.behaviour["default_behaviour"]
         self.should_play_a_melody = composer.behaviour.voice_get(id, 'should_play_a_melody')
