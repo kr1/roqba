@@ -23,7 +23,7 @@
 #X obj 1024 188 del 100;
 #X obj 920 80 del 300;
 #X obj 936 235 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 10120 1;
+-1 -1 5048 1;
 #X obj 641 187 line;
 #X obj 650 66 random 127;
 #X msg 652 152 \$1 500;
@@ -40,7 +40,7 @@
 #X obj 1030 34 / 64;
 #X obj 1017 63 - 1;
 #X obj 624 223 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 2183 1;
+-1 -1 3328 1;
 #X obj 379 129 route 1 2 3 4;
 #X obj 654 38 spigot;
 #X obj 712 8 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
@@ -249,9 +249,9 @@ This patch is used as an abstraction in various examples.;
 #X connect 102 0 76 0;
 #X restore 56 269 pd voice 1 30 30 30 30 300;
 #X obj 97 214 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 6350 1;
+-1 -1 4092 1;
 #X obj 327 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 1905 1;
+-1 -1 7815 1;
 #X obj 227 185 s master_vol;
 #X obj 1122 287 r master_vol;
 #X obj 708 412 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
@@ -282,7 +282,7 @@ This patch is used as an abstraction in various examples.;
 -1 -1;
 #X floatatom 329 420 5 0 0 0 - - -, f 5;
 #X obj 262 -48 netreceive 12321 1;
-#X msg 121 160 (6__(2__2__2));
+#X msg 121 160 (24__(1__2__2__1__2__2__2__1__2__2__1__2__2__2));
 #N canvas 2 120 1020 627 voice 0;
 #X obj 327 108 inlet;
 #X obj 657 148 inlet;
@@ -1142,16 +1142,16 @@ This patch is used as an abstraction in various examples.;
 #X connect 65 1 56 0;
 #X restore 599 474 pd volumes ...........................;
 #X obj 894 371 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 3000 1;
 #X obj 894 454 / 666;
-#X obj 944 371 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 7800 1;
+#X obj 944 372 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 7900 1;
 #X obj 944 454 / 666;
 #X obj 994 371 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 7900 1;
 #X obj 994 453 / 666;
 #X obj 1044 371 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 7700 1;
+-1 -1 3600 1;
 #X obj 1044 453 / 666;
 #X obj 1094 371 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
