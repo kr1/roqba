@@ -1,8 +1,9 @@
+import os
+import itertools
 import threading
 from random import choice
 
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.voice import Voice
 from roqba.static.melodic_behaviours import registers
 from roqba.static.scales_and_harmonies import FOLLOWINGS, SCALES_BY_FREQUENCY
 from roqba.static.meters import METERS
@@ -21,11 +22,23 @@ class Composer(AbstractComposer):
         self.pattern_played_times = 0
         self.pattern_played_maximum = 12
         self.offered_scales = SCALES_BY_FREQUENCY
+        self.words = self.all_python_words()
         super(Composer, self).__init__()
         for voice in self.voices.values():
             voice.duration_in_msec = 600
         self.set_scale(self.scale)
         self.make_new_pattern()
+
+    def all_python_words(self):
+        filepaths = itertools.chain(*[[os.path.join(entry[0], file_)
+                                       for file_ in entry[2] if file_.endswith('py')]
+                                      for entry in list(os.walk('.'))])
+        lines = []
+        for filepath in filepaths:
+            with open(filepath) as file_:
+                lines.extend(file_.readlines())
+        words = itertools.chain(*[line.split(" ") for line in lines])
+        return [word.strip() for word in words if word.strip() and len(word.strip()) >= 12]
 
     def choose_rhythm(self):
         pass
