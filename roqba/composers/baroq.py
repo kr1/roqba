@@ -5,27 +5,24 @@ import threading
 import random
 from random import choice
 
-import metronome
-from notator import Notator
-from static.movement_probabilities import ORNAMENTS, DRUM_FILLS
-from static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
-                                         BASE_HARMONIES,
-                                         FOLLOWINGS,
-                                         HARMONIC_INTERVALS,
-                                         HARMONIES,
-                                         NOTES_PER_SCALE,
-                                         SCALES,
-                                         SCALES_BY_FREQUENCY,
-                                         STRICT_HARMONIES)
-import static.note_length_groupings as note_length_groupings
-from static.melodic_behaviours import registers
-from drummer import Drummer
+from roqba.static.movement_probabilities import ORNAMENTS, DRUM_FILLS
+from roqba.static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
+                                               BASE_HARMONIES,
+                                               FOLLOWINGS,
+                                               HARMONIC_INTERVALS,
+                                               HARMONIES,
+                                               NOTES_PER_SCALE,
+                                               SCALES,
+                                               SCALES_BY_FREQUENCY,
+                                               STRICT_HARMONIES)
+import roqba.static.note_length_groupings as note_length_groupings
+from roqba.static.melodic_behaviours import registers
+from roqba.drummer import Drummer
 from roqba.voice import Voice
-from roqba.abstract_composer import AbstractComposer
-from static.meters import METERS
+from roqba import metronome
+from roqba.composers.abstract_composer import AbstractComposer
+from roqba.static.meters import METERS
 
-comp_logger = logging.getLogger("composer")
-note_logger = logging.getLogger("transcriber")
 
 
 class Composer(AbstractComposer):
@@ -43,52 +40,18 @@ class Composer(AbstractComposer):
         self.harm = {}
         self.num_voices = settings['number_of_voices']
         self.speed_lim = behaviour['embellishment_speed_lim']
+        self.offered_scales = SCALES_BY_FREQUENCY
+        self.offered_meters = METERS
         self.scale = scale
         self.selected_meters = ("meters" in self.behaviour.keys() and
                                 self.behaviour["meters"] or METERS.keys())
         self.modified_note_in_current_frame = None
-        self.meter = behaviour['meter']
-        self.applied_meter = METERS[self.meter]['applied']
-        self._update_groupings(self.meter)
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
         self.registers = registers
-        self.notator = Notator(self.num_voices)
-        self.musical_logger = logging.getLogger("musical")
-        # change INFO to DEBUG for debugging output
-        self.musical_logger.setLevel(logging.INFO)
-        self.voices = {}
-        for voice_idx in range(settings["number_of_voices"]):
-            id_ = voice_idx + 1
-            self.voices[id_] = Voice(
-                id_, self,
-                note_length_grouping=behaviour["meter"][1],
-                register=settings["voice_registers"][voice_idx],
-                behaviour=settings['voice_behaviours'][voice_idx])
-        [voice.register_other_voices() for voice in self.voices.values()]
-        self.set_meter(self.meter)
+        super(Composer, self).__init__()
 
-
-    def _update_groupings(self, meter):
-        self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                    "terns")
-        self.HEAVY_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                  "heavy")
-        self.DEFAULT_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                    "default")
-        self.FAST_GROUPINGS = note_length_groupings.get_grouping(meter,
-                                                                 "first")
-
-    def set_meter(self, meter):
-        '''modifies composer-attributes for the specified meter.
-
-        calls reload_register method of the voices and creates and
-        sets the new meter also for the drummer-instance'''
-        self.meter = meter
-        for v in self.voices.values():
-            v.reload_register()
-        self.drummer.create_pattern(METERS[meter]["applied"])
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
@@ -172,28 +135,6 @@ class Composer(AbstractComposer):
 #                v.real_note = self.scale_walker(self.scale,
 #                                                v.real_note,
 #                                                v.note_delta)
-
-    def set_scale(self, name, min=0, max=128):
-        '''sets the specified scale and generates a new real scale'''
-        self.scale = name
-        self.generate_real_scale(min, max)
-
-    @staticmethod
-    def assemble_real_scale(scale, min=0, max=128):
-        '''extends the one-octave scale over the specified range'''
-        real_scale = []
-        value = 0
-        for n in xrange(min, max):
-            value += 1
-            index = n % len(scale)
-            if scale[index]:
-                real_scale.append(value)
-        return real_scale
-
-    def generate_real_scale(self, min=0, max=128):
-        '''extends the one-octave scale over the specified range'''
-        scale = SCALES[self.scale]
-        self.real_scale = self.assemble_real_scale(scale, min, max)
 
     def acceptable_harm_for_length(self, harm, length):
         '''checks if the specified (interval-set) are "harmonic"'''
