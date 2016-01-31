@@ -6,7 +6,7 @@ from random import random, choice, randint
 from Queue import deque
 
 import metronome
-import composer
+from roqba.composers import baroq, amadinda
 from roqba.utilities import random_between
 from roqba.utilities.gui_connect import GuiConnect
 from roqba.incoming_messages_mixin import IncomingMessagesMixin
@@ -19,6 +19,9 @@ logger.setLevel(logging.INFO)
 
 class Director(IncomingMessagesMixin, WavetableMixin):
     def __init__(self, gateway, behaviour, settings):
+        composer = globals().get(settings.get('composer', 'baroq'))
+        if not composer:
+            raise RuntimeError("Composer is not configured correctly")
         self.composer = composer.Composer(gateway, settings, behaviour)
         self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.behaviour = behaviour
@@ -76,7 +79,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
     def set_meter(self, meter):
         self.composer.set_meter(meter)
         self.meter = self.composer.applied_meter
-        self.metronome.set_meter(composer.METERS[meter]["applied"])
+        self.metronome.set_meter(self.composer.offered_meters[meter]["applied"])
 
     def _play(self, duration=None):
         """this is the core of the program giving the impulse for all actions.
@@ -121,7 +124,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.composer.gateway.stop_all_notes()
                 if self.behaviour['automate_scale']:
                     self.composer.set_scale(choice(
-                                            composer.SCALES_BY_FREQUENCY))
+                                            self.composer.offered_scales))
                 if self.behaviour['automate_meters']:
                     self.new_random_meter()
                 voices = self.composer.voices.values()
