@@ -1,0 +1,26 @@
+from roqba.utilities.behaviour_dict import BehaviourDict
+
+settings = {
+    'number_of_voices': 4,
+    'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
+    #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+    'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 1]],
+    'composer': 'amadinda',
+    #'composer': 'baroq',
+}
+behaviour = {
+    "speed": 0.18,
+    'meter': (24, (1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2)),
+    'automate_speed_change': True,
+    "max_speed": 0.2,
+    'slide_duration_msecs': 0,
+    "min_speed": 0.12,
+    "transpose": 12,
+    'transposings': [-1, -2, -4, -5],
+    'per_voice': {
+        1: BehaviourDict({}),
+        2: BehaviourDict({}),
+        3: BehaviourDict({}),
+        4: BehaviourDict({}),
+    }
+}
