@@ -3,7 +3,7 @@ import logging
 import time
 import threading
 import random
-from random import choice as sample
+from random import choice
 
 import metronome
 from notator import Notator
@@ -248,7 +248,7 @@ class Composer(object):
         '''chooses a new rhythm randomly from each voices groupings'''
         for v in self.voices.values():
             if not v.playing_a_melody:
-                v.set_rhythm_grouping(sample(v.note_length_groupings))
+                v.set_rhythm_grouping(choice(v.note_length_groupings))
 
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
@@ -288,13 +288,17 @@ class Composer(object):
 
     def drum_fill_handler(self, v, state):
         '''handles the sending of drum-fill notes'''
-        for f in sample(DRUM_FILLS):
-            if (state["speed"] * 1000 * f) < self.drummer.peak_speed:
+        identifier = 'cont' if v == 'cont2' else 'cont2'
+        possible_fills = [fill for fill in DRUM_FILLS
+                          if state['speed'] / len(fill) > self.behaviour['min_speed'] * 0.5 ]
+        chosen = choice(possible_fills)
+        for fraction in chosen:
+            if (state["speed"] * 1000 * fraction) < self.drummer.peak_speed:
                 break
-            self.gateway.pd_send_drum_note(v, self.drummer.frame[v]["vol"],
-                                           self.drummer.frame[v]["pan"],
-                                           self.drummer.frame[v]["ctl"])
-            time.sleep(state["speed"] * f)
+            self.gateway.pd_send_drum_note(identifier, self.drummer.frame[identifier]["vol"],
+                                           self.drummer.frame[identifier]["pan"],
+                                           self.drummer.frame[identifier]["ctl"])
+            time.sleep(state["speed"] * fraction)
 
     def drum_mark_handler(self, v, state):
         '''handles the sending of a drum mark'''
@@ -318,7 +322,7 @@ class Composer(object):
         if the ornament would be too fast, it returns without action'''
         key = (abs(note_delta), duration)
         if key in ORNAMENTS:
-            notes = sample(ORNAMENTS[key])
+            notes = choice(ORNAMENTS[key])
 
             ## check for the speed limit, if ornaments would be too fast,
             ## don't embellish
