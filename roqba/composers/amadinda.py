@@ -20,7 +20,7 @@ class Composer(AbstractComposer):
         self.selected_meters = [self.behaviour['meter']]
         self.offered_meters = METERS
         self.pattern_played_times = 0
-        self.pattern_played_maximum = 12
+        self.pattern_played_maximum = 60
         self.offered_scales = SCALES_BY_FREQUENCY
         self.words = self.all_python_words()
         super(Composer, self).__init__()
@@ -106,6 +106,7 @@ class Composer(AbstractComposer):
         voice.real_note = next_note and self.real_scale[next_note] or None
         self.pattern_played_times += 1.0 / len(self.pattern[1])
         return next_note
+
     def _make_third_voice(self, num_tones, tranpose, number_of_tones_in_3rd_voice):
         seq3 = []
         for idx in range(num_tones * 2):
@@ -123,22 +124,26 @@ class Composer(AbstractComposer):
         pass
 
     def make_new_pattern(self):
-        num_tones = 12
         tone_range = 12
-        transpose = 20
-        octave_offset = 7
+        num_tones = 12
         number_of_tones_in_3rd_voice = 4
         word1 = choice(self.words)
-        pure_seq1 = [(ord(char) % tone_range) for char in word1][:num_tones]
-        applied_seq1 = list(itertools.chain(
+        self.pure_seq1 = [(ord(char) % tone_range) for char in word1][:num_tones]
+        word2 = choice(self.words)
+        self.pure_seq2 = [(ord(char) % tone_range) for char in word2][:num_tones]
+        self._apply_new_pattern(self.pure_seq1, self.pure_seq2, num_tones)
+        self.pattern_played_times = 0
+
+    def _apply_new_pattern(pure_seq1, pure_seq2, num_tones):
+        transpose = 20
+        octave_offset = 7
+        self.applied_seq1 = list(itertools.chain(
             *zip([tone + transpose for tone in pure_seq1],
                  [0] * num_tones)))
-        word2 = choice(self.words)
-        pure_seq2 = [(ord(char) % tone_range) for char in word2][:num_tones]
-        applied_seq2 = list(itertools.chain(
+        self.applied_seq2 = list(itertools.chain(
             *zip([0] * num_tones,
                  [tone + transpose for tone in pure_seq2])))
-        seq3 = self._make_third_voice(num_tones, tranpose, number_of_tones_in_3rd_voice)
+        seq3 = self._make_third_voice(num_tones, transpose, number_of_tones_in_3rd_voice)
         self.pattern = {
             1: applied_seq1,
             2: applied_seq2,
