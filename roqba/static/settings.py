@@ -182,11 +182,21 @@ styles = {
             'automate_binaural_diffs': False,
             'binaural_diff': 0.666
         }
+    },
+    'amadinda': {
+        'settings': {},
+        'behaviour': {
+            'tone_range': 12,
+            'num_tones': 12,
+            'number_of_tones_in_3rd_voice': 4,
+            'octave_offset': 6
+        }
     }
 }
 
 #style = 'rock'
 style = None
+style = 'amadinda'
 
 if style:
     settings.update(styles[style]["settings"])

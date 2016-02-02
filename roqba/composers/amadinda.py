@@ -23,6 +23,12 @@ class Composer(AbstractComposer):
         self.pattern_played_maximum = 60
         self.offered_scales = SCALES_BY_FREQUENCY
         self.words = self.all_python_words()
+        self.tone_range = behaviour['tone_range']
+        self.num_tones = behaviour['num_tones']
+        self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
+        self.transpose = 20
+        self.octave_offset = behaviour['octave_offset']
+
         super(Composer, self).__init__()
         for voice in self.voices.values():
             voice.duration_in_msec = 600
@@ -101,52 +107,51 @@ class Composer(AbstractComposer):
             self.make_new_pattern()
             self.comment = 'caesura'
             self.pattern_played_times = 0
-        next_note = self.pattern[voice.id][meter_pos] or None
+        which_shift_index = int(self.pattern_played_times / (self.pattern_played_maximum / 4.999))
+        next_note = self.patterns[which_shift_index][voice.id][meter_pos] or None
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
-        self.pattern_played_times += 1.0 / len(self.pattern[1])
+        self.pattern_played_times += 1.0 / len(self.patterns[0][1])
         return next_note
 
-    def _make_third_voice(self, num_tones, tranpose, number_of_tones_in_3rd_voice):
-        seq3 = []
-        for idx in range(num_tones * 2):
-            if (applied_seq1[idx] > 0
-                    and applied_seq1[idx]  < transpose + (number_of_tones_in_3rd_voice)):
-                seq3.append(applied_seq1[idx] + 2 * octave_offset)
-            elif (applied_seq2[idx] > 0
-                    and applied_seq2[idx] < transpose + (number_of_tones_in_3rd_voice)):
-                seq3.append(applied_seq2[idx] + 2 * octave_offset)
-            else:
-                seq3.append(0)
-        return seq3
-
-    def shift_pattern(self):
-        pass
-
     def make_new_pattern(self):
-        tone_range = 12
-        num_tones = 12
-        number_of_tones_in_3rd_voice = 4
         word1 = choice(self.words)
-        self.pure_seq1 = [(ord(char) % tone_range) for char in word1][:num_tones]
+        pure_seq1 = [(ord(char) % self.tone_range) for char in word1][:self.num_tones]
         word2 = choice(self.words)
-        self.pure_seq2 = [(ord(char) % tone_range) for char in word2][:num_tones]
-        self._apply_new_pattern(self.pure_seq1, self.pure_seq2, num_tones)
+        pure_seq2 = [(ord(char) % self.tone_range) for char in word2][:self.num_tones]
         self.pattern_played_times = 0
+        self.patterns = {}
+        for offset in range(0, 5):
+            self.patterns[offset] = self.shift_pattern(pure_seq1, pure_seq2, offset)
 
-    def _apply_new_pattern(pure_seq1, pure_seq2, num_tones):
-        transpose = 20
-        octave_offset = 7
+    def shift_pattern(self, seq1, seq2, offset):
+        return self._apply_new_pattern([(entry + offset) % self.tone_range for entry in seq1],
+                                       [(entry + offset) % self.tone_range for entry in seq2],)
+
+    def _apply_new_pattern(self, pure_seq1, pure_seq2):
         self.applied_seq1 = list(itertools.chain(
-            *zip([tone + transpose for tone in pure_seq1],
-                 [0] * num_tones)))
+            *zip([tone + self.transpose for tone in pure_seq1],
+                 [0] * self.num_tones)))
         self.applied_seq2 = list(itertools.chain(
-            *zip([0] * num_tones,
-                 [tone + transpose for tone in pure_seq2])))
-        seq3 = self._make_third_voice(num_tones, transpose, number_of_tones_in_3rd_voice)
-        self.pattern = {
-            1: applied_seq1,
-            2: applied_seq2,
+            *zip([0] * self.num_tones,
+                 [tone + self.transpose for tone in pure_seq2])))
+        seq3 = self._make_third_voice(self.applied_seq1, self.applied_seq2)
+        return {
+            1: self.applied_seq1,
+            2: self.applied_seq2,
             3: seq3,
             4: seq3
         }
+
+    def _make_third_voice(self, applied_seq1, applied_seq2):
+        seq3 = []
+        for idx in range(self.num_tones * 2):
+            if (applied_seq1[idx] > 0
+                    and applied_seq1[idx]  < self.transpose + (self.number_of_tones_in_3rd_voice)):
+                seq3.append(applied_seq1[idx] + (2 * self.octave_offset - 1))
+            elif (applied_seq2[idx] > 0
+                    and applied_seq2[idx] < self.transpose + (self.number_of_tones_in_3rd_voice)):
+                seq3.append(applied_seq2[idx] + (2 * self.octave_offset - 1))
+            else:
+                seq3.append(0)
+        return seq3
