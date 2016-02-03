@@ -68,7 +68,7 @@
 #X obj 431 500 * 45;
 #X obj 398 552 outlet~ contL;
 #X obj 487 552 outlet~ contR;
-#X obj 402 32 inlet cont;
+#X obj 402 13 inlet cont;
 #X msg 726 109 bang;
 #X obj 789 109 unpack f f f;
 #X obj 754 84 t b l;
@@ -182,19 +182,21 @@
 #X obj 108 526 motex/pan~ 0;
 #X obj 145 233 creb/eadsr~ 11 54 0.03 200;
 #X floatatom 179 502 5 0 0 0 - - -, f 5;
-#X obj 112 32 inlet cont2;
+#X obj 113 11 inlet cont2;
 #X obj 108 552 outlet~ cont2L;
 #X obj 197 552 outlet~ cont2R;
 #X obj 203 443 hsl 128 15 -1 1 0 0 empty empty empty -2 -6 0 10 -262144
--1 -1 5839 1;
+-1 -1 5214 1;
 #X obj 522 480 hsl 128 15 -1 1 0 0 empty empty empty -2 -6 0 10 -262144
--1 -1 4917 1;
+-1 -1 2976 1;
 #X obj 76 354 bp~ 5400 5;
 #X obj 366 354 bp~ 5400 5;
-#X obj 112 60 t a l;
+#X obj 113 60 t a l;
 #X obj 402 60 t b l;
 #X obj 198 55 print cont2;
 #X obj 302 73 print cont1;
+#X obj 113 34 route list;
+#X obj 402 36 route list;
 #X connect 0 0 9 0;
 #X connect 1 0 3 0;
 #X connect 1 0 134 0;
@@ -264,8 +266,7 @@
 #X connect 56 2 171 1;
 #X connect 57 0 130 1;
 #X connect 57 0 138 0;
-#X connect 60 0 75 0;
-#X connect 60 0 173 0;
+#X connect 60 0 177 0;
 #X connect 61 0 33 0;
 #X connect 62 0 47 1;
 #X connect 62 1 131 1;
@@ -377,10 +378,13 @@
 #X connect 162 0 166 0;
 #X connect 162 1 167 0;
 #X connect 163 0 141 0;
-#X connect 165 0 172 0;
+#X connect 165 0 176 0;
 #X connect 170 0 150 0;
 #X connect 171 0 11 0;
 #X connect 172 0 155 0;
 #X connect 172 1 158 0;
 #X connect 173 0 49 0;
 #X connect 173 1 56 0;
+#X connect 176 0 172 0;
+#X connect 177 0 173 0;
+#X connect 177 0 75 0;
