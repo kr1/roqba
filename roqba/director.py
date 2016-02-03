@@ -8,6 +8,8 @@ from Queue import deque
 import metronome
 from roqba.composers import baroq, amadinda
 from roqba.utilities import random_between
+
+from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
 from roqba.incoming_messages_mixin import IncomingMessagesMixin
 from roqba.wavetable_mixin import WavetableMixin
@@ -63,6 +65,11 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.behaviour_logger = logging.getLogger('behaviour')
         self.gui_logger = logging.getLogger('gui')
         self.add_setters()
+        if behaviour['automate_micro_speed_change']:
+            self.new_micro_speed_sine()
+
+    def new_micro_speed_sine(self):
+        self.micro_speed_sine = MultiSine([random() * 0.1 for n in range(5)])
 
     def add_setters(self):
         self.behaviour.real_setters["meter"] = self.set_meter
@@ -171,11 +178,14 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                     self.gui_sender.handle_caesura(self)
                 self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
                     self.composer.meter, self.speed, self.composer.scale))
+                self.new_micro_speed_sine()
             self.check_incoming_messages()
-            shuffle_delta = (self.speed * self.shuffle_delay
-                             if weight == metronome.LIGHT
-                             else 0)
-            time.sleep(self.speed + shuffle_delta)
+            shuffle_delta = self.speed * self.shuffle_delay
+            if weight == metronome.LIGHT:
+                sleep_time = self.speed + shuffle_delta
+            else:
+                sleep_time = self.speed - shuffle_delta
+            time.sleep(sleep_time * (1 + self.micro_speed_sine.get_value() * 0.1))
 
     def check_incoming_messages(self):
         '''checks if there are incoming messages in the queue'''

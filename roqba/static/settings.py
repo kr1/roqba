@@ -166,6 +166,7 @@ styles = {
                 [(8, (4, 4))] * 2,
                 [(8, (3, 3, 2))] * 1
             ],
+            'common_wavetables': False,
             "speed": 0.25,
             'automate_speed_change': True,
             "max_speed": 0.25,
