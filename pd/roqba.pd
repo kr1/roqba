@@ -7,19 +7,19 @@
 #X obj 445 514 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 564 219 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 8267 1;
+-1 -1 0 1;
 #X obj 18 469 key;
 #X obj 18 496 select 32;
 #X obj 282 119 print log udp;
 #X obj 282 85 spigot;
 #X obj 371 121 route master 1 2 3 4;
 #X obj 400 218 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 7619 1;
+-1 -1 0 1;
 #X obj 408 77 route 1 2 3 4;
 #X obj 63 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 9488 1;
+-1 -1 0 1;
 #X obj 232 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 7833 1;
+-1 -1 0 1;
 #X obj 371 146 s master_vol;
 #X obj 776 305 r master_vol;
 #X obj 446 606 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
@@ -44,7 +44,8 @@
 #X obj 407 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 363 -27 netreceive 12321 1;
-#X msg 139 478 (24__(1__2__2__1__2__2__2__1__2__2__1__2__2__2));
+#X msg 139 478 (24__(2__1__2__1__2__1__2__1__2__1__2__1__2__1__2__1))
+;
 #X obj 227 304 route rhythm slide binaural;
 #X obj 206 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -289,16 +290,16 @@
 #X connect 75 0 22 0;
 #X restore 479 480 pd volumes ...........................;
 #X obj 509 353 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 900 1;
+-1 -1 7338 1;
 #X obj 509 436 / 666;
 #X obj 559 354 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1000 1;
+-1 -1 7438 1;
 #X obj 559 436 / 666;
 #X obj 609 354 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 7500 1;
+-1 -1 4238 1;
 #X obj 609 436 / 666;
 #X obj 659 354 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 7400 1;
+-1 -1 938 1;
 #X obj 659 436 / 666;
 #X obj 709 354 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
@@ -306,7 +307,7 @@
 #X msg 685 322 666;
 #X obj 685 298 loadbang;
 #X obj 776 352 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 2238 1;
+-1 -1 5138 1;
 #X obj 777 434 / 666;
 #X obj 776 327 * 666;
 #X obj 479 506 *~ 1;
@@ -433,31 +434,31 @@
 #X floatatom 167 365 5 0 0 0 - - -, f 5;
 #X floatatom 164 300 5 0 0 0 - - -, f 5;
 #X obj 22 244 voice_message_dispatcher 1;
-#X obj 190 269 voice 2 30 30 30 30 300;
-#X obj 358 270 voice 3 30 30 30 30 300;
-#X obj 524 271 voice 4 30 30 30 30 300;
 #X obj 190 245 voice_message_dispatcher 2;
 #X obj 358 245 voice_message_dispatcher 3;
 #X obj 524 245 voice_message_dispatcher 4;
+#X obj 190 269 voice 2 30 30 30 30 300;
+#X obj 358 270 voice 3 30 30 30 30 300;
+#X obj 524 271 voice 4 30 30 30 30 300;
 #X connect 2 0 1 0;
 #X connect 3 0 18 0;
 #X connect 4 0 26 0;
-#X connect 5 0 90 2;
+#X connect 5 0 93 2;
 #X connect 6 0 7 0;
 #X connect 7 0 2 0;
 #X connect 9 0 8 0;
 #X connect 10 0 15 0;
 #X connect 10 1 74 3;
-#X connect 10 2 88 3;
-#X connect 10 3 89 3;
-#X connect 10 4 90 3;
-#X connect 11 0 89 2;
+#X connect 10 2 91 3;
+#X connect 10 3 92 3;
+#X connect 10 4 93 3;
+#X connect 11 0 92 2;
 #X connect 12 0 13 0;
 #X connect 12 1 14 0;
 #X connect 12 2 11 0;
 #X connect 12 3 5 0;
 #X connect 13 0 74 2;
-#X connect 14 0 88 2;
+#X connect 14 0 91 2;
 #X connect 16 0 61 0;
 #X connect 18 0 17 0;
 #X connect 20 0 9 1;
@@ -517,11 +518,11 @@
 #X connect 64 0 27 0;
 #X connect 64 0 87 0;
 #X connect 64 1 28 0;
-#X connect 64 1 91 0;
+#X connect 64 1 88 0;
 #X connect 64 2 29 0;
-#X connect 64 2 92 0;
+#X connect 64 2 89 0;
 #X connect 64 3 30 0;
-#X connect 64 3 93 0;
+#X connect 64 3 90 0;
 #X connect 64 4 34 0;
 #X connect 64 4 33 0;
 #X connect 65 0 47 0;
@@ -550,6 +551,6 @@
 #X connect 85 0 80 1;
 #X connect 86 0 79 1;
 #X connect 87 0 74 0;
-#X connect 91 0 88 0;
-#X connect 92 0 89 0;
-#X connect 93 0 90 0;
+#X connect 88 0 91 0;
+#X connect 89 0 92 0;
+#X connect 90 0 93 0;
