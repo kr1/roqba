@@ -131,12 +131,16 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.composer.gateway.stop_all_notes()
                 voices = self.composer.voices.values()
                 if self.behaviour['automate_adsr']:
-                    if self.behaviour['common_adsr']:
-                        new_adsr = adsr.get_random_adsr(self.behaviour['min_adsr'],
-                                                        self.behaviour['max_adsr'])
-                    #TODO: add single voice adsrs
-                    for v in voices:
-                        self.gateway.send_voice_adsr(v, new_adsr)
+                    new_adsr = adsr.get_random_adsr(self.behaviour['min_adsr'],
+                                                    self.behaviour['max_adsr'])
+                    for voice in voices:
+                        if not self.behaviour['common_adsr']:
+                            new_adsr = adsr.get_random_adsr(
+                                self.behaviour.voice_get(voice.id, 'min_adsr'),
+                                self.behaviour.voice_get(voice.id, 'max_adsr'))
+                        voice.current_adsr = new_adsr
+                    for voice in voices:
+                        self.gateway.send_voice_adsr(voice, voice.current_adsr)
                 if self.behaviour['automate_scale']:
                     self.composer.set_scale(choice(
                                             self.composer.offered_scales))
