@@ -8,6 +8,7 @@ from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPI
 from static.note_length_groupings import analyze_grouping
 from static.melodies import melodies
 from static.scales_and_harmonies import FOLLOWINGS
+from utilities.sine_controllers import MultiSine
 from utilities import melody_player
 from utilities import pd_wavetables as wavetables
 from metronome import MEDIUM, HEAVY
@@ -97,6 +98,13 @@ class Voice(object):
         self.set_state(register)
         self.add_setters_for_behaviour_dict()
         self.musical_logger = logging.getLogger('musical')
+        if self.composer.behaviour['automate_microvolume_change']:
+            self.new_microvolume_sine()
+        self.current_microvolume = self.microvolume_sine.get_value()
+
+    def new_microvolume_sine(self):
+        args = [random.random() * self.composer.behaviour['microvolume_max_speed_in_hz'] for n in range(10)]
+        self.microvolume_sine = MultiSine(args)
 
     def add_setters_for_behaviour_dict(self):
         beh = self.composer.behaviour['per_voice'][self.id]
@@ -126,6 +134,7 @@ class Voice(object):
                 self.note_change = 0
             self.weight = state["weight"]
             if self.note_change:
+                self.current_microvolume = self.microvolume_sine.get_value()
                 # calculate duration by checking for the next note
                 # in the pattern
                 tmp_list = self.on_off_pattern[(meter_pos + 1):]

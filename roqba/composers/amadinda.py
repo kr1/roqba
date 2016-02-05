@@ -92,7 +92,9 @@ class Composer(AbstractComposer):
         if send_drum:
             self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
-        self.gateway.hub.send(self.voices)  # this sends the voices to the hub
+        for voice in self.voices.values():
+            self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
+        self.gateway.hub.send(self.voices)
         self.notator.note_to_file({"notes": tmp_harm,
                                    "weight": state["weight"],
                                    "cycle_pos": state["cycle_pos"]})

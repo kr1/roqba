@@ -65,11 +65,12 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.behaviour_logger = logging.getLogger('behaviour')
         self.gui_logger = logging.getLogger('gui')
         self.add_setters()
-        if behaviour['automate_micro_speed_change']:
-            self.new_micro_speed_sine()
+        if behaviour['automate_microspeed_change']:
+            self.new_microspeed_sine()
 
-    def new_micro_speed_sine(self):
-        self.micro_speed_sine = MultiSine([random() * 0.1 for n in range(5)])
+    def new_microspeed_sine(self):
+        args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
+        self.microspeed_sine = MultiSine(args)
 
     def add_setters(self):
         self.behaviour.real_setters["meter"] = self.set_meter
@@ -189,14 +190,15 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                     self.gui_sender.handle_caesura(self)
                 self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
                     self.composer.meter, self.speed, self.composer.scale))
-                self.new_micro_speed_sine()
+                self.new_microspeed_sine()
             self.check_incoming_messages()
             shuffle_delta = self.speed * self.shuffle_delay
             if weight == metronome.LIGHT:
                 sleep_time = self.speed + shuffle_delta
             else:
                 sleep_time = self.speed - shuffle_delta
-            time.sleep(sleep_time * (1 + self.micro_speed_sine.get_value() * 0.1))
+            time.sleep(sleep_time * (1 +
+                       self.microspeed_sine.get_value() * self.behaviour['microspeed_variation']))
 
     def check_incoming_messages(self):
         '''checks if there are incoming messages in the queue'''

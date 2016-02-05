@@ -120,6 +120,11 @@ class NoteGateway(object):
         args = ["voice", voice.id, "adsr", " ".join([str(element) for element in adsr])]
         self.pd.send(args)
 
+    def send_voice_peak_level(self, voice, peak_level):
+        '''sends a peak_level-message for a voice'''
+        args = ["voice", voice.id, "peak_level", peak_level]
+        self.pd.send(args)
+
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
         args = ["perc", voice, vol, pan, ctl]
