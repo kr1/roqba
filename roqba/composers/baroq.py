@@ -90,7 +90,7 @@ class Composer(AbstractComposer):
         # the stream analyzer can be used to check for chords, simultaneities
         self.stream_analyzer()
         # percussion
-        self.drummer.generator.send(state)
+        self.drummer.generator.send([state, state['cycle_pos']])
         for k, v in self.drummer.frame.items():
             if v["meta"]:
                 if v["meta"] == 'empty':

@@ -25,6 +25,7 @@ behaviour = {
     'automate_adsr': True,
     'default_volume': 0.666,
     "speed": 0.3,
+    'half_beat': False,
     'automate_speed_change': True,
     "max_speed": 0.3,
     "min_speed": 0.12,

@@ -46,13 +46,11 @@ class Drummer(object):
 
     def generate(self):
         while True:
-            state = (yield)
-            #print state["comp"].voices.values()
+            state, cycle_pos = (yield)
             sum_ = sum(map(lambda v: v.note_change and 1 or 0,
                            state["comp"].voices.values()))
             density = sum_ / float(len(state["comp"].voices))
-            meter_pos = state['cycle_pos']
-            #print meter_pos
+            meter_pos = cycle_pos
             self.frame = {}
             for k, v in self.pattern.items():
                 if v[meter_pos] or k == 'mark':

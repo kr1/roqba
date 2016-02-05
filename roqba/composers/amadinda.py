@@ -20,13 +20,15 @@ class Composer(AbstractComposer):
         self.selected_meters = [self.behaviour['meter']]
         self.offered_meters = METERS
         self.pattern_played_times = 0
-        self.pattern_played_maximum = 60
+        self.pattern_played_maximum = 90
         self.offered_scales = SCALES_BY_FREQUENCY
         self.words = self.all_python_words()
         self.tone_range = behaviour['tone_range']
         self.num_tones = behaviour['num_tones']
         self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
         self.transpose = 20
+        self.half_beat = self.behaviour['half_beat']
+        self.second_beat_half = False
         self.octave_offset = behaviour['octave_offset']
 
         super(Composer, self).__init__()
@@ -60,14 +62,24 @@ class Composer(AbstractComposer):
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
-            #voice.generator.send(state)
             self.musical_logger.debug("note {0}".format(voice.note))
             if voice.note == 0 or not voice.note_change:
                 continue
             voice.note_change = True
             next_note = self.next_voice_note(voice, meter_pos)
             tmp_harm.append(next_note)
-        self.drummer.generator.send(state)
+        cycle_pos = state['cycle_pos']
+        send_drum = True
+        if self.half_beat:
+            if cycle_pos % 2 == 0:
+                cycle_pos = cycle_pos / 2
+                if self.second_beat_half:
+                    cycle_pos += int(self.meter[0] / 2)
+                self.drummer.generator.send([state, cycle_pos])
+            else:
+                send_drum = False
+        else:
+            self.drummer.generator.send([state, cycle_pos])
         for k, v in self.drummer.frame.items():
             # TODO: re-add the drum filler
             if False and v["meta"]:
@@ -77,7 +89,8 @@ class Composer(AbstractComposer):
                 if v["meta"] == 'mark':
                     threading.Thread(target=self.drum_mark_handler,
                                      args=(k, state)).start()
-        self.gateway.drum_hub.send(self.drummer.frame)
+        if send_drum:
+            self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.gateway.hub.send(self.voices)  # this sends the voices to the hub
         self.notator.note_to_file({"notes": tmp_harm,
@@ -147,7 +160,7 @@ class Composer(AbstractComposer):
         seq3 = []
         for idx in range(self.num_tones * 2):
             if (applied_seq1[idx] > 0
-                    and applied_seq1[idx]  < self.transpose + (self.number_of_tones_in_3rd_voice)):
+                    and applied_seq1[idx] < self.transpose + (self.number_of_tones_in_3rd_voice)):
                 seq3.append(applied_seq1[idx] + (2 * self.octave_offset - 1))
             elif (applied_seq2[idx] > 0
                     and applied_seq2[idx] < self.transpose + (self.number_of_tones_in_3rd_voice)):
