@@ -7,7 +7,7 @@ from Queue import deque
 
 import metronome
 from roqba.composers import baroq, amadinda
-from roqba.utilities import random_between
+from roqba.utilities import random_between, adsr
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
@@ -129,12 +129,19 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.state["speed"] = self.speed
                 self.metronome.reset()
                 self.composer.gateway.stop_all_notes()
+                voices = self.composer.voices.values()
+                if self.behaviour['automate_adsr']:
+                    if self.behaviour['common_adsr']:
+                        new_adsr = adsr.get_random_adsr(self.behaviour['min_adsr'],
+                                                        self.behaviour['max_adsr'])
+                    #TODO: add single voice adsrs
+                    for v in voices:
+                        self.gateway.send_voice_adsr(v, new_adsr)
                 if self.behaviour['automate_scale']:
                     self.composer.set_scale(choice(
                                             self.composer.offered_scales))
                 if self.behaviour['automate_meters']:
                     self.new_random_meter()
-                voices = self.composer.voices.values()
                 if self.behaviour["automate_pan"]:
                     for v in voices:
                         if self.behaviour.voice_get(v.id, "automate_pan"):

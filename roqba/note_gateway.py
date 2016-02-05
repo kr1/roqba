@@ -115,6 +115,10 @@ class NoteGateway(object):
         print "sending: ", args
         self.pd.send(args)
 
+    def send_voice_adsr(self, voice, adsr):
+        '''sends a adsr-message for a voice'''
+        args = ["voice", voice.id, "adsr", " ".join([str(element) for element in adsr])]
+        self.pd.send(args)
 
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
         '''sends a note-message for a drum-voice'''
@@ -170,7 +174,7 @@ class NoteGateway(object):
                                               v.id,
                                               str(v.note_length_grouping).\
                                                   replace(",", "_")])
-                                
+
                     #address = data["voice"]
                     #msg = data["message"]
                 else:
