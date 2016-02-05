@@ -375,6 +375,7 @@ class Voice(object):
         fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
         return fun(self.num_partials, self.partial_pool)
 
+
 if __name__ == "__main__":
     from composer import Composer
     c = Composer()

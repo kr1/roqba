@@ -18,6 +18,11 @@ settings = {'number_of_voices': 4,
             }
 
 behaviour = {
+    'adsr': [10, 10, 5, 20],
+    'max_adsr': [50, 50, 40, 666],
+    'min_adsr': [2, 2, 3, 20],
+    'common_adsr': True,
+    'automate_adsr': True,
     'default_volume': 0.666,
     "speed": 0.3,
     'automate_speed_change': True,
@@ -166,7 +171,6 @@ styles = {
                 [(8, (4, 4))] * 2,
                 [(8, (3, 3, 2))] * 1
             ],
-            'common_wavetables': False,
             "speed": 0.25,
             'automate_speed_change': True,
             "max_speed": 0.25,
@@ -187,10 +191,42 @@ styles = {
     'amadinda': {
         'settings': {},
         'behaviour': {
-            'tone_range': 12,
+            'adsr': [10, 10, 5, 20],
+            'max_adsr': [20, 20, 30, 666],
+            'min_adsr': [7, 7, 5, 20],
+            'common_adsr': True,
+            'automate_adsr': True,
+            'automate_binaural_diffs': True,  # alt: False
+            'automate_micro_speed_change': True,
+            'automate_num_partials': True,
+            'automate_slide': False,
+            'automate_speed_change': True,
+            'automate_wavetables': True,
+            'binaural_diff': 0.666,
+            'common_wavetables': True,
+            'default_num_partial': 5,
+            'max_binaural_diff': 5,
+            'max_num_partials': 9,
+            'max_speed': 0.17,
+            'meter': (24, (1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2)),
+            'min_speed': 0.08,
             'num_tones': 12,
             'number_of_tones_in_3rd_voice': 4,
-            'octave_offset': 6
+            'octave_offset': 6,
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
+            'slide_duration_msecs': 0,
+            'speed': 0.13,
+            "speed_change": "leap",  # alt:"transition"
+            "speed_target": 0.25,
+            'tone_range': 12,
+            'transpose': 6,
+            'transposings': [6, 7, 8, 9],
+            'wavetable_specs': [['harmonic', ['all']]],
         }
     }
 }
