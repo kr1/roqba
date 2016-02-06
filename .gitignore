@@ -2,6 +2,8 @@
 *.swo
 *.pyc
 *.wav
+*.ogg
+*.mp3
 .gitattributes
 .saved_behaviours
 .screenrc
@@ -11,4 +13,5 @@ sound_files
 webserver
 log.txt
 tags
+roqba.egg-info/
 roqba/static/local_settings.py

@@ -8,6 +8,14 @@ SCALES = {
     "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]
   }
 
+NOTES_PER_SCALE = {
+    "DIATONIC": 7,
+    "HARMONIC": 7,
+    "MELODIC": 7,
+    "PENTATONIC": 5,
+    "PENTA_MINOR": 5,
+  }
+
 SCALES_BY_FREQUENCY = sum([
     ["DIATONIC"] * 4,
     ["HARMONIC"] * 2,

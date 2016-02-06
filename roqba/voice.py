@@ -5,36 +5,42 @@ from random import choice as sample
 
 from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
-from static.note_length_groupings import  analyze_grouping
+from static.note_length_groupings import analyze_grouping
 from static.melodies import melodies
+from static.scales_and_harmonies import FOLLOWINGS
+from utilities.sine_controllers import MultiSine
+from utilities import melody_player
 from utilities import pd_wavetables as wavetables
 from metronome import MEDIUM, HEAVY
 
 
 class Voice(object):
-    def __init__(self, id,
-                       composer,
-                       note_range=[24, 48],
-                       register=None,
-                       behaviour=None,
-                       note=None,
-                       real_note=None,
-                       note_length_grouping=sample(GROUPINGS)):
+    def __init__(self,
+                 id,
+                 composer,
+                 note_range=[24, 48],
+                 register=None,
+                 behaviour=None,
+                 note=None,
+                 real_note=None,
+                 note_length_grouping=sample(GROUPINGS)):
+
         # AFFILIATION
         self.composer = composer  # store the composer
-        composer.add_voice(id, self)  # register with the composer
+
         # IDENTITY
         self.id = id
         self.register = (self.composer.registers[register]
-                      if register else
-                  composer.registers[sample(self.composer.registers.keys())])
+                         if register else
+                         self.composer.registers[sample(self.composer.registers.keys())])
+
         # TECH
         self.track_me = False
         self.queue = deque([], composer.settings['track_voices_length'])
+
         # STARTUP
-        note_range.sort()
         self.pan_pos = composer.behaviour.voice_get(self.id, "default_pan_position")
-        self.range = note_range
+        self.range = sorted(note_range)
         self.dir = 0
         self.prior_note = None
         self.note_change = True
@@ -48,51 +54,68 @@ class Voice(object):
         self.weight = MEDIUM
         self.note = note or int((max(self.range)
                                  - min(self.range)) / 2) + min(self.range)
-        self.real_note = real_note or int((max(self.range)
-                                 - min(self.range)) / 2) + min(self.range)
+        self.real_note = (real_note
+                          or int((max(self.range) - min(self.range)) / 2) + min(self.range))
 
         # BEHAVIOUR
         if behaviour:
-            self.behaviour = behaviour[0]
-            self.followed_voice_id = behaviour[1]
-            self.following_counter = 0
-            self.follow_limit = sample(range(3, 9))
+            if isinstance(behaviour, basestring):
+                self.behaviour = behaviour
+            else:
+                self.behaviour = behaviour[0]
+                self.followed_voice_id = behaviour[1]
+                self.following_counter = 0
+                self.follow_limit = sample(range(5, 9))
         else:
-            self.behaviour = composer.behaviour["default_behaviour"]
-        self.should_play_a_melody = composer.behaviour.voice_get(id, 'should_play_a_melody')
-        #mel = self.should_play_a_melody
-        #if mel:
-        #    self.melody = mel[1]
-        #    self.melody_starts_on = mel[0]
-        self.playing_a_melody = False 
+            self.behaviour = self.composer.behaviour["default_behaviour"]
+        self.should_play_a_melody = self.composer.behaviour.voice_get(
+            self.id, 'should_play_a_melody')
+        self.playing_a_melody = False
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
         self.note_duration_steps = 1
-        self.pause_prob = composer.behaviour.voice_get(id, 'default_pause_prob')
+        self.pause_prob = self.composer.behaviour.voice_get(self.id, 'default_pause_prob')
         self.legato_prob = 0.1  # to-do: really implement it
         # probability to have an embellishment-ornament during the current note
-        self.embellishment_prob = composer.behaviour['default_embellishment_prob']
+        self.embellishment_prob = self.composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
-        self.binaural_diff = 0 # this is not used in this module directly, but serves to track 
-        self.slide = composer.behaviour.voice_get(id, "automate_slide")
-        self.slide_duration_prop = composer.behaviour.voice_get(id, 'slide_duration_prop')
+        self.binaural_diff = 0  # this is not used in this module directly, but serves to track
+        self.slide = self.composer.behaviour.voice_get(self.id, "automate_slide")
+        self.slide_duration_prop = self.composer.behaviour.voice_get(
+            self.id, 'slide_duration_prop')
         self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         # WAVETABLE - this is used for non-automated wavetables
-        self.wavetable_generation_type = sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
-        self.partial_pool = sample(sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[1])
-        self.num_partials = composer.behaviour.voice_get(id, 'default_num_partial')
+        self.wavetable_generation_type = sample(
+            composer.behaviour.voice_get(self.id, 'wavetable_specs'))[0]
+        self.partial_pool = sample(
+            sample(self.composer.behaviour.voice_get(self.id, 'wavetable_specs'))[1])
+        self.num_partials = composer.behaviour.voice_get(self.id, 'default_num_partial')
 
         self.set_state(register)
         self.add_setters_for_behaviour_dict()
         self.musical_logger = logging.getLogger('musical')
-    
+        if self.composer.behaviour['automate_microvolume_change']:
+            self.new_microvolume_sine()
+            self.microvolume_variation = self.composer.behaviour.voice_get(
+                self.id, 'microvolume_variation')
+            self.current_microvolume = self.update_current_microvolume()
+
+    def new_microvolume_sine(self):
+        args = [random.random() * self.composer.behaviour['microvolume_max_speed_in_hz']
+                for n in range(10)]
+        self.microvolume_sine = MultiSine(args)
+
+    def update_current_microvolume(self):
+        self.current_microvolume = self.microvolume_sine.get_value_as_factor(
+            self.microvolume_variation)
+
     def add_setters_for_behaviour_dict(self):
         beh = self.composer.behaviour['per_voice'][self.id]
-        beh.real_setters["slide_duration_prop"] = [setattr, self, "slide_duration_prop"] 
-        beh.real_setters["binaural_diff"] = [setattr, self, "binaural_diff"] 
+        beh.real_setters["slide_duration_prop"] = [setattr, self, "slide_duration_prop"]
+        beh.real_setters["binaural_diff"] = [setattr, self, "binaural_diff"]
 
     def set_pan_pos(self, gateway, pan_pos):
         self.pan_pos = pan_pos
@@ -101,6 +124,7 @@ class Voice(object):
     def __str__(self):
         return str({"note": self.note,
                     "dir": self.dir,
+                    "id": self.id,
                     "note_change": self.note_change})
 
     def __repr__(self):
@@ -123,9 +147,10 @@ class Voice(object):
                 if 1 in tmp_list:
                     self.note_duration_steps = tmp_list.index(1) + 1
                 else:
-                    self.note_duration_steps = 1
+                    #self.note_duration_steps = 1
+                    self.note_duration_steps = len(self.on_off_pattern) - meter_pos
                 self.prior_note = self.note
-                if random.random() < self.pause_prob:
+                if random.random() < self.pause_prob and not self.playing_a_melody:
                     self.note = 0
                 else:
                     self.note = self.next_note(state)
@@ -138,14 +163,26 @@ class Voice(object):
     def next_note(self, state):
         """the next note is calculated/read here"""
         meter_pos = state["cycle_pos"]
-        speed = state["speed"]
+        if self.behaviour == "SLAVE":
+            follow = self.other_voices[self.followed_voice_id]
+            if follow.note_change:
+                if follow.note == 0:
+                    return 0
+                if self.following_counter == 0:
+                    self.follow_dist = sample(FOLLOWINGS)
+                if self.following_counter < self.follow_limit:
+                    res = follow.note + self.follow_dist
+                    self.following_counter += 1
+                    return res
+                else:
+                    self.reset_slave()
+
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
         elif self.playing_a_melody:
             try:
                 move = self.manage_melody_note(meter_pos)
-                #print "move {0} ".format(move)
             except StopIteration:
                 self.musical_logger.info("melody finished")
                 self.playing_a_melody = False
@@ -154,10 +191,10 @@ class Voice(object):
                     self.weight in [HEAVY, MEDIUM]):
                 #if (self.melody_starts_on == (self.note % 7) and
                     # regarding the on-off pattern we try a minimum invasive strategy
-                    # by modifying only those indexes of the pattern covered by the 
-                    # current note and the start of the following note 
+                    # by modifying only those indexes of the pattern covered by the
+                    # current note and the start of the following note
                 #print "searching for a suitable melody"
-                self.melody = self.search_suitable_melody(speed)
+                self.melody = self.search_suitable_melody(state['speed'])
                 if self.melody:
                     self.musical_logger.info("starting the melody: {0}".format(self.melody))
                     self.melody_iterator = iter(self.melody["melody"])
@@ -168,9 +205,10 @@ class Voice(object):
         if not self.playing_a_melody:
             if exceed:
                 res, self.dir = exceed
-                #self.musical_logger.info("exceeding note of voice {2}: '{0}', going: \t{1}".format(res,
-                #            self.dir > 0 and 'up' or 'down',
-                #            self.id))
+                # self.musical_logger.info(
+                #     "exceeding note of voice {2}: '{0}', going: \t{1}".format(res,
+                #      self.dir > 0 and 'up' or 'down',
+                #      self.id))
             if self.in_the_middle(res):
                 self.dir = 0
             if self.exceeds(res):
@@ -186,21 +224,26 @@ class Voice(object):
             right_scale = self.composer.scale == melody["scale"]
             right_speed = speed_range[0] < speed < speed_range[1]
             right_meter = self.composer.meter in melody["meters"]
-            #print 'note: ', right_note, 'speed: ', right_speed, 'scale: ', right_scale
             if right_note and right_scale and right_speed and right_meter:
-              candidates.append({melody_name: melody})
+                candidates.append({melody_name: melody})
         if len(candidates) > 0:
             chosen = sample(candidates).items()[0]
             self.musical_logger.info("new melody: {0}".format(chosen[0]))
             return chosen[1]
-              
+
     def manage_melody_note(self, meter_pos):
         """retrieves next note-delta and length belonging to the melody.
 
-        sets the following 'bits' of the off-on-pattern according to the 
+        sets the following 'bits' of the off-on-pattern according to the
         specified length of the note.
-        returns the pitch-related move (delta)"""
+        returns the pitch-related move (delta) and sets eventual modifier
+        attribute on the composer"""
         move, length = self.melody_iterator.next()
+        if type(move) == str:
+            number, modifier = melody_player.extract_modified_move(move)
+            self.composer.modified_note_in_current_frame = (number,
+                                                            modifier)
+            move = number
         if self.melody_iterator.__length_hint__() == 1:
             # TODO: communicate to director that a caesura is required
             pass
@@ -211,8 +254,9 @@ class Voice(object):
         if remaining < length:
             this_pat_length = remaining
             self.musical_logger.info("dbg: overhanging note")
+            oop += [0] * (length - remaining) + [1]
             self.next_pat_length = length - remaining
-            self.apply_overhanging_notes()
+            # self.apply_overhanging_notes()
         else:
             this_pat_length = length
             # this is for the following note,
@@ -221,17 +265,17 @@ class Voice(object):
             try:
                 self.on_off_pattern[meter_pos + length] = 1
             except IndexError:
-                pass 
+                pass
         for note_unit in range(1, this_pat_length):
             self.on_off_pattern[meter_pos + note_unit] = 0
-        # Note: we set next_pat_length int if note is longer than the remaining 
-        # part of the cycle. upon next cycle the rest of the note is 
+        # Note: we set next_pat_length int if note is longer than the remaining
+        # part of the cycle. upon next cycle the rest of the note is
         # applied to the new on-off-pattern.
-        return move 
+        return move
 
     def apply_overhanging_notes(self):
         """applies overhanging notes of a registered melody
-        
+
         to the next <on_off_pattern>"""
         if len(self.on_off_pattern) > self.next_pat_length:
             for idx in range(self.next_pat_length):
@@ -284,13 +328,12 @@ class Voice(object):
         if <change_master> is 'True':
           - a new random master is chosen,
         """
-        self.others = self.other_voices()
         if change_master:
             if type(change_master) == int:
                 self.followed_voice_id = change_master
             else:
                 self.followed_voice_id = sample(self.others.keys())
-        follow = self.others[self.followed_voice_id]
+        follow = self.other_voices[self.followed_voice_id]
         self.slide_duration_prop = follow.slide_duration_prop
         self.slide = follow.slide
         self.following_counter = 0
@@ -319,14 +362,12 @@ class Voice(object):
             #self.behaviour = "AUTONOMOUS"
             self.note_length_groupings = self.composer.TERNARY_GROUPINGS
 
-    def other_voices(self):
+    def register_other_voices(self):
         '''returns the other voices registered in the app'''
-        res = {}
+        self.other_voices = {}
         for k, v in self.composer.voices.items():
             if v != self:
-                res[k] = v
-        #print res
-        return res
+                self.other_voices[k] = v
 
     def reload_register(self):
         '''reloads the current register and reapplies its settings
@@ -339,13 +380,14 @@ class Voice(object):
         for k, v in self.register["voice_composer_attrs"].items():
             setattr(self, k, getattr(self.composer, v))
         self.counter = 0
-    
+
     def make_wavetable(self):
-        '''assembles a wavetable 
-        
+        '''assembles a wavetable
+
         using the registered wavetable-related params'''
         fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
         return fun(self.num_partials, self.partial_pool)
+
 
 if __name__ == "__main__":
     from composer import Composer

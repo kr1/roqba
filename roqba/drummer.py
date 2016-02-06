@@ -1,7 +1,9 @@
+from collections import namedtuple
 from random import random, choice
 
 from utilities.sine_controllers import MultiSine
 
+ContFrame = namedtuple("ContFrame", 'confirm vol pan pan2 ctl ctl2 meta')
 
 class Drummer(object):
     def __init__(self,
@@ -10,9 +12,9 @@ class Drummer(object):
         self.composer = composer
         self.meter = meter
         self.create_pattern()
-        self.peak_speed = 80
+        self.peak_speed = 100
         self.mark_prob = 0.09
-        self.empty_threshold = 0.2
+        self.empty_threshold = 0.6
         self.full_threshold = 0.99
         self.activation_level = "medium"  # ["low", "medium", "high"]
         self.pan_positions = {"low": 0,
@@ -24,7 +26,13 @@ class Drummer(object):
             "low": {"val": 150, "devi": 30},
             "high": {"val": 800, "devi": 30},
             "cont": {"val": 1200, "devi": 400,
-                     "fun": MultiSine([0.1, 0.2, 0.77, 10], False).get_value},
+                     "fun": MultiSine([0.01, 0.2, 0.77, 6], False).get_value},
+            "cont2": {"val": 2800, "devi": 1000,
+                     "fun": MultiSine([0.05, 0.2, 0.47, 4.5], False).get_value},
+            "cont_pan": {"val": 0, "devi": 1,
+                         "fun": MultiSine([0.03, 0.35, 0.65, 4], False).get_value},
+            "cont2_pan": {"val": 0, "devi": 1,
+                         "fun": MultiSine([0.03, 0.25, 0.67, 4], False).get_value},
             "tuned": {"val": 500, "devi": 100},
             "mark": {"val": 10000, "devi": 1000,
                      "fun": MultiSine([0.05, 0.02, 0.77, 10], False).get_value}
@@ -38,13 +46,11 @@ class Drummer(object):
 
     def generate(self):
         while True:
-            state = (yield)
-            #print state["comp"].voices.values()
+            state, cycle_pos = (yield)
             sum_ = sum(map(lambda v: v.note_change and 1 or 0,
-                              state["comp"].voices.values()))
+                           state["comp"].voices.values()))
             density = sum_ / float(len(state["comp"].voices))
-            meter_pos = state['cycle_pos']
-            #print meter_pos
+            meter_pos = cycle_pos
             self.frame = {}
             for k, v in self.pattern.items():
                 if v[meter_pos] or k == 'mark':
@@ -55,12 +61,21 @@ class Drummer(object):
                     confirm_cont = True
                     confirm_mark = True
                     if k == "cont":
-                        confirm_cont, vol, ctl, meta = self.cont_frame(state,
-                                                                  density)
+                        cont_frame = self.cont_frame(state,
+                                                     density)
+                        self.frame['cont'] = {"vol": cont_frame.vol,
+                                              "pan": cont_frame.pan,
+                                              "ctl": cont_frame.ctl,
+                                              "meta": cont_frame.meta}
+                        self.frame['cont2'] = {"vol": cont_frame.vol,
+                                               "pan": cont_frame.pan2,
+                                               "ctl": cont_frame.ctl2,
+                                               "meta": cont_frame.meta}
+                        continue
                     elif k == 'mark':
                         confirm_mark, vol, ctl, meta = self.mark_frame(state,
-                                                              density)
-                    if not confirm_cont or not confirm_mark :
+                                                                       density)
+                    if not confirm_cont or not confirm_mark:
                         continue
                     self.frame[k] = {"vol": vol,
                                      "pan": self.pan_positions[k],
@@ -71,20 +86,31 @@ class Drummer(object):
         '''assembles the frame for the cont-voice'''
         meta = None
         if density > self.full_threshold:
-            return (False, None, None, None)
+            return ContFrame(False, None, None, None, None, None, None)
         elif density < self.empty_threshold:
             meta = "empty"
         vol = 0.5 + state["weight"] * self.cont_accent_mult
-
-        ## check if that value is callable
         if "fun" in self.ctl_values["cont"].keys():
             addendum = (self.ctl_values["cont"]["fun"]() *
                         self.ctl_values["cont"]["devi"])
+            addendum2 = (self.ctl_values["cont2"]["fun"]() *
+                         self.ctl_values["cont2"]["devi"])
+            pan = (self.ctl_values["cont_pan"]["fun"]() *
+                       self.ctl_values["cont_pan"]["devi"])
+            pan2 = (self.ctl_values["cont2_pan"]["fun"]() *
+                        self.ctl_values["cont2_pan"]["devi"])
         else:
             addendum = (random() * self.ctl_values["cont"]["devi"] *
-                                  choice([1, -1]))
+                        choice([1, -1]))
+            addendum = (random() * self.ctl_values["cont2"]["devi"] *
+                        choice([1, -1]))
+            pan = (random() * self.ctl_values["cont_pan"]["devi"] *
+                        choice([1, -1]))
+            pan2 = (random() * self.ctl_values["cont2_pan"]["devi"] *
+                        choice([1, -1]))
         ctl = self.ctl_values["cont"]["val"] + addendum
-        return (True, vol, ctl, meta)
+        ctl2 = self.ctl_values["cont2"]["val"] + addendum2
+        return ContFrame(True, vol, pan, pan2, ctl, ctl2, meta)
 
     def mark_frame(self, state, density):
         '''assembles the frame for the mark-voice'''
@@ -99,7 +125,7 @@ class Drummer(object):
                         self.ctl_values["mark"]["devi"])
         else:
             addendum = (random() * self.ctl_values["mark"]["devi"] *
-                                  choice([1, -1]))
+                        choice([1, -1]))
         ctl = self.ctl_values["mark"]["val"] + addendum
         return True, vol, ctl, meta
 
@@ -120,9 +146,9 @@ class Drummer(object):
                     next_trigger = "low" if next_trigger == "high" else "high"
         else:
             self.pattern = {"low": map(lambda x: 1 if x == 2 else 0,
+                                       self.meter),
+                            "high": map(lambda x: 1 if x == 1 else 0,
                                         self.meter),
-                            "high":  map(lambda x: 1 if x == 1 else 0,
-                                         self.meter),
                             "cont": [1 for n in indeces],
                             "tuned": [0 for n in indeces],
                             "mark": [0 for n in indeces]}
@@ -166,7 +192,7 @@ class Drummer(object):
           - mark (special marker (crash, splash, etc))
           '''
         self.pattern = {"low": [],
-                         "high": [],
-                         "cont": [],
-                         "tuned": [],
-                         "mark": []}
+                        "high": [],
+                        "cont": [],
+                        "tuned": [],
+                        "mark": []}

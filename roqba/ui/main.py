@@ -23,6 +23,7 @@ CHECK_BUTTONS = OrderedDict([
                  ('automate_speed_change', {'val': True, 'disable': True}),
                  ('automate_shuffle', True),
                  ('automate_meters', True),
+                 ('automate_scale', True),
                  ('automate_wavetables', True),
                  ('automate_num_partials', False),
                  ('automate_transpose', True),
@@ -284,16 +285,17 @@ class Application(Frame):
     def set_value(self, name, val):
         '''sets a widget to the specified value
 
-        various different widget types need custum setting functionality'''
+        various different widget types need custom setting functionality'''
+
         direct = ['scale', 'wavetable_generation_type', 'partial_pool']
         if filter(lambda x: match("(voice_\d_|)" + x, name), direct):
             self.gui_logger.info("setting: '{0}' to '{1}' in GUI".format(name, val))
             getattr(self, name).set(val)
             return
-        if name == 'saved_behaviours':
+        if name == 'saved_behaviours' and len(val):
             self.savedBehavioursMenu.destroy()
             self.savedBehavioursMenu = OptionMenu(self.monitor_frame,
-                                            self.selected_behaviour, *sorted(val))
+                                                  self.selected_behaviour, *sorted(val))
             self.savedBehavioursMenu.grid(row=5, sticky=E + W)
             return
         for w in self.settables:
@@ -420,7 +422,7 @@ class Application(Frame):
     def socket_read_handler(self, file, mask):
         data_object = json.loads(file.recv(1024))
         do = data_object.items()[0]
-        #print do
+        #print "do:", do
         self.set_value(do[0], do[1])
 
 

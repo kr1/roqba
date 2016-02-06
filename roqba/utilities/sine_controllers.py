@@ -54,6 +54,10 @@ class MultiSine(object):
             tmp = [tmp[pos] / (pos + 1.0) for pos in xrange(len(tmp))]
             return sum(tmp) * self.coeff
 
+    def get_value_as_factor(self, variation):
+        """returns scaled value oscillating around one"""
+        return 1 + (self.get_value() * variation)
+
     def assemble_funnel(self):
         """assembles a list of get_value function objects"""
         funnel = []

@@ -15,7 +15,7 @@ class GuiConnect(object):
         print "GUI: sending to:", self.gui_host, self.send_port
         self.receive_port = settings['FROM_GUI_PORT']
         self.sock = socket.socket(socket.AF_INET,  # Internet
-                                   socket.SOCK_DGRAM)  # UDP
+                                  socket.SOCK_DGRAM)  # UDP
         self.receiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.receiver.bind(('0.0.0.0', self.receive_port))
         self.receive_exit_requested = False
@@ -63,7 +63,7 @@ class GuiConnect(object):
         beh = director.behaviour
         for field in beh.keys():
             if (field in ['per_voice', 'meter', 'meters', 'speed'] or
-                type(beh[field]).__name__ in ['list', 'dict']):
+                    type(beh[field]).__name__ in ['list', 'dict']):
                 continue
             self.send({field: beh[field]})
         for vid in beh['per_voice'].keys():
@@ -72,7 +72,7 @@ class GuiConnect(object):
             prefix = 'voice_' + str(vid) + '_'
             for field in v_beh.keys():
                 if (field in ['max_num_partials'] or
-                    type(v_beh[field]) in ['list', 'dict']):
+                        type(v_beh[field]) in ['list', 'dict']):
                     continue
                 name = prefix + field
                 self.send({name: v_beh[field]})

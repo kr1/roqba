@@ -5,10 +5,11 @@ import metronome
 
 
 class Notator(object):
-    def __init__(self, num_voices,
-                       scroll_filename="scrolling.txt",
-                       buffer_length=75,
-                       num_lines=40):
+    def __init__(self,
+                 num_voices,
+                 scroll_filename="scrolling.txt",
+                 buffer_length=75,
+                 num_lines=40):
         self.num_voices = num_voices
         self.buffer = collections.deque()
         self.buffer_length = buffer_length
@@ -36,9 +37,8 @@ class Notator(object):
         return mat
 
     def draw(self, mat, weight, cycle_pos):
-        text = ""
         line_buffer = []
-        for l in xrange(self.num_lines-1, 0, -1):
+        for l in xrange(self.num_lines - 1, 0, -1):
             t = map(lambda x: {-1: " ", 0: "_", 1: "-"}[x], mat[l])
             if l == self.num_lines - 1 and len(t) > 6:
                 t[0] = "w"
