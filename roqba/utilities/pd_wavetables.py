@@ -16,7 +16,7 @@ def random_wavetable(partials=15, which='all'):
 
 def random_harmonic_wavetable(partials=15, which='all'):
     '''all partials have randomly selected amplitudes
-    
+
     the maximum value of each amplitude is its value in the
     harmonic series (as returned by <harmonic_wavetable>).
     '''

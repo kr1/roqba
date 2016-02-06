@@ -196,7 +196,9 @@ styles = {
         }
     },
     'amadinda': {
-        'settings': {},
+        'settings': {
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 3]],
+            'composer': 'amadinda'},
         'behaviour': {
             'adsr': [10, 10, 5, 20],
             'max_adsr': [20, 20, 30, 666],
