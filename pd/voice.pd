@@ -102,7 +102,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 648 72 unpack f f f f;
 #X floatatom 715 218 5 0 0 0 - - -, f 5;
 #X floatatom 775 217 5 0 0 0 - - -, f 5;
-#X floatatom 643 212 5 0 0 0 - - -, f 5;
+#X floatatom 643 212 10 0 0 0 - - -, f 10;
 #X obj 574 118 r peak_level_voice_\$1;
 #X connect 0 0 3 0;
 #X connect 1 0 100 0;
