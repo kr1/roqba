@@ -24,9 +24,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
-    <link rel="up" title="roqba" href="roqba.html" />
-    <link rel="next" title="main" href="main.html" />
-    <link rel="prev" title="director" href="director.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -39,126 +36,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-roqba.drummer">
-<span id="drummer"></span><h1>drummer<a class="headerlink" href="#module-roqba.drummer" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="roqba.drummer.ContFrame">
-<em class="property">class </em><code class="descclassname">roqba.drummer.</code><code class="descname">ContFrame</code><span class="sig-paren">(</span><em>confirm</em>, <em>vol</em>, <em>pan</em>, <em>pan2</em>, <em>ctl</em>, <em>ctl2</em>, <em>meta</em><span class="sig-paren">)</span><a class="headerlink" href="#roqba.drummer.ContFrame" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="roqba.drummer.ContFrame.confirm">
-<code class="descname">confirm</code><a class="headerlink" href="#roqba.drummer.ContFrame.confirm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.ctl">
-<code class="descname">ctl</code><a class="headerlink" href="#roqba.drummer.ContFrame.ctl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 4</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.ctl2">
-<code class="descname">ctl2</code><a class="headerlink" href="#roqba.drummer.ContFrame.ctl2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 5</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.meta">
-<code class="descname">meta</code><a class="headerlink" href="#roqba.drummer.ContFrame.meta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 6</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.pan">
-<code class="descname">pan</code><a class="headerlink" href="#roqba.drummer.ContFrame.pan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.pan2">
-<code class="descname">pan2</code><a class="headerlink" href="#roqba.drummer.ContFrame.pan2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="roqba.drummer.ContFrame.vol">
-<code class="descname">vol</code><a class="headerlink" href="#roqba.drummer.ContFrame.vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="roqba.drummer.Drummer">
-<em class="property">class </em><code class="descclassname">roqba.drummer.</code><code class="descname">Drummer</code><span class="sig-paren">(</span><em>composer, meter=[0, 0, 0, 0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="roqba.drummer.Drummer.cont_frame">
-<code class="descname">cont_frame</code><span class="sig-paren">(</span><em>state</em>, <em>density</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.cont_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.cont_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>assembles the frame for the cont-voice</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.create_pattern">
-<code class="descname">create_pattern</code><span class="sig-paren">(</span><em>patt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.create_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.create_pattern" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates a drum pattern from a given (bass-)pattern</p>
-<p>as a fallback this method will create a (generic) pattern
-using the underlying meter</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.empty_pattern">
-<code class="descname">empty_pattern</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.empty_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.empty_pattern" title="Permalink to this definition">¶</a></dt>
-<dd><p>initializes a empty pattern-dict</p>
-<dl class="docutils">
-<dt>keys are:</dt>
-<dd><ul class="first last simple">
-<li>low (bass-drum function)</li>
-<li>high (snare-function)</li>
-<li>cont (continuous =&gt; hi-hat/ride cymbal function)</li>
-<li>tuned (should allow melodies (from tom-tom upwards))</li>
-<li>mark (special marker (crash, splash, etc))</li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.generate">
-<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.generate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.high_low_seq">
-<code class="descname">high_low_seq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.high_low_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.high_low_seq" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates a pattern consisting of the sequence of low-high changes</p>
-<p>format to be defined</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.mark_frame">
-<code class="descname">mark_frame</code><span class="sig-paren">(</span><em>state</em>, <em>density</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.mark_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.mark_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>assembles the frame for the mark-voice</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.push_value">
-<code class="descname">push_value</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.push_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.push_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>append a value to all keys of the pattern</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.drummer.Drummer.smoothen">
-<code class="descname">smoothen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.smoothen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.smoothen" title="Permalink to this definition">¶</a></dt>
-<dd><p>post - creation method to smoothen loop-related duplications</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="roqba.drummer.random">
-<code class="descclassname">roqba.drummer.</code><code class="descname">random</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.drummer.random" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="drummer">
+<h1>drummer<a class="headerlink" href="#drummer" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -166,14 +45,13 @@ using the underlying meter</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/meters_cut.png" alt="Logo"/>
+            </a></p><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="roqba.html">roqba</a><ul>
-      <li>Previous: <a href="director.html" title="previous chapter">director</a></li>
-      <li>Next: <a href="main.html" title="next chapter">main</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

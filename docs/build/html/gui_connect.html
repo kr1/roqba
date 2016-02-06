@@ -36,45 +36,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-roqba.utilities.gui_connect">
-<span id="gui-connect"></span><h1>gui_connect<a class="headerlink" href="#module-roqba.utilities.gui_connect" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="roqba.utilities.gui_connect.GuiConnect">
-<em class="property">class </em><code class="descclassname">roqba.utilities.gui_connect.</code><code class="descname">GuiConnect</code><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect" title="Permalink to this definition">¶</a></dt>
-<dd><p>synchronizing the GUI</p>
-<dl class="method">
-<dt id="roqba.utilities.gui_connect.GuiConnect.handle_caesura">
-<code class="descname">handle_caesura</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.handle_caesura"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.handle_caesura" title="Permalink to this definition">¶</a></dt>
-<dd><p>update the GUI when a caesura happens</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.gui_connect.GuiConnect.read_incoming_messages">
-<code class="descname">read_incoming_messages</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.read_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.read_incoming_messages" title="Permalink to this definition">¶</a></dt>
-<dd><p>reads incoming messages on the socket</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.gui_connect.GuiConnect.send">
-<code class="descname">send</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send" title="Permalink to this definition">¶</a></dt>
-<dd><p>send &#8216;raw&#8217; messages over the socket</p>
-<p>message should be a dict {key: value} for json encoding</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.gui_connect.GuiConnect.send_cycle_pos">
-<code class="descname">send_cycle_pos</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send_cycle_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send_cycle_pos" title="Permalink to this definition">¶</a></dt>
-<dd><p>sends a position int on every beat</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.gui_connect.GuiConnect.update_gui">
-<code class="descname">update_gui</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.update_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.update_gui" title="Permalink to this definition">¶</a></dt>
-<dd><p>sends messages for a complete update of the GUI</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="gui-connect">
+<h1>gui_connect<a class="headerlink" href="#gui-connect" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -82,7 +45,10 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/meters_cut.png" alt="Logo"/>
+            </a></p><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>

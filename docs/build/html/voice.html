@@ -24,8 +24,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
-    <link rel="up" title="roqba" href="roqba.html" />
-    <link rel="prev" title="sine_controllers" href="sine_controllers.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -38,137 +36,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-roqba.voice">
-<span id="voice"></span><h1>voice<a class="headerlink" href="#module-roqba.voice" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="roqba.voice.Voice">
-<em class="property">class </em><code class="descclassname">roqba.voice.</code><code class="descname">Voice</code><span class="sig-paren">(</span><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[1, 1, 2, 1, 1, 1, 1]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="roqba.voice.Voice.add_setters_for_behaviour_dict">
-<code class="descname">add_setters_for_behaviour_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.add_setters_for_behaviour_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.add_setters_for_behaviour_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.apply_overhanging_notes">
-<code class="descname">apply_overhanging_notes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.apply_overhanging_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.apply_overhanging_notes" title="Permalink to this definition">¶</a></dt>
-<dd><p>applies overhanging notes of a registered melody</p>
-<p>to the next &lt;on_off_pattern&gt;</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.exceeds">
-<code class="descname">exceeds</code><span class="sig-paren">(</span><em>note</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.exceeds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.exceeds" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns min/max limits and a bounce back direction coefficient</p>
-<p>if incoming int exceeds limits, returns False otherwise</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.in_the_middle">
-<code class="descname">in_the_middle</code><span class="sig-paren">(</span><em>note</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.in_the_middle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.in_the_middle" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns true if int is in the center area of the range</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.make_wavetable">
-<code class="descname">make_wavetable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.make_wavetable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.make_wavetable" title="Permalink to this definition">¶</a></dt>
-<dd><p>assembles a wavetable</p>
-<p>using the registered wavetable-related params</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.manage_melody_note">
-<code class="descname">manage_melody_note</code><span class="sig-paren">(</span><em>meter_pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.manage_melody_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.manage_melody_note" title="Permalink to this definition">¶</a></dt>
-<dd><p>retrieves next note-delta and length belonging to the melody.</p>
-<p>sets the following &#8216;bits&#8217; of the off-on-pattern according to the
-specified length of the note.
-returns the pitch-related move (delta) and sets eventual modifier
-attribute on the composer</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.new_microvolume_sine">
-<code class="descname">new_microvolume_sine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.new_microvolume_sine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.new_microvolume_sine" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.next_note">
-<code class="descname">next_note</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.next_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.next_note" title="Permalink to this definition">¶</a></dt>
-<dd><p>the next note is calculated/read here</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.register_other_voices">
-<code class="descname">register_other_voices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.register_other_voices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.register_other_voices" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns the other voices registered in the app</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.reload_register">
-<code class="descname">reload_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.reload_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.reload_register" title="Permalink to this definition">¶</a></dt>
-<dd><p>reloads the current register and reapplies its settings</p>
-<ul class="simple">
-<li>in voice</li>
-<li>in the controller</li>
-</ul>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.reset_slave">
-<code class="descname">reset_slave</code><span class="sig-paren">(</span><em>change_master=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.reset_slave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.reset_slave" title="Permalink to this definition">¶</a></dt>
-<dd><p>resets values for slave voices.</p>
-<dl class="docutils">
-<dt>if &lt;change_master&gt; is an int:</dt>
-<dd><ul class="first last simple">
-<li>it is used as the id new master-voice</li>
-</ul>
-</dd>
-<dt>if &lt;change_master&gt; is &#8216;True&#8217;:</dt>
-<dd><ul class="first last simple">
-<li>a new random master is chosen,</li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.search_suitable_melody">
-<code class="descname">search_suitable_melody</code><span class="sig-paren">(</span><em>speed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.search_suitable_melody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.search_suitable_melody" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.set_pan_pos">
-<code class="descname">set_pan_pos</code><span class="sig-paren">(</span><em>gateway</em>, <em>pan_pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_pan_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_pan_pos" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.set_rhythm_grouping">
-<code class="descname">set_rhythm_grouping</code><span class="sig-paren">(</span><em>grouping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_rhythm_grouping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_rhythm_grouping" title="Permalink to this definition">¶</a></dt>
-<dd><p>setter method which creates also the on/off pattern</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.set_state">
-<code class="descname">set_state</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>sets the state for the voice.</p>
-<p>state is one of &#8220;BASS&#8221;, &#8220;ROCK_BASS&#8221;, &#8220;MID&#8221;, &#8220;HIGH&#8221;, or &#8220;SLAVE&#8221;.
-the state is a set of common settings for the voice, e.g.
-voice-range, embellishment probability, rhythmic variation,
-movement-mode, etc.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.update_current_microvolume">
-<code class="descname">update_current_microvolume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.update_current_microvolume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.update_current_microvolume" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.voice">
-<code class="descname">voice</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.voice" title="Permalink to this definition">¶</a></dt>
-<dd><p>the generator method of the Voice-class</p>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="voice">
+<h1>voice<a class="headerlink" href="#voice" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -176,13 +45,13 @@ movement-mode, etc.</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/meters_cut.png" alt="Logo"/>
+            </a></p><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="roqba.html">roqba</a><ul>
-      <li>Previous: <a href="sine_controllers.html" title="previous chapter">sine_controllers</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

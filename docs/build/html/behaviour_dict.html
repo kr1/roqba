@@ -24,9 +24,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
-    <link rel="up" title="utilities" href="utilities.html" />
-    <link rel="next" title="pd_wavetables" href="pd_wavetables.html" />
-    <link rel="prev" title="utilities" href="utilities.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -39,51 +36,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-roqba.utilities.behaviour_dict">
-<span id="behaviour-dict"></span><h1>behaviour_dict<a class="headerlink" href="#module-roqba.utilities.behaviour_dict" title="Permalink to this headline">¶</a></h1>
-<p>this module defines a custom dict</p>
-<p>BehaviourDict is a subclass of dict and modifies mainly the
-__setitem__ method by calling a setter method for
-the given key if the setter method has been registered before</p>
-<dl class="class">
-<dt id="roqba.utilities.behaviour_dict.BehaviourDict">
-<em class="property">class </em><code class="descclassname">roqba.utilities.behaviour_dict.</code><code class="descname">BehaviourDict</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>defines a dictionary-class with custom setter methods</p>
-<p>upon every __setitem__ call it checks if it has registered setter
-methods and calls them with the given value</p>
-<dl class="method">
-<dt id="roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours">
-<code class="descname">read_or_create_saved_behaviours</code><span class="sig-paren">(</span><em>name='.saved_behaviours'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict.read_or_create_saved_behaviours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours" title="Permalink to this definition">¶</a></dt>
-<dd><p>reads saved behaviours if there are, otherwise creates them</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.behaviour_dict.BehaviourDict.save_current_behaviour">
-<code class="descname">save_current_behaviour</code><span class="sig-paren">(</span><em>name=None</em>, <em>write_to_file=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict.save_current_behaviour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.save_current_behaviour" title="Permalink to this definition">¶</a></dt>
-<dd><p>adds current behaviour to the saved behaviours dict</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.behaviour_dict.BehaviourDict.voice_get">
-<code class="descname">voice_get</code><span class="sig-paren">(</span><em>vid</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict.voice_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.voice_get" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns the value for the specified key.</p>
-<p>if the value is present for the voice, this value is returned
-otherwise the default value for this key is returned</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours">
-<code class="descname">write_saved_behaviours</code><span class="sig-paren">(</span><em>name='.saved_behaviours'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#BehaviourDict.write_saved_behaviours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours" title="Permalink to this definition">¶</a></dt>
-<dd><p>writes the saved behaviours to file</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="roqba.utilities.behaviour_dict.test_setter">
-<code class="descclassname">roqba.utilities.behaviour_dict.</code><code class="descname">test_setter</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/behaviour_dict.html#test_setter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.behaviour_dict.test_setter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="behaviour-dict">
+<h1>behaviour_dict<a class="headerlink" href="#behaviour-dict" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -91,16 +45,13 @@ otherwise the default value for this key is returned</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/meters_cut.png" alt="Logo"/>
+            </a></p><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="roqba.html">roqba</a><ul>
-  <li><a href="utilities.html">utilities</a><ul>
-      <li>Previous: <a href="utilities.html" title="previous chapter">utilities</a></li>
-      <li>Next: <a href="pd_wavetables.html" title="next chapter">pd_wavetables</a></li>
-  </ul></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
