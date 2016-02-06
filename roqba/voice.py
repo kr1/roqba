@@ -100,11 +100,18 @@ class Voice(object):
         self.musical_logger = logging.getLogger('musical')
         if self.composer.behaviour['automate_microvolume_change']:
             self.new_microvolume_sine()
-        self.current_microvolume = self.microvolume_sine.get_value()
+            self.microvolume_variation = self.composer.behaviour.voice_get(
+                self.id, 'microvolume_variation')
+            self.current_microvolume = self.update_current_microvolume()
 
     def new_microvolume_sine(self):
-        args = [random.random() * self.composer.behaviour['microvolume_max_speed_in_hz'] for n in range(10)]
+        args = [random.random() * self.composer.behaviour['microvolume_max_speed_in_hz']
+                for n in range(10)]
         self.microvolume_sine = MultiSine(args)
+
+    def update_current_microvolume(self):
+        self.current_microvolume = self.microvolume_sine.get_value_as_factor(
+            self.microvolume_variation)
 
     def add_setters_for_behaviour_dict(self):
         beh = self.composer.behaviour['per_voice'][self.id]
@@ -118,6 +125,7 @@ class Voice(object):
     def __str__(self):
         return str({"note": self.note,
                     "dir": self.dir,
+                    "id": self.id,
                     "note_change": self.note_change})
 
     def __repr__(self):
@@ -134,7 +142,6 @@ class Voice(object):
                 self.note_change = 0
             self.weight = state["weight"]
             if self.note_change:
-                self.current_microvolume = self.microvolume_sine.get_value()
                 # calculate duration by checking for the next note
                 # in the pattern
                 tmp_list = self.on_off_pattern[(meter_pos + 1):]
@@ -177,7 +184,6 @@ class Voice(object):
         elif self.playing_a_melody:
             try:
                 move = self.manage_melody_note(meter_pos)
-                #print "move {0} ".format(move)
             except StopIteration:
                 self.musical_logger.info("melody finished")
                 self.playing_a_melody = False
@@ -219,7 +225,6 @@ class Voice(object):
             right_scale = self.composer.scale == melody["scale"]
             right_speed = speed_range[0] < speed < speed_range[1]
             right_meter = self.composer.meter in melody["meters"]
-            #print 'note: ', right_note, 'speed: ', right_speed, 'scale: ', right_scale
             if right_note and right_scale and right_speed and right_meter:
                 candidates.append({melody_name: melody})
         if len(candidates) > 0:

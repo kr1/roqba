@@ -93,7 +93,6 @@ class Composer(AbstractComposer):
                                      args=(k, state)).start()
         if send_drum:
             self.gateway.drum_hub.send(self.drummer.frame)
-        # send the voices to the note-hub
         for voice in self.voices.values():
             self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         self.gateway.hub.send(self.voices)
@@ -103,6 +102,7 @@ class Composer(AbstractComposer):
         return self.comment
 
     def next_voice_note(self, voice, meter_pos):
+        voice.update_current_microvolume()
         if voice.behaviour == "SLAVE":
             follow = self.voices[voice.followed_voice_id]
             res = 0

@@ -60,7 +60,7 @@ class NoteGateway(object):
         use vid=drums to mute/unmute the drums
         '''
         val = 1 if val else 0
-        if vid == "drums":  
+        if vid == "drums":
             msg = ["perc", "mute", val]
         else:
             msg = ["voice", vid, "mute", val]
@@ -122,7 +122,7 @@ class NoteGateway(object):
 
     def send_voice_peak_level(self, voice, peak_level):
         '''sends a peak_level-message for a voice'''
-        args = ["voice", voice.id, "peak_level", peak_level]
+        args = ["voice", voice.id, "peak_level", "{:.6f}".format(peak_level)]
         self.pd.send(args)
 
     def pd_send_drum_note(self, voice,  vol, pan, ctl):
