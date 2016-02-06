@@ -36,6 +36,8 @@ class Composer(AbstractComposer):
             voice.duration_in_msec = 600
         self.set_scale(self.scale)
         self.make_new_pattern()
+        self.gateway.mute_voice("drums", 1)
+
 
     def all_python_words(self):
         filepaths = itertools.chain(*[[os.path.join(entry[0], file_)
