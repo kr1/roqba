@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -30,12 +28,12 @@
     <link rel="next" title="voice" href="voice.html" />
     <link rel="prev" title="pdsender" href="pdsender.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="pdsender.html" title="pdsender"
              accesskey="P">previous</a> |
           <a href="voice.html" title="voice"
@@ -54,7 +52,7 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.utilities.sine_controllers">
 <span id="sine-controllers"></span><h1>sine_controllers<a class="headerlink" href="#module-roqba.utilities.sine_controllers" title="Permalink to this headline">¶</a></h1>
@@ -64,24 +62,24 @@ they use elapsed time to calculate the value
 for any given moment in which the get_value-methods are called</p>
 <dl class="class">
 <dt id="roqba.utilities.sine_controllers.MultiSine">
-<em class="property">class </em><tt class="descclassname">roqba.utilities.sine_controllers.</tt><tt class="descname">MultiSine</tt><big>(</big><em>freqs</em>, <em>equal_power=True</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.utilities.sine_controllers.</code><code class="descname">MultiSine</code><span class="sig-paren">(</span><em>freqs</em>, <em>equal_power=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine" title="Permalink to this definition">¶</a></dt>
 <dd><p>a controller object for multiple overlaid sine-waves</p>
 <dl class="method">
 <dt id="roqba.utilities.sine_controllers.MultiSine.assemble_funnel">
-<tt class="descname">assemble_funnel</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.assemble_funnel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.assemble_funnel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assemble_funnel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.assemble_funnel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.assemble_funnel" title="Permalink to this definition">¶</a></dt>
 <dd><p>assembles a list of get_value function objects</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.sine_controllers.MultiSine.get_value">
-<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the combined (added) value of the</p>
 <p>multiple sine controllers</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.sine_controllers.MultiSine.set_freqs">
-<tt class="descname">set_freqs</tt><big>(</big><em>freqs</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.set_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.set_freqs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_freqs</code><span class="sig-paren">(</span><em>freqs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.set_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.set_freqs" title="Permalink to this definition">¶</a></dt>
 <dd><p>set new frequencies for the controller</p>
 <p>(note that the number of frequencies must be equal to
 the original number if frequencies)</p>
@@ -91,17 +89,17 @@ the original number if frequencies)</p>
 
 <dl class="class">
 <dt id="roqba.utilities.sine_controllers.Sine">
-<em class="property">class </em><tt class="descclassname">roqba.utilities.sine_controllers.</tt><tt class="descname">Sine</tt><big>(</big><em>freq, range=[-1, 1]</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.utilities.sine_controllers.</code><code class="descname">Sine</code><span class="sig-paren">(</span><em>freq, range=[-1, 1]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine" title="Permalink to this definition">¶</a></dt>
 <dd><p>a single frequency sine-wave controller object</p>
 <dl class="method">
 <dt id="roqba.utilities.sine_controllers.Sine.get_value">
-<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the controller value at the moment it is called</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.sine_controllers.Sine.set_freq">
-<tt class="descname">set_freq</tt><big>(</big><em>freq</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.set_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.set_freq" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_freq</code><span class="sig-paren">(</span><em>freq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.set_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.set_freq" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -139,16 +137,18 @@ the original number if frequencies)</p>
 </li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -157,23 +157,27 @@ the original number if frequencies)</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="pdsender.html" title="pdsender"
-             >previous</a> |
-          <a href="voice.html" title="voice"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/sine_controllers.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="pdsender.html" title="pdsender"
+              >previous</a> |
+            <a href="voice.html" title="voice"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/sine_controllers.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

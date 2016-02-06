@@ -3,11 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Roqba - a realtime music machine (composer, synthesizer and player)
-===================================================================
+Roqba - a responsive realtime music machine
+===========================================
+
+composer, synthesizer and player
+--------------------------------
 
 Documentation
--------------
+.............
 
 Contents:
 

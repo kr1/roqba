@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -30,12 +28,12 @@
     <link rel="next" title="sine_controllers" href="sine_controllers.html" />
     <link rel="prev" title="pd_wavetables" href="pd_wavetables.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="pd_wavetables.html" title="pd_wavetables"
              accesskey="P">previous</a> |
           <a href="sine_controllers.html" title="sine_controllers"
@@ -54,22 +52,22 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.utilities.pdsender">
 <span id="pdsender"></span><h1>pdsender<a class="headerlink" href="#module-roqba.utilities.pdsender" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.utilities.pdsender.PdSender">
-<em class="property">class </em><tt class="descclassname">roqba.utilities.pdsender.</tt><tt class="descname">PdSender</tt><big>(</big><em>host</em>, <em>port</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.utilities.pdsender.</code><code class="descname">PdSender</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="staticmethod">
 <dt id="roqba.utilities.pdsender.PdSender.format_msg_list">
-<em class="property">static </em><tt class="descname">format_msg_list</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender.format_msg_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender.format_msg_list" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">format_msg_list</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender.format_msg_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender.format_msg_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>formats an incoming list as a space separated string</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.pdsender.PdSender.send">
-<tt class="descname">send</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender.send" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/pdsender.html#PdSender.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.pdsender.PdSender.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>formats and sends an incoming message to the specified host:port</p>
 <p>as a UDP Datagram
 msg -&gt; list</p>
@@ -110,16 +108,18 @@ msg -&gt; list</p>
 </li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -128,23 +128,27 @@ msg -&gt; list</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="pd_wavetables.html" title="pd_wavetables"
-             >previous</a> |
-          <a href="sine_controllers.html" title="sine_controllers"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/pdsender.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="pd_wavetables.html" title="pd_wavetables"
+              >previous</a> |
+            <a href="sine_controllers.html" title="sine_controllers"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/pdsender.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

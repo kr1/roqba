@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -27,12 +25,12 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.0 documentation" href="index.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
           <a href="genindex.html" title="General Index"
@@ -47,42 +45,42 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.utilities.gui_connect">
 <span id="gui-connect"></span><h1>gui_connect<a class="headerlink" href="#module-roqba.utilities.gui_connect" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.utilities.gui_connect.GuiConnect">
-<em class="property">class </em><tt class="descclassname">roqba.utilities.gui_connect.</tt><tt class="descname">GuiConnect</tt><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.utilities.gui_connect.</code><code class="descname">GuiConnect</code><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect" title="Permalink to this definition">¶</a></dt>
 <dd><p>synchronizing the GUI</p>
 <dl class="method">
 <dt id="roqba.utilities.gui_connect.GuiConnect.handle_caesura">
-<tt class="descname">handle_caesura</tt><big>(</big><em>director</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.handle_caesura"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.handle_caesura" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_caesura</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.handle_caesura"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.handle_caesura" title="Permalink to this definition">¶</a></dt>
 <dd><p>update the GUI when a caesura happens</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.gui_connect.GuiConnect.read_incoming_messages">
-<tt class="descname">read_incoming_messages</tt><big>(</big><em>q</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.read_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.read_incoming_messages" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_incoming_messages</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.read_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.read_incoming_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>reads incoming messages on the socket</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.gui_connect.GuiConnect.send">
-<tt class="descname">send</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>send &#8216;raw&#8217; messages over the socket</p>
 <p>message should be a dict {key: value} for json encoding</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.gui_connect.GuiConnect.send_cycle_pos">
-<tt class="descname">send_cycle_pos</tt><big>(</big><em>director</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send_cycle_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send_cycle_pos" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_cycle_pos</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.send_cycle_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.send_cycle_pos" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends a position int on every beat</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.utilities.gui_connect.GuiConnect.update_gui">
-<tt class="descname">update_gui</tt><big>(</big><em>director</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.update_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.update_gui" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_gui</code><span class="sig-paren">(</span><em>director</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/gui_connect.html#GuiConnect.update_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.gui_connect.GuiConnect.update_gui" title="Permalink to this definition">¶</a></dt>
 <dd><p>sends messages for a complete update of the GUI</p>
 </dd></dl>
 
@@ -103,16 +101,18 @@
 <li class="toctree-l1"><a class="reference internal" href="roqba.html">roqba</a></li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -121,19 +121,23 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/gui_connect.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/gui_connect.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

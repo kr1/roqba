@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -30,12 +28,12 @@
     <link rel="next" title="main" href="main.html" />
     <link rel="prev" title="director" href="director.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="director.html" title="director"
              accesskey="P">previous</a> |
           <a href="main.html" title="main"
@@ -54,22 +52,22 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.drummer">
 <span id="drummer"></span><h1>drummer<a class="headerlink" href="#module-roqba.drummer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.drummer.Drummer">
-<em class="property">class </em><tt class="descclassname">roqba.drummer.</tt><tt class="descname">Drummer</tt><big>(</big><em>composer, meter=[0, 0, 0, 0, 0, 0]</em><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.drummer.</code><code class="descname">Drummer</code><span class="sig-paren">(</span><em>composer, meter=[0, 0, 0, 0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.drummer.Drummer.cont_frame">
-<tt class="descname">cont_frame</tt><big>(</big><em>state</em>, <em>density</em><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.cont_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.cont_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cont_frame</code><span class="sig-paren">(</span><em>state</em>, <em>density</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.cont_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.cont_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>assembles the frame for the cont-voice</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.create_pattern">
-<tt class="descname">create_pattern</tt><big>(</big><em>patt=None</em><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.create_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.create_pattern" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_pattern</code><span class="sig-paren">(</span><em>patt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.create_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.create_pattern" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates a drum pattern from a given (bass-)pattern</p>
 <p>as a fallback this method will create a (generic) pattern
 using the underlying meter</p>
@@ -77,7 +75,7 @@ using the underlying meter</p>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.empty_pattern">
-<tt class="descname">empty_pattern</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.empty_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.empty_pattern" title="Permalink to this definition">¶</a></dt>
+<code class="descname">empty_pattern</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.empty_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.empty_pattern" title="Permalink to this definition">¶</a></dt>
 <dd><p>initializes a empty pattern-dict</p>
 <dl class="docutils">
 <dt>keys are:</dt>
@@ -94,31 +92,31 @@ using the underlying meter</p>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.generate">
-<tt class="descname">generate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.generate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.generate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.high_low_seq">
-<tt class="descname">high_low_seq</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.high_low_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.high_low_seq" title="Permalink to this definition">¶</a></dt>
+<code class="descname">high_low_seq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.high_low_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.high_low_seq" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates a pattern consisting of the sequence of low-high changes</p>
 <p>format to be defined</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.mark_frame">
-<tt class="descname">mark_frame</tt><big>(</big><em>state</em>, <em>density</em><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.mark_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.mark_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mark_frame</code><span class="sig-paren">(</span><em>state</em>, <em>density</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.mark_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.mark_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>assembles the frame for the mark-voice</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.push_value">
-<tt class="descname">push_value</tt><big>(</big><em>val</em><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.push_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.push_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">push_value</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.push_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.push_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>append a value to all keys of the pattern</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.drummer.Drummer.smoothen">
-<tt class="descname">smoothen</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.smoothen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.smoothen" title="Permalink to this definition">¶</a></dt>
+<code class="descname">smoothen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/drummer.html#Drummer.smoothen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.drummer.Drummer.smoothen" title="Permalink to this definition">¶</a></dt>
 <dd><p>post - creation method to smoothen loop-related duplications</p>
 </dd></dl>
 
@@ -126,7 +124,7 @@ using the underlying meter</p>
 
 <dl class="function">
 <dt id="roqba.drummer.random">
-<tt class="descclassname">roqba.drummer.</tt><tt class="descname">random</tt><big>(</big><big>)</big> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.drummer.random" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">roqba.drummer.</code><code class="descname">random</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.drummer.random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -156,16 +154,18 @@ using the underlying meter</p>
 </li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -174,23 +174,27 @@ using the underlying meter</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="director.html" title="director"
-             >previous</a> |
-          <a href="main.html" title="main"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/drummer.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="director.html" title="director"
+              >previous</a> |
+            <a href="main.html" title="main"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/drummer.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

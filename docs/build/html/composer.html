@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -30,12 +28,12 @@
     <link rel="next" title="director" href="director.html" />
     <link rel="prev" title="roqba" href="roqba.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="roqba.html" title="roqba"
              accesskey="P">previous</a> |
           <a href="director.html" title="director"
@@ -54,70 +52,70 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.composer">
 <span id="composer"></span><h1>composer<a class="headerlink" href="#module-roqba.composer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.composer.Composer">
-<em class="property">class </em><tt class="descclassname">roqba.composer.</tt><tt class="descname">Composer</tt><big>(</big><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='DIATONIC'</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.composer.</code><code class="descname">Composer</code><span class="sig-paren">(</span><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='DIATONIC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.composer.Composer.acceptable_harm_for_length">
-<tt class="descname">acceptable_harm_for_length</tt><big>(</big><em>harm</em>, <em>length</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.acceptable_harm_for_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.acceptable_harm_for_length" title="Permalink to this definition">¶</a></dt>
+<code class="descname">acceptable_harm_for_length</code><span class="sig-paren">(</span><em>harm</em>, <em>length</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.acceptable_harm_for_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.acceptable_harm_for_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if the specified (interval-set) are &#8220;harmonic&#8221;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.acceptable_harmony">
-<tt class="descname">acceptable_harmony</tt><big>(</big><em>chord</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.acceptable_harmony"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.acceptable_harmony" title="Permalink to this definition">¶</a></dt>
+<code class="descname">acceptable_harmony</code><span class="sig-paren">(</span><em>chord</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.acceptable_harmony"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.acceptable_harmony" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if a chord is &#8220;harmonic&#8221;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.add_duration_in_msec">
-<tt class="descname">add_duration_in_msec</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.add_duration_in_msec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.add_duration_in_msec" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_duration_in_msec</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.add_duration_in_msec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.add_duration_in_msec" title="Permalink to this definition">¶</a></dt>
 <dd><p>adds duration in milliseconds for each note in self.voices</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.add_voice">
-<tt class="descname">add_voice</tt><big>(</big><em>id</em>, <em>voice</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.add_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.add_voice" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_voice</code><span class="sig-paren">(</span><em>id</em>, <em>voice</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.add_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.add_voice" title="Permalink to this definition">¶</a></dt>
 <dd><p>adds a voice to self.voices</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.apply_scale">
-<tt class="descname">apply_scale</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.apply_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.apply_scale" title="Permalink to this definition">¶</a></dt>
+<code class="descname">apply_scale</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.apply_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.apply_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets the real note for</p>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="roqba.composer.Composer.assemble_real_scale">
-<em class="property">static </em><tt class="descname">assemble_real_scale</tt><big>(</big><em>scale</em>, <em>min=0</em>, <em>max=128</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.assemble_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.assemble_real_scale" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">assemble_real_scale</code><span class="sig-paren">(</span><em>scale</em>, <em>min=0</em>, <em>max=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.assemble_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.assemble_real_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>extends the one-octave scale over the specified range</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.choose_rhythm">
-<tt class="descname">choose_rhythm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.choose_rhythm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.choose_rhythm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choose_rhythm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.choose_rhythm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.choose_rhythm" title="Permalink to this definition">¶</a></dt>
 <dd><p>chooses a new rhythm randomly from each voices groupings</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.drum_fill_handler">
-<tt class="descname">drum_fill_handler</tt><big>(</big><em>v</em>, <em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.drum_fill_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.drum_fill_handler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">drum_fill_handler</code><span class="sig-paren">(</span><em>v</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.drum_fill_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.drum_fill_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>handles the sending of drum-fill notes</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.drum_mark_handler">
-<tt class="descname">drum_mark_handler</tt><big>(</big><em>v</em>, <em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.drum_mark_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.drum_mark_handler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">drum_mark_handler</code><span class="sig-paren">(</span><em>v</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.drum_mark_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.drum_mark_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>handles the sending of a drum mark</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.embellish">
-<tt class="descname">embellish</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.embellish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.embellish" title="Permalink to this definition">¶</a></dt>
+<code class="descname">embellish</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.embellish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.embellish" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks for embellishment markers of the single voices</p>
 <ul class="simple">
 <li>starts a thread to handle the embellishment</li>
@@ -126,39 +124,39 @@
 
 <dl class="staticmethod">
 <dt id="roqba.composer.Composer.flatten_chord">
-<em class="property">static </em><tt class="descname">flatten_chord</tt><big>(</big><em>chord</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.flatten_chord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.flatten_chord" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">flatten_chord</code><span class="sig-paren">(</span><em>chord</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.flatten_chord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.flatten_chord" title="Permalink to this definition">¶</a></dt>
 <dd><p>maps a specified code to the base octave</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.generate">
-<tt class="descname">generate</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.generate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>main generating function, the next polyphonic step is produced here</p>
 <p>any of the voices can change.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.generate_real_scale">
-<tt class="descname">generate_real_scale</tt><big>(</big><em>min=0</em>, <em>max=128</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.generate_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.generate_real_scale" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_real_scale</code><span class="sig-paren">(</span><em>min=0</em>, <em>max=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.generate_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.generate_real_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>extends the one-octave scale over the specified range</p>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="roqba.composer.Composer.get_deltas">
-<em class="property">static </em><tt class="descname">get_deltas</tt><big>(</big><em>chord</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.get_deltas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.get_deltas" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">get_deltas</code><span class="sig-paren">(</span><em>chord</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.get_deltas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.get_deltas" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an array of the intervals between the specified notes</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.is_base_harmony">
-<tt class="descname">is_base_harmony</tt><big>(</big><em>chord</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.is_base_harmony"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.is_base_harmony" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_base_harmony</code><span class="sig-paren">(</span><em>chord</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.is_base_harmony"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.is_base_harmony" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if a chord is a the base tonality</p>
 <p>(either major or minor) of the current context</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.ornament_handler">
-<tt class="descname">ornament_handler</tt><big>(</big><em>v</em>, <em>duration</em>, <em>note</em>, <em>note_delta</em>, <em>state</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.ornament_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.ornament_handler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ornament_handler</code><span class="sig-paren">(</span><em>v</em>, <em>duration</em>, <em>note</em>, <em>note_delta</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.ornament_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.ornament_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>this method handles the sending of the ornament notes.</p>
 <p>the ornament is chosen randomly
 if the ornament would be too fast, it returns without action</p>
@@ -166,19 +164,19 @@ if the ornament would be too fast, it returns without action</p>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.report">
-<tt class="descname">report</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.report" title="Permalink to this definition">¶</a></dt>
+<code class="descname">report</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>utility function that prints info on  harmonies and single voices</p>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="roqba.composer.Composer.scale_walker">
-<em class="property">static </em><tt class="descname">scale_walker</tt><big>(</big><em>scale</em>, <em>present_note</em>, <em>delta</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.scale_walker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.scale_walker" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">scale_walker</code><span class="sig-paren">(</span><em>scale</em>, <em>present_note</em>, <em>delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.scale_walker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.scale_walker" title="Permalink to this definition">¶</a></dt>
 <dd><p>walks the &lt;scale&gt; &lt;delta&gt; steps starting at &lt;present_note&gt;</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.set_binaural_diffs">
-<tt class="descname">set_binaural_diffs</tt><big>(</big><em>val=None</em>, <em>voice=None</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_binaural_diffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_binaural_diffs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_binaural_diffs</code><span class="sig-paren">(</span><em>val=None</em>, <em>voice=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_binaural_diffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_binaural_diffs" title="Permalink to this definition">¶</a></dt>
 <dd><p>&#8220;de-tunes&#8221; the specified voice by the specified interval (in hertz)</p>
 <ul class="simple">
 <li>if no values are given, random values (in the configurated range)</li>
@@ -188,7 +186,7 @@ if the ornament would be too fast, it returns without action</p>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.set_meter">
-<tt class="descname">set_meter</tt><big>(</big><em>meter</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_meter" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_meter</code><span class="sig-paren">(</span><em>meter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_meter" title="Permalink to this definition">¶</a></dt>
 <dd><p>modifies composer-attributes for the specified meter.</p>
 <p>calls reload_register method of the voices and creates and
 sets the new meter also for the drummer-instance</p>
@@ -196,13 +194,13 @@ sets the new meter also for the drummer-instance</p>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.set_scale">
-<tt class="descname">set_scale</tt><big>(</big><em>name</em>, <em>min=0</em>, <em>max=128</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_scale" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_scale</code><span class="sig-paren">(</span><em>name</em>, <em>min=0</em>, <em>max=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.set_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.set_scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets the specified scale and generates a new real scale</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.sort_voices_by_importance">
-<tt class="descname">sort_voices_by_importance</tt><big>(</big><em>by='imp'</em><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.sort_voices_by_importance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.sort_voices_by_importance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sort_voices_by_importance</code><span class="sig-paren">(</span><em>by='imp'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.sort_voices_by_importance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.sort_voices_by_importance" title="Permalink to this definition">¶</a></dt>
 <dd><p>sorts the voices according to their importance.</p>
 <dl class="docutils">
 <dt>by: &#8216;imp&#8217;:</dt>
@@ -220,7 +218,7 @@ sets the new meter also for the drummer-instance</p>
 
 <dl class="method">
 <dt id="roqba.composer.Composer.stream_analyzer">
-<tt class="descname">stream_analyzer</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/composer.html#Composer.stream_analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.stream_analyzer" title="Permalink to this definition">¶</a></dt>
+<code class="descname">stream_analyzer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composer.html#Composer.stream_analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composer.Composer.stream_analyzer" title="Permalink to this definition">¶</a></dt>
 <dd><p>analyses the stream of notes.</p>
 <p>searches for target-harmonies and sets a flag</p>
 </dd></dl>
@@ -254,16 +252,18 @@ sets the new meter also for the drummer-instance</p>
 </li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -272,23 +272,27 @@ sets the new meter also for the drummer-instance</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="roqba.html" title="roqba"
-             >previous</a> |
-          <a href="director.html" title="director"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/composer.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="roqba.html" title="roqba"
+              >previous</a> |
+            <a href="director.html" title="director"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/composer.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

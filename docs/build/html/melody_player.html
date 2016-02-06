@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -27,12 +25,12 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.0 documentation" href="index.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
           <a href="genindex.html" title="General Index"
@@ -47,7 +45,7 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.utilities.melody_player">
 <span id="melody-player"></span><h1>melody_player<a class="headerlink" href="#module-roqba.utilities.melody_player" title="Permalink to this headline">¶</a></h1>
@@ -64,10 +62,10 @@ usage:</p>
 </div></blockquote>
 <dl class="class">
 <dt id="roqba.utilities.melody_player.MelodyPlayer">
-<em class="property">class </em><tt class="descclassname">roqba.utilities.melody_player.</tt><tt class="descname">MelodyPlayer</tt><big>(</big><em>speed=0.1</em><big>)</big><a class="reference internal" href="_modules/roqba/utilities/melody_player.html#MelodyPlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.melody_player.MelodyPlayer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.utilities.melody_player.</code><code class="descname">MelodyPlayer</code><span class="sig-paren">(</span><em>speed=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/melody_player.html#MelodyPlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.melody_player.MelodyPlayer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.utilities.melody_player.MelodyPlayer.play">
-<tt class="descname">play</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/utilities/melody_player.html#MelodyPlayer.play"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.melody_player.MelodyPlayer.play" title="Permalink to this definition">¶</a></dt>
+<code class="descname">play</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/melody_player.html#MelodyPlayer.play"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.melody_player.MelodyPlayer.play" title="Permalink to this definition">¶</a></dt>
 <dd><p>plays the melody given in the self.melody attribute</p>
 <p>by sending the necessary messages to the roqba-sound-engine</p>
 </dd></dl>
@@ -89,16 +87,18 @@ usage:</p>
 <li class="toctree-l1"><a class="reference internal" href="roqba.html">roqba</a></li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -107,19 +107,23 @@ usage:</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/melody_player.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/melody_player.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

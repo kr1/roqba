@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -28,12 +26,12 @@
     <link rel="top" title="Roqba 1.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="../../index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |
           <a href="../../genindex.html" title="General Index"
@@ -48,7 +46,7 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for roqba.voice</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -73,28 +71,28 @@
                        <span class="n">note</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                        <span class="n">real_note</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                        <span class="n">note_length_grouping</span><span class="o">=</span><span class="n">sample</span><span class="p">(</span><span class="n">GROUPINGS</span><span class="p">)):</span>
-        <span class="c"># AFFILIATION</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">composer</span> <span class="o">=</span> <span class="n">composer</span>  <span class="c"># store the composer</span>
-        <span class="n">composer</span><span class="o">.</span><span class="n">add_voice</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>  <span class="c"># register with the composer</span>
-        <span class="c"># IDENTITY</span>
+        <span class="c1"># AFFILIATION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">composer</span> <span class="o">=</span> <span class="n">composer</span>  <span class="c1"># store the composer</span>
+        <span class="n">composer</span><span class="o">.</span><span class="n">add_voice</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>  <span class="c1"># register with the composer</span>
+        <span class="c1"># IDENTITY</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">register</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="n">register</span><span class="p">]</span>
                       <span class="k">if</span> <span class="n">register</span> <span class="k">else</span>
                   <span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">registers</span><span class="o">.</span><span class="n">keys</span><span class="p">())])</span>
-        <span class="c"># TECH</span>
+        <span class="c1"># TECH</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">track_me</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="n">composer</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s">&#39;track_voices_length&#39;</span><span class="p">])</span>
-        <span class="c"># STARTUP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="n">composer</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;track_voices_length&#39;</span><span class="p">])</span>
+        <span class="c1"># STARTUP</span>
         <span class="n">note_range</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pan_pos</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s">&quot;default_pan_position&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pan_pos</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;default_pan_position&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">note_range</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prior_note</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># set the coroutine to the yield-point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c1"># set the coroutine to the yield-point</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s">&quot;default_volume&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;default_volume&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">scale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">do_embellish</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note_delta</span> <span class="o">=</span> <span class="bp">None</span>
@@ -104,74 +102,74 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">real_note</span> <span class="o">=</span> <span class="n">real_note</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
                                  <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
 
-        <span class="c"># BEHAVIOUR</span>
+        <span class="c1"># BEHAVIOUR</span>
         <span class="k">if</span> <span class="n">behaviour</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">followed_voice_id</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">following_counter</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">follow_limit</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;default_behaviour&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">should_play_a_melody</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">)</span>
-        <span class="c">#mel = self.should_play_a_melody</span>
-        <span class="c">#if mel:</span>
-        <span class="c">#    self.melody = mel[1]</span>
-        <span class="c">#    self.melody_starts_on = mel[0]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;default_behaviour&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">should_play_a_melody</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;should_play_a_melody&#39;</span><span class="p">)</span>
+        <span class="c1">#mel = self.should_play_a_melody</span>
+        <span class="c1">#if mel:</span>
+        <span class="c1">#    self.melody = mel[1]</span>
+        <span class="c1">#    self.melody_starts_on = mel[0]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span> <span class="o">=</span> <span class="bp">False</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">duration_in_msec</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note_length_grouping</span> <span class="o">=</span> <span class="n">note_length_grouping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_rhythm_grouping</span><span class="p">(</span><span class="n">note_length_grouping</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_steps</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pause_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;default_pause_prob&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">legato_prob</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c"># to-do: really implement it</span>
-        <span class="c"># probability to have an embellishment-ornament during the current note</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;default_pause_prob&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legato_prob</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># to-do: really implement it</span>
+        <span class="c1"># probability to have an embellishment-ornament during the current note</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;default_embellishment_prob&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span> <span class="o">=</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">binaural_diff</span> <span class="o">=</span> <span class="mi">0</span> <span class="c"># this is not used in this module directly, but serves to track </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&quot;automate_slide&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binaural_diff</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># this is not used in this module directly, but serves to track </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s2">&quot;automate_slide&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;slide_duration_prop&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_prop</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;default_note_duration_prop&#39;</span><span class="p">]</span>
-        <span class="c"># WAVETABLE - this is used for non-automated wavetables</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wavetable_generation_type</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;wavetable_specs&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">partial_pool</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;wavetable_specs&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_partials</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s">&#39;default_num_partial&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_prop</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;default_note_duration_prop&#39;</span><span class="p">]</span>
+        <span class="c1"># WAVETABLE - this is used for non-automated wavetables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavetable_generation_type</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_pool</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_partials</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;default_num_partial&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">register</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_setters_for_behaviour_dict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;musical&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;musical&#39;</span><span class="p">)</span>
     
 <div class="viewcode-block" id="Voice.add_setters_for_behaviour_dict"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.add_setters_for_behaviour_dict">[docs]</a>    <span class="k">def</span> <span class="nf">add_setters_for_behaviour_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">beh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;per_voice&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
-        <span class="n">beh</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="s">&quot;slide_duration_prop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">setattr</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;slide_duration_prop&quot;</span><span class="p">]</span> 
-        <span class="n">beh</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="s">&quot;binaural_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">setattr</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;binaural_diff&quot;</span><span class="p">]</span> 
-</div>
+        <span class="n">beh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;per_voice&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+        <span class="n">beh</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="s2">&quot;slide_duration_prop&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">setattr</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;slide_duration_prop&quot;</span><span class="p">]</span> 
+        <span class="n">beh</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="s2">&quot;binaural_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">setattr</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;binaural_diff&quot;</span><span class="p">]</span> </div>
+
 <div class="viewcode-block" id="Voice.set_pan_pos"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_pan_pos">[docs]</a>    <span class="k">def</span> <span class="nf">set_pan_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gateway</span><span class="p">,</span> <span class="n">pan_pos</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pan_pos</span> <span class="o">=</span> <span class="n">pan_pos</span>
-        <span class="n">gateway</span><span class="o">.</span><span class="n">send_voice_pan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pan_pos</span><span class="p">)</span>
-</div>
+        <span class="n">gateway</span><span class="o">.</span><span class="n">send_voice_pan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pan_pos</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">({</span><span class="s">&quot;note&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">,</span>
-                    <span class="s">&quot;dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span>
-                    <span class="s">&quot;note_change&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span><span class="p">})</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">({</span><span class="s2">&quot;note&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">,</span>
+                    <span class="s2">&quot;dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span>
+                    <span class="s2">&quot;note_change&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;{0} - {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;{0} - {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__str__</span><span class="p">())</span>
 
 <div class="viewcode-block" id="Voice.voice"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.voice">[docs]</a>    <span class="k">def</span> <span class="nf">voice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;the generator method of the Voice-class&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span><span class="p">)</span>
-            <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;cycle_pos&#39;</span><span class="p">]</span>
-            <span class="c">#print self.on_off_pattern, &quot; for: &quot;, self.id</span>
+            <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;cycle_pos&#39;</span><span class="p">]</span>
+            <span class="c1">#print self.on_off_pattern, &quot; for: &quot;, self.id</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[</span><span class="n">meter_pos</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">legato_prob</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;weight&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">note_change</span><span class="p">:</span>
-                <span class="c"># calculate duration by checking for the next note</span>
-                <span class="c"># in the pattern</span>
+                <span class="c1"># calculate duration by checking for the next note</span>
+                <span class="c1"># in the pattern</span>
                 <span class="n">tmp_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[(</span><span class="n">meter_pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):]</span>
                 <span class="k">if</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">tmp_list</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">note_duration_steps</span> <span class="o">=</span> <span class="n">tmp_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -186,34 +184,34 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_me</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">embellishment_prob</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">do_embellish</span> <span class="o">=</span> <span class="bp">True</span>
-</div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">do_embellish</span> <span class="o">=</span> <span class="bp">True</span></div>
+
 <div class="viewcode-block" id="Voice.next_note"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.next_note">[docs]</a>    <span class="k">def</span> <span class="nf">next_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;the next note is calculated/read here&quot;&quot;&quot;</span>
-        <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;cycle_pos&quot;</span><span class="p">]</span>
-        <span class="n">speed</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;speed&quot;</span><span class="p">]</span>
+        <span class="n">meter_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;cycle_pos&quot;</span><span class="p">]</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;speed&quot;</span><span class="p">]</span>
         <span class="n">move</span> <span class="o">=</span> <span class="n">sample</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">:</span>
             <span class="n">move</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">*</span> <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movement_probs</span><span class="p">))</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manage_melody_note</span><span class="p">(</span><span class="n">meter_pos</span><span class="p">)</span>
-                <span class="c">#print &quot;move {0} &quot;.format(move)</span>
+                <span class="c1">#print &quot;move {0} &quot;.format(move)</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;melody finished&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;melody finished&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">should_play_a_melody</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="ow">in</span> <span class="p">[</span><span class="n">HEAVY</span><span class="p">,</span> <span class="n">MEDIUM</span><span class="p">]):</span>
-                <span class="c">#if (self.melody_starts_on == (self.note % 7) and</span>
-                    <span class="c"># regarding the on-off pattern we try a minimum invasive strategy</span>
-                    <span class="c"># by modifying only those indexes of the pattern covered by the </span>
-                    <span class="c"># current note and the start of the following note </span>
-                <span class="c">#print &quot;searching for a suitable melody&quot;</span>
+                <span class="c1">#if (self.melody_starts_on == (self.note % 7) and</span>
+                    <span class="c1"># regarding the on-off pattern we try a minimum invasive strategy</span>
+                    <span class="c1"># by modifying only those indexes of the pattern covered by the </span>
+                    <span class="c1"># current note and the start of the following note </span>
+                <span class="c1">#print &quot;searching for a suitable melody&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">melody</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_suitable_melody</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;starting the melody: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">))</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">melody_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">[</span><span class="s">&quot;melody&quot;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;starting the melody: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">melody_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">melody</span><span class="p">[</span><span class="s2">&quot;melody&quot;</span><span class="p">])</span>
                     <span class="n">move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manage_melody_note</span><span class="p">(</span><span class="n">meter_pos</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">+</span> <span class="n">move</span>
@@ -221,32 +219,32 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">exceed</span><span class="p">:</span>
                 <span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="n">exceed</span>
-                <span class="c">#self.musical_logger.info(&quot;exceeding note of voice {2}: &#39;{0}&#39;, going: \t{1}&quot;.format(res,</span>
-                <span class="c">#            self.dir &gt; 0 and &#39;up&#39; or &#39;down&#39;,</span>
-                <span class="c">#            self.id))</span>
+                <span class="c1">#self.musical_logger.info(&quot;exceeding note of voice {2}: &#39;{0}&#39;, going: \t{1}&quot;.format(res,</span>
+                <span class="c1">#            self.dir &gt; 0 and &#39;up&#39; or &#39;down&#39;,</span>
+                <span class="c1">#            self.id))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_the_middle</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceeds</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;&#39;&#39;diabolus in musica: {0} is too low/high,</span>
-<span class="s">                             dir:{1}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">res</span>
-</div>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;diabolus in musica: {0} is too low/high,</span>
+<span class="s1">                             dir:{1}&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
 <div class="viewcode-block" id="Voice.search_suitable_melody"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.search_suitable_melody">[docs]</a>    <span class="k">def</span> <span class="nf">search_suitable_melody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
         <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">melody_name</span><span class="p">,</span> <span class="n">melody</span> <span class="ow">in</span> <span class="n">melodies</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">speed_range</span> <span class="o">=</span> <span class="n">melody</span><span class="p">[</span><span class="s">&quot;speed_range&quot;</span><span class="p">]</span>
-            <span class="n">right_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">%</span> <span class="mi">7</span> <span class="o">==</span> <span class="n">melody</span><span class="p">[</span><span class="s">&quot;start_note&quot;</span><span class="p">]</span>
-            <span class="n">right_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">scale</span> <span class="o">==</span> <span class="n">melody</span><span class="p">[</span><span class="s">&quot;scale&quot;</span><span class="p">]</span>
+            <span class="n">speed_range</span> <span class="o">=</span> <span class="n">melody</span><span class="p">[</span><span class="s2">&quot;speed_range&quot;</span><span class="p">]</span>
+            <span class="n">right_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">%</span> <span class="mi">7</span> <span class="o">==</span> <span class="n">melody</span><span class="p">[</span><span class="s2">&quot;start_note&quot;</span><span class="p">]</span>
+            <span class="n">right_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">scale</span> <span class="o">==</span> <span class="n">melody</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
             <span class="n">right_speed</span> <span class="o">=</span> <span class="n">speed_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">speed</span> <span class="o">&lt;</span> <span class="n">speed_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">right_meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">meter</span> <span class="ow">in</span> <span class="n">melody</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">]</span>
-            <span class="c">#print &#39;note: &#39;, right_note, &#39;speed: &#39;, right_speed, &#39;scale: &#39;, right_scale</span>
+            <span class="n">right_meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">meter</span> <span class="ow">in</span> <span class="n">melody</span><span class="p">[</span><span class="s2">&quot;meters&quot;</span><span class="p">]</span>
+            <span class="c1">#print &#39;note: &#39;, right_note, &#39;speed: &#39;, right_speed, &#39;scale: &#39;, right_scale</span>
             <span class="k">if</span> <span class="n">right_note</span> <span class="ow">and</span> <span class="n">right_scale</span> <span class="ow">and</span> <span class="n">right_speed</span> <span class="ow">and</span> <span class="n">right_meter</span><span class="p">:</span>
               <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">melody_name</span><span class="p">:</span> <span class="n">melody</span><span class="p">})</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">chosen</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;new melody: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chosen</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-            <span class="k">return</span> <span class="n">chosen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-              </div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;new melody: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chosen</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">chosen</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+              
 <div class="viewcode-block" id="Voice.manage_melody_note"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.manage_melody_note">[docs]</a>    <span class="k">def</span> <span class="nf">manage_melody_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meter_pos</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;retrieves next note-delta and length belonging to the melody.</span>
 
@@ -255,33 +253,33 @@
 <span class="sd">        returns the pitch-related move (delta)&quot;&quot;&quot;</span>
         <span class="n">move</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">melody_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">melody_iterator</span><span class="o">.</span><span class="n">__length_hint__</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="c"># TODO: communicate to director that a caesura is required</span>
+            <span class="c1"># TODO: communicate to director that a caesura is required</span>
             <span class="k">pass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;melody move: {0} </span><span class="se">\t</span><span class="s">of length: {1} &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">move</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;melody move: {0} </span><span class="se">\t</span><span class="s2">of length: {1} &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">move</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
         <span class="n">oop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span>
         <span class="n">oop</span><span class="p">[</span><span class="n">meter_pos</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">remaining</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">oop</span><span class="p">)</span> <span class="o">-</span> <span class="n">meter_pos</span>
         <span class="k">if</span> <span class="n">remaining</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
             <span class="n">this_pat_length</span> <span class="o">=</span> <span class="n">remaining</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;dbg: overhanging note&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;dbg: overhanging note&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="n">remaining</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">apply_overhanging_notes</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">this_pat_length</span> <span class="o">=</span> <span class="n">length</span>
-            <span class="c"># this is for the following note,</span>
-            <span class="c"># if it is not run the next pattern will start with a note</span>
-            <span class="c"># anyway</span>
+            <span class="c1"># this is for the following note,</span>
+            <span class="c1"># if it is not run the next pattern will start with a note</span>
+            <span class="c1"># anyway</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[</span><span class="n">meter_pos</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="k">pass</span> 
         <span class="k">for</span> <span class="n">note_unit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">this_pat_length</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[</span><span class="n">meter_pos</span> <span class="o">+</span> <span class="n">note_unit</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="c"># Note: we set next_pat_length int if note is longer than the remaining </span>
-        <span class="c"># part of the cycle. upon next cycle the rest of the note is </span>
-        <span class="c"># applied to the new on-off-pattern.</span>
-        <span class="k">return</span> <span class="n">move</span> 
-</div>
+        <span class="c1"># Note: we set next_pat_length int if note is longer than the remaining </span>
+        <span class="c1"># part of the cycle. upon next cycle the rest of the note is </span>
+        <span class="c1"># applied to the new on-off-pattern.</span>
+        <span class="k">return</span> <span class="n">move</span> </div>
+
 <div class="viewcode-block" id="Voice.apply_overhanging_notes"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.apply_overhanging_notes">[docs]</a>    <span class="k">def</span> <span class="nf">apply_overhanging_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;applies overhanging notes of a registered melody</span>
 <span class="sd">        </span>
@@ -289,17 +287,17 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="c"># this might do the roundtrip.....</span>
-            <span class="c"># self.on_off_pattern[idx + 1] = 1</span>
+            <span class="c1"># this might do the roundtrip.....</span>
+            <span class="c1"># self.on_off_pattern[idx + 1] = 1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">)</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Voice.exceeds"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.exceeds">[docs]</a>    <span class="k">def</span> <span class="nf">exceeds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;returns min/max limits and a bounce back direction coefficient</span>
 
 <span class="sd">        if incoming int exceeds limits, returns False otherwise&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">scale</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;PENTATONIC&quot;</span><span class="p">,</span> <span class="s">&quot;PENTA_MINOR&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">scale</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PENTATONIC&quot;</span><span class="p">,</span> <span class="s2">&quot;PENTA_MINOR&quot;</span><span class="p">]:</span>
             <span class="nb">range</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="n">x</span> <span class="o">/</span> <span class="mf">7.0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span>
@@ -308,27 +306,27 @@
         <span class="k">elif</span> <span class="n">note</span> <span class="o">&lt;</span> <span class="nb">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">return</span> <span class="p">(</span><span class="nb">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">sample</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">False</span>
-</div>
+            <span class="bp">False</span></div>
+
 <div class="viewcode-block" id="Voice.set_rhythm_grouping"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_rhythm_grouping">[docs]</a>    <span class="k">def</span> <span class="nf">set_rhythm_grouping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;setter method which creates also the on/off pattern&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">change_rhythm_after_times</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_length_grouping</span> <span class="o">=</span> <span class="n">grouping</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">on_off_pattern</span> <span class="o">=</span> <span class="n">analyze_grouping</span><span class="p">(</span><span class="n">grouping</span><span class="p">)</span>
-            <span class="c"># here we check if we are playing a melody and if so if we have</span>
-            <span class="c"># remaining note parts to be applied.</span>
+            <span class="c1"># here we check if we are playing a melody and if so if we have</span>
+            <span class="c1"># remaining note parts to be applied.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_a_melody</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_pat_length</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">apply_overhanging_notes</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
 <div class="viewcode-block" id="Voice.in_the_middle"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.in_the_middle">[docs]</a>    <span class="k">def</span> <span class="nf">in_the_middle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;returns true if int is in the center area of the range&quot;&quot;&quot;</span>
         <span class="n">range_span</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">lower_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">range_span</span> <span class="o">*</span> <span class="mf">0.333</span><span class="p">)</span>
         <span class="n">upper_thresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">range_span</span> <span class="o">*</span> <span class="mf">0.666</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">note</span> <span class="o">&gt;</span> <span class="n">lower_thresh</span> <span class="ow">and</span> <span class="n">note</span> <span class="o">&lt;</span> <span class="n">upper_thresh</span>
-</div>
+        <span class="k">return</span> <span class="n">note</span> <span class="o">&gt;</span> <span class="n">lower_thresh</span> <span class="ow">and</span> <span class="n">note</span> <span class="o">&lt;</span> <span class="n">upper_thresh</span></div>
+
 <div class="viewcode-block" id="Voice.reset_slave"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.reset_slave">[docs]</a>    <span class="k">def</span> <span class="nf">reset_slave</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change_master</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;resets values for slave voices.</span>
 
@@ -347,8 +345,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">slide_duration_prop</span> <span class="o">=</span> <span class="n">follow</span><span class="o">.</span><span class="n">slide_duration_prop</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="n">follow</span><span class="o">.</span><span class="n">slide</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">following_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">follow_limit</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">follow_limit</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Voice.set_state"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;sets the state for the voice.</span>
 
@@ -357,53 +355,53 @@
 <span class="sd">        voice-range, embellishment probability, rhythmic variation,</span>
 <span class="sd">        movement-mode, etc.&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reload_register</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;BASS&quot;</span><span class="p">:</span>
-            <span class="c">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;BASS&quot;</span><span class="p">:</span>
+            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">HEAVY_GROUPINGS</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;ROCK_BASS&quot;</span><span class="p">:</span>
-            <span class="c">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ROCK_BASS&quot;</span><span class="p">:</span>
+            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;FLAT_MID&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;FLAT_MID&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;MID&quot;</span><span class="p">:</span>
-            <span class="c">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;MID&quot;</span><span class="p">:</span>
+            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">DEFAULT_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;HIGH&quot;</span><span class="p">:</span>
-            <span class="c">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">TERNARY_GROUPINGS</span>
-</div>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span>
+            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">TERNARY_GROUPINGS</span></div>
+
 <div class="viewcode-block" id="Voice.other_voices"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.other_voices">[docs]</a>    <span class="k">def</span> <span class="nf">other_voices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns the other voices registered in the app&#39;&#39;&#39;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="c">#print res</span>
-        <span class="k">return</span> <span class="n">res</span>
-</div>
+        <span class="c1">#print res</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
 <div class="viewcode-block" id="Voice.reload_register"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.reload_register">[docs]</a>    <span class="k">def</span> <span class="nf">reload_register</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;reloads the current register and reapplies its settings</span>
 
 <span class="sd">        - in voice</span>
 <span class="sd">        - in the controller&#39;&#39;&#39;</span>
-        <span class="c">#print &quot;reloading register: {0}&quot;.format(name)</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s">&quot;voice_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1">#print &quot;reloading register: {0}&quot;.format(name)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s2">&quot;voice_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s">&quot;voice_composer_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-    </div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span></div>
+    
 <div class="viewcode-block" id="Voice.make_wavetable"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.make_wavetable">[docs]</a>    <span class="k">def</span> <span class="nf">make_wavetable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;assembles a wavetable </span>
 <span class="sd">        </span>
 <span class="sd">        using the registered wavetable-related params&#39;&#39;&#39;</span>
-        <span class="n">fun</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wavetables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavetable_generation_type</span> <span class="o">+</span> <span class="s">&#39;_wavetable&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_partials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_pool</span><span class="p">)</span>
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="n">fun</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wavetables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavetable_generation_type</span> <span class="o">+</span> <span class="s1">&#39;_wavetable&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_partials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_pool</span><span class="p">)</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">composer</span> <span class="kn">import</span> <span class="n">Composer</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">Composer</span><span class="p">()</span>
-    <span class="k">print</span> <span class="n">Voice</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">in_the_middle</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">Voice</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">in_the_middle</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -418,16 +416,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../roqba.html">roqba</a></li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="../../search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -436,16 +436,20 @@
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="../../genindex.html" title="General Index"
-             >index</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="../../py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="../../genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

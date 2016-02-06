@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -27,15 +25,15 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.0 documentation" href="index.html" />
     <link rel="next" title="Overview" href="overview.html" />
-    <link rel="prev" title="Roqba - a realtime music machine (composer, synthesizer and player)" href="index.html" /> 
+    <link rel="prev" title="Roqba - a responsive realtime music machine" href="index.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
-          <a href="index.html" title="Roqba - a realtime music machine (composer, synthesizer and player)"
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="Roqba - a responsive realtime music machine"
              accesskey="P">previous</a> |
           <a href="overview.html" title="Overview"
              accesskey="N">next</a> |
@@ -53,7 +51,7 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="readme">
 <h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
@@ -91,27 +89,32 @@ to start the app:</p>
 </pre></div>
 </div>
 <p>adjust speed by:</p>
-<div class="highlight-python"><pre>main.director.speed = &lt;speed&gt;  # length of the shortest note-length in seconds.</pre>
+<div class="highlight-python"><div class="highlight"><pre>main.director.speed = &lt;speed&gt;  # length of the shortest note-length in seconds.
+</pre></div>
 </div>
 <p>follow the log-messages with:</p>
-<div class="highlight-python"><pre>tail -f log.txt</pre>
+<div class="highlight-python"><div class="highlight"><pre>tail -f log.txt
+</pre></div>
 </div>
 <p>follow a graphical (scrolling) representation on the notes played by:</p>
 <blockquote>
 <div>tail -f scrolling.txt</div></blockquote>
 <p>note that on some systems (e.g. Ubuntu 10.4) tail will not continuously follow
 the file and it is necessary to run for example a repeated cat:</p>
-<div class="highlight-python"><pre>watch -n 0.1 cat scrolling.txt</pre>
+<div class="highlight-python"><div class="highlight"><pre>watch -n 0.1 cat scrolling.txt
+</pre></div>
 </div>
 </div>
 <div class="section" id="further-commands">
 <h2>Further commands<a class="headerlink" href="#further-commands" title="Permalink to this headline">¶</a></h2>
 <p>I run puredata with the padsp oss-wrapper, after loading the oss kernel
 module:</p>
-<div class="highlight-python"><pre>sudo modprobe -v snd-pcm-oss</pre>
+<div class="highlight-python"><div class="highlight"><pre>sudo modprobe -v snd-pcm-oss
+</pre></div>
 </div>
 <p>puredata is started as a background process:</p>
-<div class="highlight-python"><pre>padsp -n "puredata"  pd -oss -audiobuf 80 -noadc roqba.pd &amp;</pre>
+<div class="highlight-python"><div class="highlight"><pre>padsp -n &quot;puredata&quot;  pd -oss -audiobuf 80 -noadc roqba.pd &amp;
+</pre></div>
 </div>
 </div>
 </div>
@@ -134,16 +137,18 @@ module:</p>
 <li class="toctree-l1"><a class="reference internal" href="roqba.html">roqba</a></li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -152,23 +157,27 @@ module:</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="index.html" title="Roqba - a realtime music machine (composer, synthesizer and player)"
-             >previous</a> |
-          <a href="overview.html" title="Overview"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/readme.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="Roqba - a responsive realtime music machine"
+              >previous</a> |
+            <a href="overview.html" title="Overview"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/readme.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>

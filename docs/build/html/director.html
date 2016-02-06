@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -30,12 +28,12 @@
     <link rel="next" title="drummer" href="drummer.html" />
     <link rel="prev" title="composer" href="composer.html" /> 
   </head>
-  <body>
-    <div class="header-wrapper">
+  <body role="document">
+    <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Roqba 1.0 documentation</a></div>
-        <div class="rel">
+        <div class="rel" role="navigation" aria-label="related navigation">
           <a href="composer.html" title="composer"
              accesskey="P">previous</a> |
           <a href="drummer.html" title="drummer"
@@ -54,22 +52,22 @@
             
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="module-roqba.director">
 <span id="director"></span><h1>director<a class="headerlink" href="#module-roqba.director" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.director.Director">
-<em class="property">class </em><tt class="descclassname">roqba.director.</tt><tt class="descname">Director</tt><big>(</big><em>composer</em>, <em>state</em>, <em>behaviour</em>, <em>settings</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.director.</code><code class="descname">Director</code><span class="sig-paren">(</span><em>composer</em>, <em>state</em>, <em>behaviour</em>, <em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.director.Director.check_incoming_messages">
-<tt class="descname">check_incoming_messages</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.check_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.check_incoming_messages" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_incoming_messages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.check_incoming_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.check_incoming_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks if there are incoming messages in the queue</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.handle_incoming_message">
-<tt class="descname">handle_incoming_message</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.handle_incoming_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_incoming_message</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.handle_incoming_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>handles incoming messages from the gui interface</p>
 <p>TODO: keep a current-settings dataobject where to track
 all current settings and which can be used to write a snapshot 
@@ -78,32 +76,32 @@ of a particular moment</p>
 
 <dl class="method">
 <dt id="roqba.director.Director.make_length">
-<tt class="descname">make_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.make_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.make_length" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.make_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.make_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.new_random_meter">
-<tt class="descname">new_random_meter</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.new_random_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_random_meter" title="Permalink to this definition">¶</a></dt>
+<code class="descname">new_random_meter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.new_random_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_random_meter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.new_speed">
-<tt class="descname">new_speed</tt><big>(</big><em>val=None</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.new_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_speed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">new_speed</code><span class="sig-paren">(</span><em>val=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.new_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.new_speed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.pause">
-<tt class="descname">pause</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.pause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.pause" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.pause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.pause" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.set_meter">
-<tt class="descname">set_meter</tt><big>(</big><em>meter</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.set_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.set_meter" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_meter</code><span class="sig-paren">(</span><em>meter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.set_meter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.set_meter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.set_wavetables">
-<tt class="descname">set_wavetables</tt><big>(</big><em>vid=None</em>, <em>voices=None</em>, <em>manual=False</em>, <em>wavetable=None</em><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.set_wavetables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.set_wavetables" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_wavetables</code><span class="sig-paren">(</span><em>vid=None</em>, <em>voices=None</em>, <em>manual=False</em>, <em>wavetable=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.set_wavetables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.set_wavetables" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets new wavetables for those voices that have the</p>
 <p>wavetable automation flag turned on (or the manual flag set).
 when a voice-id is specified only this voice is considered</p>
@@ -111,19 +109,19 @@ when a voice-id is specified only this voice is considered</p>
 
 <dl class="method">
 <dt id="roqba.director.Director.stop">
-<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.stop" title="Permalink to this definition">¶</a></dt>
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.stop" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="roqba.director.Director.unpause">
-<tt class="descname">unpause</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/roqba/director.html#Director.unpause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.unpause" title="Permalink to this definition">¶</a></dt>
+<code class="descname">unpause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/director.html#Director.unpause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.director.Director.unpause" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="roqba.director.random">
-<tt class="descclassname">roqba.director.</tt><tt class="descname">random</tt><big>(</big><big>)</big> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.director.random" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">roqba.director.</code><code class="descname">random</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.director.random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -153,16 +151,18 @@ when a voice-id is specified only this voice is considered</p>
 </li>
 </ul>
 
-          <h3 style="margin-top: 1.5em;">Search</h3>
-          <form class="search" action="search.html" method="get">
-            <input type="text" name="q" />
-            <input type="submit" value="Go" />
-            <input type="hidden" name="check_keywords" value="yes" />
-            <input type="hidden" name="area" value="default" />
-          </form>
-          <p class="searchtip" style="font-size: 90%">
-            Enter search terms or a module, class or function name.
-          </p>
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
         </div>
         <div class="clearer"></div>
       </div>
@@ -171,23 +171,27 @@ when a voice-id is specified only this voice is considered</p>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="composer.html" title="composer"
-             >previous</a> |
-          <a href="drummer.html" title="drummer"
-             >next</a> |
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |
-          <a href="genindex.html" title="General Index"
-             >index</a>
-            <br/>
-            <a href="_sources/director.txt"
-               rel="nofollow">Show Source</a>
+          <div role="navigation" aria-label="related navigaton">
+            <a href="composer.html" title="composer"
+              >previous</a> |
+            <a href="drummer.html" title="drummer"
+              >next</a> |
+            <a href="py-modindex.html" title="Python Module Index"
+              >modules</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/director.txt"
+                rel="nofollow">Show Source</a>
+          </div>
         </div>
 
         <div class="right">
           
-    <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    <div class="footer" role="contentinfo">
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
         </div>
         <div class="clearer"></div>
