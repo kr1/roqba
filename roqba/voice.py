@@ -67,33 +67,32 @@ class Voice(object):
                 self.following_counter = 0
                 self.follow_limit = sample(range(5, 9))
         else:
-            self.behaviour = composer.behaviour["default_behaviour"]
-        self.should_play_a_melody = composer.behaviour.voice_get(id, 'should_play_a_melody')
-        #mel = self.should_play_a_melody
-        #if mel:
-        #    self.melody = mel[1]
-        #    self.melody_starts_on = mel[0]
+            self.behaviour = self.composer.behaviour["default_behaviour"]
+        self.should_play_a_melody = self.composer.behaviour.voice_get(
+            self.id, 'should_play_a_melody')
         self.playing_a_melody = False
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
         self.set_rhythm_grouping(note_length_grouping)
         self.note_duration_steps = 1
-        self.pause_prob = composer.behaviour.voice_get(id, 'default_pause_prob')
+        self.pause_prob = self.composer.behaviour.voice_get(self.id, 'default_pause_prob')
         self.legato_prob = 0.1  # to-do: really implement it
         # probability to have an embellishment-ornament during the current note
-        self.embellishment_prob = composer.behaviour['default_embellishment_prob']
+        self.embellishment_prob = self.composer.behaviour['default_embellishment_prob']
         self.movement_probs = DEFAULT_MOVEMENT_PROBS
         self.binaural_diff = 0  # this is not used in this module directly, but serves to track
-        self.slide = composer.behaviour.voice_get(id, "automate_slide")
-        self.slide_duration_prop = composer.behaviour.voice_get(id, 'slide_duration_prop')
+        self.slide = self.composer.behaviour.voice_get(self.id, "automate_slide")
+        self.slide_duration_prop = self.composer.behaviour.voice_get(
+            self.id, 'slide_duration_prop')
         self.next_pat_length = None
         self.note_duration_prop = composer.behaviour['default_note_duration_prop']
         # WAVETABLE - this is used for non-automated wavetables
         self.wavetable_generation_type = sample(
-            composer.behaviour.voice_get(id, 'wavetable_specs'))[0]
-        self.partial_pool = sample(sample(composer.behaviour.voice_get(id, 'wavetable_specs'))[1])
-        self.num_partials = composer.behaviour.voice_get(id, 'default_num_partial')
+            composer.behaviour.voice_get(self.id, 'wavetable_specs'))[0]
+        self.partial_pool = sample(
+            sample(self.composer.behaviour.voice_get(self.id, 'wavetable_specs'))[1])
+        self.num_partials = composer.behaviour.voice_get(self.id, 'default_num_partial')
 
         self.set_state(register)
         self.add_setters_for_behaviour_dict()

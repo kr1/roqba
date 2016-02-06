@@ -204,7 +204,7 @@ styles = {
             'automate_adsr': True,
             'automate_binaural_diffs': True,  # alt: False
             'automate_microspeed_change': True,
-            'microspeed_variation': 0.06,
+            'microspeed_variation': 0.08,
             'microspeed_max_speed_in_hz': 2,
             'automate_pan': False,
             'automate_num_partials': True,
@@ -221,6 +221,8 @@ styles = {
             'max_num_partials': 9,
             'max_speed': 0.17,
             "max_shuffle": 0.05,
+            'microvolume_variation': 0.9,
+            'microvolume_max_speed_in_hz': 5,
             'meter': (24, (2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1)),
             'min_speed': 0.08,
             'num_tones': 12,
