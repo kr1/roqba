@@ -24,6 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
+    <link rel="up" title="utilities" href="utilities.html" />
+    <link rel="next" title="voice" href="voice.html" />
+    <link rel="prev" title="pdsender" href="pdsender.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -36,8 +39,62 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="sine-controllers">
-<h1>sine_controllers<a class="headerlink" href="#sine-controllers" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-roqba.utilities.sine_controllers">
+<span id="sine-controllers"></span><h1>sine_controllers<a class="headerlink" href="#module-roqba.utilities.sine_controllers" title="Permalink to this headline">¶</a></h1>
+<p>this module provides objects that produce controller sine-waves</p>
+<p>for given frequencies.
+they use elapsed time to calculate the value
+for any given moment in which the get_value-methods are called</p>
+<dl class="class">
+<dt id="roqba.utilities.sine_controllers.MultiSine">
+<em class="property">class </em><code class="descclassname">roqba.utilities.sine_controllers.</code><code class="descname">MultiSine</code><span class="sig-paren">(</span><em>freqs</em>, <em>equal_power=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine" title="Permalink to this definition">¶</a></dt>
+<dd><p>a controller object for multiple overlaid sine-waves</p>
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.MultiSine.assemble_funnel">
+<code class="descname">assemble_funnel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.assemble_funnel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.assemble_funnel" title="Permalink to this definition">¶</a></dt>
+<dd><p>assembles a list of get_value function objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.MultiSine.get_value">
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.get_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the combined (added) value of the</p>
+<p>multiple sine controllers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.MultiSine.get_value_as_factor">
+<code class="descname">get_value_as_factor</code><span class="sig-paren">(</span><em>variation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.get_value_as_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.get_value_as_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns scaled value oscillating around one</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.MultiSine.set_freqs">
+<code class="descname">set_freqs</code><span class="sig-paren">(</span><em>freqs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#MultiSine.set_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.MultiSine.set_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>set new frequencies for the controller</p>
+<p>(note that the number of frequencies must be equal to
+the original number if frequencies)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="roqba.utilities.sine_controllers.Sine">
+<em class="property">class </em><code class="descclassname">roqba.utilities.sine_controllers.</code><code class="descname">Sine</code><span class="sig-paren">(</span><em>freq, range=[-1, 1]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine" title="Permalink to this definition">¶</a></dt>
+<dd><p>a single frequency sine-wave controller object</p>
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.Sine.get_value">
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.get_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the controller value at the moment it is called</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.utilities.sine_controllers.Sine.set_freq">
+<code class="descname">set_freq</code><span class="sig-paren">(</span><em>freq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/utilities/sine_controllers.html#Sine.set_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.utilities.sine_controllers.Sine.set_freq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -52,6 +109,12 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="roqba.html">roqba</a><ul>
+  <li><a href="utilities.html">utilities</a><ul>
+      <li>Previous: <a href="pdsender.html" title="previous chapter">pdsender</a></li>
+      <li>Next: <a href="voice.html" title="next chapter">voice</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -1,6 +1,11 @@
 Overview
 ========
 
+.. toctree::
+    :maxdepth: 2
+
+    events_and_messages
+
 diagram
 -------
 
@@ -20,7 +25,3 @@ _`introduction`
 | If a caesura is given, a flag is set which the director uses to modify its behaviour.
 | Finally the musical frame is sent to both the Note-Gateway and the Notator module.
 
-.. toctree::
-    :maxdepth: 1
-
-    events_and_messages

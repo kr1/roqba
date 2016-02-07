@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>roqba.composers.abstract_composer &mdash; Roqba 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Roqba 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for roqba.composers.abstract_composer</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">roqba.voice</span> <span class="kn">import</span> <span class="n">Voice</span>
+<span class="kn">from</span> <span class="nn">roqba.notator</span> <span class="kn">import</span> <span class="n">Notator</span>
+<span class="kn">from</span> <span class="nn">roqba.drummer</span> <span class="kn">import</span> <span class="n">Drummer</span>
+<span class="kn">import</span> <span class="nn">roqba.static.note_length_groupings</span> <span class="kn">as</span> <span class="nn">note_length_groupings</span>
+<span class="kn">from</span> <span class="nn">roqba.static.meters</span> <span class="kn">import</span> <span class="n">METERS</span>
+<span class="kn">from</span> <span class="nn">roqba.static.scales_and_harmonies</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ALL_STRICT_HARMONIES</span><span class="p">,</span>
+                                               <span class="n">BASE_HARMONIES</span><span class="p">,</span>
+                                               <span class="n">FOLLOWINGS</span><span class="p">,</span>
+                                               <span class="n">HARMONIC_INTERVALS</span><span class="p">,</span>
+                                               <span class="n">HARMONIES</span><span class="p">,</span>
+                                               <span class="n">NOTES_PER_SCALE</span><span class="p">,</span>
+                                               <span class="n">SCALES</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AbstractComposer"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer">[docs]</a><span class="k">class</span> <span class="nc">AbstractComposer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comp_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;composer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;transcriber&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;musical&quot;</span><span class="p">)</span>
+        <span class="c1"># change INFO to DEBUG for debugging output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applied_meter</span> <span class="o">=</span> <span class="n">METERS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">][</span><span class="s1">&#39;applied&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_groupings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span> <span class="o">=</span> <span class="n">Drummer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">voice_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_voices</span><span class="p">):</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="n">voice_idx</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">Voice</span><span class="p">(</span>
+                <span class="n">id_</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
+                <span class="n">note_length_grouping</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;meter&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">register</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;voice_registers&quot;</span><span class="p">][</span><span class="n">voice_idx</span><span class="p">],</span>
+                <span class="n">behaviour</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;voice_behaviours&#39;</span><span class="p">][</span><span class="n">voice_idx</span><span class="p">])</span>
+        <span class="p">[</span><span class="n">voice</span><span class="o">.</span><span class="n">register_other_voices</span><span class="p">()</span> <span class="k">for</span> <span class="n">voice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notator</span> <span class="o">=</span> <span class="n">Notator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_voices</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;Composer-Inst with {0}&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">harm</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_groupings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TERNARY_GROUPINGS</span> <span class="o">=</span> <span class="n">note_length_groupings</span><span class="o">.</span><span class="n">get_grouping</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span>
+                                                                    <span class="s2">&quot;terns&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">HEAVY_GROUPINGS</span> <span class="o">=</span> <span class="n">note_length_groupings</span><span class="o">.</span><span class="n">get_grouping</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span>
+                                                                  <span class="s2">&quot;heavy&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_GROUPINGS</span> <span class="o">=</span> <span class="n">note_length_groupings</span><span class="o">.</span><span class="n">get_grouping</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span>
+                                                                    <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span> <span class="o">=</span> <span class="n">note_length_groupings</span><span class="o">.</span><span class="n">get_grouping</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span>
+                                                                 <span class="s2">&quot;first&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AbstractComposer.report"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;utility function that prints info on  harmonies and single voices&#39;&#39;&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;harmonies: {0}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">harm</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;voices: {0}</span><span class="se">\n</span><span class="s2">notes:{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="p">,</span>
+                         <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">note</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span></div>
+
+<div class="viewcode-block" id="AbstractComposer.set_meter"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.set_meter">[docs]</a>    <span class="k">def</span> <span class="nf">set_meter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meter</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;modifies composer-attributes for the specified meter.</span>
+
+<span class="sd">        calls reload_register method of the voices and creates and</span>
+<span class="sd">        sets the new meter also for the drummer-instance&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meter</span> <span class="o">=</span> <span class="n">meter</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">reload_register</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span><span class="o">.</span><span class="n">create_pattern</span><span class="p">(</span><span class="n">METERS</span><span class="p">[</span><span class="n">meter</span><span class="p">][</span><span class="s2">&quot;applied&quot;</span><span class="p">])</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="AbstractComposer.generate"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="AbstractComposer.choose_rhythm"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.choose_rhythm">[docs]</a>    <span class="k">def</span> <span class="nf">choose_rhythm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AbstractComposer.set_binaural_diffs"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.set_binaural_diffs">[docs]</a>    <span class="k">def</span> <span class="nf">set_binaural_diffs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;&quot;de-tunes&quot; the specified voice by the specified interval (in hertz)</span>
+
+<span class="sd">        - if no values are given, random values (in the configurated range)</span>
+<span class="sd">        are set for each voice.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">!=</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">voice</span><span class="p">:</span>
+                <span class="n">voice</span><span class="o">.</span><span class="n">binaural_diff</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s2">&quot;voice&quot;</span><span class="p">,</span> <span class="s2">&quot;binaural&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">voice</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">val</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s2">&quot;voice&quot;</span><span class="p">,</span> <span class="s2">&quot;binaural&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">val</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">v</span><span class="o">.</span><span class="n">binaural_diff</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;common_binaural_diff&#39;</span><span class="p">]:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_binaural_diff&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;automate_binaural_diffs&quot;</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="ow">or</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;max_binaural_diff&quot;</span><span class="p">)</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">binaural_diff</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s2">&quot;voice&quot;</span><span class="p">,</span> <span class="s2">&quot;binaural&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">val</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="AbstractComposer.set_scale"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.set_scale">[docs]</a>    <span class="k">def</span> <span class="nf">set_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;sets the specified scale and generates a new real scale&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_real_scale</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="AbstractComposer.assemble_real_scale"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.assemble_real_scale">[docs]</a>    <span class="k">def</span> <span class="nf">assemble_real_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;extends the one-octave scale over the specified range&#39;&#39;&#39;</span>
+        <span class="n">real_scale</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">scale</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span>
+                <span class="n">real_scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">real_scale</span></div>
+
+<div class="viewcode-block" id="AbstractComposer.generate_real_scale"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.generate_real_scale">[docs]</a>    <span class="k">def</span> <span class="nf">generate_real_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;extends the one-octave scale over the specified range&#39;&#39;&#39;</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">SCALES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assemble_real_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/meters_cut.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

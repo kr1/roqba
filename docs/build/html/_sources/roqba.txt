@@ -6,7 +6,7 @@ roqba
 .. toctree::
     :maxdepth: 4
 
-    composer
+    composers
     director
     drummer
     main

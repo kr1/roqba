@@ -24,6 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
+    <link rel="up" title="roqba" href="roqba.html" />
+    <link rel="next" title="static" href="static.html" />
+    <link rel="prev" title="notator" href="notator.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -36,8 +39,142 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="note-gateway">
-<h1>note_gateway<a class="headerlink" href="#note-gateway" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-roqba.note_gateway">
+<span id="note-gateway"></span><h1>note_gateway<a class="headerlink" href="#module-roqba.note_gateway" title="Permalink to this headline">¶</a></h1>
+<p>the purpose of this class is to communicate with the sound-engine.</p>
+<p>its main concerns are:
+- starting, stopping, pausing the engine
+- sending notes
+- sending controlling messages</p>
+<dl class="class">
+<dt id="roqba.note_gateway.NoteGateway">
+<em class="property">class </em><code class="descclassname">roqba.note_gateway.</code><code class="descname">NoteGateway</code><span class="sig-paren">(</span><em>settings</em>, <em>behaviour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.drum_hub_gen">
+<code class="descname">drum_hub_gen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.drum_hub_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.drum_hub_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>generator method that sends notes to all drum voices</p>
+<p>according to present state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.hub_gen">
+<code class="descname">hub_gen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.hub_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.hub_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>generator method that sends notes to all melodic voices</p>
+<p>according to the present state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.mute_voice">
+<code class="descname">mute_voice</code><span class="sig-paren">(</span><em>vid</em>, <em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.mute_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.mute_voice" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a message to mute/unmute a voice to pd</p>
+<p>use vid=drums to mute/unmute the drums</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pause">
+<code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>blocks new messages and turns off sound-production</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pd_send_drum_note">
+<code class="descname">pd_send_drum_note</code><span class="sig-paren">(</span><em>voice</em>, <em>vol</em>, <em>pan</em>, <em>ctl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_drum_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_drum_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a note-message for a drum-voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pd_send_duration">
+<code class="descname">pd_send_duration</code><span class="sig-paren">(</span><em>voice_id</em>, <em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>send out the duration for a given voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pd_send_note">
+<code class="descname">pd_send_note</code><span class="sig-paren">(</span><em>voice_id</em>, <em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>send out a single note</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.pd_send_wavetable">
+<code class="descname">pd_send_wavetable</code><span class="sig-paren">(</span><em>voice_id</em>, <em>wavetable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.pd_send_wavetable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.pd_send_wavetable" title="Permalink to this definition">¶</a></dt>
+<dd><p>send out the duration for a given voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_adsr">
+<code class="descname">send_voice_adsr</code><span class="sig-paren">(</span><em>voice</em>, <em>adsr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_adsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_adsr" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a adsr-message for a voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_pan">
+<code class="descname">send_voice_pan</code><span class="sig-paren">(</span><em>voice</em>, <em>pan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_pan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_pan" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a pan-message for a voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_peak_level">
+<code class="descname">send_voice_peak_level</code><span class="sig-paren">(</span><em>voice</em>, <em>peak_level</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_peak_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_peak_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a peak_level-message for a voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.send_voice_volume">
+<code class="descname">send_voice_volume</code><span class="sig-paren">(</span><em>voice</em>, <em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.send_voice_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.send_voice_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a volume message for a voice</p>
+<p>use values from 0 to 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.set_slide_msecs">
+<code class="descname">set_slide_msecs</code><span class="sig-paren">(</span><em>voice_id</em>, <em>msecs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_slide_msecs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_slide_msecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a message containing the general slide-time in millisecs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.set_slide_msecs_for_all_voices">
+<code class="descname">set_slide_msecs_for_all_voices</code><span class="sig-paren">(</span><em>msecs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_slide_msecs_for_all_voices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_slide_msecs_for_all_voices" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a message containing the general slide-time in millisecs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.set_slide_to_0">
+<code class="descname">set_slide_to_0</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_slide_to_0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_slide_to_0" title="Permalink to this definition">¶</a></dt>
+<dd><p>this method bypasses the slide functionality</p>
+<p>by setting slide-duration to 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.set_transpose">
+<code class="descname">set_transpose</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.set_transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.set_transpose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>destroys the puredata-sender object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.stop_all_notes">
+<code class="descname">stop_all_notes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop_all_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_all_notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends a stop message to all active voices</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.stop_notes_of_voice">
+<code class="descname">stop_notes_of_voice</code><span class="sig-paren">(</span><em>vid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.stop_notes_of_voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.stop_notes_of_voice" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends the stop message to a specified voice</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.note_gateway.NoteGateway.unpause">
+<code class="descname">unpause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/note_gateway.html#NoteGateway.unpause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.note_gateway.NoteGateway.unpause" title="Permalink to this definition">¶</a></dt>
+<dd><p>turns on sound-production and lets messages flow again</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -52,6 +189,10 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="roqba.html">roqba</a><ul>
+      <li>Previous: <a href="notator.html" title="previous chapter">notator</a></li>
+      <li>Next: <a href="static.html" title="next chapter">static</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

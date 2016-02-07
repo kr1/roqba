@@ -24,6 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
+    <link rel="up" title="roqba" href="roqba.html" />
+    <link rel="next" title="note_gateway" href="note_gateway.html" />
+    <link rel="prev" title="metronome" href="metronome.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -36,8 +39,58 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="notator">
-<h1>notator<a class="headerlink" href="#notator" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-roqba.notator">
+<span id="notator"></span><h1>notator<a class="headerlink" href="#module-roqba.notator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="roqba.notator.Notator">
+<em class="property">class </em><code class="descclassname">roqba.notator.</code><code class="descname">Notator</code><span class="sig-paren">(</span><em>num_voices</em>, <em>scroll_filename='scrolling.txt'</em>, <em>buffer_length=75</em>, <em>num_lines=40</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="roqba.notator.Notator.add_note">
+<code class="descname">add_note</code><span class="sig-paren">(</span><em>note</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.add_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.add_note" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>mat</em>, <em>weight</em>, <em>cycle_pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.get_unix_scroll_command">
+<code class="descname">get_unix_scroll_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.get_unix_scroll_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.get_unix_scroll_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.make_matrix">
+<code class="descname">make_matrix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.make_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.make_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.note_to_file">
+<code class="descname">note_to_file</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.note_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.note_to_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.post_process">
+<code class="descname">post_process</code><span class="sig-paren">(</span><em>txt</em>, <em>weight</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.post_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.post_process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="roqba.notator.Notator.write_to_file">
+<code class="descname">write_to_file</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#Notator.write_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.Notator.write_to_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="roqba.notator.main">
+<code class="descclassname">roqba.notator.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/notator.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.notator.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -52,6 +105,10 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="roqba.html">roqba</a><ul>
+      <li>Previous: <a href="metronome.html" title="previous chapter">metronome</a></li>
+      <li>Next: <a href="note_gateway.html" title="next chapter">note_gateway</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

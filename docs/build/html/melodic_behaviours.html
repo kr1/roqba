@@ -24,6 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
+    <link rel="up" title="static" href="static.html" />
+    <link rel="next" title="meters" href="meters.html" />
+    <link rel="prev" title="static" href="static.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -40,6 +43,186 @@
 <span id="melodic-behaviours"></span><h1>melodic_behaviours<a class="headerlink" href="#module-roqba.static.melodic_behaviours" title="Permalink to this headline">¶</a></h1>
 <p>this module holds sets of attributes to be used in creating
 various melodic environments</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&#39;&#39;&#39;this module holds sets of attributes to be used in creating</span>
+<span class="sd">various melodic environments</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">scales_and_harmonies</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">movement_probabilities</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">registers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;BASS&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;BASS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s2">&quot;HEAVY_GROUPINGS&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;voice_attrs&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+              <span class="s2">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+              <span class="s2">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+              <span class="c1">#&quot;slide_duration_prop&quot;: 0.1, </span>
+              <span class="s2">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+              <span class="s2">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">BASS_MOVEMENT_PROBS</span><span class="p">,</span>
+              <span class="s2">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+              <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+              <span class="p">}</span>
+    <span class="p">},</span> 
+    <span class="s2">&quot;ROCK_BASS&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ROCK_BASS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s2">&quot;FAST_GROUPINGS&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;voice_attrs&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.002</span><span class="p">,</span>
+              <span class="s2">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+              <span class="s2">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+              <span class="c1">#&quot;slide_duration_prop&quot;: 0.1, </span>
+              <span class="s2">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+              <span class="s2">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">ROCK_BASS_MOVEMENT_PROBS</span><span class="p">,</span>
+              <span class="s2">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+              <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">24</span><span class="p">]</span>
+              <span class="p">}</span>
+    <span class="p">},</span> 
+    <span class="s2">&quot;MID&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;MID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s2">&quot;DEFAULT_GROUPINGS&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;voice_attrs&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+              <span class="s2">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+              <span class="s2">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+              <span class="c1">#&quot;slide_duration_prop&quot;: 0.1, </span>
+              <span class="s2">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+              <span class="s2">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
+              <span class="s2">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+              <span class="s2">&quot;range&quot;</span><span class="p">:[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">]},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;FLAT_MID&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;FLAT_MID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s2">&quot;FAST_GROUPINGS&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;voice_attrs&quot;</span><span class="p">:{</span>
+              <span class="s2">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+              <span class="s2">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+              <span class="s2">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+              <span class="c1">#&quot;slide_duration_prop&quot;: 0.1, </span>
+              <span class="s2">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+              <span class="s2">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">FLAT_MID_MOVEMENT_PROBS</span><span class="p">,</span>
+              <span class="s2">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+              <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">27</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+              <span class="p">}</span>
+    <span class="p">},</span> 
+    <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort_importance&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;voice_composer_attrs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;note_length_groupings&quot;</span><span class="p">:</span> <span class="s2">&quot;TERNARY_GROUPINGS&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;voice_attrs&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;embellishment_prob&quot;</span><span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
+            <span class="s2">&quot;legato_prob&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s2">&quot;slide&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="c1">#&quot;slide_duration_prop&quot;: 0.2, </span>
+            <span class="s2">&quot;change_rhythm_after_times&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;movement_probs&quot;</span><span class="p">:</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span><span class="p">,</span>
+            <span class="s2">&quot;pause_prob&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+            <span class="s2">&quot;range&quot;</span><span class="p">:[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">48</span><span class="p">]}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">melody_sets</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;roqba&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;DIATONIC&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;ternary&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">48</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;alto&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;DIATONIC&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;tenor&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;DIATONIC&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">27</span><span class="p">,</span> <span class="mi">42</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;bass&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;DIATONIC&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;heavy&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">BASS_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;penta&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;lead&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;PENTA_MINOR&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;ternary&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">DEFAULT_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">36</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;alto&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;PENTA_MINOR&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;tenor&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;PENTA_MINOR&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.015</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">MIDDLE_VOICES_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">31</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;bass&quot;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;PENTA_MINOR&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;grouping&quot;</span><span class="p">:</span> <span class="s2">&quot;heavy&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;slide&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+       <span class="s2">&quot;slide_duration_prop&quot;</span> <span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+       <span class="s2">&quot;embellishment_prob&quot;</span> <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+       <span class="s2">&quot;change_rhythm_after_times&quot;</span> <span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+       <span class="s2">&quot;movement&quot;</span><span class="p">:</span> <span class="n">BASS_MOVEMENT_PROBS</span><span class="p">,</span>
+       <span class="s2">&quot;range&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">melody_sets</span>
+    <span class="k">print</span> <span class="n">registers</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -54,6 +237,12 @@ various melodic environments</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="roqba.html">roqba</a><ul>
+  <li><a href="static.html">static</a><ul>
+      <li>Previous: <a href="static.html" title="previous chapter">static</a></li>
+      <li>Next: <a href="meters.html" title="next chapter">meters</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

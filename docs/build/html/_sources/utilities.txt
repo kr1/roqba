@@ -7,6 +7,8 @@ utilities
     :maxdepth: 2
 
     behaviour_dict
+    gui_connect
+    melody_player
     pd_wavetables
     pdsender
     sine_controllers

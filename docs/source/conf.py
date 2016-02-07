@@ -44,7 +44,9 @@ project = u'Roqba'
 copyright = u'2011-2016, Christian Woerner'
 
 rst_epilog = """
-  |br|  html:: <br/>
+..  |br|  raw:: html
+
+    <br/>
 """
 
 # The version info for the project you're documenting, acts as replacement for
