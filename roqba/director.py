@@ -89,7 +89,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.meter = self.composer.applied_meter
         self.metronome.set_meter(self.composer.offered_meters[meter]["applied"])
 
-    def _play(self, duration=None):
+    def _play(self, shutdown_event=None, duration=None):
         """this is the core of the program giving the impulse for all actions.
 
         """
@@ -99,6 +99,8 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         pos = 0
 
         while not self.stopped:
+            if shutdown_event and shutdown_event.isSet():
+                self.stop()
             if not self.playing:
                 self.check_incoming_messages()
                 time.sleep(0.2)
@@ -219,7 +221,6 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         if not self.playing:
             self.playing = True
             self.gateway.unpause()
-            #threading.Thread(target=self._play, args=()).start()
         return True
 
     def stop(self):

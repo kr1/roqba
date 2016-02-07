@@ -1,6 +1,7 @@
 import logging
 import threading
 import logging.config
+import time
 
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
@@ -29,8 +30,12 @@ director = Director(gateway, behaviour, settings)
 
 def main():
     '''starts the main thread of the application'''
-    director_thread = threading.Thread(target=director._play, args=())
+    shutdown_event = threading.Event()
+    director_thread = threading.Thread(target=director._play, args=(shutdown_event,))
+    director_thread.setDaemon(True)
     director_thread.start()
+    return director_thread, shutdown_event
+
 
 if __name__ == "__main__":
     print '''running this application from the interpreter lets you interact with it directly.
