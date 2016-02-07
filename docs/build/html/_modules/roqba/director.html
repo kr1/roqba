@@ -129,7 +129,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">applied_meter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metronome</span><span class="o">.</span><span class="n">set_meter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">offered_meters</span><span class="p">[</span><span class="n">meter</span><span class="p">][</span><span class="s2">&quot;applied&quot;</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">_play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shutdown_event</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;this is the core of the program giving the impulse for all actions.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -139,6 +139,8 @@
         <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">shutdown_event</span> <span class="ow">and</span> <span class="n">shutdown_event</span><span class="o">.</span><span class="n">isSet</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">check_incoming_messages</span><span class="p">()</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
@@ -259,7 +261,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">playing</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">unpause</span><span class="p">()</span>
-            <span class="c1">#threading.Thread(target=self._play, args=()).start()</span>
         <span class="k">return</span> <span class="bp">True</span></div>
 
 <div class="viewcode-block" id="Director.stop"><a class="viewcode-back" href="../../director.html#roqba.director.Director.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

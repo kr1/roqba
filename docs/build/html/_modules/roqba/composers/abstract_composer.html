@@ -48,19 +48,27 @@
 <span class="kn">from</span> <span class="nn">roqba.drummer</span> <span class="kn">import</span> <span class="n">Drummer</span>
 <span class="kn">import</span> <span class="nn">roqba.static.note_length_groupings</span> <span class="kn">as</span> <span class="nn">note_length_groupings</span>
 <span class="kn">from</span> <span class="nn">roqba.static.meters</span> <span class="kn">import</span> <span class="n">METERS</span>
-<span class="kn">from</span> <span class="nn">roqba.static.scales_and_harmonies</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ALL_STRICT_HARMONIES</span><span class="p">,</span>
-                                               <span class="n">BASE_HARMONIES</span><span class="p">,</span>
-                                               <span class="n">FOLLOWINGS</span><span class="p">,</span>
-                                               <span class="n">HARMONIC_INTERVALS</span><span class="p">,</span>
-                                               <span class="n">HARMONIES</span><span class="p">,</span>
-                                               <span class="n">NOTES_PER_SCALE</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">roqba.static.melodic_behaviours</span> <span class="kn">import</span> <span class="n">registers</span>
+<span class="kn">from</span> <span class="nn">roqba.static.scales_and_harmonies</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SCALES_BY_FREQUENCY</span><span class="p">,</span>
                                                <span class="n">SCALES</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="AbstractComposer"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer">[docs]</a><span class="k">class</span> <span class="nc">AbstractComposer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">gateway</span><span class="p">,</span>
+                 <span class="n">settings</span><span class="p">,</span>
+                 <span class="n">behaviour</span><span class="p">,</span>
+                 <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;DIATONIC&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span> <span class="o">=</span> <span class="n">behaviour</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span> <span class="o">=</span> <span class="n">gateway</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registers</span> <span class="o">=</span> <span class="n">registers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offered_scales</span> <span class="o">=</span> <span class="n">SCALES_BY_FREQUENCY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offered_meters</span> <span class="o">=</span> <span class="n">METERS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_voices</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;number_of_voices&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comp_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;composer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;transcriber&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;musical&quot;</span><span class="p">)</span>
@@ -108,10 +116,12 @@
 <span class="sd">        calls reload_register method of the voices and creates and</span>
 <span class="sd">        sets the new meter also for the drummer-instance&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meter</span> <span class="o">=</span> <span class="n">meter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applied_meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offered_meters</span><span class="p">[</span><span class="n">meter</span><span class="p">][</span><span class="s2">&quot;applied&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_groupings</span><span class="p">(</span><span class="n">meter</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">set_note_length_groupings</span><span class="p">()</span>
             <span class="n">v</span><span class="o">.</span><span class="n">reload_register</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span><span class="o">.</span><span class="n">create_pattern</span><span class="p">(</span><span class="n">METERS</span><span class="p">[</span><span class="n">meter</span><span class="p">][</span><span class="s2">&quot;applied&quot;</span><span class="p">])</span>
-        <span class="k">pass</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span><span class="o">.</span><span class="n">create_pattern</span><span class="p">(</span><span class="n">METERS</span><span class="p">[</span><span class="n">meter</span><span class="p">][</span><span class="s2">&quot;applied&quot;</span><span class="p">])</span></div>
 
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="AbstractComposer.generate"><a class="viewcode-back" href="../../../composers.html#roqba.composers.abstract_composer.AbstractComposer.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -166,7 +176,6 @@
         <span class="sd">&#39;&#39;&#39;extends the one-octave scale over the specified range&#39;&#39;&#39;</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">SCALES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">real_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assemble_real_scale</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span></div></div>
-
 </pre></div>
 
           </div>

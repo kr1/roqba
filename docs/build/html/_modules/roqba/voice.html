@@ -134,7 +134,7 @@
             <span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_partials</span> <span class="o">=</span> <span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;default_num_partial&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">register</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_note_length_groupings</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_setters_for_behaviour_dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">musical_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;musical&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;automate_microvolume_change&#39;</span><span class="p">]:</span>
@@ -379,28 +379,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">following_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">follow_limit</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Voice.set_state"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;sets the state for the voice.</span>
+<div class="viewcode-block" id="Voice.set_note_length_groupings"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.set_note_length_groupings">[docs]</a>    <span class="k">def</span> <span class="nf">set_note_length_groupings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;BASS&#39;</span><span class="p">:</span> <span class="s1">&#39;HEAVY_GROUPINGS&#39;</span><span class="p">,</span>
+                                                 <span class="s1">&#39;ROCK_BASS&#39;</span><span class="p">:</span> <span class="s1">&#39;FAST_GROUPINGS&#39;</span><span class="p">,</span>
+                                                 <span class="s1">&#39;FLAT_MID&#39;</span><span class="p">:</span> <span class="s1">&#39;FAST_GROUPINGS&#39;</span><span class="p">,</span>
+                                                 <span class="s1">&#39;MID&#39;</span><span class="p">:</span> <span class="s1">&#39;DEFAULT_GROUPINGS&#39;</span><span class="p">,</span>
+                                                 <span class="s1">&#39;HIGH&#39;</span><span class="p">:</span> <span class="s1">&#39;TERNARY_GROUPINGS&#39;</span><span class="p">}):</span>
+        <span class="sd">&quot;&quot;&quot;sets the note_length_groupings attribute on self</span>
 
-<span class="sd">        state is one of &quot;BASS&quot;, &quot;ROCK_BASS&quot;, &quot;MID&quot;, &quot;HIGH&quot;, or &quot;SLAVE&quot;.</span>
-<span class="sd">        the state is a set of common settings for the voice, e.g.</span>
-<span class="sd">        voice-range, embellishment probability, rhythmic variation,</span>
-<span class="sd">        movement-mode, etc.&#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reload_register</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;BASS&quot;</span><span class="p">:</span>
-            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">HEAVY_GROUPINGS</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ROCK_BASS&quot;</span><span class="p">:</span>
-            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;FLAT_MID&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">FAST_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;MID&quot;</span><span class="p">:</span>
-            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">DEFAULT_GROUPINGS</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span>
-            <span class="c1">#self.behaviour = &quot;AUTONOMOUS&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="o">.</span><span class="n">TERNARY_GROUPINGS</span></div>
+<span class="sd">        by reading the current value from the composer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">note_length_groupings</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">composer</span><span class="p">,</span> <span class="n">mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]])</span></div>
 
 <div class="viewcode-block" id="Voice.register_other_voices"><a class="viewcode-back" href="../../voice.html#roqba.voice.Voice.register_other_voices">[docs]</a>    <span class="k">def</span> <span class="nf">register_other_voices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;returns the other voices registered in the app&#39;&#39;&#39;</span>

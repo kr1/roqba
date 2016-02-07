@@ -42,7 +42,7 @@
 <span id="voice"></span><h1>voice<a class="headerlink" href="#module-roqba.voice" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.voice.Voice">
-<em class="property">class </em><code class="descclassname">roqba.voice.</code><code class="descname">Voice</code><span class="sig-paren">(</span><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[2, 6]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.voice.</code><code class="descname">Voice</code><span class="sig-paren">(</span><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[6, 1, 1]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.voice.Voice.add_setters_for_behaviour_dict">
 <code class="descname">add_setters_for_behaviour_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.add_setters_for_behaviour_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.add_setters_for_behaviour_dict" title="Permalink to this definition">¶</a></dt>
@@ -136,6 +136,13 @@ attribute on the composer</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="roqba.voice.Voice.set_note_length_groupings">
+<code class="descname">set_note_length_groupings</code><span class="sig-paren">(</span><em>mapping={'HIGH': 'TERNARY_GROUPINGS'</em>, <em>'ROCK_BASS': 'FAST_GROUPINGS'</em>, <em>'BASS': 'HEAVY_GROUPINGS'</em>, <em>'FLAT_MID': 'FAST_GROUPINGS'</em>, <em>'MID': 'DEFAULT_GROUPINGS'}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_note_length_groupings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_note_length_groupings" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the note_length_groupings attribute on self</p>
+<p>by reading the current value from the composer</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="roqba.voice.Voice.set_pan_pos">
 <code class="descname">set_pan_pos</code><span class="sig-paren">(</span><em>gateway</em>, <em>pan_pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_pan_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_pan_pos" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -144,16 +151,6 @@ attribute on the composer</p>
 <dt id="roqba.voice.Voice.set_rhythm_grouping">
 <code class="descname">set_rhythm_grouping</code><span class="sig-paren">(</span><em>grouping</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_rhythm_grouping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_rhythm_grouping" title="Permalink to this definition">¶</a></dt>
 <dd><p>setter method which creates also the on/off pattern</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="roqba.voice.Voice.set_state">
-<code class="descname">set_state</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>sets the state for the voice.</p>
-<p>state is one of &#8220;BASS&#8221;, &#8220;ROCK_BASS&#8221;, &#8220;MID&#8221;, &#8220;HIGH&#8221;, or &#8220;SLAVE&#8221;.
-the state is a set of common settings for the voice, e.g.
-voice-range, embellishment probability, rhythmic variation,
-movement-mode, etc.</p>
 </dd></dl>
 
 <dl class="method">
