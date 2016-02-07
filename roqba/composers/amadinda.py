@@ -4,40 +4,33 @@ import threading
 from random import choice
 
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.static.melodic_behaviours import registers
-from roqba.static.scales_and_harmonies import FOLLOWINGS, SCALES_BY_FREQUENCY
-from roqba.static.meters import METERS
+from roqba.static.scales_and_harmonies import FOLLOWINGS
 
 
 class Composer(AbstractComposer):
     def __init__(self, gateway, settings, behaviour, scale="DIATONIC"):
-        self.gateway = gateway
-        self.settings = settings
-        self.behaviour = behaviour
-        self.num_voices = settings['number_of_voices']
-        self.scale = scale
-        self.registers = registers
+        # General
+        super(Composer, self).__init__(gateway,
+                                       settings,
+                                       behaviour)
         self.selected_meters = [self.behaviour['meter']]
-        self.offered_meters = METERS
-        self.pattern_played_times = 0
-        self.pattern_played_maximum = 90
-        self.offered_scales = SCALES_BY_FREQUENCY
-        self.words = self.all_python_words()
-        self.tone_range = behaviour['tone_range']
-        self.num_tones = behaviour['num_tones']
-        self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
-        self.transpose = 20
         self.half_beat = self.behaviour['half_beat']
         self.second_beat_half = False
+        # Amadinda specific
+        self.tone_range = behaviour['tone_range']
+        self.sequence_length = behaviour['sequence_length']
+        self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
+        self.pattern_played_times = 0
+        self.pattern_played_maximum = 90
+        self.words = self.all_python_words()
         self.octave_offset = behaviour['octave_offset']
+        self.transpose = 20
 
-        super(Composer, self).__init__()
         for voice in self.voices.values():
             voice.duration_in_msec = 600
         self.set_scale(self.scale)
         self.make_new_pattern()
         self.gateway.mute_voice("drums", 1)
-
 
     def all_python_words(self):
         filepaths = itertools.chain(*[[os.path.join(entry[0], file_)
@@ -133,9 +126,9 @@ class Composer(AbstractComposer):
 
     def make_new_pattern(self):
         word1 = choice(self.words)
-        pure_seq1 = [(ord(char) % self.tone_range) for char in word1][:self.num_tones]
+        pure_seq1 = [(ord(char) % self.tone_range) for char in word1][:self.sequence_length]
         word2 = choice(self.words)
-        pure_seq2 = [(ord(char) % self.tone_range) for char in word2][:self.num_tones]
+        pure_seq2 = [(ord(char) % self.tone_range) for char in word2][:self.sequence_length]
         self.pattern_played_times = 0
         self.patterns = {}
         for offset in range(0, 5):
@@ -148,9 +141,9 @@ class Composer(AbstractComposer):
     def _apply_new_pattern(self, pure_seq1, pure_seq2):
         self.applied_seq1 = list(itertools.chain(
             *zip([tone + self.transpose for tone in pure_seq1],
-                 [0] * self.num_tones)))
+                 [0] * self.sequence_length)))
         self.applied_seq2 = list(itertools.chain(
-            *zip([0] * self.num_tones,
+            *zip([0] * self.sequence_length,
                  [tone + self.transpose for tone in pure_seq2])))
         seq3 = self._make_third_voice(self.applied_seq1, self.applied_seq2)
         return {
@@ -162,7 +155,7 @@ class Composer(AbstractComposer):
 
     def _make_third_voice(self, applied_seq1, applied_seq2):
         seq3 = []
-        for idx in range(self.num_tones * 2):
+        for idx in range(self.sequence_length * 2):
             if (applied_seq1[idx] > 0
                     and applied_seq1[idx] < self.transpose + (self.number_of_tones_in_3rd_voice)):
                 seq3.append(applied_seq1[idx] + (2 * self.octave_offset - 1))

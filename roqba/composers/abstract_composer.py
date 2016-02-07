@@ -8,19 +8,27 @@ from roqba.notator import Notator
 from roqba.drummer import Drummer
 import roqba.static.note_length_groupings as note_length_groupings
 from roqba.static.meters import METERS
-from roqba.static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
-                                               BASE_HARMONIES,
-                                               FOLLOWINGS,
-                                               HARMONIC_INTERVALS,
-                                               HARMONIES,
-                                               NOTES_PER_SCALE,
+from roqba.static.melodic_behaviours import registers
+from roqba.static.scales_and_harmonies import (SCALES_BY_FREQUENCY,
                                                SCALES)
 
 
 class AbstractComposer(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self):
+    def __init__(self,
+                 gateway,
+                 settings,
+                 behaviour,
+                 scale="DIATONIC"):
+        self.settings = settings
+        self.behaviour = behaviour
+        self.gateway = gateway
+        self.registers = registers
+        self.offered_scales = SCALES_BY_FREQUENCY
+        self.offered_meters = METERS
+        self.scale = scale
+        self.num_voices = settings['number_of_voices']
         self.comp_logger = logging.getLogger("composer")
         self.note_logger = logging.getLogger("transcriber")
         self.musical_logger = logging.getLogger("musical")
@@ -68,10 +76,12 @@ class AbstractComposer(object):
         calls reload_register method of the voices and creates and
         sets the new meter also for the drummer-instance'''
         self.meter = meter
+        self.applied_meter = self.offered_meters[meter]["applied"]
+        self._update_groupings(meter)
         for v in self.voices.values():
+            v.set_note_length_groupings()
             v.reload_register()
         self.drummer.create_pattern(METERS[meter]["applied"])
-        pass
 
     @abstractmethod
     def generate(self):
@@ -126,4 +136,3 @@ class AbstractComposer(object):
         '''extends the one-octave scale over the specified range'''
         scale = SCALES[self.scale]
         self.real_scale = self.assemble_real_scale(scale, min, max)
-

@@ -227,7 +227,7 @@ styles = {
             'microvolume_max_speed_in_hz': 5,
             'meter': (24, (2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1)),
             'min_speed': 0.08,
-            'num_tones': 12,
+            'sequence_length': 12,
             'number_of_tones_in_3rd_voice': 4,
             'octave_offset': 6,
             'per_voice': {
