@@ -139,7 +139,7 @@ behaviour = {
 
 styles = {
     "bulgarian": {
-        "settings": {},
+        "settings": {'composer': 'baroq'},
         "behaviour": {
             'automate_meters': True,
             "meter": (7, (3, 2, 2)),
@@ -165,6 +165,7 @@ styles = {
     },
     "rock": {
         "settings": {
+            'composer': 'baroq',
             'number_of_voices': 4,
             'voice_registers': ['ROCK_BASS', 'FLAT_MID', 'FLAT_MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
@@ -247,15 +248,6 @@ styles = {
         }
     }
 }
-
-#style = 'rock'
-style = None
-style = 'amadinda'
-
-if style:
-    settings.update(styles[style]["settings"])
-    behaviour.update(styles[style]["behaviour"])
-    behaviour["style"] = style
 
 if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
     behaviour["meters"] = sum(behaviour["meters"], [])
