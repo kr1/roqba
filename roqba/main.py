@@ -1,6 +1,7 @@
 import logging
 import threading
 import logging.config
+import time
 
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
@@ -16,6 +17,12 @@ except ImportError:
 default_settings.settings.update(local_settings.settings)
 default_settings.behaviour.update(local_settings.behaviour)
 
+if local_settings.style:
+    style = local_settings.style
+    default_settings.settings.update(default_settings.styles[style]["settings"])
+    default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
+    default_settings.behaviour["style"] = style
+
 settings = default_settings.settings
 behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 
@@ -29,8 +36,12 @@ director = Director(gateway, behaviour, settings)
 
 def main():
     '''starts the main thread of the application'''
-    director_thread = threading.Thread(target=director._play, args=())
+    shutdown_event = threading.Event()
+    director_thread = threading.Thread(target=director._play, args=(shutdown_event,))
+    director_thread.setDaemon(True)
     director_thread.start()
+    return director_thread, shutdown_event
+
 
 if __name__ == "__main__":
     print '''running this application from the interpreter lets you interact with it directly.

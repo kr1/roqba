@@ -94,7 +94,7 @@ class Voice(object):
             sample(self.composer.behaviour.voice_get(self.id, 'wavetable_specs'))[1])
         self.num_partials = composer.behaviour.voice_get(self.id, 'default_num_partial')
 
-        self.set_state(register)
+        self.set_note_length_groupings()
         self.add_setters_for_behaviour_dict()
         self.musical_logger = logging.getLogger('musical')
         if self.composer.behaviour['automate_microvolume_change']:
@@ -339,28 +339,15 @@ class Voice(object):
         self.following_counter = 0
         self.follow_limit = sample(range(3, 9))
 
-    def set_state(self, name):
-        '''sets the state for the voice.
+    def set_note_length_groupings(self, mapping={'BASS': 'HEAVY_GROUPINGS',
+                                                 'ROCK_BASS': 'FAST_GROUPINGS',
+                                                 'FLAT_MID': 'FAST_GROUPINGS',
+                                                 'MID': 'DEFAULT_GROUPINGS',
+                                                 'HIGH': 'TERNARY_GROUPINGS'}):
+        """sets the note_length_groupings attribute on self
 
-        state is one of "BASS", "ROCK_BASS", "MID", "HIGH", or "SLAVE".
-        the state is a set of common settings for the voice, e.g.
-        voice-range, embellishment probability, rhythmic variation,
-        movement-mode, etc.'''
-        self.reload_register()
-        if name == "BASS":
-            #self.behaviour = "AUTONOMOUS"
-            self.note_length_groupings = self.composer.HEAVY_GROUPINGS
-        if name == "ROCK_BASS":
-            #self.behaviour = "AUTONOMOUS"
-            self.note_length_groupings = self.composer.FAST_GROUPINGS
-        elif name == "FLAT_MID":
-            self.note_length_groupings = self.composer.FAST_GROUPINGS
-        elif name == "MID":
-            #self.behaviour = "AUTONOMOUS"
-            self.note_length_groupings = self.composer.DEFAULT_GROUPINGS
-        elif name == "HIGH":
-            #self.behaviour = "AUTONOMOUS"
-            self.note_length_groupings = self.composer.TERNARY_GROUPINGS
+        by reading the current value from the composer"""
+        self.note_length_groupings = getattr(self.composer, mapping[self.register['name']])
 
     def register_other_voices(self):
         '''returns the other voices registered in the app'''

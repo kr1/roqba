@@ -1,5 +1,3 @@
-import sys
-import logging
 import time
 import threading
 import random
@@ -8,50 +6,30 @@ from random import choice
 from roqba.static.movement_probabilities import ORNAMENTS, DRUM_FILLS
 from roqba.static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
                                                BASE_HARMONIES,
-                                               FOLLOWINGS,
                                                HARMONIC_INTERVALS,
-                                               HARMONIES,
                                                NOTES_PER_SCALE,
-                                               SCALES,
-                                               SCALES_BY_FREQUENCY,
                                                STRICT_HARMONIES)
-import roqba.static.note_length_groupings as note_length_groupings
-from roqba.static.melodic_behaviours import registers
-from roqba.drummer import Drummer
-from roqba.voice import Voice
+from roqba.static.meters import METERS
 from roqba import metronome
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.static.meters import METERS
-
 
 
 class Composer(AbstractComposer):
     def __init__(self,
                  gateway,
                  settings,
-                 behaviour,
-                 scale="DIATONIC"):
-        # percussion
-        self.settings = settings
-        self.behaviour = behaviour
-        self.drummer = Drummer(self)
-        self.gateway = gateway
-        # TODO: consider making NoteGateway a Singleton
+                 behaviour):
+        super(Composer, self).__init__(gateway,
+                                       settings,
+                                       behaviour)
         self.harm = {}
-        self.num_voices = settings['number_of_voices']
         self.speed_lim = behaviour['embellishment_speed_lim']
-        self.offered_scales = SCALES_BY_FREQUENCY
-        self.offered_meters = METERS
-        self.scale = scale
         self.selected_meters = ("meters" in self.behaviour.keys() and
                                 self.behaviour["meters"] or METERS.keys())
         self.modified_note_in_current_frame = None
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
-        self.registers = registers
-        super(Composer, self).__init__()
-
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
@@ -178,7 +156,9 @@ class Composer(AbstractComposer):
         '''chooses a new rhythm randomly from each voices groupings'''
         for v in self.voices.values():
             if not v.playing_a_melody:
-                v.set_rhythm_grouping(choice(v.note_length_groupings))
+                v.set_rhythm_grouping(
+                    choice([grouping for grouping in v.note_length_groupings
+                            if sum(grouping) == self.meter[0]]))
 
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
@@ -221,7 +201,7 @@ class Composer(AbstractComposer):
         '''handles the sending of drum-fill notes'''
         identifier = 'cont' if v == 'cont2' else 'cont2'
         possible_fills = [fill for fill in DRUM_FILLS
-                          if state['speed'] / len(fill) > self.behaviour['min_speed'] * 0.5 ]
+                          if state['speed'] / len(fill) > self.behaviour['min_speed'] * 0.5]
         chosen = choice(possible_fills)
         for fraction in chosen:
             if (state["speed"] * 1000 * fraction) < self.drummer.peak_speed:
@@ -352,15 +332,3 @@ class Composer(AbstractComposer):
         for v in self.voices.values():
             v.duration_in_msec = int(v.note_duration_steps *
                                      state["speed"] * 1000)
-
-if __name__ == "__main__":
-    print HARMONIES
-    print SCALES_BY_FREQUENCY
-    print STRICT_HARMONIES
-
-    print Composer().get_deltas([12, 8, 10, 15])
-    print "get deltas([2, 5]):", Composer.get_deltas([2, 5])
-    print Composer.acceptable_harmony(Composer.get_deltas([12, 8, 10, 15]))
-    print Composer().acceptable_harmony([2, 4, 6])
-    from voice import Voice
-    c = Composer()
