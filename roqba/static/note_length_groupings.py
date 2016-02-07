@@ -254,7 +254,7 @@ groupings = {
     },
     (24, (1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2)): {
         "heavy": [
-            [[2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1]] * 20,
+            [[2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1]] * 20,
             [[3, 3, 3, 3, 3, 3, 3, 3]] * 7],
         "first": [
             [[1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1]] * 10,
@@ -273,10 +273,11 @@ groupings = {
             [[3, 3, 3, 3, 3, 3, 3, 3]] * 7,
             [[2, 1, 2, 6, 1, 2, 1, 2, 1, 2, 1, 2, 1]] * 20],
         "second": [
-            [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]] * 7],
+            [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]] * 7],
         "terns": [
             [[1, 1, 1, 3, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 2, 1]] * 10],
-        }
+    }
 }
 
 
@@ -291,7 +292,9 @@ def get_grouping(meter, mode, check=True):
     res = assemble(meter, mode, meter_length=meter_length)
     if check:
         if badly_formeD(meter_length, res):
-            raise RuntimeError("badly formed rhythm grouping.")
+            raise RuntimeError(
+                "badly formed rhythm grouping. length:{}\npattern: {}".format(
+                    meter_length, res))
     return res
 
 
@@ -316,9 +319,6 @@ def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
         return (assemble(id, "first", fallback, meter_length) +
                 assemble(id, "second", fallback, meter_length) +
                 assemble(id, "terns", fallback, meter_length))
-        return sum(target["first"] +
-                   target["second"] +
-                   target["terns"], [])
 
 
 def cut_grouping_to_size(grouping, size):
