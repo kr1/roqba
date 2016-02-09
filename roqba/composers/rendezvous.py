@@ -28,8 +28,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.rendezvous_tick = False
         self.rendezvous_counter = 0
         self.send_out_tick = -1
-        self.min_rendezvous_tickoffset = 1
-        self.max_rendezvous_tickoffset = 8
+        self.min_rendezvous_tickoffset = 2
+        self.max_rendezvous_tickoffset = 12
         self.select_next_harmony()
         self.select_next_anchor_tick(sendout_offset=1)
         self.prior_harmony = None
@@ -49,12 +49,12 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if self.rendezvous_tick == self.ticks_counter:
             send_to_notator = True
             self.rendezvous_counter += 1
-            if self.rendezvous_counter > 5:
+            if self.rendezvous_counter > 15:
                 self.rendezvous_counter = 0
                 self.comment = 'caesura'
             self.prior_harmony = self.next_harmony
             self.select_next_harmony()
-            self.select_next_anchor_tick(sendout_offset=randint(3, 6))
+            self.select_next_anchor_tick(sendout_offset=randint(0, 6))
             self.gateway.set_slide_msecs_for_all_voices(self.rendezvous_offset * state['speed'] * 1000)
 
         for voice in self.voices.values():
