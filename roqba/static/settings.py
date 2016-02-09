@@ -15,6 +15,7 @@ settings = {'number_of_voices': 4,
             'track_voices_length': 666,
             'lowest_note_num': 0,
             'highest_note_num': 127,
+            'composer': 'baroq'
             }
 
 behaviour = {
@@ -245,6 +246,23 @@ styles = {
             'transpose': 6,
             'transposings': [6, 7, 8, 9],
             'wavetable_specs': [['harmonic', ['all']]],
+        }
+    },
+    'rendezvous': {
+        'settings': {
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
+            'composer': 'rendezvous'},
+        'behaviour': {
+            'automate_slide': False,
+            'adsr': [40, 40, 30, 20000],
+            'automate_adsr': False,
+            'automate_note_duration_prop': False,
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
         }
     }
 }
