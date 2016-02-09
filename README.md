@@ -41,7 +41,7 @@ follow the log-messages with:
     tail -f log.txt
 </code>
 
-follow a graphical (scrolling) representation on the notes played by: 
+follow a graphical (scrolling) representation on the notes played by:  
 <code>
-    tail -f scrolling.txt 
+    tail -f scrolling.txt  
 </code>
