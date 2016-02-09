@@ -25,31 +25,43 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.half_beat = self.behaviour['half_beat']
         self.second_beat_half = False
         self.ticks_counter = 0
-        self.next_anchor_tick = False
+        self.rendezvous_tick = False
+        self.rendezvous_counter = 0
         self.send_out_tick = -1
+        self.min_rendezvous_tickoffset = 1
+        self.max_rendezvous_tickoffset = 8
+        self.select_next_harmony()
+        self.select_next_anchor_tick(sendout_offset=1)
+        self.prior_harmony = None
+
+        self.set_binaural_diffs(0.08)
         for voice in self.voices.values():
+            voice.slide = False
             args = [random() * 0.5 for n in range(5)]
             voice.freq_sine = MultiSine(args)
 
     def generate(self, state):
-        """main generating function, the next polyphonic step is produced here
-
-        any of the voices can change.
-        """
+        """main generating function, the next polyphonic step is produced here."""
         self.ticks_counter += 1
         self.comment = 'normal'
-        tmp_harm = []
         meter_pos = state['cycle_pos']
-        if self.next_anchor_tick == self.ticks_counter:
+        send_to_notator = False
+        if self.rendezvous_tick == self.ticks_counter:
+            send_to_notator = True
+            self.rendezvous_counter += 1
+            if self.rendezvous_counter > 5:
+                self.rendezvous_counter = 0
+                self.comment = 'caesura'
+            self.prior_harmony = self.next_harmony
             self.select_next_harmony()
-            self.select_next_anchor_tick(offset=randint(3, 6))
+            self.select_next_anchor_tick(sendout_offset=randint(3, 6))
+            self.gateway.set_slide_msecs_for_all_voices(self.rendezvous_offset * state['speed'] * 1000)
 
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
             next_note = self.next_voice_note(voice)
             if next_note:
-                tmp_harm.append(next_note)
                 voice.note = next_note
                 voice.real_note = next_note
                 voice.note_change = True
@@ -80,24 +92,30 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if send_drum:
             self.gateway.drum_hub.send(self.drummer.frame)
         for voice in self.voices.values():
-            self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
+            voice.update_current_microvolume()
+            #self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         self.gateway.hub.send(self.voices)
-        self.notator.note_to_file({"notes": [int(note) for note in tmp_harm],
-                                   "weight": state["weight"],
-                                   "cycle_pos": state["cycle_pos"]})
+        if send_to_notator:
+            self.notator.note_to_file({"notes": self.prior_harmony,
+                                       "weight": state["weight"],
+                                       "cycle_pos": state["cycle_pos"]})
         return self.comment
 
     def select_next_harmony(self):
-        next_harmony_pattern = choice(STRICT_HARMONIES)
+        """select the next rendezvous's harmony"""
+        next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES))
         next_offset = randint(30, 60)
         self.next_harmony = [note + next_offset for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):
+        """set the next send-out and and rendezvous ticks"""
         self.send_out_tick = self.ticks_counter + sendout_offset
-        self.next_anchor_tick = self.send_out_tick + randint(self.min_rendezvous_tickoffset,
-                                                             self.max_rendezvous_tickoffset)
+        self.rendezvous_offset = randint(self.min_rendezvous_tickoffset,
+                                         self.max_rendezvous_tickoffset)
+        self.rendezvous_tick = self.send_out_tick + self.rendezvous_offset
 
     def next_voice_note(self, voice):
+        """return the next note for a voice if it is the correct tick"""
         if self.send_out_tick == self.ticks_counter:
             return self.next_harmony[voice.id - 1]
         return False
