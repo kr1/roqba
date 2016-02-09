@@ -12,7 +12,7 @@ Some objects rely on external libraries of *Pure Data*. Please see the documenta
 getting started:
 ===============
 
-open a python shell (I recommend [**Ipython**](http://ipython.scipy.org/moin/)) in this folder.
+open a python shell (I recommend [**IPython**](http://ipython.org)) in this folder.
 to start the app:  
 <code>
     from roqba import main  
