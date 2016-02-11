@@ -1,12 +1,10 @@
 import threading
-from random import choice, random, randint
+from random import choice, randint
 
 from roqba.composers.abstract_composer import AbstractComposer
 from roqba.static.scales_and_harmonies import STRICT_HARMONIES
 from roqba.static.meters import METERS
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
-
-from roqba.utilities.sine_controllers import MultiSine
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
@@ -19,42 +17,50 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.selected_meters = ("meters" in self.behaviour.keys() and
                                 self.behaviour["meters"] or METERS.keys())
         self.modified_note_in_current_frame = None
-        self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
         self.half_beat = self.behaviour['half_beat']
         self.second_beat_half = False
-        self.ticks_counter = 0
-        self.rendezvous_tick = False
-        self.rendezvous_counter = 0
-        self.send_out_tick = -1
+
+        # Rendezvous planning
         self.min_rendezvous_tickoffset = 2
         self.max_rendezvous_tickoffset = 12
+        self.fixed_rendezvous_length = None
+        self.max_rendezvous_length = 6
+
+        # Rendezvous handling
+        self.num_rendezvous_between_caesurae = 15
+
+        # setup state
+        self.rendezvous_counter = 0
+        self.ticks_counter = 0
+        self.rendezvous_tick = False
+        self.send_out_tick = -1
         self.select_next_harmony()
         self.select_next_anchor_tick(sendout_offset=1)
         self.prior_harmony = None
 
-        self.set_binaural_diffs(0.08)
+        self.set_binaural_diffs(self.behaviour['binaural_diff'])
         for voice in self.voices.values():
             voice.slide = False
-            args = [random() * 0.5 for n in range(5)]
-            voice.freq_sine = MultiSine(args)
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here."""
         self.ticks_counter += 1
         self.comment = 'normal'
-        meter_pos = state['cycle_pos']
         send_to_notator = False
         if self.rendezvous_tick == self.ticks_counter:
             send_to_notator = True
             self.rendezvous_counter += 1
-            if self.rendezvous_counter > 15:
+            if self.rendezvous_counter > self.num_rendezvous_between_caesurae:
                 self.rendezvous_counter = 0
                 self.comment = 'caesura'
             self.prior_harmony = self.next_harmony
             self.select_next_harmony()
-            self.select_next_anchor_tick(sendout_offset=randint(0, 6))
+            sendout_offset = (self.fixed_rendezvous_length
+                              if self.fixed_rendezvous_length is not None
+                              else randint(0, self.max_rendezvous_length))
+            self.select_next_anchor_tick(sendout_offset=sendout_offset)
             self.gateway.set_slide_msecs_for_all_voices(self.rendezvous_offset * state['speed'] * 1000)
 
         for voice in self.voices.values():
@@ -104,7 +110,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""
         next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES))
-        next_offset = randint(30, 60)
+        next_offset = randint(30, 60)  # TODO: make something musical
         self.next_harmony = [note + next_offset for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):

@@ -256,6 +256,7 @@ styles = {
             'automate_slide': False,
             'adsr': [40, 40, 30, 20000],
             'automate_adsr': False,
+            'binaural_diff': 0.15,
             'automate_note_duration_prop': False,
             'per_voice': {
                 1: BehaviourDict({}),
