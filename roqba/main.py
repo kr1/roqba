@@ -17,7 +17,7 @@ except ImportError:
 default_settings.settings.update(local_settings.settings)
 default_settings.behaviour.update(local_settings.behaviour)
 
-if local_settings.style:
+if getattr(local_settings, 'style', None):
     style = local_settings.style
     default_settings.settings.update(default_settings.styles[style]["settings"])
     default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
