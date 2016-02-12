@@ -1,25 +1,25 @@
 #N canvas 2 48 1020 718 10;
 #X obj 602 569 dac~;
 #X msg 18 546 \; pd dsp \$1 \;;
-#X obj 18 524 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 4
+#X obj 18 524 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 4;
 #X obj 445 559 snapshot~;
 #X obj 445 514 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 564 219 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 7702 1;
 #X obj 18 469 key;
 #X obj 18 496 select 32;
-#X obj 282 119 print log udp;
-#X obj 282 85 spigot;
+#X obj 252 119 print log udp;
+#X obj 252 85 spigot;
 #X obj 371 121 route master 1 2 3 4;
 #X obj 400 218 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 7145 1;
 #X obj 408 77 route 1 2 3 4;
 #X obj 63 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 5030 1;
 #X obj 232 216 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 5103 1;
 #X obj 371 146 s master_vol;
 #X obj 776 305 r master_vol;
 #X obj 446 606 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
@@ -27,30 +27,29 @@
 #X obj 445 581 abs;
 #X obj 343 -26 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 315 61 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 285 66 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 227 329 route 1 2 3 4;
-#X msg 153 500 [1_ 2_ 2_ 1_ 2_ 2_ 2_ 1_ 2_ 2_ 1_ 2_ 2_ 2];
-#X msg 152 521 [2_ 2_ 2_ 1_ 1_ 16];
-#X msg 152 538 [2_ 1_ 1_ 2_ 2_ 16];
-#X msg 152 559 [3_ 3_ 1_ 1_ 1_ 3_ 3_ 3_ 1_ 1_ 1_ 3];
+#X msg 153 500 [1_ 2_ 2_ 1_ 2_ 2_ 2];
+#X msg 152 521 [1_ 1_ 2_ 2_ 2_ 4];
+#X msg 152 538 [2_ 2_ 1_ 1_ 2_ 4];
+#X msg 152 559 [1_ 2_ 1_ 2_ 1_ 2_ 1_ 2];
 #X obj 445 536 metro 120;
-#X obj 354 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 323 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 372 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 338 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 389 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 353 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 407 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 369 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 363 -27 netreceive 12321 1;
-#X msg 139 478 (24__(2__1__2__1__2__1__2__1__2__1__2__1__2__1__2__1))
-;
+#X msg 139 478 (5__(3__2));
 #X obj 227 304 route rhythm slide binaural;
 #X obj 206 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 371 4 route sound voice perc sys;
-#N canvas 2 48 1020 718 percussion 1;
+#N canvas 2 48 1020 718 percussion 0;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
 #X obj -191 100 noise-drums-bang;
@@ -302,18 +301,18 @@
 -1 -1 5138 1;
 #X obj 659 436 / 666;
 #X obj 709 354 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 3138 1;
 #X obj 710 436 / 666;
 #X msg 685 322 666;
 #X obj 685 298 loadbang;
 #X obj 776 352 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5138 1;
+-1 -1 938 1;
 #X obj 777 434 / 666;
 #X obj 776 327 * 666;
 #X obj 479 506 *~ 1;
 #X obj 704 507 *~ 1;
-#X obj 356 174 route 1 2 3 4;
-#N canvas 2 48 1020 718 voice_volume_receiver 0;
+#X obj 323 171 route 1 2 3 4;
+#N canvas 2 50 1020 718 voice_volume_receiver 0;
 #X obj -37 33 r volume_voice_1;
 #X obj -37 65 * 1024;
 #X obj -37 101 outlet;
