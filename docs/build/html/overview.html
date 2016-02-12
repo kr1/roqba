@@ -25,7 +25,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Roqba 1.1 documentation" href="index.html" />
     <link rel="next" title="Main Call Chains and Sequences" href="events_and_messages.html" />
-    <link rel="prev" title="README" href="readme.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -40,10 +39,55 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="events_and_messages.html">Main Call Chains and Sequences</a></li>
-</ul>
+<div class="section" id="audio-samples">
+<h2>Audio-Samples<a class="headerlink" href="#audio-samples" title="Permalink to this headline">¶</a></h2>
+<p>
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/245319230&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+</p>
+<p>
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/73454551&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+</p></div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;ll need <a class="reference external" href="http://puredata.info/">Pure Data</a> for sound-production.
+Some objects rely on external <em>puredata</em> libraries. These can be installed with the deken plugin.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Open a python shell (I recommend <a class="reference external" href="http://ipython.scipy.org/moin/">Ipython</a>) in this folder.
+to start the app:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">roqba</span> <span class="kn">import</span> <span class="n">main</span>
+<span class="n">main</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>to pause:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">main</span><span class="o">.</span><span class="n">director</span><span class="o">.</span><span class="n">pause</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>to resume:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">main</span><span class="o">.</span><span class="n">director</span><span class="o">.</span><span class="n">unpause</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>to stop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">main</span><span class="o">.</span><span class="n">director</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>adjust speed by:</p>
+<div class="highlight-python"><div class="highlight"><pre>main.director.speed = &lt;speed&gt;  # length of the shortest note-length in seconds.
+</pre></div>
+</div>
+<p>follow the log-messages with:</p>
+<div class="highlight-python"><div class="highlight"><pre>tail -f log.txt
+</pre></div>
+</div>
+<p>follow a graphical (scrolling) representation on the notes played by:</p>
+<blockquote>
+<div>tail -f scrolling.txt</div></blockquote>
+<p>note that on some systems tail will not continuously follow
+the file and it is necessary to run for example a repeated cat:</p>
+<div class="highlight-python"><div class="highlight"><pre>watch -n 0.1 cat scrolling.txt
+</pre></div>
+</div>
 </div>
 <div class="section" id="diagram">
 <h2>diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h2>
@@ -60,6 +104,11 @@
 <div class="line">If a caesura is given, a flag is set which the director uses to modify its behaviour.</div>
 <div class="line">Finally the musical frame is sent to both the Note-Gateway and the Notator module.</div>
 </div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="events_and_messages.html">Main Call Chains and Sequences</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -75,6 +124,9 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#audio-samples">Audio-Samples</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#getting-started">Getting started</a></li>
 <li><a class="reference internal" href="#diagram">diagram</a></li>
 <li><a class="reference internal" href="#id1">introduction</a></li>
 </ul>
@@ -84,7 +136,6 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="readme.html" title="previous chapter">README</a></li>
       <li>Next: <a href="events_and_messages.html" title="next chapter">Main Call Chains and Sequences</a></li>
   </ul></li>
 </ul>
