@@ -1,15 +1,25 @@
+About
+=====
+
+Roqba is a realtime music machine (composer, synthesizer and player)
+
+How does it sound?
+------------------
+
+Hear some snippets [here](http://kr1.github.io/roqba/docs/build/html/readme.html#audio-samples)
+
 Documentation
 =============
 
 see the [documentation](http://kr1.github.com/roqba/docs/build/html/index.html)
 
-Dependencies:
+Dependencies
 ============
 
 You'll need [**Pure Data**](http://puredata.info/) for the sound-production.
 Some objects rely on external libraries of *Pure Data*. Please see the documentation for details.
 
-getting started:
+Getting started
 ===============
 
 open a python shell (I recommend [**IPython**](http://ipython.org)) in this folder.

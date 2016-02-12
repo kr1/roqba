@@ -1,10 +1,12 @@
 import threading
-from random import choice, randint
+from random import choice, randint, random
 
 from roqba.composers.abstract_composer import AbstractComposer
 from roqba.static.scales_and_harmonies import STRICT_HARMONIES
 from roqba.static.meters import METERS
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
+
+from roqba.utilities.sine_controllers import MultiSine
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
@@ -43,6 +45,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.set_binaural_diffs(self.behaviour['binaural_diff'])
         for voice in self.voices.values():
             voice.slide = False
+            args = [random() * 0.3 for n in range(4)]
+            voice.pan_sine = MultiSine(args)
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here."""
@@ -99,6 +103,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             self.gateway.drum_hub.send(self.drummer.frame)
         for voice in self.voices.values():
             voice.update_current_microvolume()
+            self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
             #self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         self.gateway.hub.send(self.voices)
         if send_to_notator:
