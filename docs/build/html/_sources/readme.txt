@@ -1,8 +1,8 @@
 README
 ======
 
-Audio-Sample
-------------
+Audio-Samples
+-------------
 
 .. raw:: html
 
