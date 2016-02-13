@@ -27,6 +27,16 @@ SCALES_BY_FREQUENCY = sum([
 STRICT_HARMONIES = [set([2, 4, 6]), set([2, 4, 0]),
                     set([3, 5, 0]), set([2, 5, 0])]
 
+FOUR_NOTE_HARMONIES = [
+    set([2, 4, 5]),
+    set([2, 4, 8]),
+    set([3, 5, 11]),
+    set([2, 4, 6]),
+    set([4, 5, 6]),
+    set([4, 6, 12]),
+    set([1, 2, 3]),
+]
+
 tmp_length_2_strict = [set(res) for res in
                         [n[:2] for n in 
                           sum(

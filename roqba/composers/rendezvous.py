@@ -2,7 +2,7 @@ import threading
 from random import choice, randint, random
 
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.static.scales_and_harmonies import STRICT_HARMONIES
+from roqba.static.scales_and_harmonies import STRICT_HARMONIES, FOUR_NOTE_HARMONIES
 from roqba.static.meters import METERS
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
 
@@ -10,7 +10,7 @@ from roqba.utilities.sine_controllers import MultiSine
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
-    def __init__(self, gateway, settings, behaviour, scale="DIATONIC"):
+    def __init__(self, gateway, settings, behaviour, scale="HARMONIC"):
         super(Composer, self).__init__(gateway,
                                        settings,
                                        behaviour)
@@ -114,9 +114,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""
-        next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES))
-        next_offset = randint(30, 60)  # TODO: make something musical
-        self.next_harmony = [note + next_offset for note in next_harmony_pattern]
+        next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES + FOUR_NOTE_HARMONIES))
+        next_offset = randint(24, 36)  # TODO: make something musical
+        self.next_harmony = [note + next_offset + (randint(0, 2) * 12) for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):
         """set the next send-out and and rendezvous ticks"""
