@@ -21,3 +21,10 @@ Baroq
 .. automodule:: roqba.composers.baroq
     :members:
     :undoc-members:
+
+Rendezvous
+----------
+
+.. automodule:: roqba.composers.rendezvous
+    :members:
+    :undoc-members:

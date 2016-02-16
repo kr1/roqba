@@ -78,10 +78,8 @@
 <dt id="roqba.composers.abstract_composer.AbstractComposer.set_binaural_diffs">
 <code class="descname">set_binaural_diffs</code><span class="sig-paren">(</span><em>val=None</em>, <em>voice=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/abstract_composer.html#AbstractComposer.set_binaural_diffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.abstract_composer.AbstractComposer.set_binaural_diffs" title="Permalink to this definition">¶</a></dt>
 <dd><p>&#8220;de-tunes&#8221; the specified voice by the specified interval (in hertz)</p>
-<ul class="simple">
-<li>if no values are given, random values (in the configurated range)</li>
-</ul>
-<p>are set for each voice.</p>
+<p>if no values are given, random values (in the configurated range)
+are set for each voice.</p>
 </dd></dl>
 
 <dl class="method">
@@ -247,6 +245,43 @@ if the ornament would be too fast, it returns without action</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-roqba.composers.rendezvous">
+<span id="rendezvous"></span><h2>Rendezvous<a class="headerlink" href="#module-roqba.composers.rendezvous" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="roqba.composers.rendezvous.Composer">
+<em class="property">class </em><code class="descclassname">roqba.composers.rendezvous.</code><code class="descname">Composer</code><span class="sig-paren">(</span><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='HARMONIC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="roqba.composers.rendezvous.Composer.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>main generating function, the next polyphonic step is produced here.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.composers.rendezvous.Composer.next_voice_note">
+<code class="descname">next_voice_note</code><span class="sig-paren">(</span><em>voice</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.next_voice_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.next_voice_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the next note for a voice if it is the correct tick</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.composers.rendezvous.Composer.select_next_anchor_tick">
+<code class="descname">select_next_anchor_tick</code><span class="sig-paren">(</span><em>sendout_offset=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.select_next_anchor_tick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.select_next_anchor_tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the next send-out and and rendezvous ticks</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="roqba.composers.rendezvous.Composer.select_next_harmony">
+<code class="descname">select_next_harmony</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.select_next_harmony"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.select_next_harmony" title="Permalink to this definition">¶</a></dt>
+<dd><p>select the next rendezvous&#8217;s harmony</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="roqba.composers.rendezvous.random">
+<code class="descclassname">roqba.composers.rendezvous.</code><code class="descname">random</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &rarr; x in the interval [0, 1).<a class="headerlink" href="#roqba.composers.rendezvous.random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 
 
@@ -264,6 +299,7 @@ if the ornament would be too fast, it returns without action</p>
 <li><a class="reference internal" href="#module-roqba.composers.abstract_composer">Abstract base class</a></li>
 <li><a class="reference internal" href="#module-roqba.composers.amadinda">Amadinda</a></li>
 <li><a class="reference internal" href="#module-roqba.composers.baroq">Baroq</a></li>
+<li><a class="reference internal" href="#module-roqba.composers.rendezvous">Rendezvous</a></li>
 </ul>
 </li>
 </ul>
