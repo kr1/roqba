@@ -94,7 +94,7 @@ class AbstractComposer(object):
     def set_binaural_diffs(self, val=None, voice=None):
         '''"de-tunes" the specified voice by the specified interval (in hertz)
 
-        - if no values are given, random values (in the configurated range)
+        if no values are given, random values (in the configurated range)
         are set for each voice.
         '''
         if val and val != 'random':
