@@ -19,8 +19,9 @@ default_settings.behaviour.update(local_settings.behaviour)
 
 if getattr(local_settings, 'style', None):
     style = local_settings.style
-    default_settings.settings.update(default_settings.styles[style]["settings"])
-    default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
+    if default_settings.styles.get(style):
+        default_settings.settings.update(default_settings.styles[style]["settings"])
+        default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
     default_settings.behaviour["style"] = style
 
 settings = default_settings.settings
