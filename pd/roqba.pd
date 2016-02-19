@@ -270,11 +270,11 @@
 #X obj 485 27 route log meter speed;
 #X obj 567 72 s global_speed;
 #X obj 371 28 route vol pan;
-#X obj 22 240 voice 1 30 30 30 30 300;
-#X obj 22 216 voice_message_dispatcher 1;
-#X obj 190 217 voice_message_dispatcher 2;
-#X obj 358 217 voice_message_dispatcher 3;
-#X obj 524 217 voice_message_dispatcher 4;
+#X obj 22 220 voice 1 30 30 30 30 300;
+#X obj 22 196 voice_message_dispatcher 1;
+#X obj 190 197 voice_message_dispatcher 2;
+#X obj 358 197 voice_message_dispatcher 3;
+#X obj 524 197 voice_message_dispatcher 4;
 #N canvas 2 50 1020 718 meters 0;
 #X obj 483 29 inlet;
 #X obj 439 29 inlet;
@@ -285,8 +285,7 @@
 #X msg 680 270 [2_ 3];
 #X msg 680 294 [2_ 1_ 1_ 1];
 #X msg 680 318 [2_ 2_ 1];
-#X msg 680 222 (24__(2__1__2__1__2__1__2__1__2__1__2__1__2__1__2__1))
-;
+#X msg 680 222 (5__(2__3));
 #X obj 541 133 cyclone/prepend set;
 #X obj 581 158 cyclone/prepend set;
 #X obj 514 108 cyclone/prepend set;
@@ -430,8 +429,8 @@
 #X connect 39 0 38 1;
 #X connect 40 0 38 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
-#X restore 8 355 pd meters;
-#N canvas 2 50 1020 718 volumes 0;
+#X restore 15 353 pd meters;
+#N canvas 2 48 1020 718 volumes 0;
 #X obj 100 100 cnv 100 330 120 empty empty Volumes 20 12 0 14 -191407
 -262144 0;
 #X obj 370 51 r master_vol;
@@ -447,13 +446,13 @@
 #X obj 253 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 5138 1;
 #X obj 253 248 / 666;
-#X obj 303 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5138 1;
+#X obj 303 131 vsl 50 80 0 1024 0 0 empty empty drums 0 -9 0 10 -262144
+-1 -1 0 1;
 #X obj 303 248 / 666;
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
-#X obj 370 129 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5138 1;
+#X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
+-1 -1 138 1;
 #X obj 370 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1020 718 voice_volume_receiver 0;
@@ -510,10 +509,10 @@
 #X connect 17 2 6 0;
 #X connect 17 3 8 0;
 #X coords 0 -1 1 1 330 120 1 100 100;
-#X restore 456 350 pd volumes;
-#X obj 190 241 voice 2 30 30 30 30 300;
-#X obj 358 242 voice 3 30 30 30 30 300;
-#X obj 524 243 voice 4 30 30 30 30 300;
+#X restore 456 353 pd volumes;
+#X obj 190 221 voice 2 30 30 30 30 300;
+#X obj 358 222 voice 3 30 30 30 30 300;
+#X obj 524 223 voice 4 30 30 30 30 300;
 #X connect 2 0 1 0;
 #X connect 3 0 13 0;
 #X connect 4 0 17 0;
