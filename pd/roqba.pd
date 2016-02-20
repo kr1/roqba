@@ -276,7 +276,7 @@
 #X msg 680 270 [2_ 3];
 #X msg 680 294 [2_ 1_ 1_ 1];
 #X msg 680 318 [2_ 2_ 1];
-#X msg 680 222 (8__(3__3__2));
+#X msg 680 222 (8__(4__4));
 #X obj 541 133 cyclone/prepend set;
 #X obj 581 158 cyclone/prepend set;
 #X obj 514 108 cyclone/prepend set;
@@ -623,10 +623,6 @@
 #X connect 6 0 2 0;
 #X connect 8 0 7 0;
 #X connect 9 0 11 0;
-#X connect 9 1 42 3;
-#X connect 9 2 41 3;
-#X connect 9 3 44 3;
-#X connect 9 4 43 3;
 #X connect 13 0 12 0;
 #X connect 15 0 8 1;
 #X connect 16 0 38 3;
