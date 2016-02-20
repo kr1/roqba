@@ -106,10 +106,11 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 376 line~;
 #X obj 203 378 line~;
 #X obj 205 520 vsl 25 55 80 800 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 2340 1;
+-1 -1 0 1;
 #X obj 205 474 line;
 #X obj 230 547 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X obj 417 39 r voice_pan_\$1;
 #X connect 0 0 3 0;
 #X connect 1 0 98 0;
 #X connect 3 0 10 0;
@@ -201,4 +202,5 @@ This patch is used as an abstraction in various examples.;
 #X connect 101 0 79 0;
 #X connect 102 0 80 0;
 #X connect 104 0 103 0;
+#X connect 106 0 63 0;
 #X coords 0 -1 1 1 150 80 1 200 500;
