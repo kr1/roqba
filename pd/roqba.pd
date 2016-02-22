@@ -34,7 +34,7 @@
 #X msg 662 377 [2_ 3];
 #X msg 662 401 [2_ 1_ 1_ 1];
 #X msg 662 425 [2_ 2_ 1];
-#X msg 23 154 (12__(2__2__2__3__3));
+#X msg 23 154 (5__(2__3));
 #X obj 707 246 cyclone/prepend set;
 #X obj 711 277 cyclone/prepend set;
 #X obj 687 210 cyclone/prepend set;
@@ -187,7 +187,7 @@
 #X connect 40 0 14 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
 #X restore 13 174 pd meters;
-#N canvas 2 48 1020 718 volumes 0;
+#N canvas 2 50 1020 718 volumes 0;
 #X obj 100 100 cnv 100 330 120 empty empty Volumes 20 12 0 14 -191407
 -262144 0;
 #X obj 370 51 r master_vol;
@@ -209,7 +209,7 @@
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 2000 1;
+-1 -1 1938 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1020 718 voice_volume_receiver 0;
@@ -234,7 +234,7 @@
 #X connect 10 0 5 0;
 #X connect 11 0 7 0;
 #X restore 103 74 pd voice_volume_receiver;
-#N canvas 2 48 1020 718 volumes 0;
+#N canvas 2 50 1020 718 volumes 0;
 #X obj 11 201 inlet~;
 #X obj 68 201 inlet~;
 #X obj 126 201 inlet;
@@ -437,7 +437,7 @@
 #X connect 18 1 19 0;
 #X coords 0 -1 1 1 330 120 1 100 100;
 #X restore 454 174 pd volumes;
-#N canvas 2 48 1020 718 message_dispatcher 0;
+#N canvas 2 50 1020 718 message_dispatcher 0;
 #X obj 606 304 print log udp;
 #X obj 606 283 spigot;
 #X obj 279 194 route master 1 2 3 4;
@@ -545,15 +545,15 @@
 #X connect 15 0 6 0;
 #X connect 16 0 5 0;
 #X restore 36 394 pd message_dispatcher;
-#X obj 184 42 voice 2 30 30 30 30 300;
-#X obj 16 41 voice 1 30 30 30 30 300;
-#X obj 518 44 voice 4 30 30 30 30 300;
-#X obj 352 43 voice 3 30 30 30 30 300;
 #X obj 184 18 voice_message_dispatcher 2;
 #X obj 16 17 voice_message_dispatcher 1;
 #X obj 352 18 voice_message_dispatcher 3;
 #X obj 518 18 voice_message_dispatcher 4;
 #X text 169 396 dispatcher;
+#X obj 352 43 voice 3 30 30 30 30 300;
+#X obj 518 44 voice 4 30 30 30 30 300;
+#X obj 184 42 voice 2 30 30 30 30 300;
+#X obj 16 41 voice 1 30 30 30 30 300;
 #X connect 2 0 1 0;
 #X connect 3 0 10 0;
 #X connect 4 0 13 0;
@@ -580,8 +580,8 @@
 #X connect 22 0 18 2;
 #X connect 24 0 21 0;
 #X connect 24 1 22 0;
-#X connect 30 0 26 0;
-#X connect 31 0 27 0;
-#X connect 32 0 29 0;
-#X connect 33 0 28 0;
+#X connect 26 0 33 0;
+#X connect 27 0 34 0;
+#X connect 28 0 31 0;
+#X connect 29 0 32 0;
 #X coords 0 718 1 717 85 60 0;
