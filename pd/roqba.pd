@@ -1,40 +1,40 @@
 #N canvas 2 48 1020 718 10;
-#X obj 600 390 dac~;
+#X obj 589 367 dac~;
 #X msg 711 96 \; pd dsp \$1 \;;
-#X obj 711 74 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 4
+#X obj 711 74 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 4;
-#X obj 443 380 snapshot~;
-#X obj 443 335 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 455 357 snapshot~;
+#X obj 494 305 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 711 19 key;
 #X obj 711 46 select 32;
 #X obj 125 372 print log udp;
 #X obj 125 351 spigot;
-#X obj 443 425 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+#X obj 455 402 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
-#X obj 443 402 abs;
+#X obj 455 379 abs;
 #X obj 16 332 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 158 332 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 443 357 metro 120;
+#X obj 455 334 metro 120;
 #X obj 36 331 netreceive 12321 1;
-#X obj 676 407 doku~;
-#X obj 676 379 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 749 383 doku~;
+#X obj 749 355 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X msg 676 430 ls-results in pd-window;
-#X obj 564 431 record-stereo~;
-#X obj 647 405 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 666 407 ls-results in pd-window;
+#X obj 553 408 record-stereo~;
+#X obj 634 382 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 712 379 ls;
-#X obj 477 327 *~ 1;
-#X obj 702 328 *~ 1;
+#X msg 785 355 ls;
+#X obj 455 304 *~ 1;
+#X obj 776 305 *~ 1;
 #N canvas 2 50 1020 718 meters 0;
 #X msg 662 353 [5];
 #X msg 662 377 [2_ 3];
 #X msg 662 401 [2_ 1_ 1_ 1];
 #X msg 662 425 [2_ 2_ 1];
-#X msg 23 154 (5__(2__3));
+#X msg 23 154 (8__(2__2__2__2));
 #X obj 707 246 cyclone/prepend set;
 #X obj 711 277 cyclone/prepend set;
 #X obj 687 210 cyclone/prepend set;
@@ -209,7 +209,7 @@
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 1938 1;
+-1 -1 2838 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1020 718 voice_volume_receiver 0;

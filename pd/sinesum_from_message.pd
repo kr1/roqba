@@ -1,4 +1,4 @@
-#N canvas 309 81 700 440 12;
+#N canvas 2 48 1020 718 12;
 #X msg 69 144 set;
 #X msg 46 171 addsemi;
 #X obj 23 114 t b b b;
@@ -19,8 +19,8 @@
 #X msg 23 227 add2 \$1 sinesum 512;
 #X obj 462 361 symbol \$1;
 #X msg 462 392 \; \$1 sinesum 512 0.5 0.25 0.125;
-#X msg 23 376 \; sines1 sinesum 512 0 0.463656 0 0.21618 0 0.123552
-0 0.0391535;
+#X msg 23 376 \; sines4 sinesum 512 0.2 0 0.2 0 0.2 0 0.2 0 0.2 0 0.2
+0 0.2 0 0.2 0 0.2;
 #X obj 259 298 symbol \$1;
 #X msg 259 326 \; \$1 normalize;
 #X obj 209 31 inlet;
