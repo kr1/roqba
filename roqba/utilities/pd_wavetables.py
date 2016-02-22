@@ -1,9 +1,10 @@
-'''creates the messages for puredata's array's sinesum command:
+'''creates the messages for puredata array's sinesum command:
 
 sinesum expects a list of numbers representing the amplitudes of
 consecutive partial sinewaves
 '''
 import random
+import math
 
 
 def random_wavetable(partials=15, which='all'):
@@ -44,3 +45,22 @@ def __assemble(which, determinant):
     if which == 'even':
         fun = lambda x: (x % 2 == 0) and str(determinant(x)) or "0"
     return fun
+
+
+def _apply_wavetable(string, size=4096):
+    '''creates and returns a normalized list of length <size>
+
+    applying the weights in the incoming definition'''
+    numbers = _as_floats(string)
+    wavetable = []
+    pi_step = 2 * math.pi / size
+    for index in xrange(size):
+        wavetable.append(sum([value * math.sin(pi_step * index * (harmo_index + 1))
+                              for harmo_index, value in enumerate(numbers)]))
+    max_ = max(abs(min(wavetable)), max(wavetable))
+    return [num/max_ for num in wavetable]
+
+
+def _as_floats(string):
+    '''utility function to get the wavetable def as a list of floats'''
+    return [float(num) for num in string.split(" ")]
