@@ -34,7 +34,8 @@
 #X msg 662 377 [2_ 3];
 #X msg 662 401 [2_ 1_ 1_ 1];
 #X msg 662 425 [2_ 2_ 1];
-#X msg 23 154 (6__(2__2__2));
+#X msg 23 154 (24__(2__1__2__1__2__1__2__1__2__1__2__1__2__1__2__1))
+;
 #X obj 746 307 cyclone/prepend set;
 #X obj 867 307 cyclone/prepend set;
 #X obj 625 307 cyclone/prepend set;
@@ -443,7 +444,7 @@
 #X obj 29 146 route master 1 2 3 4;
 #X obj 66 121 route 1 2 3 4, f 29;
 #X obj 29 171 s master_vol;
-#X obj 706 147 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 706 147 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 29 50 route sound voice perc sys, f 147;
 #N canvas 2 50 1020 718 percussion 0;
@@ -546,6 +547,7 @@
 #X connect 13 0 2 0;
 #X connect 13 1 3 0;
 #X connect 14 0 6 0;
+#X connect 14 0 1 0;
 #X connect 15 0 5 0;
 #X connect 26 0 1 1;
 #X connect 26 1 25 0;
