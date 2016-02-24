@@ -151,3 +151,23 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if self.send_out_tick == self.ticks_counter:
             return self.next_harmony[voice.id - 1]
         return False
+
+    def _extract_transitions(self):
+        upwards = []
+        downwards = []
+        extrema = self.controller_wavetable_extrema
+        all_ = itertools.permutations(extrema.keys(), 2)
+        for start, end in all_:
+            if extrema[start] == extrema[end]:
+                continue
+            elif extrema[start] > extrema[end]:
+                target = downwards
+            else:
+                target = upwards
+            target.append({
+                'start': (start, extrema[start]),
+                'end': (end, extrema[end])})
+        self.rendezvous_transitions = {
+            'upwards': upwards,
+            'downwards': downwards,
+        }
