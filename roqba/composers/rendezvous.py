@@ -1,4 +1,5 @@
 import threading
+import itertools
 from random import choice, randint, random
 
 from roqba.composers.abstract_composer import AbstractComposer
@@ -7,6 +8,7 @@ from roqba.static.meters import METERS
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
 
 from roqba.utilities.sine_controllers import MultiSine
+from roqba.utilities import pd_wavetables, naive_peak_detect
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
@@ -29,6 +31,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.max_rendezvous_tickoffset = 12
         self.fixed_rendezvous_length = None
         self.max_rendezvous_length = 6
+        self._setup_new_controller_wavetable()
 
         # Rendezvous handling
         self.num_rendezvous_between_caesurae = 15
@@ -53,6 +56,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.ticks_counter += 1
         self.comment = 'normal'
         send_to_notator = False
+        current_slide_time = self.rendezvous_offset * state['speed'] * 1000
         if self.rendezvous_tick == self.ticks_counter:
             send_to_notator = True
             self.rendezvous_counter += 1
@@ -65,16 +69,26 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                               if self.fixed_rendezvous_length is not None
                               else randint(0, self.max_rendezvous_length))
             self.select_next_anchor_tick(sendout_offset=sendout_offset)
-            self.gateway.set_slide_msecs_for_all_voices(self.rendezvous_offset * state['speed'] * 1000)
+            self.gateway.set_slide_msecs_for_all_voices(current_slide_time)
 
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
             next_note = self.next_voice_note(voice)
             if next_note:
-                voice.note = next_note
-                voice.real_note = next_note
-                voice.note_change = True
+                # send a rendezvous message
+                # duration, start_index, end_index, start_note, end_note, start_multiplier and end_multiplier
+                start_end = choice(
+                    self.rendezvous_transitions['downwards' if next_note < voice.note else 'upwards'])
+                self.gateway.pd.send([
+                    "voice", voice.id, "rendezvous",
+                    current_slide_time,
+                    start_end['start'][0],  # index
+                    start_end['end'][0],
+                    voice.note, next_note,
+                    start_end['start'][1],  # multiplier
+                    start_end['end'][1],
+                ])
             else:
                 voice.note_change = False
                 continue
@@ -111,6 +125,13 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                        "weight": state["weight"],
                                        "cycle_pos": state["cycle_pos"]})
         return self.comment
+
+    def _setup_new_controller_wavetable(self):
+        self.controller_wavetable_string = pd_wavetables.random_wavetable(partials=randint(3, 10))
+        self.controller_wavetable = pd_wavetables._apply_wavetable(self.controller_wavetable_string)
+        self.controller_wavetable_extrema = naive_peak_detect.detect_local_extrema(self.controller_wavetable)
+        self._extract_transitions()
+        self.gateway.pd.send(["sys", "controller_wavetable", self.controller_wavetable_string])
 
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""

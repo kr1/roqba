@@ -47,10 +47,10 @@ def __assemble(which, determinant):
     return fun
 
 
-def _apply_wavetable(string, size=4096):
+def _apply_wavetable(string, size=512):
     '''creates and returns a normalized list of length <size>
 
-    applying the weights in the incoming definition'''
+    applying the weights of the harmonics in the incoming definition.'''
     numbers = _as_floats(string)
     wavetable = []
     pi_step = 2 * math.pi / size
