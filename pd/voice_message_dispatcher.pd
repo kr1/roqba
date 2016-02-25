@@ -18,17 +18,25 @@
 #X obj 352 32 r raw_voice_\$1_message;
 #X obj 110 129 route dur wavetable volume mute adsr peak_level rendezvous
 ;
-#X floatatom 405 351 5 0 0 0 - - -, f 5;
-#X floatatom 529 351 5 0 0 0 - - -, f 5;
-#X floatatom 571 351 5 0 0 0 - - -, f 5;
-#X floatatom 488 351 5 0 0 0 - - -, f 5;
-#X floatatom 446 351 5 0 0 0 - - -, f 5;
-#X msg 418 292 500 1 5 43 47;
-#X obj 405 323 unpack f f f f f f f, f 42;
-#X floatatom 612 351 5 0 0 0 - - -, f 5;
-#X floatatom 654 351 5 0 0 0 - - -, f 5;
-#X text 519 273 duration \, start_index \, end_index \, start_note
+#X floatatom 235 443 5 0 0 0 - - -, f 5;
+#X floatatom 521 557 5 0 0 0 - - -, f 5;
+#X floatatom 617 592 5 0 0 0 - - -, f 5;
+#X floatatom 426 521 5 0 0 0 - - -, f 5;
+#X floatatom 330 481 5 0 0 0 - - -, f 5;
+#X msg 248 392 500 1 5 43 47;
+#X obj 235 423 unpack f f f f f f f, f 96;
+#X floatatom 712 627 5 0 0 0 - - -, f 5;
+#X floatatom 808 663 5 0 0 0 - - -, f 5;
+#X text 349 373 duration \, start_index \, end_index \, start_note
 \, end_note \, start_multiplier \, end_multiplier, f 37;
+#X obj 235 460 s rendezvous_duration_\$1;
+#X obj 330 501 s rendezvous_start_index_\$1;
+#X obj 426 537 s rendezvous_end_index_\$1;
+#X obj 521 573 s rendezvous_start_note_\$1;
+#X obj 617 608 s rendezvous_end_note_\$1;
+#X obj 808 679 s rendezvous_end_multiplier_\$1;
+#X obj 712 643 s rendezvous_start_multiplier_\$1;
+#X obj 405 327 list;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 2 0 5 0;
@@ -48,9 +56,14 @@
 #X connect 17 3 10 0;
 #X connect 17 4 9 0;
 #X connect 17 5 13 0;
-#X connect 17 6 24 0;
+#X connect 17 6 35 0;
 #X connect 17 7 8 0;
+#X connect 18 0 28 0;
+#X connect 19 0 31 0;
 #X connect 20 0 8 0;
+#X connect 20 0 32 0;
+#X connect 21 0 30 0;
+#X connect 22 0 29 0;
 #X connect 23 0 24 0;
 #X connect 24 0 18 0;
 #X connect 24 1 22 0;
@@ -59,3 +72,6 @@
 #X connect 24 4 20 0;
 #X connect 24 5 25 0;
 #X connect 24 6 26 0;
+#X connect 25 0 34 0;
+#X connect 26 0 33 0;
+#X connect 35 0 24 0;
