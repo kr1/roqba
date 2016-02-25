@@ -1,5 +1,4 @@
 import threading
-import itertools
 from random import choice, randint, random
 
 from roqba.composers.abstract_composer import AbstractComposer
@@ -8,7 +7,7 @@ from roqba.static.meters import METERS
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
 
 from roqba.utilities.sine_controllers import MultiSine
-from roqba.utilities import pd_wavetables, naive_peak_detect
+from roqba.utilities import pd_wavetables, wavetable_peaks
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
@@ -129,8 +128,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     def _setup_new_controller_wavetable(self):
         self.controller_wavetable_string = pd_wavetables.random_wavetable(partials=randint(3, 10))
         self.controller_wavetable = pd_wavetables._apply_wavetable(self.controller_wavetable_string)
-        self.controller_wavetable_extrema = naive_peak_detect.detect_local_extrema(self.controller_wavetable)
-        self._extract_transitions()
+        self.rendezvous_transitions = wavetable_peaks.extract_peak_passages(self.controller_wavetable)
         self.gateway.pd.send(["sys", "controller_wavetable", self.controller_wavetable_string])
 
     def select_next_harmony(self):
@@ -151,23 +149,3 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if self.send_out_tick == self.ticks_counter:
             return self.next_harmony[voice.id - 1]
         return False
-
-    def _extract_transitions(self):
-        upwards = []
-        downwards = []
-        extrema = self.controller_wavetable_extrema
-        all_ = itertools.permutations(extrema.keys(), 2)
-        for start, end in all_:
-            if extrema[start] == extrema[end]:
-                continue
-            elif extrema[start] > extrema[end]:
-                target = downwards
-            else:
-                target = upwards
-            target.append({
-                'start': (start, extrema[start]),
-                'end': (end, extrema[end])})
-        self.rendezvous_transitions = {
-            'upwards': upwards,
-            'downwards': downwards,
-        }
