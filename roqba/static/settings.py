@@ -253,6 +253,8 @@ styles = {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
             'composer': 'rendezvous'},
         'behaviour': {
+            'max_speed': 0.7,
+            'min_speed': 0.3,
             'automate_slide': False,
             'adsr': [40, 40, 30, 20000],
             'automate_adsr': False,
