@@ -34,7 +34,7 @@
 #X msg 662 377 [2_ 3];
 #X msg 662 401 [2_ 1_ 1_ 1];
 #X msg 662 425 [2_ 2_ 1];
-#X msg 23 154 (12__(3__3__2__2__2));
+#X msg 23 154 (6__(2__2__2));
 #X obj 746 307 cyclone/prepend set;
 #X obj 867 307 cyclone/prepend set;
 #X obj 625 307 cyclone/prepend set;
@@ -437,7 +437,7 @@
 #X connect 18 1 19 0;
 #X coords 0 -1 1 1 330 121 1 100 100;
 #X restore 454 174 pd volumes;
-#N canvas 2 48 1020 718 message_dispatcher 1;
+#N canvas 2 48 1020 718 message_dispatcher 0;
 #X obj 655 190 print log udp;
 #X obj 655 169 spigot;
 #X obj 29 146 route master 1 2 3 4;
