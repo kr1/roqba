@@ -88,6 +88,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                     start_end['start'][1],  # multiplier
                     start_end['end'][1],
                 ])
+                voice.note = next_note
             else:
                 voice.note_change = False
                 continue
@@ -134,7 +135,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""
         next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES + FOUR_NOTE_HARMONIES))
-        next_offset = randint(24, 36)  # TODO: make something musical
+        next_offset = randint(12, 36)  # TODO: make something musical
         self.next_harmony = [note + next_offset + (randint(0, 2) * 12) for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):
