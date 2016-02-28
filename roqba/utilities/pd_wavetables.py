@@ -57,6 +57,7 @@ def _apply_wavetable(string, size=512):
     for index in xrange(size):
         wavetable.append(sum([value * math.sin(pi_step * index * (harmo_index + 1))
                               for harmo_index, value in enumerate(numbers)]))
+    # normalize
     max_ = max(abs(min(wavetable)), max(wavetable))
     return [num/max_ for num in wavetable]
 

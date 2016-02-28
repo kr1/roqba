@@ -26,10 +26,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.second_beat_half = False
 
         # Rendezvous planning
-        self.min_rendezvous_tickoffset = 2
-        self.max_rendezvous_tickoffset = 12
-        self.fixed_rendezvous_length = 12
-        self.max_rendezvous_length = 6
+        self.min_rendezvous_tickoffset = behaviour['min_rendezvous_tickoffset']
+        self.max_rendezvous_tickoffset = behaviour['max_rendezvous_tickoffset']
+        self.fixed_rendezvous_length = behaviour['fixed_rendezvous_length']
+        self.min_rendezvous_length = behaviour['min_rendezvous_length']
+        self.max_rendezvous_length = behaviour['max_rendezvous_length']
         self._setup_new_controller_wavetable()
 
         # Rendezvous handling
@@ -66,9 +67,10 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             self.select_next_harmony()
             sendout_offset = (self.fixed_rendezvous_length
                               if self.fixed_rendezvous_length is not None
-                              else randint(0, self.max_rendezvous_length))
+                              else randint(self.min_rendezvous_length, 
+                                           self.max_rendezvous_length))
             self.select_next_anchor_tick(sendout_offset=sendout_offset)
-            self.gateway.set_slide_msecs_for_all_voices(current_slide_time)
+            #self.gateway.set_slide_msecs_for_all_voices(current_slide_time)
 
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
@@ -119,7 +121,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             voice.update_current_microvolume()
             self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
             #self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
-        self.gateway.hub.send(self.voices)
+        #self.gateway.hub.send(self.voices)
         if send_to_notator:
             self.notator.note_to_file({"notes": self.prior_harmony,
                                        "weight": state["weight"],
@@ -135,7 +137,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""
         next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES + FOUR_NOTE_HARMONIES))
-        next_offset = randint(12, 36)  # TODO: make something musical
+        next_offset = randint(24, 48)  # TODO: make something musical
         self.next_harmony = [note + next_offset + (randint(0, 2) * 12) for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):
