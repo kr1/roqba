@@ -23,7 +23,7 @@
 #X obj 749 355 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X msg 666 407 ls-results in pd-window;
-#X obj 553 408 record-stereo~;
+#X obj 547 405 record-stereo~;
 #X obj 634 382 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 785 355 ls;
@@ -34,16 +34,16 @@
 #X msg 662 377 [2_ 3];
 #X msg 662 401 [2_ 1_ 1_ 1];
 #X msg 662 425 [2_ 2_ 1];
-#X msg 23 154 (12__(3__3__2__2__2));
-#X obj 707 246 cyclone/prepend set;
-#X obj 711 277 cyclone/prepend set;
-#X obj 687 210 cyclone/prepend set;
-#X obj 660 177 cyclone/prepend set;
+#X msg 23 154 (5__(3__2));
+#X obj 746 307 cyclone/prepend set;
+#X obj 867 307 cyclone/prepend set;
+#X obj 625 307 cyclone/prepend set;
+#X obj 505 307 cyclone/prepend set;
 #X obj 23 132 cyclone/prepend set;
 #X obj 505 152 list-abs/list-l2s;
-#X obj 523 179 list-abs/list-l2s;
-#X obj 542 208 list-abs/list-l2s;
-#X obj 561 239 list-abs/list-l2s;
+#X obj 625 150 list-abs/list-l2s;
+#X obj 746 147 list-abs/list-l2s;
+#X obj 867 144 list-abs/list-l2s;
 #X obj 333 181 list-abs/list-l2s;
 #X obj 20 260 cnv 15 440 100 empty empty Voices 20 12 0 14 -191407
 -262144 0;
@@ -94,7 +94,7 @@
 #X floatatom 202 324 8 0 0 0 - - -, f 8;
 #X floatatom 202 342 8 0 0 0 - - -, f 8;
 #X floatatom 407 217 5 0 0 0 - - -, f 5;
-#X text 201 267 binaural;
+#X text 201 270 binaural;
 #X floatatom 121 289 8 0 0 0 - - -, f 8;
 #X floatatom 121 306 8 0 0 0 - - -, f 8;
 #X floatatom 121 324 8 0 0 0 - - -, f 8;
@@ -144,9 +144,9 @@
 #X floatatom 194 216 5 0 0 0 - - -, f 5;
 #X text 125 270 slide;
 #X obj 505 51 r raw_unspecified_voice_message;
-#X obj 754 81 list-abs/list-l2s;
-#X symbolatom 754 107 20 0 0 0 - - -, f 20;
-#X obj 505 109 route 1 2 3 4;
+#X obj 754 73 list-abs/list-l2s;
+#X symbolatom 754 92 20 0 0 0 - - -, f 20;
+#X obj 505 109 route 1 2 3 4, f 81;
 #X obj 505 81 route rhythm slide binaural;
 #X obj 333 69 r sys_meter;
 #X connect 5 0 2 0;
@@ -204,12 +204,12 @@
 -1 -1 5138 1;
 #X obj 253 248 / 666;
 #X obj 303 131 vsl 50 80 0 1024 0 0 empty empty drums 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 5138 1;
 #X obj 303 248 / 666;
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 938 1;
+-1 -1 5138 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1020 718 voice_volume_receiver 0;
@@ -435,17 +435,17 @@
 #X connect 17 3 8 0;
 #X connect 18 0 20 0;
 #X connect 18 1 19 0;
-#X coords 0 -1 1 1 330 120 1 100 100;
+#X coords 0 -1 1 1 330 121 1 100 100;
 #X restore 454 174 pd volumes;
-#N canvas 2 48 1020 718 message_dispatcher 1;
-#X obj 606 304 print log udp;
-#X obj 606 283 spigot;
-#X obj 279 194 route master 1 2 3 4;
-#X obj 316 163 route 1 2 3 4;
-#X obj 279 219 s master_vol;
-#X obj 639 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#N canvas 2 50 1020 718 message_dispatcher 0;
+#X obj 655 190 print log udp;
+#X obj 655 169 spigot;
+#X obj 29 146 route master 1 2 3 4;
+#X obj 66 121 route 1 2 3 4, f 29;
+#X obj 29 171 s master_vol;
+#X obj 706 147 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 279 100 route sound voice perc sys;
+#X obj 29 50 route sound voice perc sys, f 147;
 #N canvas 2 50 1020 718 percussion 0;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
@@ -497,33 +497,33 @@
 #X connect 14 5 11 0;
 #X connect 14 6 2 0;
 #X connect 14 7 1 0;
-#X restore 355 243 pd percussion;
-#X obj 682 123 spigot;
-#X obj 682 148 print wild;
-#X obj 665 124 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X restore 468 74 pd percussion;
+#X obj 908 72 spigot;
+#X obj 908 97 print wild;
+#X obj 941 51 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 231 244 route 1 2 3 4;
-#X obj 517 173 s global_speed;
-#X obj 279 124 route vol pan;
-#X obj 279 72 inlet;
-#X obj 639 62 inlet;
-#X obj 369 344 s voice_pan_1;
-#X obj 499 404 s voice_pan_4;
-#X obj 449 384 s voice_pan_3;
-#X obj 409 364 s voice_pan_2;
-#X obj 85 331 s raw_voice_1_message;
-#X obj 84 360 s raw_voice_2_message;
-#X obj 85 390 s raw_voice_3_message;
-#X obj 85 420 s raw_voice_4_message;
-#X obj 179 457 s raw_unspecified_voice_message;
-#X obj 455 149 s sys_meter;
-#X obj 393 123 route log meter speed controller_wavetable;
-#X obj 632 341 loadbang;
-#X obj 632 371 symbol controller_wavetable;
-#X obj 691 343 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 248 386 route 1 2 3 4;
+#X obj 845 148 s global_speed;
+#X obj 29 76 route vol pan;
+#X obj 29 22 inlet;
+#X obj 706 22 inlet;
+#X obj 66 248 s voice_pan_1;
+#X obj 194 318 s voice_pan_4;
+#X obj 151 295 s voice_pan_3;
+#X obj 108 271 s voice_pan_2;
+#X obj 248 420 s raw_voice_1_message;
+#X obj 248 437 s raw_voice_2_message;
+#X obj 248 454 s raw_voice_3_message;
+#X obj 248 471 s raw_voice_4_message;
+#X obj 248 498 s raw_unspecified_voice_message;
+#X obj 766 147 s sys_meter;
+#X obj 688 121 route log meter speed controller_wavetable, f 53;
+#X obj 606 341 loadbang;
+#X obj 606 371 symbol controller_wavetable;
+#X obj 657 341 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X msg 632 402 \; \$1 sinesum 4096 0.5 0.7 0.25 0.125 0 \, 3 1;
-#X obj 579 198 sinesum_from_message controller_wavetable;
+#X obj 759 176 sinesum_from_message controller_wavetable;
+#X msg 606 402 \; \$1 sinesum 512 0.3 0.3 0.25 0.125 0 0.2 0.1;
 #X connect 1 0 0 0;
 #X connect 2 0 4 0;
 #X connect 3 0 16 0;
@@ -546,24 +546,25 @@
 #X connect 13 0 2 0;
 #X connect 13 1 3 0;
 #X connect 14 0 6 0;
+#X connect 14 0 1 0;
 #X connect 15 0 5 0;
 #X connect 26 0 1 1;
 #X connect 26 1 25 0;
 #X connect 26 2 12 0;
-#X connect 26 3 31 0;
+#X connect 26 3 30 0;
 #X connect 27 0 28 0;
-#X connect 28 0 30 0;
+#X connect 28 0 31 0;
 #X connect 29 0 28 0;
 #X restore 36 394 pd message_dispatcher;
-#X obj 184 18 voice_message_dispatcher 2;
 #X obj 16 17 voice_message_dispatcher 1;
+#X text 169 396 dispatcher;
+#X obj 184 18 voice_message_dispatcher 2;
 #X obj 352 18 voice_message_dispatcher 3;
 #X obj 518 18 voice_message_dispatcher 4;
-#X text 169 396 dispatcher;
+#X obj 16 41 voice 1 30 30 30 30 300;
+#X obj 184 42 voice 2 30 30 30 30 300;
 #X obj 352 43 voice 3 30 30 30 30 300;
 #X obj 518 44 voice 4 30 30 30 30 300;
-#X obj 184 42 voice 2 30 30 30 30 300;
-#X obj 16 41 voice 1 30 30 30 30 300;
 #X connect 2 0 1 0;
 #X connect 3 0 10 0;
 #X connect 4 0 13 0;
@@ -590,8 +591,8 @@
 #X connect 22 0 18 2;
 #X connect 24 0 21 0;
 #X connect 24 1 22 0;
-#X connect 26 0 33 0;
-#X connect 27 0 34 0;
-#X connect 28 0 31 0;
-#X connect 29 0 32 0;
+#X connect 26 0 31 0;
+#X connect 28 0 32 0;
+#X connect 29 0 33 0;
+#X connect 30 0 34 0;
 #X coords 0 718 1 717 85 60 0;

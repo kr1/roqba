@@ -253,10 +253,17 @@ styles = {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
             'composer': 'rendezvous'},
         'behaviour': {
+            'max_speed': 0.7,
+            'min_speed': 0.3,
             'automate_slide': False,
-            'adsr': [40, 40, 30, 20000],
+            'adsr': [40, 40, 100, 20000],
             'automate_adsr': False,
             'binaural_diff': 0.15,
+            'fixed_rendezvous_length': False,  # boolean or number of ticks
+            'min_rendezvous_length': 3,  # used as min random when length is not fixed
+            'max_rendezvous_length': 6,  # used as max random when length is not fixed
+            'min_rendezvous_tickoffset': 5,  # how long it takes min to rendezvous
+            'max_rendezvous_tickoffset': 40,  # how long it takes max to rendezvous
             'automate_note_duration_prop': False,
             'per_voice': {
                 1: BehaviourDict({}),
