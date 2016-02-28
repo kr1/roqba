@@ -28,7 +28,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         # Rendezvous planning
         self.min_rendezvous_tickoffset = 2
         self.max_rendezvous_tickoffset = 12
-        self.fixed_rendezvous_length = None
+        self.fixed_rendezvous_length = 12
         self.max_rendezvous_length = 6
         self._setup_new_controller_wavetable()
 
