@@ -229,7 +229,8 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.make_length()))
         self.playing = False
         self.stopped = True
-        self.gui_sender.receive_exit_requested = True
+        if self.has_gui:
+            self.gui_sender.receive_exit_requested = True
         self.gateway.stop()
         self.metronome.reset()
         self.composer.notator.reset()

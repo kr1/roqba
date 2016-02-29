@@ -264,6 +264,7 @@ styles = {
             'max_rendezvous_length': 6,  # used as max random when length is not fixed
             'min_rendezvous_tickoffset': 5,  # how long it takes min to rendezvous
             'max_rendezvous_tickoffset': 40,  # how long it takes max to rendezvous
+            'num_rendezvous_between_caesurae': 10,
             'automate_note_duration_prop': False,
             'per_voice': {
                 1: BehaviourDict({}),

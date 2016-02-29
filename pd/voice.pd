@@ -103,7 +103,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 456 line~;
 #X obj 203 458 line~;
 #X obj 245 584 vsl 105 54 80 800 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1006 1;
+-1 -1 0 1;
 #X obj 205 554 line;
 #X obj 210 642 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -137,9 +137,9 @@ This patch is used as an abstraction in various examples.;
 #X obj 211 207 - 1;
 #X floatatom 282 83 5 0 0 0 - - -, f 5;
 #X obj 128 398 vsl 64 128 -1 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5160 1;
+-1 -1 142 1;
 #X obj 241 349 hsl 398 15 -0 512 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 26596 1;
+-1 -1 38382 1;
 #X obj 211 122 - 1;
 #X floatatom 132 153 5 0 0 0 - - -, f 5;
 #X floatatom 53 48 5 0 0 0 - - -, f 5;
@@ -165,11 +165,11 @@ This patch is used as an abstraction in various examples.;
 #X obj 406 318 r rendezvous_start_note_\$1;
 #X obj 468 370 r rendezvous_end_note_\$1;
 #X obj 468 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 8467 1;
+-1 -1 4868 1;
 #X obj 288 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 12700 1;
+-1 -1 12065 1;
 #X obj 378 534 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 9893 1;
+-1 -1 4975 1;
 #X floatatom 468 511 5 0 0 0 - - -, f 5;
 #X floatatom 288 511 5 0 0 0 - - -, f 5;
 #X floatatom 298 399 5 0 0 0 - - -, f 5;
