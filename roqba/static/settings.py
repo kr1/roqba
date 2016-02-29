@@ -139,6 +139,30 @@ behaviour = {
 }
 
 styles = {
+    "slow_and_slidy":{
+        'settings': {},
+        'behaviour':{
+            'per_voice': {
+                1: {
+                  'use_proportional_slide_duration': True
+                },
+                2: {
+                  'use_proportional_slide_duration': True
+                },
+                3: {
+                  'use_proportional_slide_duration': True
+                },
+                4: {
+                  'use_proportional_slide_duration': True
+                },
+            },
+            'max_speed': 1.2,
+            'slide_duration_prop': 1.0,
+            'use_proportional_slide_duration': True,
+            'transposings':  [1,2,3,3,3,3,4,5],
+            'speed_target': 0.45
+        }
+    },
     "bulgarian": {
         "settings": {'composer': 'baroq'},
         "behaviour": {
@@ -257,6 +281,7 @@ styles = {
             'min_speed': 0.3,
             'automate_slide': False,
             'adsr': [40, 40, 100, 20000],
+            'half_beat': True,
             'automate_adsr': False,
             'binaural_diff': 0.15,
             'fixed_rendezvous_length': False,  # boolean or number of ticks
