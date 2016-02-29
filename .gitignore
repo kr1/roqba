@@ -18,3 +18,4 @@ roqba.egg-info/
 roqba/static/local_settings.py
 docs/build
 docs/build/
+.cache

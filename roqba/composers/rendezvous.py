@@ -34,7 +34,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self._setup_new_controller_wavetable()
 
         # Rendezvous handling
-        self.num_rendezvous_between_caesurae = 15
+        self.num_rendezvous_between_caesurae = behaviour['num_rendezvous_between_caesurae']
 
         # setup state
         self.rendezvous_counter = 0
@@ -67,10 +67,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             self.select_next_harmony()
             sendout_offset = (self.fixed_rendezvous_length
                               if self.fixed_rendezvous_length is not None
-                              else randint(self.min_rendezvous_length, 
+                              else randint(self.min_rendezvous_length,
                                            self.max_rendezvous_length))
             self.select_next_anchor_tick(sendout_offset=sendout_offset)
-            #self.gateway.set_slide_msecs_for_all_voices(current_slide_time)
 
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
@@ -80,9 +79,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 # send a rendezvous message
                 # duration, start_index, end_index, start_note, end_note, start_multiplier and end_multiplier
                 start_end = choice(
-                    self.rendezvous_transitions['downwards' if next_note < voice.note else 'upwards'])
+                    self.rendezvous_transitions['downwards' if next_note <= voice.note else 'upwards'])
                 self.gateway.pd.send([
-                    "voice", voice.id, "rendezvous",
+                    "voice",
+                    voice.id,
+                    "rendezvous",
                     current_slide_time,
                     start_end['start'][0],  # index
                     start_end['end'][0],
@@ -121,7 +122,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             voice.update_current_microvolume()
             self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
             #self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
-        #self.gateway.hub.send(self.voices)
         if send_to_notator:
             self.notator.note_to_file({"notes": self.prior_harmony,
                                        "weight": state["weight"],

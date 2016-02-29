@@ -184,12 +184,12 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                     new_transpose = choice(sample)
                     self.gateway.transpose = new_transpose
                     self.behaviour["transpose"] = new_transpose
-                    self.gui_sender.send({'transpose': new_transpose})
                 time.sleep(self.speed)
                 if self.behaviour["automate_wavetables"]:
                     self.set_wavetables(voices=voices)
                 if self.has_gui:
                     self.gui_sender.handle_caesura(self)
+                    self.gui_sender.send({'transpose': new_transpose})
                 self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
                     self.composer.meter, self.speed, self.composer.scale))
                 self.new_microspeed_sine()
