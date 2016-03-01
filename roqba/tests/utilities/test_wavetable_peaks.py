@@ -4,23 +4,25 @@ from roqba.utilities import wavetable_peaks
 
 @pytest.fixture
 def test_array_long():
-    return [1, 2, 3, 4, 5, 4, 3, 4, 5, 6, 7, 6, 5, 4, 5, 6, 7, 8, 7, 6, 7, 8, 9]
+    return [0.1, 0.2, 0.3, 0.4, 0.5, 0.4, 0.3, 0.4, 0.5, 0.6, 0.7, 0.6,
+            0.5, 0.4, 0.5, 0.6, 0.7, 0.8, 0.7, 0.6, 0.7, 0.8, 0.9, 0.8, 0.9, 1.0]
 
 
 @pytest.fixture
 def test_array_short():
-    return [1, 2, 3, 2, 3, 4, 3, 2, 1]
+    return [0.1, 0.5, 0.9, 0.5, 0.9, 1.0, 0.9, 0.5, 0.1]
 
 
 def test_extract_local_extrema(test_array_long):
     returned = wavetable_peaks.detect_local_extrema(test_array_long)
-    expected = {4: 5, 6: 3, 10: 7, 13: 4, 17: 8, 19: 6}
+    expected = {4: 0.5, 6: 0.3, 10: 0.7, 13: 0.4, 17: 0.8,
+                19: 0.6, 22: 0.9, 23: 0.8}
     assert returned == expected
 
 
 def test_extract_local_extrema_short(test_array_short):
     returned = wavetable_peaks.detect_local_extrema(test_array_short)
-    expected = {2: 3, 3: 2, 5: 4}
+    expected = {2: 0.9, 3: 0.5, 5: 1.0}
     assert returned == expected
 
 
@@ -28,13 +30,15 @@ def test_extract_peak_passages(test_array_short):
     returned = wavetable_peaks.extract_peak_passages(test_array_short)
     expected = {
         'downwards': [{
-            'start': (2, 3), 'end': (3, 2)}, {
-            'start': (5, 4), 'end': (2, 3)}, {
-            'start': (5, 4), 'end': (3, 2)
+            'start': (2, 0.9), 'end': (3, 0.5), 'in_between': [], 'deviation': 1}, {
+            'start': (5, 1.0), 'end': (2, 0.9), 'in_between': [(3, 0.5)],
+                'deviation': 0.5 / (1.0 - 0.9)}, {
+            'start': (5, 1.0), 'end': (3, 0.5), 'in_between': [], 'deviation': 1
             }],
         'upwards': [{
-            'start': (2, 3), 'end': (5, 4)}, {
-            'start': (3, 2), 'end': (2, 3)}, {
-            'start': (3, 2), 'end': (5, 4)}
+            'start': (2, 0.9), 'end': (5, 1.0), 'in_between': [(3, 0.5)],
+                'deviation': 0.5 / (1.0 - 0.9)}, {
+            'start': (3, 0.5), 'end': (2, 0.9), 'in_between': [], 'deviation': 1}, {
+            'start': (3, 0.5), 'end': (5, 1.0), 'in_between': [], 'deviation': 1}
     ]}
     assert returned == expected
