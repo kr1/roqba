@@ -35,10 +35,12 @@ def test_extract_local_extrema_short(test_array_short):
     expected = {2: 0.9, 3: 0.5, 5: 1.0}
     assert returned == expected
 
+
 def test_extract_local_extrema_shortest(test_array_shortest):
     returned = wavetable_peaks.detect_local_extrema(test_array_shortest)
-    expected = {2: 0.9, 3: 0.5, 5: 1.0}
+    expected = {1: 0.4, 2: 0.3}
     assert returned == expected
+
 
 def test_extract_peak_passages(test_array_short):
     returned = wavetable_peaks.extract_peak_passages(test_array_short)
@@ -59,5 +61,11 @@ def test_extract_peak_passages(test_array_short):
 
 
 def test_extract_peak_passages2(test_array):
-    returned = wavetable_peaks.extract_peak_passages(test_array)
-    print sorted(returned['upwards'], key=lambda res: res['deviation'])
+    returned_downwards = wavetable_peaks.extract_peak_passages(test_array)['downwards']
+    found = [entry for entry in returned_downwards
+             if entry['deviation'] > 75 and
+                entry['start'][0] == 2 and
+                entry['in_between'][0][0] == 4 and
+                entry['end'][0] == 5
+    ]
+    assert found
