@@ -275,6 +275,7 @@ styles = {
     'rendezvous': {
         'settings': {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
+            'enable_adsr': False,
             'composer': 'rendezvous'},
         'behaviour': {
             'max_speed': 0.7,

@@ -51,6 +51,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             args = [random() * 0.3 for n in range(4)]
             voice.pan_sine = MultiSine(args)
 
+            if not settings['enable_adsr']:
+                self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
+
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here."""
         self.ticks_counter += 1
