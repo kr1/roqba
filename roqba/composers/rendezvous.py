@@ -73,7 +73,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                               else randint(self.min_rendezvous_length,
                                            self.max_rendezvous_length))
             self.select_next_anchor_tick(sendout_offset=sendout_offset)
-
+        if self.send_out_tick == self.ticks_counter and self.behaviour['common_transitions']:
+            transitions = self.determine_rendezvous_transition()
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
                 raise (RuntimeError, "mismatch in voices count")
@@ -81,18 +82,20 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             if next_note:
                 # send a rendezvous message
                 # duration, start_index, end_index, start_note, end_note, start_multiplier and end_multiplier
-                start_end = choice(
-                    self.rendezvous_transitions['downwards' if next_note <= voice.note else 'upwards'])
+                if not self.behaviour['common_transitions']:
+                    transitions = self.determine_rendezvous_transition()
+                transition = transitions['downwards' if next_note <= voice.note else 'upwards']
+
                 self.gateway.pd.send([
                     "voice",
                     voice.id,
                     "rendezvous",
                     current_slide_time,
-                    start_end['start'][0],  # index
-                    start_end['end'][0],
+                    transition['start'][0],  # index
+                    transition['end'][0],
                     voice.note, next_note,
-                    start_end['start'][1],  # multiplier
-                    start_end['end'][1],
+                    transition['start'][1],  # multiplier
+                    transition['end'][1],
                 ])
                 voice.note = next_note
             else:
@@ -130,6 +133,13 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                        "weight": state["weight"],
                                        "cycle_pos": state["cycle_pos"]})
         return self.comment
+
+    def determine_rendezvous_transition(self):
+        transitions = {
+            'upwards': choice(self.rendezvous_transitions['upwards']),
+            'downwards': choice(self.rendezvous_transitions['downwards'])
+        }
+        return transitions
 
     def _setup_new_controller_wavetable(self):
         self.controller_wavetable_string = pd_wavetables.random_wavetable(partials=randint(3, 10))

@@ -284,6 +284,8 @@ styles = {
             'adsr': [40, 40, 100, 20000],
             'half_beat': True,
             'automate_adsr': False,
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'free', 'musical', 'random']
+            'common_transitions': True,  # upward and downward movements should be parallel?
             'binaural_diff': 0.15,
             'fixed_rendezvous_length': False,  # boolean or number of ticks
             'min_rendezvous_length': 3,  # used as min random when length is not fixed
@@ -302,8 +304,10 @@ styles = {
     }
 }
 
+
 if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
     behaviour["meters"] = sum(behaviour["meters"], [])
+
 
 if __name__ == "__main__":
     print styles
