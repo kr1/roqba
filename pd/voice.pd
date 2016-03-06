@@ -1,15 +1,15 @@
 #N canvas 2 48 1020 718 10;
-#X obj 170 158 inlet;
+#X obj 312 118 inlet;
 #X obj 657 269 inlet;
-#X text 167 140 trigger;
-#X obj 170 180 sel 0;
+#X text 309 100 trigger;
+#X obj 312 140 sel 0;
 #X obj 403 300 t b;
 #X obj 714 269 inlet;
 #X obj 551 496 line~;
 #X obj 781 264 inlet;
 #X obj 838 269 inlet;
 #X obj 911 268 inlet;
-#X msg 170 202 stop;
+#X msg 312 162 stop;
 #X obj 188 680 outlet~;
 #X text 324 446 and pack with;
 #X text 325 462 attack time;
@@ -103,7 +103,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 456 line~;
 #X obj 203 458 line~;
 #X obj 245 584 vsl 105 54 80 800 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 384 1;
 #X obj 205 554 line;
 #X obj 210 642 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -114,7 +114,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 110 spigot 1;
 #X msg 97 66 0;
 #X obj 97 17 r rendezvous_start_note_\$1;
-#N canvas 2 48 1020 718 parse_rendezvous_data 1;
+#N canvas 2 50 1020 718 parse_rendezvous_data 0;
 #X obj 282 2 r rendezvous_start_index_\$1;
 #X floatatom 243 141 5 0 0 0 - - -, f 5;
 #X obj 26 26 r rendezvous_duration_\$1;
@@ -124,7 +124,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 168 148 abs;
 #X obj 105 288 metro;
 #X floatatom 157 177 5 0 0 0 - - -, f 5;
-#X obj 105 269 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 105 269 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 105 310 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -137,9 +137,9 @@ This patch is used as an abstraction in various examples.;
 #X obj 211 207 - 1;
 #X floatatom 282 83 5 0 0 0 - - -, f 5;
 #X obj 128 398 vsl 64 128 -1 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 142 1;
+-1 -1 5377 1;
 #X obj 241 349 hsl 398 15 -0 512 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 38382 1;
+-1 -1 21788 1;
 #X obj 211 122 - 1;
 #X floatatom 132 153 5 0 0 0 - - -, f 5;
 #X floatatom 53 48 5 0 0 0 - - -, f 5;
@@ -165,11 +165,11 @@ This patch is used as an abstraction in various examples.;
 #X obj 406 318 r rendezvous_start_note_\$1;
 #X obj 468 370 r rendezvous_end_note_\$1;
 #X obj 468 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4868 1;
+-1 -1 7832 1;
 #X obj 288 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 12065 1;
+-1 -1 8255 1;
 #X obj 378 534 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4975 1;
+-1 -1 8072 1;
 #X floatatom 468 511 5 0 0 0 - - -, f 5;
 #X floatatom 288 511 5 0 0 0 - - -, f 5;
 #X floatatom 298 399 5 0 0 0 - - -, f 5;
@@ -250,11 +250,18 @@ This patch is used as an abstraction in various examples.;
 #X connect 54 0 39 0;
 #X connect 54 0 38 0;
 #X coords 0 718 1 717 85 60 0;
-#X restore 169 69 pd parse_rendezvous_data \$1;
+#X restore 161 37 pd parse_rendezvous_data \$1;
 #X obj 126 256 loadbang;
 #X msg 126 276 0;
 #X msg 129 66 20;
 #X obj 647 595 sinesum_from_message sines\$1;
+#X obj 216 101 spigot 1;
+#X obj 261 61 r adsr_enable_voice\$1;
+#X obj 261 83 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 312 140 sel 0;
+#X obj 269 134 sel 0;
+#X msg 269 157 0.5;
 #X connect 0 0 3 0;
 #X connect 1 0 95 0;
 #X connect 3 0 10 0;
@@ -277,8 +284,8 @@ This patch is used as an abstraction in various examples.;
 #X connect 29 1 30 0;
 #X connect 30 0 6 0;
 #X connect 42 0 56 0;
-#X connect 43 0 3 0;
 #X connect 43 0 54 0;
+#X connect 43 0 114 0;
 #X connect 45 0 70 0;
 #X connect 46 0 47 0;
 #X connect 47 0 51 0;
@@ -354,4 +361,10 @@ This patch is used as an abstraction in various examples.;
 #X connect 109 1 42 0;
 #X connect 110 0 111 0;
 #X connect 111 0 97 0;
+#X connect 114 0 3 0;
+#X connect 115 0 116 0;
+#X connect 116 0 114 1;
+#X connect 116 0 118 0;
+#X connect 118 0 119 0;
+#X connect 119 0 6 0;
 #X coords 0 -1 1 1 150 80 1 200 580;
