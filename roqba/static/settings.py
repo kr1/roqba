@@ -284,7 +284,7 @@ styles = {
             'adsr': [40, 40, 100, 20000],
             'half_beat': True,
             'automate_adsr': False,
-            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'free', 'musical', 'random']
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'outgoing', 'roles', 'random']
             'common_transitions': True,  # upward and downward movements should be parallel?
             'binaural_diff': 0.15,
             'fixed_rendezvous_length': False,  # boolean or number of ticks

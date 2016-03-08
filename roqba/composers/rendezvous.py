@@ -32,7 +32,12 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.min_rendezvous_length = behaviour['min_rendezvous_length']
         self.max_rendezvous_length = behaviour['max_rendezvous_length']
         self._setup_new_controller_wavetable()
-
+        self.strategy_max_deviation_mapping = {
+            'conservative': 1.0,
+            'lax': 2.0,
+            'outgoing': 3.0,
+            'random': 1000
+        }
         # Rendezvous handling
         self.num_rendezvous_between_caesurae = behaviour['num_rendezvous_between_caesurae']
 
@@ -81,9 +86,10 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             next_note = self.next_voice_note(voice)
             if next_note:
                 # send a rendezvous message
-                # duration, start_index, end_index, start_note, end_note, start_multiplier and end_multiplier
+                # duration, start_index, end_index, start_note, end_note, start_multiplier
+                # and end_multiplier
                 if not self.behaviour['common_transitions']:
-                    transitions = self.determine_rendezvous_transition()
+                    transitions = self.determine_rendezvous_transition(voice)
                 transition = transitions['downwards' if next_note <= voice.note else 'upwards']
 
                 self.gateway.pd.send([
@@ -171,3 +177,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if self.send_out_tick == self.ticks_counter:
             return self.next_harmony[voice.id - 1]
         return False
+
+    def _transitions_by_deviation(self, max_deviation):
+        return {'upwards': [transition for transition in self.rendezvous_transitions['upwards']
+                            if transition['deviation'] <= max_deviation],
+                'downwards': [transition for transition in self.rendezvous_transitions['downwards']
+                              if transition['deviation'] <= max_deviation]}
