@@ -127,31 +127,37 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         for voice in self.voices.values():
             voice.update_current_microvolume()
             self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
-            #self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
+            # self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         if send_to_notator:
             self.notator.note_to_file({"notes": self.prior_harmony,
                                        "weight": state["weight"],
                                        "cycle_pos": state["cycle_pos"]})
         return self.comment
 
-    def determine_rendezvous_transition(self):
-        transitions = {
-            'upwards': choice(self.rendezvous_transitions['upwards']),
-            'downwards': choice(self.rendezvous_transitions['downwards'])
-        }
+    def determine_rendezvous_transition(self, voice):
+        if self.behaviour['transition_strategy'] in self.strategy_max_deviation_mapping.keys():
+            transitions = self._transitions_by_deviation(self.behaviour['transition_strategy'])
+        else:
+            transitions = {
+                'upwards': choice(self.rendezvous_transitions['upwards']),
+                'downwards': choice(self.rendezvous_transitions['downwards'])
+            }
         return transitions
 
     def _setup_new_controller_wavetable(self):
         self.controller_wavetable_string = pd_wavetables.random_wavetable(partials=randint(3, 10))
-        self.controller_wavetable = pd_wavetables._apply_wavetable(self.controller_wavetable_string)
-        self.rendezvous_transitions = wavetable_peaks.extract_peak_passages(self.controller_wavetable)
         self.gateway.pd.send(["sys", "controller_wavetable", self.controller_wavetable_string])
+        self.controller_wavetable = pd_wavetables._apply_wavetable(self.controller_wavetable_string)
+        # the transitions are used for the single voices moving from one peak point to another
+        self.rendezvous_transitions = wavetable_peaks.extract_peak_passages(
+            self.controller_wavetable)
 
     def select_next_harmony(self):
         """select the next rendezvous's harmony"""
         next_harmony_pattern = [0] + list(choice(STRICT_HARMONIES + FOUR_NOTE_HARMONIES))
         next_offset = randint(24, 48)  # TODO: make something musical
-        self.next_harmony = [note + next_offset + (randint(0, 2) * 12) for note in next_harmony_pattern]
+        self.next_harmony = [note + next_offset + (randint(0, 2) * 12)
+                             for note in next_harmony_pattern]
 
     def select_next_anchor_tick(self, sendout_offset=0):
         """set the next send-out and and rendezvous ticks"""
