@@ -278,20 +278,22 @@ styles = {
             'enable_adsr': False,
             'composer': 'rendezvous'},
         'behaviour': {
-            'max_speed': 0.7,
-            'min_speed': 0.3,
+            'max_speed': 0.25,
+            'min_speed': 0.1,
+            'speed': 0.1,
             'automate_slide': False,
+            'default_embellishment_prob': 0.1,
             'adsr': [40, 40, 100, 20000],
-            'half_beat': True,
+            'half_beat': False,
             'automate_adsr': False,
-            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'outgoing', 'roles', 'random']
-            'common_transitions': True,  # upward and downward movements should be parallel?
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range', 'outgoing', 'roles', 'random']
+            'common_transitions': False,  # upward and downward movements should be parallel?
             'binaural_diff': 0.15,
             'fixed_rendezvous_length': False,  # boolean or number of ticks
             'min_rendezvous_length': 3,  # used as min random when length is not fixed
-            'max_rendezvous_length': 6,  # used as max random when length is not fixed
+            'max_rendezvous_length': 3,  # used as max random when length is not fixed
             'min_rendezvous_tickoffset': 5,  # how long it takes min to rendezvous
-            'max_rendezvous_tickoffset': 40,  # how long it takes max to rendezvous
+            'max_rendezvous_tickoffset': 20,  # how long it takes max to rendezvous
             'num_rendezvous_between_caesurae': 10,
             'automate_note_duration_prop': False,
             'per_voice': {
