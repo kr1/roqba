@@ -90,7 +90,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 # and end_multiplier
                 if not self.behaviour['common_transitions']:
                     transitions = self.determine_rendezvous_transition(voice)
-                transition = transitions['downwards' if next_note <= voice.note else 'upwards']
+                transition = choice(transitions['downwards' if next_note <= voice.note else 'upwards'])
 
                 self.gateway.pd.send([
                     "voice",
@@ -140,8 +140,10 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                        "cycle_pos": state["cycle_pos"]})
         return self.comment
 
-    def determine_rendezvous_transition(self, voice):
-        if self.behaviour['transition_strategy'] in self.strategy_max_deviation_mapping.keys():
+    def determine_rendezvous_transition(self, voice=None):
+        if self.behaviour['transition_strategy'] == 'direct':
+            transitions = self._direct_transitions()
+        elif self.behaviour['transition_strategy'] in self.strategy_max_deviation_mapping.keys():
             transitions = self._transitions_by_deviation(self.behaviour['transition_strategy'])
         else:
             transitions = {
@@ -183,3 +185,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                             if transition['deviation'] <= max_deviation],
                 'downwards': [transition for transition in self.rendezvous_transitions['downwards']
                               if transition['deviation'] <= max_deviation]}
+
+    def _direct_transitions(self):
+        return {'upwards': [transition for transition in self.rendezvous_transitions['upwards']
+                            if not transition['in_between']],
+                'downwards': [transition for transition in self.rendezvous_transitions['downwards']
+                              if not transition['in_between']]}
