@@ -52,7 +52,7 @@ class AbstractComposer(object):
         self.notator = Notator(self.num_voices)
 
     def __repr__(self):
-        return "<Composer-Inst with {0}>".format(self.harm)
+        return "<Composer-Inst ({}) with harmony: {}>".format(self.__class__, self.harm)
 
     def _update_groupings(self, meter):
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,

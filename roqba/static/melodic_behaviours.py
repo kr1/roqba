@@ -60,7 +60,7 @@ registers = {
               "note_length_groupings": "FAST_GROUPINGS"},
         "voice_attrs":{
               "embellishment_prob": 0.01,
-              "legato_prob": 0.02,
+              "legato_prob": 0.06,
               #"slide": True,
               #"slide_duration_prop": 0.1, 
               "change_rhythm_after_times": 4,

@@ -210,11 +210,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                   note_changes)
         if all_notes_change:
             harmony = map(lambda x: x.note, self.voices.values())
-            #print "all_notes_change: harmony {0}".format(harmony)
+            # print "all_notes_change: harmony {0}".format(harmony)
             if (self.is_base_harmony(harmony) and
                     not filter(lambda v: v.playing_a_melody, self.voices.values())):
                 self.comment = "caesura"
-                #print "all notes change to a base harmony"
+                # print "all notes change to a base harmony"
 
     def acceptable_harmony(self, chord):
         '''checks if a chord is "harmonic"'''
