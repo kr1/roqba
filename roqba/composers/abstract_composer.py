@@ -83,7 +83,8 @@ class AbstractComposer(object):
         for v in self.voices.values():
             v.set_note_length_groupings()
             v.reload_register()
-        self.drummer.create_pattern(METERS[meter]["applied"])
+        self.drummer.meter = METERS[meter]["applied"]
+        self.drummer.create_pattern()
 
     @abstractmethod
     def generate(self):
