@@ -49,7 +49,9 @@ class AbstractComposer(object):
                 behaviour=self.settings['voice_behaviours'][voice_idx])
         [voice.register_other_voices() for voice in self.voices.values()]
         self.set_meter(self.meter)
-        self.notator = Notator(self.num_voices)
+        self.notate = settings.get('notate')
+        if self.notate:
+            self.notator = Notator(self.num_voices)
 
     def __repr__(self):
         return "<Composer-Inst ({}) with harmony: {}>".format(self.__class__, self.harm)

@@ -81,9 +81,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.gateway.hub.send(self.voices)  # this sends the voices to the hub
-        self.notator.note_to_file({"notes": tmp_harm,
-                                   "weight": state["weight"],
-                                   "cycle_pos": state["cycle_pos"]})
+        if self.notate:
+            self.notator.notate_rhythm(self.meter, state["cycle_pos"])
+            self.notator.note_to_file({"notes": tmp_harm,
+                                       "weight": state["weight"],
+                                       "cycle_pos": state["cycle_pos"]})
         return self.comment
 
     def apply_scale(self):
