@@ -163,6 +163,30 @@ styles = {
             'speed_target': 0.45
         }
     },
+    "fixed_meter_playalong": {
+        "settings": {
+            'composer': 'baroq',
+            'voice_registers': ['ROCK_BASS', 'FLAT_MID', 'FLAT_MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
+                                 ['SLAVE', 2], 'AUTONOMOUS'],
+        },
+        "behaviour": {
+            "speed": 0.2,
+            'max_speed': 0.5,
+            'caesura_prob': 0.001,
+            'min_speed': 0.08,
+            "shuffle_delay": 0.02,
+            'automate_meters': False,
+            "meter": (15, (3, 3, 2, 3, 2, 2)),
+            "meters": [(15, (3, 3, 2, 3, 2, 2))],
+            'common_note_duration': False,
+            'automate_binaural_diffs': False,
+            'binaural_diff': 0.666,
+            'max_binaural_diff': 3,
+            'half_beat': False,
+            'automate_speed_change': False,
+        }
+    },
     "bulgarian": {
         "settings": {'composer': 'baroq'},
         "behaviour": {
