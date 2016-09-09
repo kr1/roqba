@@ -404,27 +404,10 @@ def badly_formeD(meter_length, to_check):
 
     checks if the sum of items equals the specified target length'''
     odd = filter(lambda x: sum(x) != meter_length, to_check)
-    return odd
+    return bool(odd)
 
 if badly_formeD(DEFAULT_METER_LENGTH[0], DEFAULT_NOTE_LENGTH_GROUPINGS):
     raise RuntimeError('''not all note length groupings are well-formed:
             \n{0}\n\nin:{1}'''.format(badly_formeD(DEFAULT_METER_LENGTH,
                                       DEFAULT_NOTE_LENGTH_GROUPINGS),
                                       DEFAULT_NOTE_LENGTH_GROUPINGS))
-
-if __name__ == "__main__":
-    import pprint as pp
-    pp.pprint(DEFAULT_NOTE_LENGTH_GROUPINGS)
-
-    ## TEST analyze_grouping
-    res = analyze_grouping([1, 2, 1, 3])
-    assert res == [1, 1, 0, 1, 1, 0, 0]
-    print res
-    assert (get_grouping((5, (2, 3)), "heavy") ==
-            sum(groupings[(5, (2, 3))]["heavy"], []))
-    assert get_grouping((8, (4, 4)), "heavy") == sum(groupings[(8, (4, 4,))]["heavy"], [])
-    print get_grouping((5, (2, 3)), "terns")
-    print get_grouping((9, (3, 3, 3)), "terns")
-    print get_grouping((7, (3, 2, 2)), "terns")
-    import doctest
-    doctest.testmod()
