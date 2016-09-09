@@ -342,6 +342,7 @@ class Voice(object):
     def set_note_length_groupings(self, mapping={'BASS': 'HEAVY_GROUPINGS',
                                                  'ROCK_BASS': 'FAST_GROUPINGS',
                                                  'FLAT_MID': 'FAST_GROUPINGS',
+                                                 'LOW_MID': 'DEFAULT_GROUPINGS',
                                                  'MID': 'DEFAULT_GROUPINGS',
                                                  'HIGH': 'TERNARY_GROUPINGS'}):
         """sets the note_length_groupings attribute on self

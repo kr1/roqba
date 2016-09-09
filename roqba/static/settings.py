@@ -15,7 +15,8 @@ settings = {'number_of_voices': 4,
             'track_voices_length': 666,
             'lowest_note_num': 0,
             'highest_note_num': 127,
-            'composer': 'baroq'
+            'composer': 'baroq',
+            'notate': True
             }
 
 behaviour = {
@@ -166,7 +167,7 @@ styles = {
     "fixed_meter_playalong": {
         "settings": {
             'composer': 'baroq',
-            'voice_registers': ['ROCK_BASS', 'FLAT_MID', 'FLAT_MID', 'HIGH'],
+            'voice_registers': ['ROCK_BASS', 'LOW_MID', 'LOW_MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  ['SLAVE', 2], 'AUTONOMOUS'],
         },
