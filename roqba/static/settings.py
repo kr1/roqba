@@ -3,7 +3,7 @@ from roqba.utilities.behaviour_dict import BehaviourDict
 
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
-            #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            # 'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  ['SLAVE', 2], 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
@@ -139,27 +139,27 @@ behaviour = {
 }
 
 styles = {
-    "slow_and_slidy":{
+    "slow_and_slidy": {
         'settings': {},
-        'behaviour':{
+        'behaviour': {
             'per_voice': {
                 1: {
-                  'use_proportional_slide_duration': True
+                    'use_proportional_slide_duration': True
                 },
                 2: {
-                  'use_proportional_slide_duration': True
+                    'use_proportional_slide_duration': True
                 },
                 3: {
-                  'use_proportional_slide_duration': True
+                    'use_proportional_slide_duration': True
                 },
                 4: {
-                  'use_proportional_slide_duration': True
+                    'use_proportional_slide_duration': True
                 },
             },
             'max_speed': 1.2,
             'slide_duration_prop': 1.0,
             'use_proportional_slide_duration': True,
-            'transposings':  [1,2,3,3,3,3,4,5],
+            'transposings':  [1, 2, 3, 3, 3, 3, 4, 5],
             'speed_target': 0.45
         }
     },
@@ -171,7 +171,11 @@ styles = {
             "meters": [
                 [(5, (2, 3))] * 2,
                 [(5, (3, 2))] * 5,
-                [(7, (3, 2, 2))] * 12
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
             ],
             "speed": 0.17,
             "max_speed": 0.25,
@@ -181,7 +185,7 @@ styles = {
             'default_pause_prob': 0.07,
             'default_embellishment_prob': 0.05,
             "max_shuffle": 0.2,  # todo: check possibility for -
-            ## constraints on dual and triple grouping
+            # constraints on dual and triple grouping
             'common_note_duration': False,
             'automate_binaural_diffs': False,
             'binaural_diff': 0.666,
@@ -213,7 +217,7 @@ styles = {
             'default_pause_prob': 0.1,
             'default_embellishment_prob': 0.05,
             "max_shuffle": 0.3,  # todo: check possibility for -
-            ## constraints on dual and triple grouping
+            # constraints on dual and triple grouping
             'common_note_duration': False,
             'automate_note_duration_prop': True,
             'automate_note_duration_min_max': [0.9, 3.3],
@@ -286,7 +290,8 @@ styles = {
             'adsr': [40, 40, 100, 20000],
             'half_beat': False,
             'automate_adsr': False,
-            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range', 'outgoing', 'roles', 'random']
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
             'common_transitions': False,  # upward and downward movements should be parallel?
             'binaural_diff': 0.15,
             'fixed_rendezvous_length': False,  # boolean or number of ticks
@@ -309,8 +314,3 @@ styles = {
 
 if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
     behaviour["meters"] = sum(behaviour["meters"], [])
-
-
-if __name__ == "__main__":
-    print styles
-    print behaviour
