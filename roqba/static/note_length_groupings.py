@@ -321,16 +321,16 @@ def get_grouping(meter, mode, check=True):
     '''
     mode = None if mode == "default" else mode
     meter_length = meter if type(meter) == int else meter[0]
-    res = assemble(meter, mode, meter_length=meter_length)
+    res = _assemble(meter, mode, meter_length=meter_length)
     if check:
         if badly_formeD(meter_length, res):
             raise RuntimeError(
-                "badly formed rhythm grouping. length:{}\npattern: {}".format(
-                    meter_length, res))
+                "badly formed rhythm grouping. length: {}\nmode: {}\npattern: {}".format(
+                    meter_length, mode, res))
     return res
 
 
-def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
+def _assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
     '''assembles note-length groupings.
 
     it is called during the loading of the module'''
@@ -348,9 +348,9 @@ def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
         else:
             return sum(target[which], [])
     else:
-        return (assemble(id, "first", fallback, meter_length) +
-                assemble(id, "second", fallback, meter_length) +
-                assemble(id, "terns", fallback, meter_length))
+        return (_assemble(id, "first", fallback, meter_length) +
+                _assemble(id, "second", fallback, meter_length) +
+                _assemble(id, "terns", fallback, meter_length))
 
 
 def cut_grouping_to_size(grouping, size):
@@ -375,10 +375,10 @@ def cut_grouping_to_size(grouping, size):
         res.append(new)
     return res
 
-DEFAULT_NOTE_LENGTH_GROUPINGS = assemble(DEFAULT_METER_LENGTH)
-DEFAULT_FAST_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "first")
-DEFAULT_TERNARY_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "terns")
-DEFAULT_SLOWER_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "heavy")
+DEFAULT_NOTE_LENGTH_GROUPINGS = _assemble(DEFAULT_METER_LENGTH)
+DEFAULT_FAST_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "first")
+DEFAULT_TERNARY_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "terns")
+DEFAULT_SLOWER_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "heavy")
 
 
 def analyze_grouping(g):
