@@ -1,48 +1,49 @@
 """this module contains probability values for melody sequences."""
 
-from itertools import permutations
+from itertools import permutations, chain
 
-default_probs = [[1] * 30,
-                 [2] * 10,
-                 [3] * 4,
-                 [4] * 2,
-                 [5] * 2,
-                 [6] * 2,
-                 [7] * 4,
-                 [8, 9, 10, 11, 12] * 1
-                ]
+default_probs = [
+    [1] * 30,
+    [2] * 10,
+    [3] * 4,
+    [4] * 2,
+    [5] * 2,
+    [6] * 2,
+    [7] * 4,
+    [8, 9, 10, 11, 12] * 1]
 
-mid_probs = [[1] * 20,
-             [2] * 7,
-             [3] * 5,
-             [4, 5, 6, 7] * 1
-            ]
+mid_probs = [
+    [1] * 20,
+    [2] * 7,
+    [3] * 5,
+    [4, 5, 6, 7] * 1]
 
-flat_mid_probs = [[0] * 20,
-                 [1] * 7,
-                 [2] * 7,
-                 [3] * 5,
-                 [4, 5, 6, 7] * 1
-                ]
+flat_mid_probs = [
+    [0] * 20,
+    [1] * 7,
+    [2] * 7,
+    [3] * 5,
+    [4, 5, 6, 7] * 1
+]
 
-bass_probs = [[1] * 6,
-              [2] * 10,
-              [3] * 5,
-              [4] * 10,
-              [5] * 5,
-              [6] * 2,
-              [7] * 1
-             ]
+bass_probs = [
+    [1] * 6,
+    [2] * 10,
+    [3] * 5,
+    [4] * 10,
+    [5] * 5,
+    [6] * 2,
+    [7] * 1]
+
 rock_bass_probs = [
-                  [0] * 35,
-                  [1] * 1,
-                  [2] * 2,
-                  [3] * 1,
-                  [4] * 1,
-                  [5] * 5,
-                  [6] * 1,
-                  [7] * 1
-                  ]
+    [0] * 35,
+    [1] * 1,
+    [2] * 2,
+    [3] * 1,
+    [4] * 1,
+    [5] * 5,
+    [6] * 1,
+    [7] * 1]
 
 DEFAULT_MOVEMENT_PROBS = sum(default_probs, [])
 MIDDLE_VOICES_MOVEMENT_PROBS = sum(mid_probs, [])
@@ -100,9 +101,7 @@ ORNAMENTS = {(0, 1): [[(0.5, 0), (0.5, 1)],
                       [(0.25, 1), (0.25, 2), (0.25, 3), (0.25, 4)],
                       [(0.3333333333, 2), (0.3333333333, 0), (0.33333333, 2)],
                       [(0.3333333333, 4), (0.3333333333, 5), (0.3333333333, 4)]
-                      ]
-
-            }
+                      ]}
 
 DRUM_FILLS = [
     [0.5, 0.5],
@@ -110,7 +109,7 @@ DRUM_FILLS = [
     [0.333333333, 0.333333333, 0.3333333333],
     [0.333333333, 0.666666666],
     [0.666666663, 0.3333333333],
-    #1/6th based
+    # 1/6th based
     [0.166666666, 0.166666666, 0.16666666666,
      0.166666666, 0.166666666, 0.16666666666],
     [0.333333333, 0.16666666666, 0.333333333, 0.16666666666],
@@ -130,15 +129,6 @@ DRUM_FILLS.extend(list(set(permutations([0.125, 0.125, 0.75]))))
 DRUM_FILLS.extend(list(set(permutations([0.125, 0.125, 0.25, 0.5]))))
 DRUM_FILLS.extend(list(set(permutations([0.125, 0.125, 0.125, 0.125, 0.5]))))
 DRUM_FILLS.extend(list(set(permutations([0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.25]))))
-DRUM_FILLS.extend(list(set(permutations([0.1666, 0.1666, 0.1666, 0.1666, 0.333,]))))
-DRUM_FILLS.extend(list(set(permutations([0.1666, 0.1666, 0.333, 0.333,]))))
+DRUM_FILLS.extend(list(set(permutations([0.1666, 0.1666, 0.1666, 0.1666, 0.333]))))
+DRUM_FILLS.extend(list(set(permutations([0.1666, 0.1666, 0.333, 0.333]))))
 DRUM_FILLS.extend(list(set(permutations([0.25, 0.25, 0.5]))))
-
-if __name__ == "__main__":
-    print DEFAULT_MOVEMENT_PROBS
-    print MIDDLE_VOICES_MOVEMENT_PROBS
-    print BASS_MOVEMENT_PROBS
-    print ORNAMENTS.keys()
-    print ORNAMENTS
-    print '-----'
-    print DRUM_FILLS

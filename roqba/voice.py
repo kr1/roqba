@@ -135,7 +135,7 @@ class Voice(object):
         while True:
             state = (yield)
             meter_pos = state['cycle_pos']
-            #print self.on_off_pattern, " for: ", self.id
+            # print self.on_off_pattern, " for: ", self.id
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
                 self.note_change = 0
@@ -147,7 +147,7 @@ class Voice(object):
                 if 1 in tmp_list:
                     self.note_duration_steps = tmp_list.index(1) + 1
                 else:
-                    #self.note_duration_steps = 1
+                    # self.note_duration_steps = 1
                     self.note_duration_steps = len(self.on_off_pattern) - meter_pos
                 self.prior_note = self.note
                 if random.random() < self.pause_prob and not self.playing_a_melody:
@@ -195,11 +195,11 @@ class Voice(object):
         else:
             if (self.should_play_a_melody and self.note != 0 and
                     self.weight in [HEAVY, MEDIUM]):
-                #if (self.melody_starts_on == (self.note % 7) and
+                # if (self.melody_starts_on == (self.note % 7) and
                     # regarding the on-off pattern we try a minimum invasive strategy
                     # by modifying only those indexes of the pattern covered by the
                     # current note and the start of the following note
-                #print "searching for a suitable melody"
+                # print "searching for a suitable melody"
                 self.melody = self.search_suitable_melody(state['speed'])
                 if self.melody:
                     self.musical_logger.info("starting the melody: {0}".format(self.melody))
@@ -368,7 +368,7 @@ class Voice(object):
 
         - in voice
         - in the controller'''
-        #print "reloading register: {0}".format(name)
+        # print "reloading register: {0}".format(name)
         for k, v in self.register["voice_attrs"].items():
             setattr(self, k, v)
         for k, v in self.register["voice_composer_attrs"].items():
@@ -381,9 +381,3 @@ class Voice(object):
         using the registered wavetable-related params'''
         fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
         return fun(self.num_partials, self.partial_pool)
-
-
-if __name__ == "__main__":
-    from composer import Composer
-    c = Composer()
-    print Voice("", "", c).in_the_middle(45)
