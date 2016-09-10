@@ -173,8 +173,7 @@ styles = {
             'composer': 'baroq',
             'number_of_voices': 3,
             'voice_registers': ['ROCK_BASS', 'LOW_MID', 'LOW_MID', 'HIGH'],
-            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
-                                 ['SLAVE', 1], 'AUTONOMOUS'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
         },
         "behaviour": {
             "speed": 0.2,
@@ -184,7 +183,7 @@ styles = {
             "shuffle_delay": 0.02,
             'follow_bar_sequence': True,
             #'bar_sequence': [6, 6, 4, 3, 2, 3],
-            'bar_sequence': [6, 4, 2, 3],
+            'bar_sequence': [6, 6, 4, 2, 2, 4, 3, 3],
             'automate_meters': False,
             "meter": (15, (3, 3, 2, 3, 2, 2)),
             "meters": [(15, (3, 3, 2, 3, 2, 2))],

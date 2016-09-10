@@ -51,7 +51,7 @@ FLAT_MID_MOVEMENT_PROBS = sum(flat_mid_probs, [])
 BASS_MOVEMENT_PROBS = sum(bass_probs, [])
 ROCK_BASS_MOVEMENT_PROBS = sum(rock_bass_probs, [])
 
-BASS_CHORD_DISTANCE_PROBS = list(chain(*[[0] * 20, [2] * 10, [4] * 5, [6] * 3, [8] * 1]))
+BASS_CHORD_DISTANCE_PROBS = list(chain(*[[0] * 30, [2] * 10, [4] * 5, [6] * 3, [8] * 1]))
 
 ORNAMENTS = {(0, 1): [[(0.5, 0), (0.5, 1)],
                       [(0.5, 0), (0.5, -1)],
