@@ -101,5 +101,8 @@ class Notator(object):
                                   "X" * chars_per_beat,
                                   " " * (chars_per_beat * (meter_length - position)))
         joined_grid = "".join(grid)
-        text = "{}\n{}\n{}{}".format(joined_grid, joined_grid, current, "\n" * 30)
+        text = "{}\n{}\n{}\n{}\n{}\n{}".format(
+            joined_grid, joined_grid,
+            current,
+            joined_grid, joined_grid, "\n" * 30)
         self.write_to_file(self.meter_filename, text)
