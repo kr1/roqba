@@ -52,6 +52,11 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.speed_target = behaviour["speed_target"]
         self.speed = self.state["speed"]
+        if behaviour['follow_bar_sequence']:
+            self.state.update({
+              'bar_sequence': behaviour['bar_sequence'],
+              'bar_sequence_current_position': 0})
+
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (
@@ -200,6 +205,10 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 sleep_time = self.speed + shuffle_delta
             else:
                 sleep_time = self.speed - shuffle_delta
+            if cycle_pos == 0:
+                if self.state.get('bar_sequence'):
+                    new_pos = (self.state['bar_sequence_current_position'] + 1) % len(self.state['bar_sequence'])
+                    self.state['bar_sequence_current_position'] = new_pos
             time.sleep(sleep_time * (1 +
                        self.microspeed_sine.get_value() * self.behaviour['microspeed_variation']))
 

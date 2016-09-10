@@ -96,6 +96,7 @@ behaviour = {
 
     # SEQUENCE / MELODY RELATED
     'follow_bar_sequence': False, # alt: True
+    'bar_sequence': [6, 6, 4, 3, 2, 3],
     'should_play_a_melody': False,  # alt: melody as list
 
     'embellishment_speed_lim': 0.666,

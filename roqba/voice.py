@@ -3,7 +3,7 @@ import logging
 from Queue import deque
 from random import choice as sample
 
-from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
+from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS, BASS_CHORD_DISTANCE_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import analyze_grouping
 from static.melodies import melodies
@@ -176,7 +176,13 @@ class Voice(object):
                     return res
                 else:
                     self.reset_slave()
-
+        if self.id == 1:
+            # TODO: make more sofisticated (e.g. arpeggiator or thirds)
+            bar_sequence = state.get('bar_sequence')
+            if bar_sequence:
+                chord_note_offset = sample(BASS_CHORD_DISTANCE_PROBS)
+                sequence_note = bar_sequence[state['bar_sequence_current_position']]
+                return sequence_note + min(self.range) + chord_note_offset
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
