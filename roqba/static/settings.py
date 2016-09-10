@@ -94,10 +94,13 @@ behaviour = {
     'common_note_duration': False,
     'default_note_duration_prop': 0.8,  # proportion
 
-    'embellishment_speed_lim': 0.666,
-    'default_pause_prob': 0.03,
-    'default_embellishment_prob': 0.005,
+    # SEQUENCE / MELODY RELATED
+    'follow_bar_sequence': False, # alt: True
     'should_play_a_melody': False,  # alt: melody as list
+
+    'embellishment_speed_lim': 0.666,
+    'default_embellishment_prob': 0.005,
+    'default_pause_prob': 0.03,
     'per_voice': {
         1: BehaviourDict({
             'slide_duration_msecs': 100,
