@@ -144,18 +144,18 @@ styles = {
         'settings': {},
         'behaviour': {
             'per_voice': {
-                1: {
+                1: BehaviourDict({
                     'use_proportional_slide_duration': True
-                },
-                2: {
+                }),
+                2: BehaviourDict({
                     'use_proportional_slide_duration': True
-                },
-                3: {
+                }),
+                3: BehaviourDict({
                     'use_proportional_slide_duration': True
-                },
-                4: {
+                }),
+                4: BehaviourDict({
                     'use_proportional_slide_duration': True
-                },
+                }),
             },
             'max_speed': 1.2,
             'slide_duration_prop': 1.0,
@@ -167,9 +167,10 @@ styles = {
     "fixed_meter_playalong": {
         "settings": {
             'composer': 'baroq',
+            'number_of_voices': 3,
             'voice_registers': ['ROCK_BASS', 'LOW_MID', 'LOW_MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
-                                 ['SLAVE', 2], 'AUTONOMOUS'],
+                                 ['SLAVE', 1], 'AUTONOMOUS'],
         },
         "behaviour": {
             "speed": 0.2,
@@ -186,6 +187,17 @@ styles = {
             'max_binaural_diff': 3,
             'half_beat': False,
             'automate_speed_change': False,
+            'per_voice': {
+                1: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+                2: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+                3: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+            }
         }
     },
     "bulgarian": {
