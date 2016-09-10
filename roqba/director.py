@@ -25,13 +25,31 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         if not composer:
             raise RuntimeError("Composer is not configured correctly")
         self.composer = composer.Composer(gateway, settings, behaviour)
-        self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
         self.force_caesura = False
         self.settings = settings
         self.gateway = self.composer.gateway
+
+        # keep this between 0 and MAX_SHUFFLE
+        self.shuffle_delay = behaviour["shuffle_delay"]
+        self.meter = self.composer.applied_meter
+        self.metronome = metronome.Metronome(self.meter)
+        self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
+        self.automate_meters = behaviour["automate_meters"]
+        self.speed_change = behaviour["speed_change"]
+        self.MIN_SPEED = behaviour["min_speed"]
+        self.MAX_SPEED = behaviour["max_speed"]
+        self.MAX_SHUFFLE = behaviour["max_shuffle"]
+        self.musical_logger = logging.getLogger('musical')
+        self.behaviour_logger = logging.getLogger('behaviour')
+        self.gui_logger = logging.getLogger('gui')
+        self.add_setters()
+        if behaviour['automate_microspeed_change']:
+            self.new_microspeed_sine()
+
+        self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.speed_target = behaviour["speed_target"]
         self.speed = self.state["speed"]
         self.has_gui = settings['gui']
@@ -50,23 +68,6 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                                     args=(self.incoming,))
             thre.daemon = True
             thre.start()
-
-        # keep this between 0 and MAX_SHUFFLE
-        self.shuffle_delay = behaviour["shuffle_delay"]
-        self.meter = self.composer.applied_meter
-        self.metronome = metronome.Metronome(self.meter)
-        self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
-        self.automate_meters = behaviour["automate_meters"]
-        self.speed_change = behaviour["speed_change"]
-        self.MIN_SPEED = behaviour["min_speed"]
-        self.MAX_SPEED = behaviour["max_speed"]
-        self.MAX_SHUFFLE = behaviour["max_shuffle"]
-        self.musical_logger = logging.getLogger('musical')
-        self.behaviour_logger = logging.getLogger('behaviour')
-        self.gui_logger = logging.getLogger('gui')
-        self.add_setters()
-        if behaviour['automate_microspeed_change']:
-            self.new_microspeed_sine()
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
