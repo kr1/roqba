@@ -56,6 +56,8 @@ class Director(IncomingMessagesMixin, WavetableMixin):
             self.state.update({
               'bar_sequence': behaviour['bar_sequence'],
               'bar_sequence_current_position': 0})
+        for voice in self.composer.voices.values():
+            self.gateway.send_voice_adsr(voice, voice.current_adsr)
 
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None

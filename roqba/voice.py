@@ -71,6 +71,7 @@ class Voice(object):
         self.should_play_a_melody = self.composer.behaviour.voice_get(
             self.id, 'should_play_a_melody')
         self.playing_a_melody = False
+        self.current_adsr = self.composer.behaviour['adsr']
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
