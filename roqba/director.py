@@ -7,19 +7,20 @@ from Queue import deque
 
 import metronome
 from roqba.composers import baroq, amadinda, rendezvous
-from roqba.utilities import random_between, adsr
+from roqba.utilities import random_between
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
 from roqba.incoming_messages_mixin import IncomingMessagesMixin
 from roqba.wavetable_mixin import WavetableMixin
+from roqba.adsr_mixin import ADSRMixin
 
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
 
 
-class Director(IncomingMessagesMixin, WavetableMixin):
+class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin):
     def __init__(self, gateway, behaviour, settings):
         composer = globals().get(settings.get('composer', 'baroq'))
         if not composer:
@@ -57,7 +58,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
               'bar_sequence': behaviour['bar_sequence'],
               'bar_sequence_current_position': 0})
         for voice in self.composer.voices.values():
-            self.gateway.send_voice_adsr(voice, voice.current_adsr)
+            self.apply_voice_adsr(voice)
 
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
@@ -142,16 +143,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.composer.gateway.stop_all_notes()
                 voices = self.composer.voices.values()
                 if self.behaviour['automate_adsr']:
-                    new_adsr = adsr.get_random_adsr(self.behaviour['min_adsr'],
-                                                    self.behaviour['max_adsr'])
-                    for voice in voices:
-                        if not self.behaviour['common_adsr']:
-                            new_adsr = adsr.get_random_adsr(
-                                self.behaviour.voice_get(voice.id, 'min_adsr'),
-                                self.behaviour.voice_get(voice.id, 'max_adsr'))
-                        voice.current_adsr = new_adsr
-                    for voice in voices:
-                        self.gateway.send_voice_adsr(voice, voice.current_adsr)
+                    self.new_random_adsr_for_all_voices()
                 if self.behaviour['automate_scale']:
                     self.composer.set_scale(choice(
                                             self.composer.offered_scales))
