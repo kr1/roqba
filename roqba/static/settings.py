@@ -177,6 +177,9 @@ styles = {
         },
         "behaviour": {
             "speed": 0.2,
+            'automate_adsr': True,
+            'automate_wavetables': True,
+            'common_wavetables': False,
             'max_speed': 0.5,
             'caesura_prob': 0.001,
             'slide_duration_prop': 0.1,
@@ -187,7 +190,6 @@ styles = {
             'bar_sequence': [1, 1, 1, 1, 4,
                              1, 1, 1, 1, 2, 6, 3, 2],
             'adsr': [10, 10, 5, 20],
-            'automate_adsr': False,
             'automate_meters': False,
             #"meter": (15, (3, 3, 2, 3, 2, 2)),
             "meter": (30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2)),
