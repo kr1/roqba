@@ -9,6 +9,7 @@ class Notator(object):
                  num_voices,
                  scroll_filename="scrolling.txt",
                  meter_filename="meter_monitor.txt",
+                 sequence_filename="sequence_monitor.txt",
                  buffer_length=75,
                  num_lines=40):
         self.num_voices = num_voices
@@ -16,6 +17,7 @@ class Notator(object):
         self.buffer_length = buffer_length
         self.scroll_filename = scroll_filename
         self.meter_filename = meter_filename
+        self.sequence_filename = sequence_filename
         self.num_lines = num_lines
 
     def add_note(self, note):
@@ -93,16 +95,27 @@ class Notator(object):
     def notate_rhythm(self, meter, position):
         meter_length = meter[0]
         meter = meter[1]
-        chars_per_beat = self.buffer_length // meter_length
+        chars_per_beat = float(self.buffer_length) / meter_length
         grid = ["|"]
         for segment in meter:
-            grid.append("{}|".format(" " * (chars_per_beat * segment - 1)))
-        current = "{}{}{}".format(" " * (chars_per_beat * position),
-                                  "X" * chars_per_beat,
-                                  " " * (chars_per_beat * (meter_length - position)))
+            grid.append("{}|".format(" " * (int(chars_per_beat * segment) - 1)))
+        current = "{}{}{}".format(" " * int(chars_per_beat * position),
+                                  "X" * int(chars_per_beat),
+                                  " " * int(chars_per_beat * (meter_length - position)))
         joined_grid = "".join(grid)
         text = "{}\n{}\n{}\n{}\n{}\n{}".format(
             joined_grid, joined_grid,
             current,
-            joined_grid, joined_grid, "\n" * 30)
+            joined_grid, joined_grid, "\n" * 20)
         self.write_to_file(self.meter_filename, text)
+
+    def notate_bar_sequence(self, sequence, position, scale):
+        sequence_length = len(sequence)
+        chars_per_bar = self.buffer_length / sequence_length
+        caption = ["{}{}".format(id_, " " * (chars_per_bar - 1)) for id_ in sequence]
+        current = "{}{}{}".format(" " * chars_per_bar * position,
+                                  "X" * chars_per_bar,
+                                  " " * chars_per_bar * (sequence_length - position))
+        caption = "".join(caption)
+        text = "{}\n{}\n{}\n{}\n".format(caption, current, caption, scale)
+        self.write_to_file(self.sequence_filename, text)
