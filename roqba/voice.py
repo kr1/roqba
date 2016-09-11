@@ -65,7 +65,7 @@ class Voice(object):
                 self.behaviour = behaviour[0]
                 self.followed_voice_id = behaviour[1]
                 self.following_counter = 0
-                self.follow_limit = sample(range(5, 9))
+                self.follow_limit = sample(range(5, 11))
         else:
             self.behaviour = self.composer.behaviour["default_behaviour"]
         self.should_play_a_melody = self.composer.behaviour.voice_get(
@@ -344,7 +344,7 @@ class Voice(object):
         self.slide_duration_prop = follow.slide_duration_prop
         self.slide = follow.slide
         self.following_counter = 0
-        self.follow_limit = sample(range(3, 9))
+        self.follow_limit = sample(range(5, 11))
 
     def set_note_length_groupings(self, mapping={'BASS': 'HEAVY_GROUPINGS',
                                                  'ROCK_BASS': 'FAST_GROUPINGS',
