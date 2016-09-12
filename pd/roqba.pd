@@ -1,4 +1,4 @@
-#N canvas 2 48 1362 718 10;
+#N canvas 2 48 1020 718 10;
 #X obj 589 367 dac~;
 #X msg 711 96 \; pd dsp \$1 \;;
 #X obj 711 74 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 4
@@ -29,32 +29,32 @@
 #X msg 785 355 ls;
 #X obj 455 304 *~ 1;
 #X obj 776 305 *~ 1;
-#N canvas 2 48 1362 718 volumes 0;
+#N canvas 2 50 1362 718 volumes 0;
 #X obj 100 100 cnv 100 330 120 empty empty Volumes 20 12 0 14 -191407
 -262144 0;
 #X obj 370 51 r master_vol;
 #X obj 103 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4500 1;
+-1 -1 5900 1;
 #X obj 103 249 / 666;
 #X obj 153 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1400 1;
+-1 -1 2000 1;
 #X obj 153 248 / 666;
 #X obj 203 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1500 1;
+-1 -1 2000 1;
 #X obj 203 248 / 666;
 #X obj 253 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 253 248 / 666;
 #X obj 303 131 vsl 50 80 0 1024 0 0 empty empty drums 0 -9 0 10 -262144
--1 -1 7900 1;
+-1 -1 5138 1;
 #X obj 303 248 / 666;
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 638 1;
+-1 -1 400 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
-#N canvas 2 48 1362 718 voice_volume_receiver 0;
+#N canvas 2 50 1362 718 voice_volume_receiver 0;
 #X obj -37 33 r volume_voice_1;
 #X obj -37 65 * 1024;
 #X obj -37 101 outlet;
@@ -76,7 +76,7 @@
 #X connect 10 0 5 0;
 #X connect 11 0 7 0;
 #X restore 103 74 pd voice_volume_receiver;
-#N canvas 2 48 1362 718 volumes 0;
+#N canvas 2 50 1362 718 volumes 0;
 #X obj 11 201 inlet~;
 #X obj 68 201 inlet~;
 #X obj 126 201 inlet;
@@ -279,7 +279,7 @@
 #X connect 18 1 19 0;
 #X coords 0 -1 1 1 330 121 1 100 100;
 #X restore 454 174 pd volumes;
-#N canvas 2 48 1362 718 message_dispatcher 0;
+#N canvas 2 50 1362 718 message_dispatcher 0;
 #X obj 655 190 print log udp;
 #X obj 655 169 spigot;
 #X obj 29 146 route master 1 2 3 4;
@@ -347,19 +347,13 @@
 #X connect 27 0 30 0;
 #X connect 28 0 27 0;
 #X restore 34 382 pd message_dispatcher;
-#X obj 16 17 voice_message_dispatcher 1;
 #X text 167 384 dispatcher;
-#X obj 184 18 voice_message_dispatcher 2;
 #X obj 352 18 voice_message_dispatcher 3;
-#X obj 518 18 voice_message_dispatcher 4;
-#X obj 16 41 voice 1 30 30 30 30 300;
 #X obj 184 42 voice 2 30 30 30 30 300;
-#X obj 352 43 voice 3 30 30 30 30 300;
-#X obj 518 44 voice 4 30 30 30 30 300;
 #N canvas 2 50 1362 718 meters 0;
-#X msg 662 353 [2_ 1_ 2_ 1_ 2_ 2_ 1_ 2_ 1_ 1];
+#X msg 662 353 [3_ 3_ 2_ 3_ 2_ 2];
 #X msg 662 377 [2_ 1_ 1_ 1_ 1_ 2_ 2_ 1_ 2_ 2];
-#X msg 662 401 [2_ 1_ 2_ 1_ 2_ 2_ 1_ 2_ 1_ 1];
+#X msg 662 401 [3_ 3_ 2_ 3_ 2_ 2];
 #X msg 662 425 [3_ 3_ 2_ 3_ 2_ 2];
 #X msg 23 154 (12__(2__2__2__3__3));
 #X obj 746 307 cyclone/prepend set;
@@ -514,7 +508,7 @@
 #X connect 40 0 14 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
 #X restore 13 174 pd meters;
-#N canvas 2 48 1362 718 percussion 0;
+#N canvas 2 50 1362 718 percussion 0;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
 #X obj -191 100 noise-drums-bang;
@@ -566,6 +560,12 @@
 #X connect 14 6 2 0;
 #X connect 14 7 1 0;
 #X restore 34 409 pd percussion;
+#X obj 16 41 voice 1 30 30 30 30 300;
+#X obj 352 43 voice 3 30 30 30 30 300;
+#X obj 518 44 voice 4 30 30 30 30 300;
+#X obj 16 17 voice_message_dispatcher 1;
+#X obj 184 18 voice_message_dispatcher 2;
+#X obj 518 18 voice_message_dispatcher 4;
 #X connect 2 0 1 0;
 #X connect 3 0 10 0;
 #X connect 4 0 13 0;
@@ -592,9 +592,9 @@
 #X connect 22 0 18 2;
 #X connect 23 0 21 0;
 #X connect 23 1 22 0;
-#X connect 24 0 35 0;
-#X connect 25 0 30 0;
-#X connect 27 0 31 0;
-#X connect 28 0 32 0;
-#X connect 29 0 33 0;
+#X connect 24 0 29 0;
+#X connect 26 0 31 0;
+#X connect 33 0 30 0;
+#X connect 34 0 27 0;
+#X connect 35 0 32 0;
 #X coords 0 718 1 717 85 60 0;
