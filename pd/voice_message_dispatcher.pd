@@ -38,11 +38,8 @@
 #X obj 110 129 route dur wavetable volume mute adsr peak_level rendezvous
 adsr_enable, f 93;
 #X obj 595 187 s adsr_enable_voice\$1;
-#X obj 302 102 print 3;
-#X obj 287 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
 #X msg 71 277 0;
-#X connect 0 0 39 0;
+#X connect 0 0 37 0;
 #X connect 2 0 1 0;
 #X connect 2 0 5 0;
 #X connect 3 0 35 0;
@@ -55,8 +52,6 @@ adsr_enable, f 93;
 #X connect 14 0 15 0;
 #X connect 16 0 14 0;
 #X connect 16 0 35 0;
-#X connect 16 0 37 0;
-#X connect 16 0 38 0;
 #X connect 17 0 27 0;
 #X connect 18 0 30 0;
 #X connect 19 0 8 0;
@@ -83,4 +78,4 @@ adsr_enable, f 93;
 #X connect 35 6 34 0;
 #X connect 35 7 36 0;
 #X connect 35 8 8 0;
-#X connect 39 0 2 0;
+#X connect 37 0 2 0;
