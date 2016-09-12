@@ -4,13 +4,13 @@ from random import randint, random
 
 class SpeedMixin(object):
     def set_speed_in_bpm(self, bpm):
-        return self.new_speed(self, bpm=bpm)
+        return self.new_speed(bpm=bpm)
 
     def new_speed(self, val=None, bpm=None):
         if val:
             self.speed = val
         elif bpm:
-            self.speed = 60.0 / bpm
+            self.speed = 30.0 / bpm
         elif self.behaviour['automate_speed_change']:
             if self.speed_change == 'transition':
                 self.speed += randint(-1000, 1000) / 66666.

@@ -1,5 +1,4 @@
 from random import random
-from roqba.utilities import adsr
 
 
 def get_random_adsr(min_adsr, max_adsr):

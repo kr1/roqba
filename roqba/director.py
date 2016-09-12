@@ -11,16 +11,17 @@ from roqba.utilities import random_between
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
-from roqba.incoming_messages_mixin import IncomingMessagesMixin
-from roqba.wavetable_mixin import WavetableMixin
-from roqba.adsr_mixin import ADSRMixin
+from roqba.mixins.incoming_messages_mixin import IncomingMessagesMixin
+from roqba.mixins.wavetable_mixin import WavetableMixin
+from roqba.mixins.adsr_mixin import ADSRMixin
+from roqba.mixins.speed_mixin import SpeedMixin
 
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
 
 
-class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin):
+class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def __init__(self, gateway, behaviour, settings):
         composer = globals().get(settings.get('composer', 'baroq'))
         if not composer:
@@ -256,28 +257,3 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin):
         self.gateway.pd.send(["sys", "meter",
                              str(new_meter).replace(",", " ").
                              replace(" ", "_")])
-
-    def new_speed(self, val=None):
-        if val:
-            self.speed = val
-            return self.speed
-        if self.behaviour['automate_speed_change']:
-            if self.speed_change == 'transition':
-                self.speed += randint(-1000, 1000) / 66666.
-            else:  # if self.speed_change == 'leap':
-                if self.behaviour['speed_target'] != 0.5:
-                    target = self.behaviour['speed_target']
-                    if target < 0.3:
-                        target = target ** 2
-                    speed_tmp = random() ** math.log(target, 0.5)
-                    self.speed = (self.behaviour["min_speed"] +
-                                  ((self.behaviour["max_speed"] - self.behaviour["min_speed"]) *
-                                  speed_tmp))
-                else:
-                    self.speed = self.behaviour["min_speed"] + (random() *
-                                                                (self.behaviour["max_speed"] -
-                                                                 self.behaviour["min_speed"]))
-            #print "new speed values: {0}\n resetting metronome.".format(
-            #                                                self.speed)
-        self.gateway.pd.send(['sys', 'speed', str(self.speed * 1000)])
-        return self.speed
