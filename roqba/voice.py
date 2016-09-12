@@ -183,7 +183,8 @@ class Voice(object):
             if bar_sequence:
                 chord_note_offset = sample(BASS_CHORD_DISTANCE_PROBS)
                 sequence_note = bar_sequence[state['bar_sequence_current_position']]
-                return sequence_note + min(self.range) + chord_note_offset
+                if self.weight in [HEAVY, MEDIUM]:
+                    return sequence_note + min(self.range) + chord_note_offset
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))

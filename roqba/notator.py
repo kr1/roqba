@@ -95,7 +95,7 @@ class Notator(object):
     def notate_rhythm(self, meter, position):
         meter_length = meter[0]
         meter = meter[1]
-        chars_per_beat = float(self.buffer_length) / meter_length
+        chars_per_beat = self.buffer_length // meter_length
         grid = ["|"]
         for segment in meter:
             grid.append("{}|".format(" " * (int(chars_per_beat * segment) - 1)))
