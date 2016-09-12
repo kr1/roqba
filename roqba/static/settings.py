@@ -202,15 +202,15 @@ styles = {
             'automate_speed_change': False,
             'per_voice': {
                 1: BehaviourDict({
-                    'adsr': [20, 20, 70, 20],
+                    'adsr': [20, 200, 10, 200],
                     'use_proportional_slide_duration': True
                 }),
                 2: BehaviourDict({
-                    'adsr': [10, 20, 30, 20],
+                    'adsr': [10, 120, 30, 200],
                     'use_proportional_slide_duration': True
                 }),
                 3: BehaviourDict({
-                    'adsr': [20, 30, 40, 20],
+                    'adsr': [20, 80, 10, 300],
                     'use_proportional_slide_duration': True
                 }),
             }
