@@ -179,6 +179,7 @@ styles = {
             "speed": 0.2,
             'automate_adsr': True,
             'automate_wavetables': True,
+            'automate_microspeed_change': False,
             'common_wavetables': False,
             'max_speed': 0.5,
             'caesura_prob': 0.001,

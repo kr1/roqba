@@ -192,7 +192,8 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin):
                     self.gui_sender.send({'transpose': new_transpose})
                 self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
                     self.composer.meter, self.speed, self.composer.scale))
-                self.new_microspeed_sine()
+                if self.behaviour['automate_microspeed_change']:
+                    self.new_microspeed_sine()
             self.check_incoming_messages()
             shuffle_delta = self.speed * self.shuffle_delay
             if weight == metronome.LIGHT:
@@ -203,8 +204,12 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin):
                 if self.state.get('bar_sequence'):
                     new_pos = (self.state['bar_sequence_current_position'] + 1) % len(self.state['bar_sequence'])
                     self.state['bar_sequence_current_position'] = new_pos
+            if self.behaviour['automate_microspeed_change']:
+                microspeed_multiplier = self.microspeed_sine.get_value()
+            else:
+                microspeed_multiplier = 1
             time.sleep(sleep_time * (1 +
-                       self.microspeed_sine.get_value() * self.behaviour['microspeed_variation']))
+                       microspeed_multiplier * self.behaviour['microspeed_variation']))
 
     def check_incoming_messages(self):
         '''checks if there are incoming messages in the queue'''
