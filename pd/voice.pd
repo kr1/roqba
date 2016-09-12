@@ -1,4 +1,4 @@
-#N canvas 2 48 1362 718 10;
+#N canvas 2 48 1020 718 10;
 #X obj 312 118 inlet;
 #X obj 657 269 inlet;
 #X text 309 100 trigger;
@@ -103,7 +103,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 456 line~;
 #X obj 203 458 line~;
 #X obj 245 584 vsl 105 54 80 800 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1982 1;
+-1 -1 2843 1;
 #X obj 205 554 line;
 #X obj 210 642 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -137,9 +137,9 @@ This patch is used as an abstraction in various examples.;
 #X obj 211 207 - 1;
 #X floatatom 282 83 5 0 0 0 - - -, f 5;
 #X obj 128 398 vsl 64 128 -1 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4 1;
+-1 -1 0 1;
 #X obj 241 349 hsl 398 15 -0 512 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 36443 1;
+-1 -1 0 1;
 #X obj 211 122 - 1;
 #X floatatom 132 153 5 0 0 0 - - -, f 5;
 #X floatatom 53 48 5 0 0 0 - - -, f 5;
@@ -165,11 +165,11 @@ This patch is used as an abstraction in various examples.;
 #X obj 406 318 r rendezvous_start_note_\$1;
 #X obj 468 370 r rendezvous_end_note_\$1;
 #X obj 468 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 10583 1;
+-1 -1 0 1;
 #X obj 288 533 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 12277 1;
+-1 -1 0 1;
 #X obj 378 534 vsl 64 128 10 70 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 10584 1;
+-1 -1 0 1;
 #X floatatom 468 511 5 0 0 0 - - -, f 5;
 #X floatatom 288 511 5 0 0 0 - - -, f 5;
 #X floatatom 298 399 5 0 0 0 - - -, f 5;
@@ -255,13 +255,13 @@ This patch is used as an abstraction in various examples.;
 #X msg 126 276 0;
 #X msg 129 66 20;
 #X obj 647 595 sinesum_from_message sines\$1;
-#X obj 216 101 spigot 1;
+#X obj 216 109 spigot 1;
 #X obj 261 61 r adsr_enable_voice\$1;
 #X obj 261 83 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 312 140 sel 0;
-#X obj 269 134 sel 0;
-#X msg 269 157 0.5;
+#X obj 231 140 sel 0;
+#X msg 231 163 0.5;
 #X msg 70 66 1;
 #X obj 70 40 loadbang;
 #X connect 0 0 3 0;
