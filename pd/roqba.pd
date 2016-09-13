@@ -34,16 +34,16 @@
 -262144 0;
 #X obj 370 51 r master_vol;
 #X obj 103 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5900 1;
+-1 -1 5138 1;
 #X obj 103 249 / 666;
 #X obj 153 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 2000 1;
+-1 -1 5138 1;
 #X obj 153 248 / 666;
 #X obj 203 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 2000 1;
+-1 -1 5138 1;
 #X obj 203 248 / 666;
 #X obj 253 131 vsl 50 80 0 1024 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 5138 1;
 #X obj 253 248 / 666;
 #X obj 303 131 vsl 50 80 0 1024 0 0 empty empty drums 0 -9 0 10 -262144
 -1 -1 5138 1;
@@ -51,7 +51,7 @@
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 400 1;
+-1 -1 238 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1362 718 voice_volume_receiver 0;
@@ -351,9 +351,9 @@
 #X obj 352 18 voice_message_dispatcher 3;
 #X obj 184 42 voice 2 30 30 30 30 300;
 #N canvas 2 50 1362 718 meters 0;
-#X msg 662 353 [3_ 3_ 2_ 3_ 2_ 2];
-#X msg 662 377 [2_ 1_ 1_ 1_ 1_ 2_ 2_ 1_ 2_ 2];
-#X msg 662 401 [3_ 3_ 2_ 3_ 2_ 2];
+#X msg 662 353 [3_ 3_ 2_ 3_ 3_ 2_ 3_ 2_ 2];
+#X msg 662 377 [3_ 2_ 1_ 1_ 1_ 3_ 2_ 1_ 2_ 3_ 2_ 1_ 1];
+#X msg 662 401 [3_ 2_ 1_ 1_ 1_ 3_ 2_ 1_ 2_ 3_ 2_ 1_ 1];
 #X msg 662 425 [3_ 3_ 2_ 3_ 2_ 2];
 #X msg 23 154 (12__(2__2__2__3__3));
 #X obj 746 307 cyclone/prepend set;
@@ -508,7 +508,7 @@
 #X connect 40 0 14 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
 #X restore 13 174 pd meters;
-#N canvas 2 50 1362 718 percussion 0;
+#N canvas 2 48 1020 718 percussion 1;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
 #X obj -191 100 noise-drums-bang;
@@ -527,7 +527,7 @@
 #X obj -79 225 *~ 5;
 #X obj -191 48 route low high cont mark vol mute cont2;
 #X obj -188 366 send~ percussion_signal_left;
-#X obj -117 342 send~ percussion_signal_right;
+#X obj -80 334 send~ percussion_signal_right;
 #X connect 0 0 14 0;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
