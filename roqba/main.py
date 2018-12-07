@@ -15,7 +15,7 @@ else:
     default_settings.settings.update(local_settings.settings)
     default_settings.behaviour.update(local_settings.behaviour)
 
-    # if a style-name is set in local_settings.py its settings and behaviour 
+    # if a style-name is set in local_settings.py, its settings and behaviour
     # will overwrite the default settings and behaviour
     if getattr(local_settings, 'style', None):
         style = local_settings.style

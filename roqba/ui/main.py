@@ -10,7 +10,7 @@ from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
 from Tkinter import Entry, OptionMenu
 
 # TODO?: integration into roqba
-#from roqba.static.settings import settings
+# from roqba.static.settings import settings
 
 remote_host = os.environ["ROQBA_HOST"] if "ROQBA_HOST" in os.environ.keys() else "127.0.0.1"
 host = "0.0.0.0"
@@ -56,8 +56,7 @@ SCALES = {'caesura_prob': {'min': 0.01,
           'binaural_diff': {'min': 0, 'max': 66, 'start': 0.2, 'res': 0.01},
           'max_binaural_diff': {'min': 0, 'max': 66, 'start': 30, 'res': 0.01},
           'speed_target': {'min': 0, 'max': 1, 'start': 0.5, 'res': 0.001,
-                           'label': 'distort speed (slower/faster)', 'pos': {'c': 2, 'r': 2}}
-         }
+                           'label': 'distort speed (slower/faster)', 'pos': {'c': 2, 'r': 2}}}
 
 RANGES = {'speed': {'min': 0.1, 'max': 1.2, 'min_start': 0.2, 'max_start': 1.1,
                     'res': 0.001, 'disable': 'automate_speed_change'}}
@@ -100,7 +99,8 @@ class Application(Frame):
 
     def create_radio_buttons(self):
         # Scale related
-        entries = ['DIATONIC', 'HARMONIC', 'MELODIC', 'PENTATONIC', 'PENTA_MINOR']
+        entries = ['DIATONIC', 'HARMONIC', 'MELODIC', 'PENTATONIC', 'PENTA_MINOR',
+                   'GREEK_CHROMATIC', 'GREEK_ENHARMONIC']
         self.scale = StringVar()
         self.scale.set('DIATONIC')
         self.rb_frame = Frame(self)
@@ -113,7 +113,7 @@ class Application(Frame):
     def create_monitor(self):
         self.monitor_frame = LabelFrame(self, text="Monitor and Transport")
         this_cycle = Scale(self.monitor_frame, label='cycle_pos', orient=HORIZONTAL,
-                         from_=1, to=16, resolution=1)
+                           from_=1, to=16, resolution=1)
         this_cycle.disable, this_cycle.enable = (None, None)
         this_cycle.ref = 'cycle_pos'
         this_cycle.grid(column=0, row=0, sticky=E + W)
