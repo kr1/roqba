@@ -26,6 +26,7 @@ else:
 
 settings = default_settings.settings
 behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
+default_settings.flatten_meters(behaviour)
 
 gateway = NoteGateway(settings, behaviour)
 

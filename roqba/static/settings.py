@@ -415,5 +415,8 @@ styles = {
 }
 
 
-if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
-    behaviour["meters"] = sum(behaviour["meters"], [])
+def flatten_meters(behaviour):
+    if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
+        behaviour["meters"] = sum(behaviour["meters"], [])
+
+flatten_meters(behaviour)
