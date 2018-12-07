@@ -126,8 +126,8 @@ class Application(Frame):
                                          command=self.force_caesura)
         self.ForceCaesuraButton.grid(row=2, sticky=E + W)
         self.saveBehaviourButton = Button(self.monitor_frame,
-                                        text='Save current behaviour',
-                                        command=self.request_saving_behaviour)
+                                          text='Save current behaviour',
+                                          command=self.request_saving_behaviour)
         self.saveBehaviourButton.grid(row=3, sticky=E + W)
         self.saveBehaviourNameEntry = Entry(self.monitor_frame)
         self.saveBehaviourNameEntry.grid(row=4, sticky=E + W)
@@ -135,7 +135,7 @@ class Application(Frame):
         self.selected_behaviour = StringVar()
         self.selected_behaviour.trace('w', self.new_behaviour_chosen)
         self.savedBehavioursMenu = OptionMenu(self.monitor_frame,
-                                            self.selected_behaviour, None,)
+                                              self.selected_behaviour, None,)
         self.savedBehavioursMenu.grid(row=5, sticky=E + W)
         self.monitor_frame.grid(column=0, row=10, sticky=E + W)
 
@@ -175,9 +175,9 @@ class Application(Frame):
                 setattr(self, 'min_' + name, SCALES[sca]['min'])
                 setattr(self, 'max_' + name, SCALES[sca]['max'])
                 this_sca = Scale(self, label=sca, orient=HORIZONTAL,
-                                from_=getattr(self, 'min_' + name),
-                                to=getattr(self, 'max_' + name),
-                                resolution=SCALES[sca]['res'])
+                                 from_=getattr(self, 'min_' + name),
+                                 to=getattr(self, 'max_' + name),
+                                 resolution=SCALES[sca]['res'])
                 this_sca.enable = ('enable' in SCALES[sca].keys() and
                                    SCALES[sca]['enable'] or None)
                 this_sca.disable = ('disable' in SCALES[sca].keys() and
@@ -200,10 +200,12 @@ class Application(Frame):
             for cb in CHECK_BUTTONS:
                 options = CHECK_BUTTONS[cb]
                 name = 'voice_' + vid + '_' + cb
-                label = (options['label'] if isinstance(options, dict) and
-                                             'label' in options.keys() else
-                                              (cb[9:] if cb[:9] == 'automate_' else cb))
-                setattr(self, name, IntVar(value=type(options) == dict and options['val'] or options))
+                if isinstance(options, dict) and 'label' in options.keys():
+                    label = options['label']
+                else:
+                    label = cb[9:] if cb[:9] == 'automate_' else cb
+                setattr(self, name, IntVar(
+                    value=type(options) == dict and options['val'] or options))
                 self.this_cb = Checkbutton(cb_frame, text=label, variable=getattr(self, name))
                 self.this_cb.bind('<Button-1>', self.check_boxes_handler)
                 self.this_cb.disable = None
@@ -238,12 +240,12 @@ class Application(Frame):
             pp_frame = LabelFrame(target_frame, text="harmonics")
             for pp in partial_pools:
                 pp_entry = Radiobutton(pp_frame, value=pp, text=pp, anchor=W,
-                                        variable=getattr(self, pools_name))
+                                       variable=getattr(self, pools_name))
                 pp_entry.bind('<ButtonRelease-1>', self.wt_handler)
                 pp_entry.ref = pools_name
                 pp_entry.grid(row=len(pp_frame.winfo_children()), sticky=E + W)
             this_num_partials = Scale(pp_frame, label='number of harmonics', orient=HORIZONTAL,
-                             from_=1, to=24, resolution=1)
+                                      from_=1, to=24, resolution=1)
             this_num_partials.ref = prefix + 'num_partials'
             this_num_partials.grid(column=0, row=len(pp_frame.winfo_children()), sticky=E + W)
             this_num_partials.bind("<ButtonRelease>", self.scale_handler)
@@ -259,15 +261,15 @@ class Application(Frame):
         for cb in CHECK_BUTTONS:
             label = cb
             target_parent = self.cb_frame
-            if isinstance(CHECK_BUTTONS[cb], dict) and  'sub_frame' in CHECK_BUTTONS[cb].keys():
+            if isinstance(CHECK_BUTTONS[cb], dict) and 'sub_frame' in CHECK_BUTTONS[cb].keys():
                 target_parent = getattr(self, CHECK_BUTTONS[cb]['sub_frame'])
             setattr(self, cb, IntVar(value=type(CHECK_BUTTONS[cb]) == dict and
-                                           CHECK_BUTTONS[cb]['val'] or
-                                           CHECK_BUTTONS[cb]))
+                                     CHECK_BUTTONS[cb]['val'] or
+                                     CHECK_BUTTONS[cb]))
             self.this_cb = Checkbutton(target_parent, text=label, variable=getattr(self, cb))
             self.this_cb.bind('<Button-1>', self.check_boxes_handler)
             self.this_cb.disable = (type(CHECK_BUTTONS[cb]) == dict and
-                                   'disable' in CHECK_BUTTONS[cb].keys())
+                                    'disable' in CHECK_BUTTONS[cb].keys())
             self.this_cb.grid(sticky=W, column=0, row=len(target_parent.winfo_children()))
             self.this_cb.ref = cb
         for but in GLOBAL_BUTTONS:
@@ -301,7 +303,7 @@ class Application(Frame):
         for w in self.settables:
             typ = w.__class__.__name__
             if w.ref == name:
-                #print "setting '{0}' of type: '{1}' to: {2}".format(name, typ, val)
+                # print "setting '{0}' of type: '{1}' to: {2}".format(name, typ, val)
                 if typ == 'Scale':
                     w.set(val)
                 elif typ == "Checkbutton":
@@ -311,12 +313,12 @@ class Application(Frame):
         '''handles checkbox events.
 
         shows and hides gui elements according to their enable/disable fields'''
-        #print event.__dict__
-        #print event.widget.__dict__
+        # print event.__dict__
+        # print event.widget.__dict__
         ref = event.widget.ref
         val = not getattr(self, ref).get()  # because is read before the var is changed
         self.send({ref: val})
-        #print ref, val
+        # print ref, val
         # handle gui elements
         # enable/disable functionality temporarily(?) commented on:
         # Wed Aug 17 09:39:54 CEST 2011
@@ -346,7 +348,7 @@ class Application(Frame):
     def create_scales(self):
         counter = 0
         for sca in SCALES:
-            label = SCALES[sca]['label'] if 'label'  in SCALES[sca].keys() else sca
+            label = SCALES[sca]['label'] if 'label' in SCALES[sca].keys() else sca
             setattr(self, 'min_' + sca, SCALES[sca]['min'])
             setattr(self, 'max_' + sca, SCALES[sca]['max'])
             self.this_scale = Scale(self, label=label, orient=HORIZONTAL,
@@ -357,7 +359,7 @@ class Application(Frame):
             self.this_scale.enable = ('enable' in SCALES[sca].keys() and
                                       SCALES[sca]['enable'] or None)
             self.this_scale.disable = ('disable' in SCALES[sca].keys() and
-                                      SCALES[sca]['disable'] or None)
+                                       SCALES[sca]['disable'] or None)
             if 'pos' in SCALES[sca].keys():
                 pos = SCALES[sca]['pos']
                 col = pos['c']
@@ -377,12 +379,11 @@ class Application(Frame):
 
     def trigger_waveform_handler(self, event):
         self.send({event.widget.ref: True})
-        #print event.widget.ref, "- triggering wavetable"
+        # print event.widget.ref, "- triggering wavetable"
 
     def send_scale(self):
         do = {'scale': self.scale.get()}
         self.send(do)
-        #print do
 
     def send(self, msg):
         self.gui_logger.info("sending: {0}".format(msg))
@@ -404,13 +405,13 @@ class Application(Frame):
             self.this_min_scale.set(RANGES[ran]['min_start'])
             self.this_max_scale.set(RANGES[ran]['max_start'])
             self.this_min_scale.enable = ('enable' in RANGES[ran].keys() and
-                                           RANGES[ran]['enable'] or None)
+                                          RANGES[ran]['enable'] or None)
             self.this_min_scale.disable = ('disable' in RANGES[ran].keys() and
-                                            RANGES[ran]['disable'] or None)
+                                           RANGES[ran]['disable'] or None)
             self.this_max_scale.enable = ('enable' in RANGES[ran].keys() and
                                           RANGES[ran]['enable'] or None)
             self.this_max_scale.disable = ('disable' in RANGES[ran].keys() and
-                                          RANGES[ran]['disable'] or None)
+                                           RANGES[ran]['disable'] or None)
             self.this_min_scale.grid(column=2, row=counter, sticky=E + W)
             self.this_max_scale.grid(column=2, row=counter + 1, sticky=E + W)
             self.this_min_scale.ref = 'min_' + ran
@@ -422,7 +423,6 @@ class Application(Frame):
     def socket_read_handler(self, file, mask):
         data_object = json.loads(file.recv(1024))
         do = data_object.items()[0]
-        #print "do:", do
         self.set_value(do[0], do[1])
 
 
