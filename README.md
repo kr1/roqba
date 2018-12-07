@@ -21,57 +21,57 @@ Some objects rely on external libraries of *Pure Data*. Please see the documenta
 
 puredata creates the sounds
 
-<code>
+```python
     pd pd/roqba.pd
-</code>
+```
 
 ## start the music
 
 open a python shell (I recommend [**IPython**](http://ipython.org)) in this folder.
 
-to start the app:  
-<code>
+to start the app  
+```python
     from roqba import main  
     main.main()  
-</code>
+```
 
 ## control from the shell
 
-to pause:  
-<code>
+to pause  
+```python
     main.director.pause()  
-</code>
+```
 
-to resume:  
-<code>
+to resume  
+```python
     main.director.unpause()  
-</code>
+```
 
-to stop:  
-<code>
+to stop  
+```python
     main.director.stop()  
-</code>
+```
 
-adjust speed by:  
-<code>
+adjust speed by  
+```python
     main.director.speed = <speed>  # length of the shortest note-length in seconds.
-</code>
+```
 
 ### control with GUI
 
-start the GUI
-<code>
+start the GUI  
+```python
     python roqba/ui/main.py
-</code>
+```
 
 ### logging
 
-follow the log-messages with:  
-<code>
+follow the log-messages with  
+```python
     tail -f log.txt
-</code>
+```
 
-follow a graphical (scrolling) representation on the notes played by:  
-<code>
+follow a graphical (scrolling) representation on the notes played by  
+```python
     tail -f scrolling.txt  
-</code>
+```
