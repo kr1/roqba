@@ -124,18 +124,26 @@ class AbstractComposer(object):
         self.generate_real_scale(min, max)
 
     @staticmethod
-    def assemble_real_scale(scale, min=0, max=128):
-        '''extends the one-octave scale over the specified range'''
+    def assemble_real_scale(scale, min=0, max=128, tunings=None):
+        '''extends the one-octave scale over the specified range.
+
+        Tunings should be in (<index>, <delta>) format, e.g.
+        {1: -0.5 2: -1} would create the the start of a greek
+        enharmonic scale for an underlying scale of [1, 1, 1,.....'''
         real_scale = []
         value = 0
         for n in xrange(min, max):
-            value += 1
             index = n % len(scale)
             if scale[index]:
-                real_scale.append(value)
+                adjustment = 0 if not tunings else tunings.get(index, 0)
+                real_scale.append(value + adjustment)
+            value += 1
         return real_scale
 
     def generate_real_scale(self, min=0, max=128):
         '''extends the one-octave scale over the specified range'''
         scale = SCALES[self.scale]
-        self.real_scale = self.assemble_real_scale(scale, min, max)
+        tunings = None
+        if self.scale == 'GREEK_ENHARMONIC':
+            tunings = {1: -0.5, 2: -1, 8:-0.5, 9:-1}
+        self.real_scale = self.assemble_real_scale(scale, min, max, tunings=tunings)
