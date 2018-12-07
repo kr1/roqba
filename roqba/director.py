@@ -171,7 +171,6 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:
                         prop = random_between(min_, max_, 0.3)
-                        #print "note duration proportion: ", prop
                         [setattr(v, 'note_duration_prop', prop) for v
                             in self.composer.voices.values()]
                     else:

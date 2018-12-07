@@ -153,7 +153,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             voices = [melodic[0]] + voices
         return voices
 
-
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
 
@@ -177,8 +176,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if key in ORNAMENTS:
             notes = choice(ORNAMENTS[key])
 
-            ## check for the speed limit, if ornaments would be too fast,
-            ## don't embellish
+            # check for the speed limit, if ornaments would be too fast,
+            # don't embellish
             if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return
 
@@ -231,7 +230,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
         (either major or minor) of the current context'''
         flat = self.flatten_chord(chord)
-        #print set(flat)
         return set(flat) in BASE_HARMONIES[self.num_voices]
 
     @staticmethod
@@ -266,7 +264,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 index += 1
             else:
                 index += 1
-            #print check_index, scale[check_index], index, steps
         return (index * dir) + mod + (octave * len(scale))
 
     def add_duration_in_msec(self, state):
