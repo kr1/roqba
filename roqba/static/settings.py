@@ -16,7 +16,7 @@ settings = {'number_of_voices': 4,
             'lowest_note_num': 0,
             'highest_note_num': 127,
             'composer': 'baroq',
-            'notate': True,
+            'notate': False,
             'start_scale': 'DIATONIC'
             }
 
@@ -366,6 +366,52 @@ styles = {
             },
         }
     },
+    'greek_enharmonic': {
+        "settings": {
+            'composer': 'baroq',
+            'start_scale': 'GREEK_ENHARMONIC'},
+        "behaviour": {
+            'adsr': [40, 40, 100, 20000],
+            'automate_adsr': True,
+            'automate_binaural_diffs': False,
+            'automate_meters': True,
+            "automate_scale": False,
+            'automate_slide': True,
+            'automate_note_duration_prop': False,
+            'binaural_diff': 0.333,
+            'common_note_duration': True,
+            'common_transitions': False,  # upward and downward movements should be parallel?
+            'default_pause_prob': 0.07,
+            'default_embellishment_prob': 0.1,
+            'embellishment_speed_lim': 0.5,
+            'follow_bar_sequence': False,
+            'half_beat': False,
+            "max_shuffle": 0.2,  # todo: check possibility for -
+            "max_speed": 0.8,
+            "min_speed": 0.1,
+            "meter": (7, (3, 2, 2)),
+            "meters": [
+                [(5, (2, 3))] * 2,
+                [(5, (3, 2))] * 5,
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
+            ],
+            "speed": 0.17,
+            "speed_change": "leap",  # alt:"transition"
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
+            'should_play_a_melody': False,
+        }
+    },
     'greek_chromatic': {
         "settings": {
             'composer': 'baroq',
@@ -410,6 +456,7 @@ styles = {
                 3: BehaviourDict({}),
                 4: BehaviourDict({}),
             },
+            'should_play_a_melody': False,
         }
     }
 }
