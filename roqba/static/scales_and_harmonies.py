@@ -5,7 +5,9 @@ SCALES = {
     "HARMONIC": [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
     "MELODIC": [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1],
     "PENTATONIC": [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0],
-    "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]
+    "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    "GREEK_CHROMATIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
+    "GREEK_ENHARMONIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0]
   }
 
 NOTES_PER_SCALE = {
@@ -21,6 +23,8 @@ SCALES_BY_FREQUENCY = sum([
     ["HARMONIC"] * 2,
     ["MELODIC"] * 2,
     ["PENTATONIC"] * 2,
+    ["GREEK_ENHARMONIC"] * 2,
+    ["GREEK_CHROMATIC"] * 2,
     ["PENTA_MINOR"] * 1],
   [])
 
