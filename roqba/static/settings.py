@@ -382,8 +382,8 @@ styles = {
             'common_note_duration': True,
             'common_transitions': False,  # upward and downward movements should be parallel?
             'default_pause_prob': 0.07,
-            'default_embellishment_prob': 0.1,
-            'embellishment_speed_lim': 0.5,
+            'default_embellishment_prob': 0.3,
+            'embellishment_speed_lim': 0.7,
             'follow_bar_sequence': False,
             'half_beat': False,
             "max_shuffle": 0.2,  # todo: check possibility for -
