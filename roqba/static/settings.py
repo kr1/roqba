@@ -16,7 +16,8 @@ settings = {'number_of_voices': 4,
             'lowest_note_num': 0,
             'highest_note_num': 127,
             'composer': 'baroq',
-            'notate': True
+            'notate': True,
+            'start_scale': 'DIATONIC'
             }
 
 behaviour = {
@@ -95,7 +96,7 @@ behaviour = {
     'default_note_duration_prop': 0.8,  # proportion
 
     # SEQUENCE / MELODY RELATED
-    'follow_bar_sequence': False, # alt: True
+    'follow_bar_sequence': False,  # alt: True
     'bar_sequence': [6, 6, 4, 3, 2, 3],
     'should_play_a_melody': False,  # alt: melody as list
 
@@ -357,6 +358,52 @@ styles = {
             'max_rendezvous_tickoffset': 20,  # how long it takes max to rendezvous
             'num_rendezvous_between_caesurae': 10,
             'automate_note_duration_prop': False,
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
+        }
+    },
+    'greek_chromatic': {
+        "settings": {
+            'composer': 'baroq',
+            'start_scale': 'GREEK_CHROMATIC'},
+        "behaviour": {
+            'adsr': [40, 40, 100, 20000],
+            'automate_adsr': False,
+            'automate_binaural_diffs': False,
+            'automate_meters': True,
+            "automate_scale": False,
+            'automate_slide': False,
+            'automate_note_duration_prop': False,
+            'binaural_diff': 0.666,
+            'common_note_duration': False,
+            'common_transitions': False,  # upward and downward movements should be parallel?
+            'default_pause_prob': 0.07,
+            'default_embellishment_prob': 0.1,
+            'embellishment_speed_lim': 0.5,
+            'follow_bar_sequence': True,
+            'half_beat': False,
+            'max_binaural_diff': 10,
+            "max_shuffle": 0.2,  # todo: check possibility for -
+            "max_speed": 0.25,
+            "min_speed": 0.1,
+            "meter": (7, (3, 2, 2)),
+            "meters": [
+                [(5, (2, 3))] * 2,
+                [(5, (3, 2))] * 5,
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
+            ],
+            "speed": 0.17,
+            "speed_change": "leap",  # alt:"transition"
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
             'per_voice': {
                 1: BehaviourDict({}),
                 2: BehaviourDict({}),

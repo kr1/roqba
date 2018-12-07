@@ -1,9 +1,8 @@
 import time
 import threading
-import random
 from random import choice
 
-from roqba.static.movement_probabilities import ORNAMENTS, DRUM_FILLS
+from roqba.static.movement_probabilities import ORNAMENTS
 from roqba.static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
                                                BASE_HARMONIES,
                                                HARMONIC_INTERVALS,
@@ -20,9 +19,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                  gateway,
                  settings,
                  behaviour):
+
         super(Composer, self).__init__(gateway,
                                        settings,
-                                       behaviour)
+                                       behaviour,
+                                       scale=settings.get('start_scale', 'DIATONIC'))
         self.harm = {}
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.selected_meters = ("meters" in self.behaviour.keys() and
