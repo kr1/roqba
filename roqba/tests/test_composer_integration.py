@@ -53,3 +53,10 @@ def test_generate_real_scale(composer):
     '''test real scale generation from scale patterns'''
     for scale in SCALES:
         composer.generate_real_scale()
+
+
+def test_generate_real_scale_greek_chromatic(composer):
+    '''test real scale generation from scale patterns'''
+    composer.scale = 'GREEK_ENHARMONIC'
+    real_scale = composer.generate_real_scale()
+    assert composer.real_scale[:7] == [0, 0.5, 1, 5, 7, 7.5, 8]
