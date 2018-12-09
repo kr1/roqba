@@ -4,4 +4,10 @@ settings = {}
 
 behaviour = {}
 
-style='amadinda'
+if os.environ.get("ROQBA_STYLE"):
+    style = os.environ.get("ROQBA_STYLE")
+else:
+    # style = 'fixed_meter_playalong'
+    # style = 'amadinda'
+    # style = 'rendezvous'
+    style = 'greek_enharmonic'
