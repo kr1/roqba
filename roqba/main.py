@@ -1,3 +1,4 @@
+import os
 import logging
 import threading
 import logging.config
@@ -25,6 +26,10 @@ else:
         default_settings.behaviour["style"] = style
 
 settings = default_settings.settings
+
+if os.environ.get("ROQBA_NO_GUI"):
+    settings['gui'] = False
+
 behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
 default_settings.flatten_meters(behaviour)
 
