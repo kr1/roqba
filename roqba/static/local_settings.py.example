@@ -1,8 +1,11 @@
+import os
+
 from roqba.utilities.behaviour_dict import BehaviourDict
 
 settings = {}
 
 behaviour = {}
+
 
 if os.environ.get("ROQBA_STYLE"):
     style = os.environ.get("ROQBA_STYLE")

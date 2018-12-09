@@ -1,3 +1,4 @@
+import os
 from roqba.static.meters import METERS
 from roqba.utilities.behaviour_dict import BehaviourDict
 
@@ -7,7 +8,7 @@ settings = {'number_of_voices': 4,
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  ['SLAVE', 2], 'AUTONOMOUS'],
             'PD_HOST': 'localhost',
-            'PD_PORT': 12321,
+            'PD_PORT': os.environ.get('ROQBA_TO_PD_PORT', 12321),
             'gui': True,
             'GUI_HOST': 'localhost',
             'TO_GUI_PORT': 12322,
