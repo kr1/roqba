@@ -340,7 +340,7 @@ styles = {
             'enable_adsr': False,
             'composer': 'rendezvous'},
         'behaviour': {
-            'max_speed': 0.25,
+            'max_speed': 0.75,
             'min_speed': 0.1,
             'speed': 0.1,
             'automate_slide': False,

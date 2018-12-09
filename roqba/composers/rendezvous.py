@@ -134,7 +134,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             voice.update_current_microvolume()
             self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
             # self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
-        if send_to_notator:
+        if self.notate and send_to_notator:
             self.notator.note_to_file({"notes": self.prior_harmony,
                                        "weight": state["weight"],
                                        "cycle_pos": state["cycle_pos"]})
