@@ -89,9 +89,10 @@ class Composer(AbstractComposer):
         for voice in self.voices.values():
             self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         self.gateway.hub.send(self.voices)
-        self.notator.note_to_file({"notes": tmp_harm,
-                                   "weight": state["weight"],
-                                   "cycle_pos": state["cycle_pos"]})
+        if self.notate:
+            self.notator.note_to_file({"notes": tmp_harm,
+                                       "weight": state["weight"],
+                                       "cycle_pos": state["cycle_pos"]})
         return self.comment
 
     def next_voice_note(self, voice, meter_pos):
