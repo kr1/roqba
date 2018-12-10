@@ -6,6 +6,7 @@ import logging.config
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
 from roqba.utilities.behaviour_dict import BehaviourDict
+from roqba.utilities.logger_adapter import StyleLoggerAdapter
 import roqba.static.settings as default_settings
 
 try:
@@ -37,6 +38,8 @@ gateway = NoteGateway(settings, behaviour)
 
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
+logger = StyleLoggerAdapter(logger, None)
+
 
 director = Director(gateway, behaviour, settings)
 

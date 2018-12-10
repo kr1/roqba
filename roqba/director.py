@@ -8,6 +8,7 @@ from Queue import deque
 import metronome
 from roqba.composers import baroq, amadinda, rendezvous
 from roqba.utilities import random_between
+from roqba.utilities.logger_adapter import StyleLoggerAdapter
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
@@ -19,6 +20,7 @@ from roqba.mixins.speed_mixin import SpeedMixin
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
+logger = StyleLoggerAdapter(logger, None)
 
 
 class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
@@ -44,8 +46,10 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.MIN_SPEED = behaviour["min_speed"]
         self.MAX_SPEED = behaviour["max_speed"]
         self.MAX_SHUFFLE = behaviour["max_shuffle"]
-        self.musical_logger = logging.getLogger('musical')
-        self.behaviour_logger = logging.getLogger('behaviour')
+        musical_logger = logging.getLogger('musical')
+        self.musical_logger = StyleLoggerAdapter(musical_logger, None)
+        behaviour_logger = logging.getLogger('behaviour')
+        self.behaviour_logger = StyleLoggerAdapter(behaviour_logger, None)
         self.gui_logger = logging.getLogger('gui')
         self.add_setters()
         if behaviour['automate_microspeed_change']:
