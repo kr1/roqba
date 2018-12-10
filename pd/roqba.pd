@@ -1,33 +1,33 @@
-#N canvas 2 50 1362 716 10;
-#X obj 589 401 dac~;
-#X msg 683 93 \; pd dsp \$1 \;;
-#X obj 683 71 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#N canvas 2 50 1916 1028 10;
+#X obj 589 713 dac~;
+#X msg 683 405 \; pd dsp \$1 \;;
+#X obj 683 383 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 4;
-#X obj 455 391 snapshot~;
-#X obj 494 339 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 455 703 snapshot~;
+#X obj 494 651 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 683 16 key;
-#X obj 683 43 select 32;
-#X obj 123 411 print log udp;
-#X obj 123 390 spigot;
-#X obj 455 436 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+#X obj 683 328 key;
+#X obj 683 355 select 32;
+#X obj 123 723 print log udp;
+#X obj 123 702 spigot;
+#X obj 455 748 vsl 80 20 0 1 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
-#X obj 455 413 abs;
-#X obj 14 371 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X obj 455 725 abs;
+#X obj 14 683 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 156 354 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 156 666 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 455 368 metro 120;
-#X obj 749 417 doku~;
-#X obj 749 389 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 455 680 metro 120;
+#X obj 749 729 doku~;
+#X obj 749 701 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X msg 666 441 ls-results in pd-window;
-#X obj 547 439 record-stereo~;
-#X obj 634 416 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 666 753 ls-results in pd-window;
+#X obj 547 751 record-stereo~;
+#X obj 634 728 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 785 389 ls;
-#X obj 455 338 *~ 1;
-#X obj 776 339 *~ 1;
+#X msg 785 701 ls;
+#X obj 455 650 *~ 1;
+#X obj 776 651 *~ 1;
 #N canvas 2 50 1362 716 volumes 0;
 #X obj 100 100 cnv 100 330 120 empty empty Volumes 20 12 0 14 -191407
 -262144 0;
@@ -277,9 +277,9 @@
 #X connect 18 0 20 0;
 #X connect 18 1 19 0;
 #X coords 0 -1 1 1 330 121 1 100 100;
-#X restore 454 172 pd volumes;
-#X obj 352 16 voice_message_dispatcher 3;
-#X obj 184 40 voice 2 30 30 30 30 300;
+#X restore 454 484 pd volumes;
+#X obj 352 328 voice_message_dispatcher 3;
+#X obj 184 352 voice 2 30 30 30 30 300;
 #N canvas 2 50 1362 718 meters 0;
 #X msg 662 353 [2_ 1_ 2_ 1_ 2_ 1_ 2];
 #X msg 662 377 [1_ 2_ 1_ 1_ 1_ 1_ 1_ 3];
@@ -438,8 +438,8 @@
 #X connect 40 0 9 0;
 #X connect 40 0 14 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
-#X restore 13 172 pd meters;
-#N canvas 2 50 1362 716 percussion 1;
+#X restore 13 484 pd meters;
+#N canvas 2 50 1916 1028 percussion 1;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
 #X obj -191 100 noise-drums-bang;
@@ -490,28 +490,27 @@
 #X connect 14 5 11 0;
 #X connect 14 6 2 0;
 #X connect 14 7 1 0;
-#X restore 34 460 pd percussion;
-#X obj 16 39 voice 1 30 30 30 30 300;
-#X obj 352 41 voice 3 30 30 30 30 300;
-#X obj 518 42 voice 4 30 30 30 30 300;
-#X obj 16 15 voice_message_dispatcher 1;
-#X obj 184 16 voice_message_dispatcher 2;
-#X obj 518 16 voice_message_dispatcher 4;
-#X obj 749 16 loadbang;
-#X obj 749 43 delay 2000;
-#X msg 749 70 1;
-#X obj 215 372 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 34 772 pd percussion;
+#X obj 16 351 voice 1 30 30 30 30 300;
+#X obj 352 353 voice 3 30 30 30 30 300;
+#X obj 518 354 voice 4 30 30 30 30 300;
+#X obj 16 327 voice_message_dispatcher 1;
+#X obj 184 328 voice_message_dispatcher 2;
+#X obj 518 328 voice_message_dispatcher 4;
+#X obj 749 328 loadbang;
+#X obj 749 355 delay 2000;
+#X msg 749 382 1;
+#X obj 215 684 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 242 413 spigot;
-#X obj 275 394 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 242 725 spigot;
+#X obj 275 706 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 233 371 netreceive 12345 1;
-#X obj 242 434 print log mp3cast-port 12345;
-#X obj 233 461 mp3cast~;
-#X msg 301 401 print;
-#X obj 263 282 loadbang;
-#X msg 358 371 1;
-#N canvas 2 50 1362 716 message_dispatcher 1;
+#X obj 233 683 netreceive 12345 1;
+#X obj 242 746 print log mp3cast-port 12345;
+#X msg 301 713 print;
+#X obj 263 594 loadbang;
+#X msg 358 683 1;
+#N canvas 2 50 1916 1028 message_dispatcher 1;
 #X obj 655 190 print log udp;
 #X obj 655 169 spigot;
 #X obj 29 146 route master 1 2 3 4;
@@ -578,20 +577,21 @@
 #X connect 26 0 27 0;
 #X connect 27 0 30 0;
 #X connect 28 0 27 0;
-#X restore 34 433 pd message_dispatcher;
-#X obj 34 309 motex/getenv ROQBA_TO_PD_PORT;
-#X obj 233 308 motex/getenv ROQBA_ICECAST_CTL_PORT;
-#X msg 233 350 listen \$1;
-#X obj 34 291 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X restore 34 745 pd message_dispatcher;
+#X obj 34 621 motex/getenv ROQBA_TO_PD_PORT;
+#X obj 233 620 motex/getenv ROQBA_ICECAST_CTL_PORT;
+#X msg 233 662 listen \$1;
+#X obj 34 603 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 34 370 netreceive -u 12321;
-#X msg 34 349 listen \$1;
-#X msg 100 349 listen 12321;
-#X text 164 434 dispatcher;
-#X obj 233 289 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 34 682 netreceive -u 12321;
+#X msg 34 661 listen \$1;
+#X msg 100 661 listen 12321;
+#X text 164 746 dispatcher;
+#X obj 233 601 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 34 329 cyclone/fromsymbol;
-#X obj 233 329 cyclone/fromsymbol;
+#X obj 34 641 cyclone/fromsymbol;
+#X obj 233 641 cyclone/fromsymbol;
+#X obj 233 773 unauthorized/mp3cast~;
 #X connect 2 0 1 0;
 #X connect 3 0 10 0;
 #X connect 4 0 13 0;
@@ -609,12 +609,12 @@
 #X connect 20 0 3 0;
 #X connect 20 0 14 1;
 #X connect 20 0 17 1;
-#X connect 20 0 41 0;
+#X connect 20 0 56 0;
 #X connect 21 0 0 1;
 #X connect 21 0 3 0;
 #X connect 21 0 14 2;
 #X connect 21 0 17 2;
-#X connect 21 0 41 1;
+#X connect 21 0 56 1;
 #X connect 22 0 20 0;
 #X connect 22 1 21 0;
 #X connect 23 0 28 0;
@@ -628,25 +628,25 @@
 #X connect 38 0 37 1;
 #X connect 39 0 36 0;
 #X connect 39 0 37 0;
-#X connect 39 0 41 0;
-#X connect 42 0 41 0;
-#X connect 43 0 44 0;
-#X connect 43 0 47 0;
-#X connect 43 0 46 0;
-#X connect 44 0 38 0;
-#X connect 45 0 26 0;
+#X connect 39 0 56 0;
+#X connect 41 0 56 0;
+#X connect 42 0 43 0;
+#X connect 42 0 46 0;
+#X connect 42 0 45 0;
+#X connect 43 0 38 0;
+#X connect 44 0 26 0;
+#X connect 45 0 54 0;
 #X connect 46 0 55 0;
-#X connect 47 0 56 0;
-#X connect 48 0 39 0;
-#X connect 49 0 46 0;
-#X connect 50 0 8 0;
-#X connect 50 0 11 0;
-#X connect 50 0 45 0;
-#X connect 51 0 50 0;
+#X connect 47 0 39 0;
+#X connect 48 0 45 0;
+#X connect 49 0 8 0;
+#X connect 49 0 11 0;
+#X connect 49 0 44 0;
+#X connect 50 0 49 0;
+#X connect 50 0 7 0;
 #X connect 51 0 7 0;
-#X connect 52 0 7 0;
-#X connect 52 0 50 0;
-#X connect 54 0 47 0;
-#X connect 55 0 51 0;
-#X connect 56 0 48 0;
-#X coords 0 716 1 715 85 60 0;
+#X connect 51 0 49 0;
+#X connect 53 0 46 0;
+#X connect 54 0 50 0;
+#X connect 55 0 47 0;
+#X coords 0 1028 1 1027 85 60 0;
