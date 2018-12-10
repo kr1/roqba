@@ -473,6 +473,8 @@ styles = {
             'notate': False,
             'start_scale': 'GREEK_CHROMATIC' },
         'behaviour': {
+            'max_adsr': [7, 7, 90, 2666],
+            'min_adsr': [2, 2, 70, 1666],
             'automate_microspeed_change': True,
             'microspeed_variation': 0.06,
             'microspeed_max_speed_in_hz': 0.3,
