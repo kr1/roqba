@@ -13,15 +13,20 @@ see the [documentation](http://kr1.github.com/roqba/docs/build/html/index.html)
 # Dependencies
 
 You'll need [**Pure Data**](http://puredata.info/) for the sound-production.
-Some objects rely on external libraries of *Pure Data*. Please see the documentation for details.
+Some objects rely on external libraries of *Pure Data*.
+Please see the documentation for details.
 
 # Getting started
 
-## start puredata
+## puredata
 
-puredata creates the sounds
+install puredata with the following extension libraries (example for a debian based linux)  
+```bash
+    apt-get install pd-unauthorized pd-motex pd-zexy pd-cyclone pd-ext13 pd-list-abs pd-pan pd-creb
+```
 
-```python
+puredata creates the sounds, run it with  
+```bash
     pd pd/roqba.pd
 ```
 
