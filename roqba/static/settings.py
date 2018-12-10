@@ -34,6 +34,7 @@ behaviour = {
     'microvolume_variation': 0.2,
     'microvolume_max_speed_in_hz': 0.4,
     'default_volume': 0.666,
+    'has_percussion': True,
     "speed": 0.3,
     'half_beat': False,
     'automate_speed_change': True,

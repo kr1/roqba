@@ -70,16 +70,17 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         # the stream analyzer can be used to check for chords, simultaneities
         self.stream_analyzer()
         # percussion
-        self.drummer.generator.send([state, state['cycle_pos']])
-        for k, v in self.drummer.frame.items():
-            if v["meta"]:
-                if v["meta"] == 'empty':
-                    threading.Thread(target=self.drum_fill_handler,
-                                     args=(k, state)).start()
-                if v["meta"] == 'mark':
-                    threading.Thread(target=self.drum_mark_handler,
-                                     args=(k, state)).start()
-        self.gateway.drum_hub.send(self.drummer.frame)
+        if self.behaviour['has_percussion']:
+            self.drummer.generator.send([state, state['cycle_pos']])
+            for k, v in self.drummer.frame.items():
+                if v["meta"]:
+                    if v["meta"] == 'empty':
+                        threading.Thread(target=self.drum_fill_handler,
+                                         args=(k, state)).start()
+                    if v["meta"] == 'mark':
+                        threading.Thread(target=self.drum_mark_handler,
+                                         args=(k, state)).start()
+            self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.gateway.hub.send(self.voices)  # this sends the voices to the hub
         if self.notate:
