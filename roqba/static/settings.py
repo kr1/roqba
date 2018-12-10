@@ -7,6 +7,7 @@ settings = {'number_of_voices': 4,
             # 'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  ['SLAVE', 2], 'AUTONOMOUS'],
+            'enable_adsr': False,
             'PD_HOST': 'localhost',
             'PD_PORT': int(os.environ.get('ROQBA_TO_PD_PORT', '12321')),
             'gui': True,
@@ -460,8 +461,114 @@ styles = {
             },
             'should_play_a_melody': False,
         }
+    },
+    'aulos': {
+        'settings': {
+            'number_of_voices': 2,
+            'voice_registers': ['FLAT_MID', 'FLAT_MID'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS'],
+            'enable_adsr': False,
+            'gui': True,
+            'composer': 'baroq',
+            'notate': False,
+            'start_scale': 'GREEK_CHROMATIC' },
+        'behaviour': {
+            'automate_microspeed_change': True,
+            'microspeed_variation': 0.06,
+            'microspeed_max_speed_in_hz': 0.3,
+            'automate_microvolume_change': True,
+            'microvolume_variation': 0.2,
+            'microvolume_max_speed_in_hz': 0.4,
+            'default_volume': 0.666,
+            "speed": 0.3,
+            'half_beat': True,
+            'automate_speed_change': True,
+            'has_percussion': False,
+            "max_speed": 1.2,
+            "min_speed": 0.08,
+            # speed-target:
+            # 0.5 means that the average of all speeds will be
+            # +/- in the middle of the given range
+            # 0.25 means that the average of speeds will be at the first
+            # quarter of the range (predominantly fast)
+            "speed_target": 0.5,
+            "speed_change": "leap",  # alt:"transition"
+            'caesura_prob': 0.05,
+            "shuffle_delay": 0.01,  # keep this between 0 and MAX_SHUFFLE
+            'default_behaviour': "AUTONOMOUS",
+            "max_shuffle": 0.6,
+            "automate_scale": True,
+
+            # METERS
+            'automate_meters': True,
+            'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
+            'meters': METERS.keys(),
+
+            # WAVETABLES
+            'automate_wavetables': True,
+            #'wavetable_specs': sum([[['random_harmonic', ['all', 'odd']]]] * 5,
+            'wavetable_specs': sum([[['harmonic', ['all', 'even']]]] * 5,
+                                   []),
+            'automate_num_partials': True,
+            'default_num_partial': 3,
+            'max_num_partials': 7,
+            'common_wavetables': True,
+
+            # TRANSPOSING
+            'transpose': 12,
+            'automate_transpose': True,
+            'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+
+            # PAN RELATED
+            'default_pan_position': 0,
+            'automate_pan': 1,
+
+            # BINAURAL DIFF RELATED
+            'pan_controls_binaural_diff': False,
+            'common_binaural_diff': True,
+            'automate_binaural_diffs': True,  # alt: False
+            'binaural_diff': 0.666,
+            'max_binaural_diff': 10,
+
+            # SLIDE RELATED
+            'automate_slide': True,
+            'use_proportional_slide_duration': False,  # proportion or msecs
+            'slide_duration_msecs': 100,
+            'slide_duration_prop': 0.666,  # proportion
+
+            # NOTE DURATION RELATED
+            'automate_note_duration_prop': True,
+            'automate_note_duration_min_max': [0.1, 3.3],
+            'common_note_duration': True,
+            'default_note_duration_prop': 0.8,  # proportion
+
+            # SEQUENCE / MELODY RELATED
+            'follow_bar_sequence': False,  # alt: True
+
+            'embellishment_speed_lim': 0.666,
+            'default_embellishment_prob': 0.005,
+            'default_pause_prob': 0.03,
+            'per_voice': {
+                1: BehaviourDict({
+                    'slide_duration_msecs': 100,
+                    'slide_duration_prop': 0.666,  # proportion
+                    'use_proportional_slide_duration': False,  # proportion or msecs
+                    'automate_binaural_diffs': True,  # alt: False
+                    'binaural_diff': 0.666,
+                    'default_pan_position': 1,
+                    'automate_pan': 1,
+                    'max_binaural_diff': 5,
+                    'automate_note_duration_prop': True,
+                    'automate_note_duration_min_max': [0.1, 3.3]},
+                    name='voice 1'),
+                2: BehaviourDict({
+                    'default_pan_position': 0,
+                    'automate_pan': 1},
+                    name='voice 2'),
+                }
+            }
+        }
     }
-}
 
 
 def flatten_meters(behaviour):
