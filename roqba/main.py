@@ -1,35 +1,45 @@
+import os
 import logging
 import threading
 import logging.config
-import time
 
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
 from roqba.utilities.behaviour_dict import BehaviourDict
+from roqba.utilities.logger_adapter import StyleLoggerAdapter
 import roqba.static.settings as default_settings
 
 try:
     import static.local_settings as local_settings
 except ImportError:
     local_settings = default_settings
+else:
+    default_settings.settings.update(local_settings.settings)
+    default_settings.behaviour.update(local_settings.behaviour)
 
-
-default_settings.settings.update(local_settings.settings)
-default_settings.behaviour.update(local_settings.behaviour)
-
-if getattr(local_settings, 'style', None):
-    style = local_settings.style
-    default_settings.settings.update(default_settings.styles[style]["settings"])
-    default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
-    default_settings.behaviour["style"] = style
+    # if a style-name is set in local_settings.py, its settings and behaviour
+    # will overwrite the default settings and behaviour
+    if getattr(local_settings, 'style', None):
+        style = local_settings.style
+        if default_settings.styles.get(style):
+            default_settings.settings.update(default_settings.styles[style]["settings"])
+            default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
+        default_settings.behaviour["style"] = style
 
 settings = default_settings.settings
+
+if os.environ.get("ROQBA_NO_GUI"):
+    settings['gui'] = False
+
 behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
+default_settings.flatten_meters(behaviour)
 
 gateway = NoteGateway(settings, behaviour)
 
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger('startup')
+logger = StyleLoggerAdapter(logger, None)
+
 
 director = Director(gateway, behaviour, settings)
 

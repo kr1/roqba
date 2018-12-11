@@ -9,9 +9,14 @@
 .screenrc
 class\ diagram.png
 scrolling.txt
+meter_monitor.txt
+sequence_monitor.txt
 sound_files
 webserver
 log.txt
 tags
 roqba.egg-info/
 roqba/static/local_settings.py
+docs/build
+docs/build/
+.cache

@@ -49,10 +49,12 @@ class AbstractComposer(object):
                 behaviour=self.settings['voice_behaviours'][voice_idx])
         [voice.register_other_voices() for voice in self.voices.values()]
         self.set_meter(self.meter)
-        self.notator = Notator(self.num_voices)
+        self.notate = settings.get('notate')
+        if self.notate:
+            self.notator = Notator(self.num_voices)
 
     def __repr__(self):
-        return "<Composer-Inst with {0}>".format(self.harm)
+        return "<Composer-Inst ({}) with harmony: {}>".format(self.__class__, self.harm)
 
     def _update_groupings(self, meter):
         self.TERNARY_GROUPINGS = note_length_groupings.get_grouping(meter,
@@ -81,7 +83,8 @@ class AbstractComposer(object):
         for v in self.voices.values():
             v.set_note_length_groupings()
             v.reload_register()
-        self.drummer.create_pattern(METERS[meter]["applied"])
+        self.drummer.meter = METERS[meter]["applied"]
+        self.drummer.create_pattern()
 
     @abstractmethod
     def generate(self):
@@ -94,7 +97,7 @@ class AbstractComposer(object):
     def set_binaural_diffs(self, val=None, voice=None):
         '''"de-tunes" the specified voice by the specified interval (in hertz)
 
-        - if no values are given, random values (in the configurated range)
+        if no values are given, random values (in the configurated range)
         are set for each voice.
         '''
         if val and val != 'random':
@@ -121,18 +124,26 @@ class AbstractComposer(object):
         self.generate_real_scale(min, max)
 
     @staticmethod
-    def assemble_real_scale(scale, min=0, max=128):
-        '''extends the one-octave scale over the specified range'''
+    def assemble_real_scale(scale, min=0, max=128, tunings=None):
+        '''extends the one-octave scale over the specified range.
+
+        Tunings should be in (<index>, <delta>) format, e.g.
+        {1: -0.5 2: -1} would create the the start of a greek
+        enharmonic scale for an underlying scale of [1, 1, 1,.....'''
         real_scale = []
         value = 0
         for n in xrange(min, max):
-            value += 1
             index = n % len(scale)
             if scale[index]:
-                real_scale.append(value)
+                adjustment = 0 if not tunings else tunings.get(index, 0)
+                real_scale.append(value + adjustment)
+            value += 1
         return real_scale
 
     def generate_real_scale(self, min=0, max=128):
         '''extends the one-octave scale over the specified range'''
         scale = SCALES[self.scale]
-        self.real_scale = self.assemble_real_scale(scale, min, max)
+        tunings = None
+        if self.scale == 'GREEK_ENHARMONIC':
+            tunings = {1: -0.5, 2: -1, 8:-0.5, 9:-1}
+        self.real_scale = self.assemble_real_scale(scale, min, max, tunings=tunings)

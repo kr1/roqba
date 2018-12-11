@@ -3,7 +3,7 @@ import logging
 from Queue import deque
 from random import choice as sample
 
-from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS
+from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS, BASS_CHORD_DISTANCE_PROBS
 from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
 from static.note_length_groupings import analyze_grouping
 from static.melodies import melodies
@@ -65,12 +65,13 @@ class Voice(object):
                 self.behaviour = behaviour[0]
                 self.followed_voice_id = behaviour[1]
                 self.following_counter = 0
-                self.follow_limit = sample(range(5, 9))
+                self.follow_limit = sample(range(5, 11))
         else:
             self.behaviour = self.composer.behaviour["default_behaviour"]
         self.should_play_a_melody = self.composer.behaviour.voice_get(
             self.id, 'should_play_a_melody')
         self.playing_a_melody = False
+        self.current_adsr = self.composer.behaviour.voice_get(self.id, 'adsr')
         self.duration_in_msec = 0
         self.change_rhythm_after_times = 1
         self.note_length_grouping = note_length_grouping
@@ -135,7 +136,7 @@ class Voice(object):
         while True:
             state = (yield)
             meter_pos = state['cycle_pos']
-            #print self.on_off_pattern, " for: ", self.id
+            # print self.on_off_pattern, " for: ", self.id
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
                 self.note_change = 0
@@ -147,7 +148,7 @@ class Voice(object):
                 if 1 in tmp_list:
                     self.note_duration_steps = tmp_list.index(1) + 1
                 else:
-                    #self.note_duration_steps = 1
+                    # self.note_duration_steps = 1
                     self.note_duration_steps = len(self.on_off_pattern) - meter_pos
                 self.prior_note = self.note
                 if random.random() < self.pause_prob and not self.playing_a_melody:
@@ -176,7 +177,14 @@ class Voice(object):
                     return res
                 else:
                     self.reset_slave()
-
+        if self.id == 1:
+            # TODO: make more sofisticated (e.g. arpeggiator or thirds)
+            bar_sequence = state.get('bar_sequence')
+            if bar_sequence:
+                chord_note_offset = sample(BASS_CHORD_DISTANCE_PROBS)
+                sequence_note = bar_sequence[state['bar_sequence_current_position']]
+                if self.weight in [HEAVY, MEDIUM]:
+                    return sequence_note + min(self.range) + chord_note_offset
         move = sample([-1, 1]) * sample(self.movement_probs)
         if self.dir:
             move = (self.dir * sample(self.movement_probs))
@@ -189,11 +197,11 @@ class Voice(object):
         else:
             if (self.should_play_a_melody and self.note != 0 and
                     self.weight in [HEAVY, MEDIUM]):
-                #if (self.melody_starts_on == (self.note % 7) and
+                # if (self.melody_starts_on == (self.note % 7) and
                     # regarding the on-off pattern we try a minimum invasive strategy
                     # by modifying only those indexes of the pattern covered by the
                     # current note and the start of the following note
-                #print "searching for a suitable melody"
+                # print "searching for a suitable melody"
                 self.melody = self.search_suitable_melody(state['speed'])
                 if self.melody:
                     self.musical_logger.info("starting the melody: {0}".format(self.melody))
@@ -337,11 +345,12 @@ class Voice(object):
         self.slide_duration_prop = follow.slide_duration_prop
         self.slide = follow.slide
         self.following_counter = 0
-        self.follow_limit = sample(range(3, 9))
+        self.follow_limit = sample(range(5, 11))
 
     def set_note_length_groupings(self, mapping={'BASS': 'HEAVY_GROUPINGS',
                                                  'ROCK_BASS': 'FAST_GROUPINGS',
                                                  'FLAT_MID': 'FAST_GROUPINGS',
+                                                 'LOW_MID': 'DEFAULT_GROUPINGS',
                                                  'MID': 'DEFAULT_GROUPINGS',
                                                  'HIGH': 'TERNARY_GROUPINGS'}):
         """sets the note_length_groupings attribute on self
@@ -361,7 +370,7 @@ class Voice(object):
 
         - in voice
         - in the controller'''
-        #print "reloading register: {0}".format(name)
+        # print "reloading register: {0}".format(name)
         for k, v in self.register["voice_attrs"].items():
             setattr(self, k, v)
         for k, v in self.register["voice_composer_attrs"].items():
@@ -374,9 +383,3 @@ class Voice(object):
         using the registered wavetable-related params'''
         fun = getattr(wavetables, self.wavetable_generation_type + '_wavetable')
         return fun(self.num_partials, self.partial_pool)
-
-
-if __name__ == "__main__":
-    from composer import Composer
-    c = Composer()
-    print Voice("", "", c).in_the_middle(45)

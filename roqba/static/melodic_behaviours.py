@@ -53,6 +53,21 @@ registers = {
               "pause_prob": 0.1,
               "range":[30, 45]},
     },
+    "LOW_MID": {
+        "name":"LOW_MID",
+        "sort_importance": 5,
+        "voice_composer_attrs": {
+              "note_length_groupings": "DEFAULT_GROUPINGS"},
+        "voice_attrs":{
+              "embellishment_prob": 0.01,
+              "legato_prob": 0.1,
+              #"slide": True,
+              #"slide_duration_prop": 0.1,
+              "change_rhythm_after_times": 10,
+              "movement_probs": MIDDLE_VOICES_MOVEMENT_PROBS,
+              "pause_prob": 0.1,
+              "range":[22, 38]},
+    },
     "FLAT_MID": {
         "name": "FLAT_MID",
         "sort_importance": 5,
@@ -60,7 +75,7 @@ registers = {
               "note_length_groupings": "FAST_GROUPINGS"},
         "voice_attrs":{
               "embellishment_prob": 0.01,
-              "legato_prob": 0.02,
+              "legato_prob": 0.06,
               #"slide": True,
               #"slide_duration_prop": 0.1, 
               "change_rhythm_after_times": 4,

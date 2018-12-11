@@ -195,12 +195,24 @@ groupings = {
             [[3, 6]] * 7,
             [[3, 3, 3]] * 30,
             [[2, 1, 2, 1, 2, 1]] * 7,
-
             [[1, 1, 1, 1, 1, 1, 1, 1, 1]] * 5,
             [[2, 1, 1, 1, 1, 1, 1, 1]] * 5,
             [[2, 1, 2, 1, 1, 1, 1]] * 7,
             [[3, 3, 1, 1, 1]] * 5,
             [[3, 2, 1, 1, 2]] * 7]
+    },
+    (11, (3, 3, 3, 2)): {
+        "heavy": [
+            [[6, 3, 2]] * 7,
+            [[3, 6, 2]] * 7,
+            [[3, 3, 3, 2]] * 30,
+            [[2, 1, 2, 1, 2, 1, 2]] * 7,
+
+            [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]] * 5,
+            [[2, 1, 1, 1, 1, 1, 1, 1, 2]] * 5,
+            [[2, 1, 2, 1, 1, 1, 1, 2]] * 7,
+            [[3, 3, 1, 1, 1, 1, 1]] * 5,
+            [[3, 2, 1, 1, 2, 2]] * 7]
     },
     (12, (3, 3, 2, 2, 2)): {
         "heavy": [
@@ -222,7 +234,8 @@ groupings = {
             [[1, 1, 2, 1, 1, 2, 1, 2, 1]] * 10,
             [[1, 2, 1, 2, 1, 2, 1, 2]] * 10,
             [[2, 1, 2, 1, 2, 1, 2, 1]] * 10]
-    }, (12, (2, 2, 2, 3, 3)): {
+    },
+    (12, (2, 2, 2, 3, 3)): {
         "heavy": [
             [[2, 2, 2, 3, 3]] * 7,
             [[6, 3, 3]] * 7,
@@ -231,8 +244,8 @@ groupings = {
             [[2, 2, 2, 1, 2, 2, 1]] * 7,
             [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]] * 5],
         "first": [
-            [[1, 1, 2, 1, 1, 2, 1, 2, 1]] * 10,
-            [[1, 1, 2, 1, 1, 2, 1, 2, 1]] * 10,
+            [[1, 1, 2, 1, 1, 2, 1, 2, 1]] * 15,
+            [[2, 1, 1, 1, 1, 2, 1, 2, 1]] * 5,
             [[1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1]] * 10],
         "terns": [
             [[1, 1, 2, 1, 1, 2, 1, 2, 1]] * 10,
@@ -251,6 +264,36 @@ groupings = {
             [[2, 1, 2, 1, 2, 1, 2, 1]] * 10,
             [[1, 2, 1, 2, 1, 2, 1, 2]] * 10,
             [[3, 3, 1, 1, 1, 3]] * 10]
+    },
+    (15, (3, 3, 2, 3, 2, 2)): {
+        "heavy": [
+            [[3, 3, 2, 3, 2, 2]] * 20,
+            [[3, 3, 1, 1, 3, 1, 1, 2]] * 5,
+            [[2, 1, 2, 1, 2, 2, 1, 2, 2]] * 25,
+        ],
+        "first": [
+            [[2, 1, 2, 1, 2, 2, 1, 2, 1, 1]] * 25,
+         ],
+        "second": [
+            [[2, 1, 1, 1, 1, 2, 2, 1, 2, 2]] * 25,
+         ],
+        "terns": [
+            [[3, 3, 2, 3, 2, 2]] * 20,
+        ]
+    },
+    (23, (3, 3, 2, 3, 3, 2, 3, 2, 2)): {
+        "heavy": [
+            [[3, 3, 2, 3, 3, 2, 3, 2, 2]] * 20,
+        ],
+        "first": [
+            [[3, 2, 1, 1, 1, 3, 2, 1, 2, 3, 2, 1, 1]] * 20,
+         ],
+        "second": [
+            [[3, 2, 1, 1, 1, 3, 2, 1, 2, 3, 2, 1, 1]] * 20,
+         ],
+        "terns": [
+            [[2, 1, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2]] * 20,
+        ]
     },
     (24, (1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2)): {
         "heavy": [
@@ -277,6 +320,18 @@ groupings = {
               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]] * 7],
         "terns": [
             [[1, 1, 1, 3, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 2, 1]] * 10],
+    },
+    (30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2)): {
+        "heavy": [
+            [[2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2]] * 20,
+            [[3, 4, 3, 4, 3, 4, 3, 4, 2]] * 7,
+            [[3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2]] * 7],
+        "first": [
+            [[1, 1, 1, 2, 2, 3, 2, 1, 1, 1, 1, 1, 2, 2, 3, 2, 2, 1, 1]] * 7],
+        "second": [
+            [[3, 4, 7, 1, 1, 1, 2, 1, 1, 3, 2, 1, 1, 2]] * 3],
+        "terns": [
+            [[3, 3, 1, 3, 3, 1, 3, 3, 1, 3, 3, 3]] * 10],
     }
 }
 
@@ -289,16 +344,16 @@ def get_grouping(meter, mode, check=True):
     '''
     mode = None if mode == "default" else mode
     meter_length = meter if type(meter) == int else meter[0]
-    res = assemble(meter, mode, meter_length=meter_length)
+    res = _assemble(meter, mode, meter_length=meter_length)
     if check:
         if badly_formeD(meter_length, res):
             raise RuntimeError(
-                "badly formed rhythm grouping. length:{}\npattern: {}".format(
-                    meter_length, res))
+                "badly formed rhythm grouping. length: {}\nmode: {}\npattern: {}".format(
+                    meter_length, mode, res))
     return res
 
 
-def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
+def _assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
     '''assembles note-length groupings.
 
     it is called during the loading of the module'''
@@ -316,9 +371,9 @@ def assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
         else:
             return sum(target[which], [])
     else:
-        return (assemble(id, "first", fallback, meter_length) +
-                assemble(id, "second", fallback, meter_length) +
-                assemble(id, "terns", fallback, meter_length))
+        return (_assemble(id, "first", fallback, meter_length) +
+                _assemble(id, "second", fallback, meter_length) +
+                _assemble(id, "terns", fallback, meter_length))
 
 
 def cut_grouping_to_size(grouping, size):
@@ -343,10 +398,10 @@ def cut_grouping_to_size(grouping, size):
         res.append(new)
     return res
 
-DEFAULT_NOTE_LENGTH_GROUPINGS = assemble(DEFAULT_METER_LENGTH)
-DEFAULT_FAST_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "first")
-DEFAULT_TERNARY_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "terns")
-DEFAULT_SLOWER_GROUPINGS = assemble(DEFAULT_METER_LENGTH, "heavy")
+DEFAULT_NOTE_LENGTH_GROUPINGS = _assemble(DEFAULT_METER_LENGTH)
+DEFAULT_FAST_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "first")
+DEFAULT_TERNARY_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "terns")
+DEFAULT_SLOWER_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "heavy")
 
 
 def analyze_grouping(g):
@@ -372,27 +427,10 @@ def badly_formeD(meter_length, to_check):
 
     checks if the sum of items equals the specified target length'''
     odd = filter(lambda x: sum(x) != meter_length, to_check)
-    return odd
+    return bool(odd)
 
 if badly_formeD(DEFAULT_METER_LENGTH[0], DEFAULT_NOTE_LENGTH_GROUPINGS):
     raise RuntimeError('''not all note length groupings are well-formed:
             \n{0}\n\nin:{1}'''.format(badly_formeD(DEFAULT_METER_LENGTH,
                                       DEFAULT_NOTE_LENGTH_GROUPINGS),
                                       DEFAULT_NOTE_LENGTH_GROUPINGS))
-
-if __name__ == "__main__":
-    import pprint as pp
-    pp.pprint(DEFAULT_NOTE_LENGTH_GROUPINGS)
-
-    ## TEST analyze_grouping
-    res = analyze_grouping([1, 2, 1, 3])
-    assert res == [1, 1, 0, 1, 1, 0, 0]
-    print res
-    assert (get_grouping((5, (2, 3)), "heavy") ==
-            sum(groupings[(5, (2, 3))]["heavy"], []))
-    assert get_grouping((8, (4, 4)), "heavy") == sum(groupings[(8, (4, 4,))]["heavy"], [])
-    print get_grouping((5, (2, 3)), "terns")
-    print get_grouping((9, (3, 3, 3)), "terns")
-    print get_grouping((7, (3, 2, 2)), "terns")
-    import doctest
-    doctest.testmod()

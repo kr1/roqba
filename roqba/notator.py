@@ -8,12 +8,16 @@ class Notator(object):
     def __init__(self,
                  num_voices,
                  scroll_filename="scrolling.txt",
+                 meter_filename="meter_monitor.txt",
+                 sequence_filename="sequence_monitor.txt",
                  buffer_length=75,
                  num_lines=40):
         self.num_voices = num_voices
         self.buffer = collections.deque()
         self.buffer_length = buffer_length
         self.scroll_filename = scroll_filename
+        self.meter_filename = meter_filename
+        self.sequence_filename = sequence_filename
         self.num_lines = num_lines
 
     def add_note(self, note):
@@ -33,7 +37,10 @@ class Notator(object):
                 mat[l].append(-1)
             for v in xrange(self.num_voices):
                 if self.buffer[n][v] > 0:
-                    mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
+                    try:
+                        mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
+                    except KeyError:
+                        pass
         return mat
 
     def draw(self, mat, weight, cycle_pos):
@@ -49,10 +56,9 @@ class Notator(object):
             line_buffer.append(line)
         return "\n".join(line_buffer)
 
-    def write_to_file(self, s):
-        fi = open(self.scroll_filename, "w")
-        fi.write(s)
-        fi.close()
+    def write_to_file(self, filename, s):
+        with open(filename, "w") as fi:
+            fi.write(s)
 
     def note_to_file(self, data):
         """this method does the full service:
@@ -70,7 +76,7 @@ class Notator(object):
         mat = self.make_matrix()
         txt = self.draw(mat, weight, cycle_pos)
         txt = self.post_process(txt, weight)
-        self.write_to_file(txt)
+        self.write_to_file(self.scroll_filename, txt)
 
     def post_process(self, txt, weight):
         if weight == metronome.HEAVY:
@@ -86,19 +92,30 @@ class Notator(object):
     def reset(self):
         self.buffer = collections.deque()
 
+    def notate_rhythm(self, meter, position):
+        meter_length = meter[0]
+        meter = meter[1]
+        chars_per_beat = self.buffer_length // meter_length
+        grid = ["|"]
+        for segment in meter:
+            grid.append("{}|".format(" " * (int(chars_per_beat * segment) - 1)))
+        current = "{}{}{}".format(" " * int(chars_per_beat * position),
+                                  "X" * int(chars_per_beat),
+                                  " " * int(chars_per_beat * (meter_length - position)))
+        joined_grid = "".join(grid)
+        text = "{}\n{}\n{}\n{}\n{}\n{}".format(
+            joined_grid, joined_grid,
+            current,
+            joined_grid, joined_grid, "\n" * 20)
+        self.write_to_file(self.meter_filename, text)
 
-def main():
-    import random
-    nt = Notator(3, num_lines=41)
-    for n in xrange(80):
-        nt.add_note([random.randint(0, 80),
-                     random.randint(0, 80),
-                     random.randint(0, 80)])
-    mat = nt.make_matrix()
-    s = nt.draw(mat)
-    nt.write_to_file(s)
-    #print mat
-
-
-if __name__ == "__main__":
-    main()
+    def notate_bar_sequence(self, sequence, position, scale):
+        sequence_length = len(sequence)
+        chars_per_bar = self.buffer_length / sequence_length
+        caption = ["{}{}".format(id_, " " * (chars_per_bar - 1)) for id_ in sequence]
+        current = "{}{}{}".format(" " * chars_per_bar * position,
+                                  "X" * chars_per_bar,
+                                  " " * chars_per_bar * (sequence_length - position))
+        caption = "".join(caption)
+        text = "{}\n{}\n{}\n{}\n".format(caption, current, caption, scale)
+        self.write_to_file(self.sequence_filename, text)

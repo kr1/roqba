@@ -1,13 +1,15 @@
+import os
 from roqba.static.meters import METERS
 from roqba.utilities.behaviour_dict import BehaviourDict
 
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
-            #'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            # 'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
                                  ['SLAVE', 2], 'AUTONOMOUS'],
+            'enable_adsr': False,
             'PD_HOST': 'localhost',
-            'PD_PORT': 12321,
+            'PD_PORT': int(os.environ.get('ROQBA_TO_PD_PORT', '12321')),
             'gui': True,
             'GUI_HOST': 'localhost',
             'TO_GUI_PORT': 12322,
@@ -15,7 +17,9 @@ settings = {'number_of_voices': 4,
             'track_voices_length': 666,
             'lowest_note_num': 0,
             'highest_note_num': 127,
-            'composer': 'baroq'
+            'composer': 'baroq',
+            'notate': False,
+            'start_scale': 'DIATONIC'
             }
 
 behaviour = {
@@ -31,6 +35,7 @@ behaviour = {
     'microvolume_variation': 0.2,
     'microvolume_max_speed_in_hz': 0.4,
     'default_volume': 0.666,
+    'has_percussion': True,
     "speed": 0.3,
     'half_beat': False,
     'automate_speed_change': True,
@@ -93,10 +98,14 @@ behaviour = {
     'common_note_duration': False,
     'default_note_duration_prop': 0.8,  # proportion
 
-    'embellishment_speed_lim': 0.666,
-    'default_pause_prob': 0.03,
-    'default_embellishment_prob': 0.005,
+    # SEQUENCE / MELODY RELATED
+    'follow_bar_sequence': False,  # alt: True
+    'bar_sequence': [6, 6, 4, 3, 2, 3],
     'should_play_a_melody': False,  # alt: melody as list
+
+    'embellishment_speed_lim': 0.666,
+    'default_embellishment_prob': 0.005,
+    'default_pause_prob': 0.03,
     'per_voice': {
         1: BehaviourDict({
             'slide_duration_msecs': 100,
@@ -139,6 +148,81 @@ behaviour = {
 }
 
 styles = {
+    "slow_and_slidy": {
+        'settings': {},
+        'behaviour': {
+            'per_voice': {
+                1: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+                2: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+                3: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+                4: BehaviourDict({
+                    'use_proportional_slide_duration': True
+                }),
+            },
+            'max_speed': 1.2,
+            'slide_duration_prop': 1.0,
+            'use_proportional_slide_duration': True,
+            'transposings':  [1, 2, 3, 3, 3, 3, 4, 5],
+            'speed_target': 0.45
+        }
+    },
+    "fixed_meter_playalong": {
+        "settings": {
+            'composer': 'baroq',
+            'number_of_voices': 3,
+            'voice_registers': ['BASS', 'LOW_MID', 'LOW_MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 2]],
+        },
+        "behaviour": {
+            "speed": 0.2,
+            'automate_adsr': True,
+            'automate_wavetables': True,
+            'automate_microspeed_change': False,
+            'common_wavetables': False,
+            'max_speed': 0.5,
+            'caesura_prob': 0.001,
+            'slide_duration_prop': 0.1,
+            'min_speed': 0.08,
+            "shuffle_delay": 0.02,
+            'follow_bar_sequence': True,
+            'bar_sequence': [5, 5, 5, 5, 2, 2, 2, 2],
+            # 'bar_sequence': [6, 6, 4, 3, 2, 3],
+            # 'bar_sequence': [1, 1, 1, 1, 4,
+            #                  1, 1, 1, 1, 2, 6, 3, 2],
+            'adsr': [10, 10, 5, 20],
+            'automate_meters': False,
+            # "meter": (15, (3, 3, 2, 3, 2, 2)),
+            "meter": (23, (3, 3, 2, 3, 3, 2, 3, 2, 2)),
+            # "meter": (30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2)),
+            "meters": [(15, (3, 3, 2, 3, 2, 2))],
+            'common_note_duration': False,
+            'automate_binaural_diffs': False,
+            'binaural_diff': 0.666,
+            'max_binaural_diff': 3,
+            'half_beat': False,
+            'automate_speed_change': False,
+            'per_voice': {
+                1: BehaviourDict({
+                    'adsr': [20, 200, 10, 200],
+                    'use_proportional_slide_duration': True
+                }),
+                2: BehaviourDict({
+                    'adsr': [10, 120, 30, 200],
+                    'use_proportional_slide_duration': True
+                }),
+                3: BehaviourDict({
+                    'adsr': [20, 80, 10, 300],
+                    'use_proportional_slide_duration': True
+                }),
+            }
+        }
+    },
     "bulgarian": {
         "settings": {'composer': 'baroq'},
         "behaviour": {
@@ -147,7 +231,11 @@ styles = {
             "meters": [
                 [(5, (2, 3))] * 2,
                 [(5, (3, 2))] * 5,
-                [(7, (3, 2, 2))] * 12
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
             ],
             "speed": 0.17,
             "max_speed": 0.25,
@@ -157,7 +245,7 @@ styles = {
             'default_pause_prob': 0.07,
             'default_embellishment_prob': 0.05,
             "max_shuffle": 0.2,  # todo: check possibility for -
-            ## constraints on dual and triple grouping
+            # constraints on dual and triple grouping
             'common_note_duration': False,
             'automate_binaural_diffs': False,
             'binaural_diff': 0.666,
@@ -189,7 +277,7 @@ styles = {
             'default_pause_prob': 0.1,
             'default_embellishment_prob': 0.05,
             "max_shuffle": 0.3,  # todo: check possibility for -
-            ## constraints on dual and triple grouping
+            # constraints on dual and triple grouping
             'common_note_duration': False,
             'automate_note_duration_prop': True,
             'automate_note_duration_min_max': [0.9, 3.3],
@@ -251,12 +339,27 @@ styles = {
     'rendezvous': {
         'settings': {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
+            'enable_adsr': False,
             'composer': 'rendezvous'},
         'behaviour': {
+            'max_speed': 0.75,
+            'min_speed': 0.1,
+            'speed': 0.1,
             'automate_slide': False,
-            'adsr': [40, 40, 30, 20000],
+            'default_embellishment_prob': 0.1,
+            'adsr': [40, 40, 100, 20000],
+            'half_beat': False,
             'automate_adsr': False,
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
+            'common_transitions': False,  # upward and downward movements should be parallel?
             'binaural_diff': 0.15,
+            'fixed_rendezvous_length': False,  # boolean or number of ticks
+            'min_rendezvous_length': 3,  # used as min random when length is not fixed
+            'max_rendezvous_length': 3,  # used as max random when length is not fixed
+            'min_rendezvous_tickoffset': 5,  # how long it takes min to rendezvous
+            'max_rendezvous_tickoffset': 20,  # how long it takes max to rendezvous
+            'num_rendezvous_between_caesurae': 10,
             'automate_note_duration_prop': False,
             'per_voice': {
                 1: BehaviourDict({}),
@@ -265,12 +368,213 @@ styles = {
                 4: BehaviourDict({}),
             },
         }
+    },
+    'greek_enharmonic': {
+        "settings": {
+            'composer': 'baroq',
+            'start_scale': 'GREEK_ENHARMONIC'},
+        "behaviour": {
+            'adsr': [40, 40, 100, 20000],
+            'automate_adsr': True,
+            'automate_binaural_diffs': False,
+            'automate_meters': True,
+            "automate_scale": False,
+            'automate_slide': True,
+            'automate_note_duration_prop': False,
+            'binaural_diff': 0.333,
+            'common_note_duration': True,
+            'common_transitions': False,  # upward and downward movements should be parallel?
+            'default_pause_prob': 0.07,
+            'default_embellishment_prob': 0.3,
+            'embellishment_speed_lim': 0.7,
+            'follow_bar_sequence': False,
+            'half_beat': False,
+            "max_shuffle": 0.2,  # todo: check possibility for -
+            "max_speed": 0.8,
+            "min_speed": 0.1,
+            "meter": (7, (3, 2, 2)),
+            "meters": [
+                [(5, (2, 3))] * 2,
+                [(5, (3, 2))] * 5,
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
+            ],
+            "speed": 0.17,
+            "speed_change": "leap",  # alt:"transition"
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
+            'should_play_a_melody': False,
+        }
+    },
+    'greek_chromatic': {
+        "settings": {
+            'composer': 'baroq',
+            'start_scale': 'GREEK_CHROMATIC'},
+        "behaviour": {
+            'adsr': [40, 40, 100, 20000],
+            'automate_adsr': False,
+            'automate_binaural_diffs': False,
+            'automate_meters': True,
+            "automate_scale": False,
+            'automate_slide': False,
+            'automate_note_duration_prop': False,
+            'binaural_diff': 0.666,
+            'common_note_duration': False,
+            'common_transitions': False,  # upward and downward movements should be parallel?
+            'default_pause_prob': 0.07,
+            'default_embellishment_prob': 0.1,
+            'embellishment_speed_lim': 0.5,
+            'follow_bar_sequence': True,
+            'half_beat': False,
+            'max_binaural_diff': 10,
+            "max_shuffle": 0.2,  # todo: check possibility for -
+            "max_speed": 0.25,
+            "min_speed": 0.1,
+            "meter": (7, (3, 2, 2)),
+            "meters": [
+                [(5, (2, 3))] * 2,
+                [(5, (3, 2))] * 5,
+                [(7, (3, 2, 2))] * 12,
+                [(11, (3, 3, 3, 2))] * 5,
+                [(12, (1, 2, 2, 1, 2, 2, 2))] * 3,
+                [(15, (3, 3, 2, 3, 2, 2))] * 7,
+                [(30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2))] * 10,
+            ],
+            "speed": 0.17,
+            "speed_change": "leap",  # alt:"transition"
+            'transition_strategy': "direct",  # one of ['direct', 'conservative', 'lax', 'in_range',
+                                              #         'outgoing', 'roles', 'random']
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
+            'should_play_a_melody': False,
+        }
+    },
+    'aulos': {
+        'settings': {
+            'number_of_voices': 2,
+            'voice_registers': ['FLAT_MID', 'FLAT_MID'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS'],
+            'enable_adsr': False,
+            'gui': True,
+            'composer': 'baroq',
+            'notate': False,
+            'start_scale': 'GREEK_CHROMATIC' },
+        'behaviour': {
+            'max_adsr': [7, 7, 90, 2666],
+            'min_adsr': [2, 2, 70, 1666],
+            'automate_microspeed_change': True,
+            'microspeed_variation': 0.06,
+            'microspeed_max_speed_in_hz': 0.3,
+            'automate_microvolume_change': True,
+            'microvolume_variation': 0.2,
+            'microvolume_max_speed_in_hz': 0.4,
+            'default_volume': 0.666,
+            "speed": 0.3,
+            'half_beat': True,
+            'automate_speed_change': True,
+            'has_percussion': False,
+            "max_speed": 1.2,
+            "min_speed": 0.08,
+            # speed-target:
+            # 0.5 means that the average of all speeds will be
+            # +/- in the middle of the given range
+            # 0.25 means that the average of speeds will be at the first
+            # quarter of the range (predominantly fast)
+            "speed_target": 0.5,
+            "speed_change": "leap",  # alt:"transition"
+            'caesura_prob': 0.05,
+            "shuffle_delay": 0.01,  # keep this between 0 and MAX_SHUFFLE
+            'default_behaviour': "AUTONOMOUS",
+            "max_shuffle": 0.6,
+            "automate_scale": True,
+
+            # METERS
+            'automate_meters': True,
+            'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
+            'meters': METERS.keys(),
+
+            # WAVETABLES
+            'automate_wavetables': True,
+            #'wavetable_specs': sum([[['random_harmonic', ['all', 'odd']]]] * 5,
+            'wavetable_specs': sum([[['harmonic', ['all', 'even']]]] * 5,
+                                   []),
+            'automate_num_partials': True,
+            'default_num_partial': 3,
+            'max_num_partials': 7,
+            'common_wavetables': True,
+
+            # TRANSPOSING
+            'transpose': 12,
+            'automate_transpose': True,
+            'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+
+            # PAN RELATED
+            'default_pan_position': 0,
+            'automate_pan': 1,
+
+            # BINAURAL DIFF RELATED
+            'pan_controls_binaural_diff': False,
+            'common_binaural_diff': True,
+            'automate_binaural_diffs': True,  # alt: False
+            'binaural_diff': 0.666,
+            'max_binaural_diff': 10,
+
+            # SLIDE RELATED
+            'automate_slide': True,
+            'use_proportional_slide_duration': False,  # proportion or msecs
+            'slide_duration_msecs': 100,
+            'slide_duration_prop': 0.666,  # proportion
+
+            # NOTE DURATION RELATED
+            'automate_note_duration_prop': True,
+            'automate_note_duration_min_max': [0.1, 3.3],
+            'common_note_duration': True,
+            'default_note_duration_prop': 0.8,  # proportion
+
+            # SEQUENCE / MELODY RELATED
+            'follow_bar_sequence': False,  # alt: True
+
+            'embellishment_speed_lim': 0.666,
+            'default_embellishment_prob': 0.005,
+            'default_pause_prob': 0.03,
+            'per_voice': {
+                1: BehaviourDict({
+                    'slide_duration_msecs': 100,
+                    'slide_duration_prop': 0.666,  # proportion
+                    'use_proportional_slide_duration': False,  # proportion or msecs
+                    'automate_binaural_diffs': True,  # alt: False
+                    'binaural_diff': 0.666,
+                    'default_pan_position': 1,
+                    'automate_pan': 1,
+                    'max_binaural_diff': 5,
+                    'automate_note_duration_prop': True,
+                    'automate_note_duration_min_max': [0.1, 3.3]},
+                    name='voice 1'),
+                2: BehaviourDict({
+                    'default_pan_position': 0,
+                    'automate_pan': 1},
+                    name='voice 2'),
+                }
+            }
+        }
     }
-}
 
-if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
-    behaviour["meters"] = sum(behaviour["meters"], [])
 
-if __name__ == "__main__":
-    print styles
-    print behaviour
+def flatten_meters(behaviour):
+    if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
+        behaviour["meters"] = sum(behaviour["meters"], [])
+
+flatten_meters(behaviour)

@@ -8,6 +8,8 @@ import pprint
 import time
 import logging
 
+from roqba.utilities.logger_adapter import StyleLoggerAdapter
+
 
 class BehaviourDict(dict):
     '''defines a dictionary-class with custom setter methods
@@ -22,7 +24,8 @@ class BehaviourDict(dict):
         else:
             self.name = None
         self.saved_behaviours = self.read_or_create_saved_behaviours()
-        self.behaviour_logger = logging.getLogger('behaviour')
+        behaviour_logger = logging.getLogger('behaviour')
+        self.behaviour_logger = StyleLoggerAdapter(behaviour_logger, None)
         self._update(*args, **kwargs)
 
     def read_or_create_saved_behaviours(self, name='.saved_behaviours'):
@@ -41,7 +44,6 @@ class BehaviourDict(dict):
     def write_saved_behaviours(self, name='.saved_behaviours'):
         """writes the saved behaviours to file"""
         with open(name, 'w+') as behaviour_file:
-            #print pprint.pformat(self.saved_behaviours)
             behaviour_file.write(pprint.pformat(self.saved_behaviours))
 
     def save_current_behaviour(self, name=None, write_to_file=True):
@@ -56,32 +58,22 @@ class BehaviourDict(dict):
 
         and calls a setter method registered for the given key'''
         dict.__setitem__(self, item, value)
-        self.behaviour_logger.info("behaviour dict-{0}: setting '{1}' to '{2}'".format(self.name, item, value))
+        self.behaviour_logger.info(
+            "behaviour dict-{0}: setting '{1}' to '{2}'".format(self.name, item, value))
         if item in self.real_setters.keys():
             instructions = self.real_setters[item]
-            #print "with instructions", instructions, "of type: ", type(instructions)
             if type(instructions).__name__ == 'instancemethod':
                 self.real_setters[item](value)
             elif type(instructions).__name__ == 'list':
                 callable = self.real_setters[item][0]  # first argument is the callable
-                #print "callable: ", callable
                 if len(instructions) == 2:
-                    #print "calling {0} with {1} and {2}".format(callable,
-                    # instructions[1], value)
                     callable(instructions[1], value)
                 elif len(instructions) == 3:
-                    #print "calling {0} with {1} and {2} and {3}".format(
-                    # callable, instructions[1], instructions[2], value)
                     callable(instructions[1], instructions[2], value)
 
     def _update(self, *args, **kwargs):
         '''assures that __setitem__  is called from __init__'''
         for k, v in dict(*args, **kwargs).iteritems():
-# temporarily commented rudiment from earlier setting handling
-#            if type(v) == dict:
-#                self[k] = v['val']
-#                self.real_setters[k] = v['setter']
-#            else:
             self[k] = v
 
     def voice_get(self, vid, key):
@@ -109,9 +101,8 @@ def test_setter(val):
 
 
 if __name__ == "__main__":
-    kd = BehaviourDict({"erre": {'val': [34, 56], 'setter': test_setter},
-                        17: 45
-                       }.items())
+    kd = BehaviourDict({
+        "erre": {'val': [34, 56], 'setter': test_setter}, 17: 45}.items())
     print kd
     print kd.real_setters
     kd[5] = "wer"

@@ -5,7 +5,9 @@ SCALES = {
     "HARMONIC": [1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
     "MELODIC": [1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1],
     "PENTATONIC": [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0],
-    "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]
+    "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    "GREEK_CHROMATIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
+    "GREEK_ENHARMONIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0]
   }
 
 NOTES_PER_SCALE = {
@@ -14,6 +16,8 @@ NOTES_PER_SCALE = {
     "MELODIC": 7,
     "PENTATONIC": 5,
     "PENTA_MINOR": 5,
+    "GREEK_CHROMATIC": 7,
+    "GREEK_ENHARMONIC": 7,
   }
 
 SCALES_BY_FREQUENCY = sum([
@@ -21,6 +25,8 @@ SCALES_BY_FREQUENCY = sum([
     ["HARMONIC"] * 2,
     ["MELODIC"] * 2,
     ["PENTATONIC"] * 2,
+    ["GREEK_ENHARMONIC"] * 2,
+    ["GREEK_CHROMATIC"] * 2,
     ["PENTA_MINOR"] * 1],
   [])
 
@@ -62,7 +68,7 @@ BASE_HARMONIES = {2: [set([6]), set([6, 2]), set([6, 0]), set([0, 2]),
 HARMONIES = STRICT_HARMONIES + [set([2, 4, 1]), set([2, 6, 1])]
 HARMONIC_INTERVALS = [0, 2, 3, 4, 5, 6]
 
-FOLLOWINGS = [-5, -3, -2, 2, 4,  5]
+FOLLOWINGS = [-9, -5, -2, 2, 5, 9, 12]
 
 DISHARMS = [1]
 

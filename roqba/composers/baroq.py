@@ -1,9 +1,8 @@
 import time
 import threading
-import random
 from random import choice
 
-from roqba.static.movement_probabilities import ORNAMENTS, DRUM_FILLS
+from roqba.static.movement_probabilities import ORNAMENTS
 from roqba.static.scales_and_harmonies import (ALL_STRICT_HARMONIES,
                                                BASE_HARMONIES,
                                                HARMONIC_INTERVALS,
@@ -20,9 +19,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                  gateway,
                  settings,
                  behaviour):
+
         super(Composer, self).__init__(gateway,
                                        settings,
-                                       behaviour)
+                                       behaviour,
+                                       scale=settings.get('start_scale', 'DIATONIC'))
         self.harm = {}
         self.speed_lim = behaviour['embellishment_speed_lim']
         self.selected_meters = ("meters" in self.behaviour.keys() and
@@ -69,21 +70,27 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         # the stream analyzer can be used to check for chords, simultaneities
         self.stream_analyzer()
         # percussion
-        self.drummer.generator.send([state, state['cycle_pos']])
-        for k, v in self.drummer.frame.items():
-            if v["meta"]:
-                if v["meta"] == 'empty':
-                    threading.Thread(target=self.drum_fill_handler,
-                                     args=(k, state)).start()
-                if v["meta"] == 'mark':
-                    threading.Thread(target=self.drum_mark_handler,
-                                     args=(k, state)).start()
-        self.gateway.drum_hub.send(self.drummer.frame)
+        if self.behaviour['has_percussion']:
+            self.drummer.generator.send([state, state['cycle_pos']])
+            for k, v in self.drummer.frame.items():
+                if v["meta"]:
+                    if v["meta"] == 'empty':
+                        threading.Thread(target=self.drum_fill_handler,
+                                         args=(k, state)).start()
+                    if v["meta"] == 'mark':
+                        threading.Thread(target=self.drum_mark_handler,
+                                         args=(k, state)).start()
+            self.gateway.drum_hub.send(self.drummer.frame)
         # send the voices to the note-hub
         self.gateway.hub.send(self.voices)  # this sends the voices to the hub
-        self.notator.note_to_file({"notes": tmp_harm,
-                                   "weight": state["weight"],
-                                   "cycle_pos": state["cycle_pos"]})
+        if self.notate:
+            self.notator.notate_rhythm(self.meter, state["cycle_pos"])
+            self.notator.notate_bar_sequence(state['bar_sequence'],
+                                             state['bar_sequence_current_position'],
+                                             self.scale)
+            self.notator.note_to_file({"notes": tmp_harm,
+                                       "weight": state["weight"],
+                                       "cycle_pos": state["cycle_pos"]})
         return self.comment
 
     def apply_scale(self):
@@ -148,7 +155,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             voices = [melodic[0]] + voices
         return voices
 
-
     def embellish(self, state):
         '''checks for embellishment markers of the single voices
 
@@ -172,8 +178,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         if key in ORNAMENTS:
             notes = choice(ORNAMENTS[key])
 
-            ## check for the speed limit, if ornaments would be too fast,
-            ## don't embellish
+            # check for the speed limit, if ornaments would be too fast,
+            # don't embellish
             if min([n[0] * state["speed"] for n in notes]) < self.speed_lim:
                 return
 
@@ -210,11 +216,11 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                   note_changes)
         if all_notes_change:
             harmony = map(lambda x: x.note, self.voices.values())
-            #print "all_notes_change: harmony {0}".format(harmony)
+            # print "all_notes_change: harmony {0}".format(harmony)
             if (self.is_base_harmony(harmony) and
                     not filter(lambda v: v.playing_a_melody, self.voices.values())):
                 self.comment = "caesura"
-                #print "all notes change to a base harmony"
+                # print "all notes change to a base harmony"
 
     def acceptable_harmony(self, chord):
         '''checks if a chord is "harmonic"'''
@@ -226,7 +232,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
         (either major or minor) of the current context'''
         flat = self.flatten_chord(chord)
-        #print set(flat)
         return set(flat) in BASE_HARMONIES[self.num_voices]
 
     @staticmethod
@@ -261,7 +266,6 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 index += 1
             else:
                 index += 1
-            #print check_index, scale[check_index], index, steps
         return (index * dir) + mod + (octave * len(scale))
 
     def add_duration_in_msec(self, state):

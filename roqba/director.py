@@ -7,33 +7,64 @@ from Queue import deque
 
 import metronome
 from roqba.composers import baroq, amadinda, rendezvous
-from roqba.utilities import random_between, adsr
+from roqba.utilities import random_between
+from roqba.utilities.logger_adapter import StyleLoggerAdapter
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
-from roqba.incoming_messages_mixin import IncomingMessagesMixin
-from roqba.wavetable_mixin import WavetableMixin
+from roqba.mixins.incoming_messages_mixin import IncomingMessagesMixin
+from roqba.mixins.wavetable_mixin import WavetableMixin
+from roqba.mixins.adsr_mixin import ADSRMixin
+from roqba.mixins.speed_mixin import SpeedMixin
 
 
 logger = logging.getLogger('director')
 logger.setLevel(logging.INFO)
+logger = StyleLoggerAdapter(logger, None)
 
 
-class Director(IncomingMessagesMixin, WavetableMixin):
+class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def __init__(self, gateway, behaviour, settings):
         composer = globals().get(settings.get('composer', 'baroq'))
         if not composer:
             raise RuntimeError("Composer is not configured correctly")
         self.composer = composer.Composer(gateway, settings, behaviour)
-        self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
         self.force_caesura = False
         self.settings = settings
         self.gateway = self.composer.gateway
+
+        # keep this between 0 and MAX_SHUFFLE
+        self.shuffle_delay = behaviour["shuffle_delay"]
+        self.meter = self.composer.applied_meter
+        self.metronome = metronome.Metronome(self.meter)
+        self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
+        self.automate_meters = behaviour["automate_meters"]
+        self.speed_change = behaviour["speed_change"]
+        self.MIN_SPEED = behaviour["min_speed"]
+        self.MAX_SPEED = behaviour["max_speed"]
+        self.MAX_SHUFFLE = behaviour["max_shuffle"]
+        musical_logger = logging.getLogger('musical')
+        self.musical_logger = StyleLoggerAdapter(musical_logger, None)
+        behaviour_logger = logging.getLogger('behaviour')
+        self.behaviour_logger = StyleLoggerAdapter(behaviour_logger, None)
+        self.gui_logger = logging.getLogger('gui')
+        self.add_setters()
+        if behaviour['automate_microspeed_change']:
+            self.new_microspeed_sine()
+
+        self.state = {"comp": self.composer, "speed": behaviour["speed"]}
         self.speed_target = behaviour["speed_target"]
         self.speed = self.state["speed"]
+        if behaviour['follow_bar_sequence']:
+            self.state.update({
+              'bar_sequence': behaviour['bar_sequence'],
+              'bar_sequence_current_position': 0})
+        for voice in self.composer.voices.values():
+            self.apply_voice_adsr(voice)
+
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (
@@ -50,23 +81,6 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                                     args=(self.incoming,))
             thre.daemon = True
             thre.start()
-
-        # keep this between 0 and MAX_SHUFFLE
-        self.shuffle_delay = behaviour["shuffle_delay"]
-        self.meter = self.composer.applied_meter
-        self.metronome = metronome.Metronome(self.meter)
-        self.automate_binaural_diffs = behaviour["automate_binaural_diffs"]
-        self.automate_meters = behaviour["automate_meters"]
-        self.speed_change = behaviour["speed_change"]
-        self.MIN_SPEED = behaviour["min_speed"]
-        self.MAX_SPEED = behaviour["max_speed"]
-        self.MAX_SHUFFLE = behaviour["max_shuffle"]
-        self.musical_logger = logging.getLogger('musical')
-        self.behaviour_logger = logging.getLogger('behaviour')
-        self.gui_logger = logging.getLogger('gui')
-        self.add_setters()
-        if behaviour['automate_microspeed_change']:
-            self.new_microspeed_sine()
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
@@ -134,16 +148,7 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.composer.gateway.stop_all_notes()
                 voices = self.composer.voices.values()
                 if self.behaviour['automate_adsr']:
-                    new_adsr = adsr.get_random_adsr(self.behaviour['min_adsr'],
-                                                    self.behaviour['max_adsr'])
-                    for voice in voices:
-                        if not self.behaviour['common_adsr']:
-                            new_adsr = adsr.get_random_adsr(
-                                self.behaviour.voice_get(voice.id, 'min_adsr'),
-                                self.behaviour.voice_get(voice.id, 'max_adsr'))
-                        voice.current_adsr = new_adsr
-                    for voice in voices:
-                        self.gateway.send_voice_adsr(voice, voice.current_adsr)
+                    self.new_random_adsr_for_all_voices()
                 if self.behaviour['automate_scale']:
                     self.composer.set_scale(choice(
                                             self.composer.offered_scales))
@@ -170,7 +175,6 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                     min_, max_ = self.behaviour["automate_note_duration_min_max"]
                     if self.behaviour["common_note_duration"]:
                         prop = random_between(min_, max_, 0.3)
-                        #print "note duration proportion: ", prop
                         [setattr(v, 'note_duration_prop', prop) for v
                             in self.composer.voices.values()]
                     else:
@@ -184,23 +188,32 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                     new_transpose = choice(sample)
                     self.gateway.transpose = new_transpose
                     self.behaviour["transpose"] = new_transpose
-                    self.gui_sender.send({'transpose': new_transpose})
                 time.sleep(self.speed)
                 if self.behaviour["automate_wavetables"]:
                     self.set_wavetables(voices=voices)
                 if self.has_gui:
                     self.gui_sender.handle_caesura(self)
+                    self.gui_sender.send({'transpose': new_transpose})
                 self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
                     self.composer.meter, self.speed, self.composer.scale))
-                self.new_microspeed_sine()
+                if self.behaviour['automate_microspeed_change']:
+                    self.new_microspeed_sine()
             self.check_incoming_messages()
             shuffle_delta = self.speed * self.shuffle_delay
             if weight == metronome.LIGHT:
                 sleep_time = self.speed + shuffle_delta
             else:
                 sleep_time = self.speed - shuffle_delta
+            if cycle_pos == 0:
+                if self.state.get('bar_sequence'):
+                    new_pos = (self.state['bar_sequence_current_position'] + 1) % len(self.state['bar_sequence'])
+                    self.state['bar_sequence_current_position'] = new_pos
+            if self.behaviour['automate_microspeed_change']:
+                microspeed_multiplier = self.microspeed_sine.get_value()
+            else:
+                microspeed_multiplier = 1
             time.sleep(sleep_time * (1 +
-                       self.microspeed_sine.get_value() * self.behaviour['microspeed_variation']))
+                       microspeed_multiplier * self.behaviour['microspeed_variation']))
 
     def check_incoming_messages(self):
         '''checks if there are incoming messages in the queue'''
@@ -229,7 +242,8 @@ class Director(IncomingMessagesMixin, WavetableMixin):
                 self.make_length()))
         self.playing = False
         self.stopped = True
-        self.gui_sender.receive_exit_requested = True
+        if self.has_gui:
+            self.gui_sender.receive_exit_requested = True
         self.gateway.stop()
         self.metronome.reset()
         self.composer.notator.reset()
@@ -246,28 +260,3 @@ class Director(IncomingMessagesMixin, WavetableMixin):
         self.gateway.pd.send(["sys", "meter",
                              str(new_meter).replace(",", " ").
                              replace(" ", "_")])
-
-    def new_speed(self, val=None):
-        if val:
-            self.speed = val
-            return self.speed
-        if self.behaviour['automate_speed_change']:
-            if self.speed_change == 'transition':
-                self.speed += randint(-1000, 1000) / 66666.
-            else:  # if self.speed_change == 'leap':
-                if self.behaviour['speed_target'] != 0.5:
-                    target = self.behaviour['speed_target']
-                    if target < 0.3:
-                        target = target ** 2
-                    speed_tmp = random() ** math.log(target, 0.5)
-                    self.speed = (self.behaviour["min_speed"] +
-                                  ((self.behaviour["max_speed"] - self.behaviour["min_speed"]) *
-                                  speed_tmp))
-                else:
-                    self.speed = self.behaviour["min_speed"] + (random() *
-                                                                (self.behaviour["max_speed"] -
-                                                                 self.behaviour["min_speed"]))
-            #print "new speed values: {0}\n resetting metronome.".format(
-            #                                                self.speed)
-        self.gateway.pd.send(['sys', 'speed', str(self.speed * 1000)])
-        return self.speed

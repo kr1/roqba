@@ -1,0 +1,24 @@
+#N canvas 2 48 1020 718 10;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array kick1 74550 float 2;
+#X coords 0 1 74550 -1 200 140 1;
+#X restore 268 291 graph;
+#X obj 268 499 soundfiler;
+#X obj 165 414 tabread4~ kick1;
+#X obj 166 437 *~ 0.5;
+#X obj 166 390 line~;
+#X obj 268 449 loadbang;
+#X obj 166 280 inlet;
+#X obj 166 328 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 166 499 outlet~;
+#X msg 166 367 1 \, 74000 1200;
+#X msg 268 473 read -resize samples/kick.wav kick1;
+#X connect 2 0 3 0;
+#X connect 3 0 8 0;
+#X connect 4 0 2 0;
+#X connect 5 0 10 0;
+#X connect 6 0 7 0;
+#X connect 7 0 9 0;
+#X connect 9 0 4 0;
+#X connect 10 0 1 0;
