@@ -29,7 +29,7 @@
     <link rel="prev" title="scales_and_harmonies" href="scales_and_harmonies.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -41,282 +41,591 @@
             
   <div class="section" id="module-roqba.static.settings">
 <span id="settings"></span><h1>settings<a class="headerlink" href="#module-roqba.static.settings" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">roqba.static.meters</span> <span class="kn">import</span> <span class="n">METERS</span>
+<dl class="function">
+<dt id="roqba.static.settings.flatten_meters">
+<code class="descclassname">roqba.static.settings.</code><code class="descname">flatten_meters</code><span class="sig-paren">(</span><em>behaviour</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/static/settings.html#flatten_meters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.static.settings.flatten_meters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">roqba.static.meters</span> <span class="kn">import</span> <span class="n">METERS</span>
 <span class="kn">from</span> <span class="nn">roqba.utilities.behaviour_dict</span> <span class="kn">import</span> <span class="n">BehaviourDict</span>
 
-<span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s1">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BASS&#39;</span><span class="p">,</span> <span class="s1">&#39;MID&#39;</span><span class="p">,</span> <span class="s1">&#39;MID&#39;</span><span class="p">,</span> <span class="s1">&#39;HIGH&#39;</span><span class="p">],</span>
-            <span class="c1">#&#39;voice_registers&#39;: [&#39;ROCK_BASS&#39;, &#39;MID&#39;, &#39;MID&#39;, &#39;HIGH&#39;],</span>
-            <span class="s1">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
-                                 <span class="p">[</span><span class="s1">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;PD_HOST&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;PD_PORT&#39;</span><span class="p">:</span> <span class="mi">12321</span><span class="p">,</span>
-            <span class="s1">&#39;gui&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;GUI_HOST&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;TO_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12322</span><span class="p">,</span>
-            <span class="s1">&#39;FROM_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12323</span><span class="p">,</span>
-            <span class="s1">&#39;track_voices_length&#39;</span><span class="p">:</span> <span class="mi">666</span><span class="p">,</span>
-            <span class="s1">&#39;lowest_note_num&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;highest_note_num&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span>
-            <span class="s1">&#39;composer&#39;</span><span class="p">:</span> <span class="s1">&#39;baroq&#39;</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BASS&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;MID&#39;</span><span class="p">,</span> <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
+            <span class="c"># &#39;voice_registers&#39;: [&#39;ROCK_BASS&#39;, &#39;MID&#39;, &#39;MID&#39;, &#39;HIGH&#39;],</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
+                                 <span class="p">[</span><span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
+            <span class="s">&#39;enable_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;PD_HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>
+            <span class="s">&#39;PD_PORT&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ROQBA_TO_PD_PORT&#39;</span><span class="p">,</span> <span class="s">&#39;12321&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;gui&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;GUI_HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>
+            <span class="s">&#39;TO_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12322</span><span class="p">,</span>
+            <span class="s">&#39;FROM_GUI_PORT&#39;</span><span class="p">:</span> <span class="mi">12323</span><span class="p">,</span>
+            <span class="s">&#39;track_voices_length&#39;</span><span class="p">:</span> <span class="mi">666</span><span class="p">,</span>
+            <span class="s">&#39;lowest_note_num&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">&#39;highest_note_num&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;notate&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;start_scale&#39;</span><span class="p">:</span> <span class="s">&#39;DIATONIC&#39;</span>
             <span class="p">}</span>
 
 <span class="n">behaviour</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-    <span class="s1">&#39;max_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">666</span><span class="p">],</span>
-    <span class="s1">&#39;min_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-    <span class="s1">&#39;common_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;microspeed_variation&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span>
-    <span class="s1">&#39;microspeed_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-    <span class="s1">&#39;automate_microvolume_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;microvolume_variation&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-    <span class="s1">&#39;microvolume_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
-    <span class="s1">&#39;default_volume&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
-    <span class="s2">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-    <span class="s1">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s1">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s2">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-    <span class="s2">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">,</span>
-    <span class="c1"># speed-target:</span>
-    <span class="c1"># 0.5 means that the average of all speeds will be</span>
-    <span class="c1"># +/- in the middle of the given range</span>
-    <span class="c1"># 0.25 means that the average of speeds will be at the first</span>
-    <span class="c1"># quarter of the range (predominantly fast)</span>
-    <span class="s2">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-    <span class="s2">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s2">&quot;leap&quot;</span><span class="p">,</span>  <span class="c1"># alt:&quot;transition&quot;</span>
-    <span class="s1">&#39;caesura_prob&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
-    <span class="s2">&quot;shuffle_delay&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># keep this between 0 and MAX_SHUFFLE</span>
-    <span class="s1">&#39;default_behaviour&#39;</span><span class="p">:</span> <span class="s2">&quot;AUTONOMOUS&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="s2">&quot;automate_scale&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s">&#39;max_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">666</span><span class="p">],</span>
+    <span class="s">&#39;min_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s">&#39;common_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;microspeed_variation&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span>
+    <span class="s">&#39;microspeed_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s">&#39;automate_microvolume_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;microvolume_variation&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s">&#39;microvolume_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+    <span class="s">&#39;default_volume&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+    <span class="s">&#39;has_percussion&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">,</span>
+    <span class="c"># speed-target:</span>
+    <span class="c"># 0.5 means that the average of all speeds will be</span>
+    <span class="c"># +/- in the middle of the given range</span>
+    <span class="c"># 0.25 means that the average of speeds will be at the first</span>
+    <span class="c"># quarter of the range (predominantly fast)</span>
+    <span class="s">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+    <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+    <span class="s">&#39;caesura_prob&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="s">&quot;shuffle_delay&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="c"># keep this between 0 and MAX_SHUFFLE</span>
+    <span class="s">&#39;default_behaviour&#39;</span><span class="p">:</span> <span class="s">&quot;AUTONOMOUS&quot;</span><span class="p">,</span>
+    <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="s">&quot;automate_scale&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
 
-    <span class="c1"># METERS</span>
-    <span class="s1">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
-    <span class="s1">&#39;meters&#39;</span><span class="p">:</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="c"># METERS</span>
+    <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+    <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
 
-    <span class="c1"># WAVETABLES</span>
-    <span class="s1">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;even&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
-                           <span class="p">[[</span><span class="s1">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;even&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
-                           <span class="p">[[</span><span class="s1">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;even&#39;</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="c"># WAVETABLES</span>
+    <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
+                           <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                           <span class="p">[[</span><span class="s">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">,</span> <span class="s">&#39;odd&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">],</span>
                            <span class="p">[]),</span>
-    <span class="s1">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
-    <span class="s1">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-    <span class="s1">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
 
-    <span class="c1"># TRANSPOSING</span>
-    <span class="s1">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="s1">&#39;automate_transpose&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+    <span class="c"># TRANSPOSING</span>
+    <span class="s">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s">&#39;automate_transpose&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
 
-    <span class="c1"># PAN RELATED</span>
-    <span class="s1">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="c"># PAN RELATED</span>
+    <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 
-    <span class="c1"># BINAURAL DIFF RELATED</span>
-    <span class="s1">&#39;pan_controls_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s1">&#39;common_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c1"># alt: False</span>
-    <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
-    <span class="s1">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="c"># BINAURAL DIFF RELATED</span>
+    <span class="s">&#39;pan_controls_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&#39;common_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+    <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+    <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
 
-    <span class="c1"># SLIDE RELATED</span>
-    <span class="s1">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c1"># proportion or msecs</span>
-    <span class="s1">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-    <span class="s1">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c1"># proportion</span>
+    <span class="c"># SLIDE RELATED</span>
+    <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+    <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
 
-    <span class="c1"># NOTE DURATION RELATED</span>
-    <span class="s1">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
-    <span class="s1">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s1">&#39;default_note_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># proportion</span>
+    <span class="c"># NOTE DURATION RELATED</span>
+    <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
+    <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&#39;default_note_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c"># proportion</span>
 
-    <span class="s1">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
-    <span class="s1">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
-    <span class="s1">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
-    <span class="s1">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c1"># alt: melody as list</span>
-    <span class="s1">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c"># SEQUENCE / MELODY RELATED</span>
+    <span class="s">&#39;follow_bar_sequence&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># alt: True</span>
+    <span class="s">&#39;bar_sequence&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># alt: melody as list</span>
+
+    <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+    <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+    <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
-            <span class="s1">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-            <span class="s1">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c1"># proportion</span>
-            <span class="s1">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c1"># proportion or msecs</span>
-            <span class="s1">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c1"># alt: False</span>
-            <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
-            <span class="s1">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-            <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-            <span class="s1">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">]},</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voice 1&#39;</span><span class="p">),</span>
+            <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+            <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">]},</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 1&#39;</span><span class="p">),</span>
         <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
-            <span class="s1">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-                                   <span class="p">[[</span><span class="s1">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                                   <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;even&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
                                    <span class="p">[]),</span>
-            <span class="s1">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">},</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voice 2&#39;</span><span class="p">),</span>
+            <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">},</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 2&#39;</span><span class="p">),</span>
         <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
-            <span class="s1">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;odd&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-                                   <span class="p">[[</span><span class="s1">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;odd&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;random&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;odd&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                                   <span class="p">[[</span><span class="s">&#39;random_harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;odd&#39;</span><span class="p">,</span> <span class="s">&#39;all&#39;</span><span class="p">]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">],</span>
                                    <span class="p">[]),</span>
-            <span class="s1">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">},</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voice 3&#39;</span><span class="p">),</span>
+            <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">},</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 3&#39;</span><span class="p">),</span>
         <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
-            <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-            <span class="s1">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c1"># proportion</span>
-            <span class="s1">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c1"># proportion or msecs</span>
-            <span class="s1">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">]},</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voice 4&#39;</span><span class="p">)</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+            <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+            <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">]},</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 4&#39;</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="n">styles</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;bulgarian&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;composer&#39;</span><span class="p">:</span> <span class="s1">&#39;baroq&#39;</span><span class="p">},</span>
-        <span class="s2">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s2">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
-            <span class="s2">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
-                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
-                <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">12</span>
-            <span class="p">],</span>
-            <span class="s2">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
-            <span class="s2">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-            <span class="s2">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s2">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s2">&quot;leap&quot;</span><span class="p">,</span>  <span class="c1"># alt:&quot;transition&quot;</span>
-            <span class="s1">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-            <span class="s1">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span>
-            <span class="s1">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
-            <span class="s2">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># todo: check possibility for -</span>
-            <span class="c1">## constraints on dual and triple grouping</span>
-            <span class="s1">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
-            <span class="s1">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="s">&quot;slow_and_slidy&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+                <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+                <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+            <span class="p">},</span>
+            <span class="s">&#39;max_speed&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+            <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;transposings&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="s">&#39;speed_target&#39;</span><span class="p">:</span> <span class="mf">0.45</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s2">&quot;rock&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;composer&#39;</span><span class="p">:</span> <span class="s1">&#39;baroq&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s1">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ROCK_BASS&#39;</span><span class="p">,</span> <span class="s1">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s1">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s1">&#39;HIGH&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
-                                 <span class="p">[</span><span class="s1">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
+    <span class="s">&quot;fixed_meter_playalong&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BASS&#39;</span><span class="p">,</span> <span class="s">&#39;LOW_MID&#39;</span><span class="p">,</span> <span class="s">&#39;LOW_MID&#39;</span><span class="p">,</span> <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span>
+        <span class="p">},</span>
+        <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+            <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;max_speed&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s">&#39;caesura_prob&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+            <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;min_speed&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+            <span class="s">&quot;shuffle_delay&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+            <span class="s">&#39;follow_bar_sequence&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;bar_sequence&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="c"># &#39;bar_sequence&#39;: [6, 6, 4, 3, 2, 3],</span>
+            <span class="c"># &#39;bar_sequence&#39;: [1, 1, 1, 1, 4,</span>
+            <span class="c">#                  1, 1, 1, 1, 2, 6, 3, 2],</span>
+            <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="c"># &quot;meter&quot;: (15, (3, 3, 2, 3, 2, 2)),</span>
+            <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="c"># &quot;meter&quot;: (30, (3, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2)),</span>
+            <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">15</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))],</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+                <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">True</span>
+                <span class="p">}),</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;bulgarian&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">},</span>
+        <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">15</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
+            <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
+            <span class="c"># constraints on dual and triple grouping</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;rock&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;ROCK_BASS&#39;</span><span class="p">,</span> <span class="s">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s">&#39;HIGH&#39;</span><span class="p">],</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span>
+                                 <span class="p">[</span><span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
 
         <span class="p">},</span>
-        <span class="s2">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s2">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
-            <span class="s2">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+            <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
                 <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">1</span>
             <span class="p">],</span>
-            <span class="s2">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-            <span class="s1">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s2">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-            <span class="s2">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
-            <span class="s2">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s2">&quot;leap&quot;</span><span class="p">,</span>  <span class="c1"># alt:&quot;transition&quot;</span>
-            <span class="s1">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
-            <span class="s2">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="c1"># todo: check possibility for -</span>
-            <span class="c1">## constraints on dual and triple grouping</span>
-            <span class="s1">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
-            <span class="s1">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
+            <span class="c"># constraints on dual and triple grouping</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s1">&#39;amadinda&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
-            <span class="s1">&#39;composer&#39;</span><span class="p">:</span> <span class="s1">&#39;amadinda&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-            <span class="s1">&#39;max_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">666</span><span class="p">],</span>
-            <span class="s1">&#39;min_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-            <span class="s1">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c1"># alt: False</span>
-            <span class="s1">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;microspeed_variation&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
-            <span class="s1">&#39;microspeed_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s1">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.3333</span><span class="p">,</span>
-            <span class="s1">&#39;common_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s1">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-            <span class="s1">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
-            <span class="s1">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
-            <span class="s1">&#39;max_speed&#39;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
-            <span class="s2">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
-            <span class="s1">&#39;microvolume_variation&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
-            <span class="s1">&#39;microvolume_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s1">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-            <span class="s1">&#39;min_speed&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
-            <span class="s1">&#39;sequence_length&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="s1">&#39;number_of_tones_in_3rd_voice&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s1">&#39;octave_offset&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s1">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;amadinda&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;SLAVE&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;amadinda&#39;</span><span class="p">},</span>
+        <span class="s">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+            <span class="s">&#39;max_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">666</span><span class="p">],</span>
+            <span class="s">&#39;min_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+            <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+            <span class="s">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;microspeed_variation&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+            <span class="s">&#39;microspeed_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.3333</span><span class="p">,</span>
+            <span class="s">&#39;common_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+            <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+            <span class="s">&#39;max_speed&#39;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s">&#39;microvolume_variation&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+            <span class="s">&#39;microvolume_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="s">&#39;min_speed&#39;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+            <span class="s">&#39;sequence_length&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">&#39;number_of_tones_in_3rd_voice&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s">&#39;octave_offset&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
             <span class="p">},</span>
-            <span class="s1">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="mf">0.13</span><span class="p">,</span>
-            <span class="s2">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s2">&quot;leap&quot;</span><span class="p">,</span>  <span class="c1"># alt:&quot;transition&quot;</span>
-            <span class="s2">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-            <span class="s1">&#39;tone_range&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="s1">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s1">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
-            <span class="s1">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s1">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]]],</span>
+            <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">&#39;speed&#39;</span><span class="p">:</span> <span class="mf">0.13</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&#39;tone_range&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+            <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="s">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">]]],</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s1">&#39;rendezvous&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;composer&#39;</span><span class="p">:</span> <span class="s1">&#39;rendezvous&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20000</span><span class="p">],</span>
-            <span class="s1">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
-            <span class="s1">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s1">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;rendezvous&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
+            <span class="s">&#39;enable_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;rendezvous&#39;</span><span class="p">},</span>
+        <span class="s">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;max_speed&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
+            <span class="s">&#39;min_speed&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;speed&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20000</span><span class="p">],</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;transition_strategy&#39;</span><span class="p">:</span> <span class="s">&quot;direct&quot;</span><span class="p">,</span>  <span class="c"># one of [&#39;direct&#39;, &#39;conservative&#39;, &#39;lax&#39;, &#39;in_range&#39;,</span>
+                                              <span class="c">#         &#39;outgoing&#39;, &#39;roles&#39;, &#39;random&#39;]</span>
+            <span class="s">&#39;common_transitions&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># upward and downward movements should be parallel?</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+            <span class="s">&#39;fixed_rendezvous_length&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># boolean or number of ticks</span>
+            <span class="s">&#39;min_rendezvous_length&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="c"># used as min random when length is not fixed</span>
+            <span class="s">&#39;max_rendezvous_length&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="c"># used as max random when length is not fixed</span>
+            <span class="s">&#39;min_rendezvous_tickoffset&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c"># how long it takes min to rendezvous</span>
+            <span class="s">&#39;max_rendezvous_tickoffset&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c"># how long it takes max to rendezvous</span>
+            <span class="s">&#39;num_rendezvous_between_caesurae&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
                 <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
             <span class="p">},</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&#39;greek_enharmonic&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;start_scale&#39;</span><span class="p">:</span> <span class="s">&#39;GREEK_ENHARMONIC&#39;</span><span class="p">},</span>
+        <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20000</span><span class="p">],</span>
+            <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&quot;automate_scale&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.333</span><span class="p">,</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;common_transitions&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># upward and downward movements should be parallel?</span>
+            <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+            <span class="s">&#39;follow_bar_sequence&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
+            <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">15</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&#39;transition_strategy&#39;</span><span class="p">:</span> <span class="s">&quot;direct&quot;</span><span class="p">,</span>  <span class="c"># one of [&#39;direct&#39;, &#39;conservative&#39;, &#39;lax&#39;, &#39;in_range&#39;,</span>
+                                              <span class="c">#         &#39;outgoing&#39;, &#39;roles&#39;, &#39;random&#39;]</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+            <span class="p">},</span>
+            <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&#39;greek_chromatic&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;start_scale&#39;</span><span class="p">:</span> <span class="s">&#39;GREEK_CHROMATIC&#39;</span><span class="p">},</span>
+        <span class="s">&quot;behaviour&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20000</span><span class="p">],</span>
+            <span class="s">&#39;automate_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&quot;automate_scale&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;common_transitions&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># upward and downward movements should be parallel?</span>
+            <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s">&#39;follow_bar_sequence&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c"># todo: check possibility for -</span>
+            <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s">&quot;meter&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s">&quot;meters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">15</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="p">[(</span><span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&#39;transition_strategy&#39;</span><span class="p">:</span> <span class="s">&quot;direct&quot;</span><span class="p">,</span>  <span class="c"># one of [&#39;direct&#39;, &#39;conservative&#39;, &#39;lax&#39;, &#39;in_range&#39;,</span>
+                                              <span class="c">#         &#39;outgoing&#39;, &#39;roles&#39;, &#39;random&#39;]</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">3</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+                <span class="mi">4</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({}),</span>
+            <span class="p">},</span>
+            <span class="s">&#39;should_play_a_melody&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&#39;aulos&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;number_of_voices&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s">&#39;voice_registers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;FLAT_MID&#39;</span><span class="p">,</span> <span class="s">&#39;FLAT_MID&#39;</span><span class="p">],</span>
+            <span class="s">&#39;voice_behaviours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">,</span> <span class="s">&#39;AUTONOMOUS&#39;</span><span class="p">],</span>
+            <span class="s">&#39;enable_adsr&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;gui&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;composer&#39;</span><span class="p">:</span> <span class="s">&#39;baroq&#39;</span><span class="p">,</span>
+            <span class="s">&#39;notate&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;start_scale&#39;</span><span class="p">:</span> <span class="s">&#39;GREEK_CHROMATIC&#39;</span> <span class="p">},</span>
+        <span class="s">&#39;behaviour&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;max_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">2666</span><span class="p">],</span>
+            <span class="s">&#39;min_adsr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">1666</span><span class="p">],</span>
+            <span class="s">&#39;automate_microspeed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;microspeed_variation&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span>
+            <span class="s">&#39;microspeed_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="s">&#39;automate_microvolume_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;microvolume_variation&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+            <span class="s">&#39;microvolume_max_speed_in_hz&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+            <span class="s">&#39;default_volume&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&quot;speed&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="s">&#39;half_beat&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_speed_change&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;has_percussion&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&quot;max_speed&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+            <span class="s">&quot;min_speed&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+            <span class="c"># speed-target:</span>
+            <span class="c"># 0.5 means that the average of all speeds will be</span>
+            <span class="c"># +/- in the middle of the given range</span>
+            <span class="c"># 0.25 means that the average of speeds will be at the first</span>
+            <span class="c"># quarter of the range (predominantly fast)</span>
+            <span class="s">&quot;speed_target&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s">&quot;speed_change&quot;</span><span class="p">:</span> <span class="s">&quot;leap&quot;</span><span class="p">,</span>  <span class="c"># alt:&quot;transition&quot;</span>
+            <span class="s">&#39;caesura_prob&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="s">&quot;shuffle_delay&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>  <span class="c"># keep this between 0 and MAX_SHUFFLE</span>
+            <span class="s">&#39;default_behaviour&#39;</span><span class="p">:</span> <span class="s">&quot;AUTONOMOUS&quot;</span><span class="p">,</span>
+            <span class="s">&quot;max_shuffle&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="s">&quot;automate_scale&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+
+            <span class="c"># METERS</span>
+            <span class="s">&#39;automate_meters&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;meter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s">&#39;meters&#39;</span><span class="p">:</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+
+            <span class="c"># WAVETABLES</span>
+            <span class="s">&#39;automate_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="c">#&#39;wavetable_specs&#39;: sum([[[&#39;random_harmonic&#39;, [&#39;all&#39;, &#39;odd&#39;]]]] * 5,</span>
+            <span class="s">&#39;wavetable_specs&#39;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([[[</span><span class="s">&#39;harmonic&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">,</span> <span class="s">&#39;even&#39;</span><span class="p">]]]]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span>
+                                   <span class="p">[]),</span>
+            <span class="s">&#39;automate_num_partials&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;default_num_partial&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">&#39;max_num_partials&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+            <span class="s">&#39;common_wavetables&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+
+            <span class="c"># TRANSPOSING</span>
+            <span class="s">&#39;transpose&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">&#39;automate_transpose&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;transposings&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+
+            <span class="c"># PAN RELATED</span>
+            <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+
+            <span class="c"># BINAURAL DIFF RELATED</span>
+            <span class="s">&#39;pan_controls_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;common_binaural_diff&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+            <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+
+            <span class="c"># SLIDE RELATED</span>
+            <span class="s">&#39;automate_slide&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+            <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+
+            <span class="c"># NOTE DURATION RELATED</span>
+            <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span>
+            <span class="s">&#39;common_note_duration&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;default_note_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="c"># proportion</span>
+
+            <span class="c"># SEQUENCE / MELODY RELATED</span>
+            <span class="s">&#39;follow_bar_sequence&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># alt: True</span>
+
+            <span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+            <span class="s">&#39;default_embellishment_prob&#39;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+            <span class="s">&#39;default_pause_prob&#39;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+            <span class="s">&#39;per_voice&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="mi">1</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;slide_duration_msecs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                    <span class="s">&#39;slide_duration_prop&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>  <span class="c"># proportion</span>
+                    <span class="s">&#39;use_proportional_slide_duration&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>  <span class="c"># proportion or msecs</span>
+                    <span class="s">&#39;automate_binaural_diffs&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>  <span class="c"># alt: False</span>
+                    <span class="s">&#39;binaural_diff&#39;</span><span class="p">:</span> <span class="mf">0.666</span><span class="p">,</span>
+                    <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s">&#39;max_binaural_diff&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+                    <span class="s">&#39;automate_note_duration_prop&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s">&#39;automate_note_duration_min_max&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">]},</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 1&#39;</span><span class="p">),</span>
+                <span class="mi">2</span><span class="p">:</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+                    <span class="s">&#39;default_pan_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="s">&#39;automate_pan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s">&#39;voice 2&#39;</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span>
 
-<span class="k">if</span> <span class="s2">&quot;meters&quot;</span> <span class="ow">in</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;meters&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
-    <span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;meters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;meters&quot;</span><span class="p">],</span> <span class="p">[])</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">styles</span>
-    <span class="k">print</span> <span class="n">behaviour</span>
+<span class="k">def</span> <span class="nf">flatten_meters</span><span class="p">(</span><span class="n">behaviour</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">&quot;meters&quot;</span> <span class="ow">in</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">],</span> <span class="p">[])</span>
+
+<span class="n">flatten_meters</span><span class="p">(</span><span class="n">behaviour</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>settings can be overridden by creating a local file:
@@ -373,8 +682,8 @@ settings in that file will prevail over settings in the versioned roqba/static/s
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="_sources/settings.txt"

@@ -27,7 +27,7 @@
     <link rel="up" title="Module code" href="../index.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -38,38 +38,48 @@
           <div class="body" role="main">
             
   <h1>Source code for roqba.main</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">logging.config</span>
-<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">roqba.director</span> <span class="kn">import</span> <span class="n">Director</span>
 <span class="kn">from</span> <span class="nn">roqba.note_gateway</span> <span class="kn">import</span> <span class="n">NoteGateway</span>
 <span class="kn">from</span> <span class="nn">roqba.utilities.behaviour_dict</span> <span class="kn">import</span> <span class="n">BehaviourDict</span>
+<span class="kn">from</span> <span class="nn">roqba.utilities.logger_adapter</span> <span class="kn">import</span> <span class="n">StyleLoggerAdapter</span>
 <span class="kn">import</span> <span class="nn">roqba.static.settings</span> <span class="kn">as</span> <span class="nn">default_settings</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">static.local_settings</span> <span class="kn">as</span> <span class="nn">local_settings</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">local_settings</span> <span class="o">=</span> <span class="n">default_settings</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">default_settings</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_settings</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="p">)</span>
 
-
-<span class="n">default_settings</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_settings</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
-<span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">local_settings</span><span class="p">,</span> <span class="s1">&#39;style&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
-    <span class="n">style</span> <span class="o">=</span> <span class="n">local_settings</span><span class="o">.</span><span class="n">style</span>
-    <span class="n">default_settings</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s2">&quot;settings&quot;</span><span class="p">])</span>
-    <span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s2">&quot;behaviour&quot;</span><span class="p">])</span>
-    <span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">style</span>
+    <span class="c"># if a style-name is set in local_settings.py, its settings and behaviour</span>
+    <span class="c"># will overwrite the default settings and behaviour</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">local_settings</span><span class="p">,</span> <span class="s">&#39;style&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="n">local_settings</span><span class="o">.</span><span class="n">style</span>
+        <span class="k">if</span> <span class="n">default_settings</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">style</span><span class="p">):</span>
+            <span class="n">default_settings</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s">&quot;settings&quot;</span><span class="p">])</span>
+            <span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">style</span><span class="p">][</span><span class="s">&quot;behaviour&quot;</span><span class="p">])</span>
+        <span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">style</span>
 
 <span class="n">settings</span> <span class="o">=</span> <span class="n">default_settings</span><span class="o">.</span><span class="n">settings</span>
-<span class="n">behaviour</span> <span class="o">=</span> <span class="n">BehaviourDict</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;ROQBA_NO_GUI&quot;</span><span class="p">):</span>
+    <span class="n">settings</span><span class="p">[</span><span class="s">&#39;gui&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">behaviour</span> <span class="o">=</span> <span class="n">BehaviourDict</span><span class="p">(</span><span class="n">default_settings</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;global&#39;</span><span class="p">)</span>
+<span class="n">default_settings</span><span class="o">.</span><span class="n">flatten_meters</span><span class="p">(</span><span class="n">behaviour</span><span class="p">)</span>
 
 <span class="n">gateway</span> <span class="o">=</span> <span class="n">NoteGateway</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">)</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fileConfig</span><span class="p">(</span><span class="s2">&quot;logging.conf&quot;</span><span class="p">)</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;startup&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fileConfig</span><span class="p">(</span><span class="s">&quot;logging.conf&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;startup&#39;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">StyleLoggerAdapter</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
 
 <span class="n">director</span> <span class="o">=</span> <span class="n">Director</span><span class="p">(</span><span class="n">gateway</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
 
@@ -80,20 +90,20 @@
     <span class="n">director_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">director</span><span class="o">.</span><span class="n">_play</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">shutdown_event</span><span class="p">,))</span>
     <span class="n">director_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">director_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">director_thread</span><span class="p">,</span> <span class="n">shutdown_event</span></div>
+    <span class="k">return</span> <span class="n">director_thread</span><span class="p">,</span> <span class="n">shutdown_event</span>
 
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;&#39;&#39;running this application from the interpreter lets you interact with it directly.</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="k">print</span> <span class="s1">&#39;&#39;&#39;running this application from the interpreter lets you interact with it directly.</span>
+<span class="s">    In the interpreter - from the project-root run as:</span>
+<span class="s">    </span><span class="se">\b\b\b\b</span><span class="s">from roqba import main</span>
+<span class="s">    </span><span class="se">\b\b\b\b</span><span class="s">main.main()</span>
+<span class="s">    </span><span class="se">\b\b\b</span><span class="s">stop it with:</span>
+<span class="s">    </span><span class="se">\b\b\b\b</span><span class="s">main.director.stop()</span>
 
-<span class="s1">    In the interpreter - from the project-root run as:</span>
-<span class="s1">    </span><span class="se">\b\b\b\b</span><span class="s1">from roqba import main</span>
-<span class="s1">    </span><span class="se">\b\b\b\b</span><span class="s1">main.main()</span>
-<span class="s1">    </span><span class="se">\b\b\b</span><span class="s1">stop it with:</span>
-<span class="s1">    </span><span class="se">\b\b\b\b</span><span class="s1">main.director.stop()</span>
-
-<span class="s1">    There is also a tk based gui available (start with python rogba/ui/main.py)</span>
-<span class="s1">    &#39;&#39;&#39;</span>
+<span class="s">    There is also a tk based gui available (start with python rogba/ui/main.py)</span>
+<span class="s">    &#39;&#39;&#39;</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
@@ -134,8 +144,8 @@
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

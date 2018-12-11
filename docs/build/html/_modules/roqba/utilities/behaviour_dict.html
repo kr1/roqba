@@ -27,7 +27,7 @@
     <link rel="up" title="Module code" href="../../index.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -48,6 +48,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">roqba.utilities.logger_adapter</span> <span class="kn">import</span> <span class="n">StyleLoggerAdapter</span>
+
 
 <div class="viewcode-block" id="BehaviourDict"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict">[docs]</a><span class="k">class</span> <span class="nc">BehaviourDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;defines a dictionary-class with custom setter methods</span>
@@ -57,71 +59,61 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saved_behaviours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_or_create_saved_behaviours</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;behaviour&#39;</span><span class="p">)</span>
+        <span class="n">behaviour_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;behaviour&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour_logger</span> <span class="o">=</span> <span class="n">StyleLoggerAdapter</span><span class="p">(</span><span class="n">behaviour_logger</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BehaviourDict.read_or_create_saved_behaviours"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours">[docs]</a>    <span class="k">def</span> <span class="nf">read_or_create_saved_behaviours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;.saved_behaviours&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="BehaviourDict.read_or_create_saved_behaviours"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.read_or_create_saved_behaviours">[docs]</a>    <span class="k">def</span> <span class="nf">read_or_create_saved_behaviours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;.saved_behaviours&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;reads saved behaviours if there are, otherwise creates them&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">behaviour_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;r+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">behaviour_file</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">saved_behaviours</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">behaviour_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
                 <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
                     <span class="n">saved_behaviours</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">saved_behaviours</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="n">saved_behaviours</span></div>
-
-<div class="viewcode-block" id="BehaviourDict.write_saved_behaviours"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours">[docs]</a>    <span class="k">def</span> <span class="nf">write_saved_behaviours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;.saved_behaviours&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">saved_behaviours</span>
+</div>
+<div class="viewcode-block" id="BehaviourDict.write_saved_behaviours"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.write_saved_behaviours">[docs]</a>    <span class="k">def</span> <span class="nf">write_saved_behaviours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;.saved_behaviours&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;writes the saved behaviours to file&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">behaviour_file</span><span class="p">:</span>
-            <span class="c1">#print pprint.pformat(self.saved_behaviours)</span>
-            <span class="n">behaviour_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_behaviours</span><span class="p">))</span></div>
-
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">behaviour_file</span><span class="p">:</span>
+            <span class="n">behaviour_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saved_behaviours</span><span class="p">))</span>
+</div>
 <div class="viewcode-block" id="BehaviourDict.save_current_behaviour"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.save_current_behaviour">[docs]</a>    <span class="k">def</span> <span class="nf">save_current_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">write_to_file</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;adds current behaviour to the saved behaviours dict&quot;&quot;&quot;</span>
-        <span class="n">time_key</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">--%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+        <span class="n">time_key</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">--%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saved_behaviours</span><span class="p">[</span><span class="n">name</span> <span class="ow">or</span> <span class="n">time_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">if</span> <span class="n">write_to_file</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">write_saved_behaviours</span><span class="p">()</span></div>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_saved_behaviours</span><span class="p">()</span>
+</div>
     <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;sets the specified key to the given value</span>
 
 <span class="sd">        and calls a setter method registered for the given key&#39;&#39;&#39;</span>
         <span class="nb">dict</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;behaviour dict-{0}: setting &#39;{1}&#39; to &#39;{2}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviour_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s">&quot;behaviour dict-{0}: setting &#39;{1}&#39; to &#39;{2}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">instructions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
-            <span class="c1">#print &quot;with instructions&quot;, instructions, &quot;of type: &quot;, type(instructions)</span>
-            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;instancemethod&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;instancemethod&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="n">item</span><span class="p">](</span><span class="n">value</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
-                <span class="nb">callable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="n">item</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># first argument is the callable</span>
-                <span class="c1">#print &quot;callable: &quot;, callable</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;list&#39;</span><span class="p">:</span>
+                <span class="nb">callable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_setters</span><span class="p">[</span><span class="n">item</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c"># first argument is the callable</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="c1">#print &quot;calling {0} with {1} and {2}&quot;.format(callable,</span>
-                    <span class="c1"># instructions[1], value)</span>
                     <span class="nb">callable</span><span class="p">(</span><span class="n">instructions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                    <span class="c1">#print &quot;calling {0} with {1} and {2} and {3}&quot;.format(</span>
-                    <span class="c1"># callable, instructions[1], instructions[2], value)</span>
                     <span class="nb">callable</span><span class="p">(</span><span class="n">instructions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">instructions</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;assures that __setitem__  is called from __init__&#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-<span class="c1"># temporarily commented rudiment from earlier setting handling</span>
-<span class="c1">#            if type(v) == dict:</span>
-<span class="c1">#                self[k] = v[&#39;val&#39;]</span>
-<span class="c1">#                self.real_setters[k] = v[&#39;setter&#39;]</span>
-<span class="c1">#            else:</span>
             <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
 <div class="viewcode-block" id="BehaviourDict.voice_get"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.BehaviourDict.voice_get">[docs]</a>    <span class="k">def</span> <span class="nf">voice_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -129,35 +121,34 @@
 
 <span class="sd">        if the value is present for the voice, this value is returned</span>
 <span class="sd">        otherwise the default value for this key is returned&#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">vid</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;per_voice&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;per_voice&quot;</span><span class="p">][</span><span class="n">vid</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;per_voice&quot;</span><span class="p">][</span><span class="n">vid</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">vid</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="s">&quot;per_voice&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="s">&quot;per_voice&quot;</span><span class="p">][</span><span class="n">vid</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="s">&quot;per_voice&quot;</span><span class="p">][</span><span class="n">vid</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;inexistent key: &quot;</span>
-                        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;{0} for both voice: {1} and default&quot;</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;inexistent key: &quot;</span>
+                        <span class="n">msg</span> <span class="o">+=</span> <span class="s">&quot;{0} for both voice: {1} and default&quot;</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">vid</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;voice_get() called for unregistered voice: {0}&quot;</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vid</span><span class="p">))</span></div></div>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;voice_get() called for unregistered voice: {0}&quot;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vid</span><span class="p">))</span>
 
-
+</div></div>
 <div class="viewcode-block" id="test_setter"><a class="viewcode-back" href="../../../behaviour_dict.html#roqba.utilities.behaviour_dict.test_setter">[docs]</a><span class="k">def</span> <span class="nf">test_setter</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
-    <span class="k">print</span> <span class="s2">&quot;from test_setter, val:&quot;</span><span class="p">,</span> <span class="n">val</span></div>
+    <span class="k">print</span> <span class="s">&quot;from test_setter, val:&quot;</span><span class="p">,</span> <span class="n">val</span>
 
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">kd</span> <span class="o">=</span> <span class="n">BehaviourDict</span><span class="p">({</span><span class="s2">&quot;erre&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">56</span><span class="p">],</span> <span class="s1">&#39;setter&#39;</span><span class="p">:</span> <span class="n">test_setter</span><span class="p">},</span>
-                        <span class="mi">17</span><span class="p">:</span> <span class="mi">45</span>
-                       <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">kd</span> <span class="o">=</span> <span class="n">BehaviourDict</span><span class="p">({</span>
+        <span class="s">&quot;erre&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;val&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">56</span><span class="p">],</span> <span class="s">&#39;setter&#39;</span><span class="p">:</span> <span class="n">test_setter</span><span class="p">},</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">45</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
     <span class="k">print</span> <span class="n">kd</span>
     <span class="k">print</span> <span class="n">kd</span><span class="o">.</span><span class="n">real_setters</span>
-    <span class="n">kd</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;wer&quot;</span>
-    <span class="n">kd</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="s1">&#39;tee&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">56</span><span class="p">))</span>
-    <span class="n">kd</span><span class="p">[</span><span class="s1">&#39;erre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">]</span>
-    <span class="n">kd</span><span class="p">[</span><span class="s1">&#39;single&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">666</span>
+    <span class="n">kd</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;wer&quot;</span>
+    <span class="n">kd</span><span class="o">.</span><span class="n">__setitem__</span><span class="p">(</span><span class="s">&#39;tee&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">56</span><span class="p">))</span>
+    <span class="n">kd</span><span class="p">[</span><span class="s">&#39;erre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">]</span>
+    <span class="n">kd</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">666</span>
     <span class="k">print</span> <span class="n">kd</span>
     <span class="k">print</span> <span class="n">kd</span><span class="o">.</span><span class="n">real_setters</span>
 </pre></div>
@@ -199,8 +190,8 @@
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

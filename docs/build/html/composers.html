@@ -29,7 +29,7 @@
     <link rel="prev" title="roqba" href="roqba.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -48,8 +48,11 @@
 <em class="property">class </em><code class="descclassname">roqba.composers.abstract_composer.</code><code class="descname">AbstractComposer</code><span class="sig-paren">(</span><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='DIATONIC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/abstract_composer.html#AbstractComposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.abstract_composer.AbstractComposer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="staticmethod">
 <dt id="roqba.composers.abstract_composer.AbstractComposer.assemble_real_scale">
-<em class="property">static </em><code class="descname">assemble_real_scale</code><span class="sig-paren">(</span><em>scale</em>, <em>min=0</em>, <em>max=128</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/abstract_composer.html#AbstractComposer.assemble_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.abstract_composer.AbstractComposer.assemble_real_scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>extends the one-octave scale over the specified range</p>
+<em class="property">static </em><code class="descname">assemble_real_scale</code><span class="sig-paren">(</span><em>scale</em>, <em>min=0</em>, <em>max=128</em>, <em>tunings=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/abstract_composer.html#AbstractComposer.assemble_real_scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.abstract_composer.AbstractComposer.assemble_real_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>extends the one-octave scale over the specified range.</p>
+<p>Tunings should be in (&lt;index&gt;, &lt;delta&gt;) format, e.g.
+{1: -0.5 2: -1} would create the the start of a greek
+enharmonic scale for an underlying scale of [1, 1, 1,.....</p>
 </dd></dl>
 
 <dl class="method">
@@ -251,6 +254,11 @@ if the ornament would be too fast, it returns without action</p>
 <dt id="roqba.composers.rendezvous.Composer">
 <em class="property">class </em><code class="descclassname">roqba.composers.rendezvous.</code><code class="descname">Composer</code><span class="sig-paren">(</span><em>gateway</em>, <em>settings</em>, <em>behaviour</em>, <em>scale='HARMONIC'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="roqba.composers.rendezvous.Composer.determine_rendezvous_transition">
+<code class="descname">determine_rendezvous_transition</code><span class="sig-paren">(</span><em>voice=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.determine_rendezvous_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.determine_rendezvous_transition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="roqba.composers.rendezvous.Composer.generate">
 <code class="descname">generate</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/composers/rendezvous.html#Composer.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.composers.rendezvous.Composer.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>main generating function, the next polyphonic step is produced here.</p>
@@ -342,8 +350,8 @@ if the ornament would be too fast, it returns without action</p>
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="_sources/composers.txt"

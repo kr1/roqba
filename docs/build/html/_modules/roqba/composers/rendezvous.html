@@ -27,7 +27,7 @@
     <link rel="up" title="Module code" href="../../index.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -47,33 +47,41 @@
 <span class="kn">from</span> <span class="nn">roqba.composers.rhythm_and_meter_mixin</span> <span class="kn">import</span> <span class="n">RhythmAndMeterMixin</span>
 
 <span class="kn">from</span> <span class="nn">roqba.utilities.sine_controllers</span> <span class="kn">import</span> <span class="n">MultiSine</span>
+<span class="kn">from</span> <span class="nn">roqba.utilities</span> <span class="kn">import</span> <span class="n">pd_wavetables</span><span class="p">,</span> <span class="n">wavetable_peaks</span>
 
 
 <div class="viewcode-block" id="Composer"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer">[docs]</a><span class="k">class</span> <span class="nc">Composer</span><span class="p">(</span><span class="n">RhythmAndMeterMixin</span><span class="p">,</span> <span class="n">AbstractComposer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gateway</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;HARMONIC&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gateway</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s">&quot;HARMONIC&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Composer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">gateway</span><span class="p">,</span>
                                        <span class="n">settings</span><span class="p">,</span>
                                        <span class="n">behaviour</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">harm</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">speed_lim</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;embellishment_speed_lim&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">selected_meters</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;meters&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s2">&quot;meters&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed_lim</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;embellishment_speed_lim&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_meters</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;meters&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&quot;meters&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">METERS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">modified_note_in_current_frame</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_real_scale</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;lowest_note_num&#39;</span><span class="p">],</span>
-                                 <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;highest_note_num&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">half_beat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;half_beat&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_real_scale</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s">&#39;lowest_note_num&#39;</span><span class="p">],</span>
+                                 <span class="n">settings</span><span class="p">[</span><span class="s">&#39;highest_note_num&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">half_beat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;half_beat&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">second_beat_half</span> <span class="o">=</span> <span class="bp">False</span>
 
-        <span class="c1"># Rendezvous planning</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">min_rendezvous_tickoffset</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_tickoffset</span> <span class="o">=</span> <span class="mi">12</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_rendezvous_length</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_length</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="c"># Rendezvous planning</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_rendezvous_tickoffset</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;min_rendezvous_tickoffset&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_tickoffset</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;max_rendezvous_tickoffset&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_rendezvous_length</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;fixed_rendezvous_length&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_rendezvous_length</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;min_rendezvous_length&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_length</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;max_rendezvous_length&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_new_controller_wavetable</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy_max_deviation_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;conservative&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s">&#39;lax&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="s">&#39;outgoing&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+            <span class="s">&#39;random&#39;</span><span class="p">:</span> <span class="mi">1000</span>
+        <span class="p">}</span>
+        <span class="c"># Rendezvous handling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_rendezvous_between_caesurae</span> <span class="o">=</span> <span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;num_rendezvous_between_caesurae&#39;</span><span class="p">]</span>
 
-        <span class="c1"># Rendezvous handling</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_rendezvous_between_caesurae</span> <span class="o">=</span> <span class="mi">15</span>
-
-        <span class="c1"># setup state</span>
+        <span class="c"># setup state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_tick</span> <span class="o">=</span> <span class="bp">False</span>
@@ -82,43 +90,64 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">select_next_anchor_tick</span><span class="p">(</span><span class="n">sendout_offset</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prior_harmony</span> <span class="o">=</span> <span class="bp">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_binaural_diffs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s1">&#39;binaural_diff&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_binaural_diffs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;binaural_diff&#39;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">voice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">voice</span><span class="o">.</span><span class="n">slide</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.3</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
             <span class="n">voice</span><span class="o">.</span><span class="n">pan_sine</span> <span class="o">=</span> <span class="n">MultiSine</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;enable_adsr&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;voice&quot;</span><span class="p">,</span> <span class="n">voice</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s">&quot;adsr_enable&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
 <div class="viewcode-block" id="Composer.generate"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;main generating function, the next polyphonic step is produced here.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&#39;normal&#39;</span>
         <span class="n">send_to_notator</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">current_slide_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_offset</span> <span class="o">*</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;speed&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_tick</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span><span class="p">:</span>
             <span class="n">send_to_notator</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_counter</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rendezvous_between_caesurae</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_counter</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;caesura&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s">&#39;caesura&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prior_harmony</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_harmony</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">select_next_harmony</span><span class="p">()</span>
             <span class="n">sendout_offset</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_rendezvous_length</span>
                               <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_rendezvous_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
-                              <span class="k">else</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_length</span><span class="p">))</span>
+                              <span class="k">else</span> <span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_rendezvous_length</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_length</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">select_next_anchor_tick</span><span class="p">(</span><span class="n">sendout_offset</span><span class="o">=</span><span class="n">sendout_offset</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">set_slide_msecs_for_all_voices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_offset</span> <span class="o">*</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
-
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_out_tick</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;common_transitions&#39;</span><span class="p">]:</span>
+            <span class="n">transitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">determine_rendezvous_transition</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">voice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_voices</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;mismatch in voices count&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="s">&quot;mismatch in voices count&quot;</span><span class="p">)</span>
             <span class="n">next_note</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_voice_note</span><span class="p">(</span><span class="n">voice</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">next_note</span><span class="p">:</span>
+                <span class="c"># send a rendezvous message</span>
+                <span class="c"># duration, start_index, end_index, start_note, end_note, start_multiplier</span>
+                <span class="c"># and end_multiplier</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;common_transitions&#39;</span><span class="p">]:</span>
+                    <span class="n">transitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">determine_rendezvous_transition</span><span class="p">(</span><span class="n">voice</span><span class="p">)</span>
+                <span class="n">transition</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="n">transitions</span><span class="p">[</span><span class="s">&#39;downwards&#39;</span> <span class="k">if</span> <span class="n">next_note</span> <span class="o">&lt;=</span> <span class="n">voice</span><span class="o">.</span><span class="n">note</span> <span class="k">else</span> <span class="s">&#39;upwards&#39;</span><span class="p">])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span>
+                    <span class="s">&quot;voice&quot;</span><span class="p">,</span>
+                    <span class="n">voice</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="s">&quot;rendezvous&quot;</span><span class="p">,</span>
+                    <span class="n">current_slide_time</span><span class="p">,</span>
+                    <span class="n">transition</span><span class="p">[</span><span class="s">&#39;start&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>  <span class="c"># index</span>
+                    <span class="n">transition</span><span class="p">[</span><span class="s">&#39;end&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">voice</span><span class="o">.</span><span class="n">note</span><span class="p">,</span> <span class="n">next_note</span><span class="p">,</span>
+                    <span class="n">transition</span><span class="p">[</span><span class="s">&#39;start&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>  <span class="c"># multiplier</span>
+                    <span class="n">transition</span><span class="p">[</span><span class="s">&#39;end&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">])</span>
                 <span class="n">voice</span><span class="o">.</span><span class="n">note</span> <span class="o">=</span> <span class="n">next_note</span>
-                <span class="n">voice</span><span class="o">.</span><span class="n">real_note</span> <span class="o">=</span> <span class="n">next_note</span>
-                <span class="n">voice</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">voice</span><span class="o">.</span><span class="n">note_change</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="k">continue</span>
-        <span class="n">cycle_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;cycle_pos&#39;</span><span class="p">]</span>
+        <span class="n">cycle_pos</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&#39;cycle_pos&#39;</span><span class="p">]</span>
         <span class="n">send_drum</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">half_beat</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cycle_pos</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -131,12 +160,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="n">state</span><span class="p">,</span> <span class="n">cycle_pos</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">drummer</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># TODO: re-add the drum filler</span>
-            <span class="k">if</span> <span class="bp">False</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;empty&#39;</span><span class="p">:</span>
+            <span class="c"># TODO: re-add the drum filler</span>
+            <span class="k">if</span> <span class="bp">False</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;meta&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;meta&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;empty&#39;</span><span class="p">:</span>
                     <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drum_fill_handler</span><span class="p">,</span>
                                      <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;mark&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s">&quot;meta&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;mark&#39;</span><span class="p">:</span>
                     <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drum_mark_handler</span><span class="p">,</span>
                                      <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">send_drum</span><span class="p">:</span>
@@ -144,32 +173,64 @@
         <span class="k">for</span> <span class="n">voice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">voice</span><span class="o">.</span><span class="n">update_current_microvolume</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">send_voice_pan</span><span class="p">(</span><span class="n">voice</span><span class="p">,</span> <span class="n">voice</span><span class="o">.</span><span class="n">pan_sine</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span>
-            <span class="c1">#self.gateway.send_voice_peak_level(voice, voice.current_microvolume)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">hub</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">voices</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">send_to_notator</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">notator</span><span class="o">.</span><span class="n">note_to_file</span><span class="p">({</span><span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_harmony</span><span class="p">,</span>
-                                       <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
-                                       <span class="s2">&quot;cycle_pos&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;cycle_pos&quot;</span><span class="p">]})</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span></div>
+            <span class="c"># self.gateway.send_voice_peak_level(voice, voice.current_microvolume)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notate</span> <span class="ow">and</span> <span class="n">send_to_notator</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notator</span><span class="o">.</span><span class="n">note_to_file</span><span class="p">({</span><span class="s">&quot;notes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_harmony</span><span class="p">,</span>
+                                       <span class="s">&quot;weight&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;weight&quot;</span><span class="p">],</span>
+                                       <span class="s">&quot;cycle_pos&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;cycle_pos&quot;</span><span class="p">]})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span>
+</div>
+<div class="viewcode-block" id="Composer.determine_rendezvous_transition"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer.determine_rendezvous_transition">[docs]</a>    <span class="k">def</span> <span class="nf">determine_rendezvous_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;transition_strategy&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;direct&#39;</span><span class="p">:</span>
+            <span class="n">transitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direct_transitions</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;transition_strategy&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy_max_deviation_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">transitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transitions_by_deviation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">behaviour</span><span class="p">[</span><span class="s">&#39;transition_strategy&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transitions</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;upwards&#39;</span><span class="p">:</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;upwards&#39;</span><span class="p">]),</span>
+                <span class="s">&#39;downwards&#39;</span><span class="p">:</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;downwards&#39;</span><span class="p">])</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">transitions</span>
+</div>
+    <span class="k">def</span> <span class="nf">_setup_new_controller_wavetable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller_wavetable_string</span> <span class="o">=</span> <span class="n">pd_wavetables</span><span class="o">.</span><span class="n">random_wavetable</span><span class="p">(</span><span class="n">partials</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">pd</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="s">&quot;sys&quot;</span><span class="p">,</span> <span class="s">&quot;controller_wavetable&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller_wavetable_string</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller_wavetable</span> <span class="o">=</span> <span class="n">pd_wavetables</span><span class="o">.</span><span class="n">_apply_wavetable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controller_wavetable_string</span><span class="p">)</span>
+        <span class="c"># the transitions are used for the single voices moving from one peak point to another</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span> <span class="o">=</span> <span class="n">wavetable_peaks</span><span class="o">.</span><span class="n">extract_peak_passages</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">controller_wavetable</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Composer.select_next_harmony"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer.select_next_harmony">[docs]</a>    <span class="k">def</span> <span class="nf">select_next_harmony</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;select the next rendezvous&#39;s harmony&quot;&quot;&quot;</span>
         <span class="n">next_harmony_pattern</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="n">STRICT_HARMONIES</span> <span class="o">+</span> <span class="n">FOUR_NOTE_HARMONIES</span><span class="p">))</span>
-        <span class="n">next_offset</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>  <span class="c1"># TODO: make something musical</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_harmony</span> <span class="o">=</span> <span class="p">[</span><span class="n">note</span> <span class="o">+</span> <span class="n">next_offset</span> <span class="o">+</span> <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">next_harmony_pattern</span><span class="p">]</span></div>
-
+        <span class="n">next_offset</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>  <span class="c"># TODO: make something musical</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_harmony</span> <span class="o">=</span> <span class="p">[</span><span class="n">note</span> <span class="o">+</span> <span class="n">next_offset</span> <span class="o">+</span> <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">next_harmony_pattern</span><span class="p">]</span>
+</div>
 <div class="viewcode-block" id="Composer.select_next_anchor_tick"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer.select_next_anchor_tick">[docs]</a>    <span class="k">def</span> <span class="nf">select_next_anchor_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sendout_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;set the next send-out and and rendezvous ticks&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">send_out_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span> <span class="o">+</span> <span class="n">sendout_offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_offset</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_rendezvous_tickoffset</span><span class="p">,</span>
                                          <span class="bp">self</span><span class="o">.</span><span class="n">max_rendezvous_tickoffset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_out_tick</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_offset</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_out_tick</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_offset</span>
+</div>
 <div class="viewcode-block" id="Composer.next_voice_note"><a class="viewcode-back" href="../../../composers.html#roqba.composers.rendezvous.Composer.next_voice_note">[docs]</a>    <span class="k">def</span> <span class="nf">next_voice_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;return the next note for a voice if it is the correct tick&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_out_tick</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticks_counter</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_harmony</span><span class="p">[</span><span class="n">voice</span><span class="o">.</span><span class="n">id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">False</span></div></div>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="k">def</span> <span class="nf">_transitions_by_deviation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_deviation</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;upwards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">transition</span> <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;upwards&#39;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">transition</span><span class="p">[</span><span class="s">&#39;deviation&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_deviation</span><span class="p">],</span>
+                <span class="s">&#39;downwards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">transition</span> <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;downwards&#39;</span><span class="p">]</span>
+                              <span class="k">if</span> <span class="n">transition</span><span class="p">[</span><span class="s">&#39;deviation&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_deviation</span><span class="p">]}</span>
+
+    <span class="k">def</span> <span class="nf">_direct_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;upwards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">transition</span> <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;upwards&#39;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">transition</span><span class="p">[</span><span class="s">&#39;in_between&#39;</span><span class="p">]],</span>
+                <span class="s">&#39;downwards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">transition</span> <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rendezvous_transitions</span><span class="p">[</span><span class="s">&#39;downwards&#39;</span><span class="p">]</span>
+                              <span class="k">if</span> <span class="ow">not</span> <span class="n">transition</span><span class="p">[</span><span class="s">&#39;in_between&#39;</span><span class="p">]]}</span></div>
 </pre></div>
 
           </div>
@@ -209,8 +270,8 @@
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 

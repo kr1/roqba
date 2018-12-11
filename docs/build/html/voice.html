@@ -28,7 +28,7 @@
     <link rel="prev" title="sine_controllers" href="sine_controllers.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -42,7 +42,7 @@
 <span id="voice"></span><h1>voice<a class="headerlink" href="#module-roqba.voice" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="roqba.voice.Voice">
-<em class="property">class </em><code class="descclassname">roqba.voice.</code><code class="descname">Voice</code><span class="sig-paren">(</span><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[6, 1, 1]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">roqba.voice.</code><code class="descname">Voice</code><span class="sig-paren">(</span><em>id, composer, note_range=[24, 48], register=None, behaviour=None, note=None, real_note=None, note_length_grouping=[1, 1, 3, 3]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="roqba.voice.Voice.add_setters_for_behaviour_dict">
 <code class="descname">add_setters_for_behaviour_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.add_setters_for_behaviour_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.add_setters_for_behaviour_dict" title="Permalink to this definition">¶</a></dt>
@@ -137,7 +137,7 @@ attribute on the composer</p>
 
 <dl class="method">
 <dt id="roqba.voice.Voice.set_note_length_groupings">
-<code class="descname">set_note_length_groupings</code><span class="sig-paren">(</span><em>mapping={'HIGH': 'TERNARY_GROUPINGS'</em>, <em>'ROCK_BASS': 'FAST_GROUPINGS'</em>, <em>'BASS': 'HEAVY_GROUPINGS'</em>, <em>'FLAT_MID': 'FAST_GROUPINGS'</em>, <em>'MID': 'DEFAULT_GROUPINGS'}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_note_length_groupings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_note_length_groupings" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_note_length_groupings</code><span class="sig-paren">(</span><em>mapping={'BASS': 'HEAVY_GROUPINGS'</em>, <em>'FLAT_MID': 'FAST_GROUPINGS'</em>, <em>'MID': 'DEFAULT_GROUPINGS'</em>, <em>'HIGH': 'TERNARY_GROUPINGS'</em>, <em>'LOW_MID': 'DEFAULT_GROUPINGS'</em>, <em>'ROCK_BASS': 'FAST_GROUPINGS'}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/roqba/voice.html#Voice.set_note_length_groupings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#roqba.voice.Voice.set_note_length_groupings" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets the note_length_groupings attribute on self</p>
 <p>by reading the current value from the composer</p>
 </dd></dl>
@@ -214,8 +214,8 @@ attribute on the composer</p>
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
       <a href="_sources/voice.txt"

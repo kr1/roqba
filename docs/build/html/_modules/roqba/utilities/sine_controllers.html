@@ -27,7 +27,7 @@
     <link rel="up" title="Module code" href="../../index.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body role="document">  
@@ -57,9 +57,9 @@
         <span class="sd">&quot;&quot;&quot;returns the controller value at the moment it is called&quot;&quot;&quot;</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span>
-        <span class="c1">#print &quot;offset: {0} - offset/freq: {1}&quot;.format(offset,</span>
-        <span class="c1">#                                              offset/self.freq)</span>
-        <span class="c1">#print &quot;time:{0} - delta:{1}&quot;.format(time(), delta)</span>
+        <span class="c">#print &quot;offset: {0} - offset/freq: {1}&quot;.format(offset,</span>
+        <span class="c">#                                              offset/self.freq)</span>
+        <span class="c">#print &quot;time:{0} - delta:{1}&quot;.format(time(), delta)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">val</span></div>
@@ -73,7 +73,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">equal_power</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">([]):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;freqs must be a list&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;freqs must be a list&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">equal_power</span> <span class="o">=</span> <span class="n">equal_power</span>
         <span class="k">if</span> <span class="n">equal_power</span><span class="p">:</span>
@@ -90,7 +90,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">equal_power</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">funnel</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1">## each value gets scaled according to its position in the array</span>
+            <span class="c">## each value gets scaled according to its position in the array</span>
             <span class="n">tmp</span> <span class="o">=</span> <span class="p">[</span><span class="n">tmp</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="p">))]</span>
             <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coeff</span></div>
 
@@ -111,8 +111,8 @@
 <span class="sd">        (note that the number of frequencies must be equal to</span>
 <span class="sd">        the original number if frequencies)&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;update-frequencies must be of same</span>
-<span class="s1">                                  length as original frequencies&#39;&#39;&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;&#39;&#39;update-frequencies must be of same</span>
+<span class="s">                                  length as original frequencies&#39;&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assemble_funnel</span><span class="p">()</span></div></div>
 </pre></div>
@@ -154,8 +154,8 @@
       
       
       
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
     </div>
 
