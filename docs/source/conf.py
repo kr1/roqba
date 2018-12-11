@@ -98,6 +98,10 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'alabaster'  #'nature'  # 'default'
+html_theme = 'classic'  #'nature'  # 'default'
+html_theme = 'traditional'  #'nature'  # 'default'
+html_theme = 'haiku'  #'nature'  # 'default'
+html_theme = 'sphinxdoc'  #'nature'  # 'default'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
