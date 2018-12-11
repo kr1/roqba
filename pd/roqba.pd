@@ -439,7 +439,7 @@
 #X connect 40 0 14 0;
 #X coords 0 -1 1 1 440 100 1 20 260;
 #X restore 13 484 pd meters;
-#N canvas 2 50 1916 1028 percussion 1;
+#N canvas 2 50 1916 1028 percussion 0;
 #X obj -191 8 inlet ctl;
 #X obj 40 85 print perc undefined;
 #X obj -191 100 noise-drums-bang;
@@ -510,7 +510,7 @@
 #X msg 301 713 print;
 #X obj 263 594 loadbang;
 #X msg 358 683 1;
-#N canvas 2 50 1916 1028 message_dispatcher 1;
+#N canvas 2 50 1916 1028 message_dispatcher 0;
 #X obj 655 190 print log udp;
 #X obj 655 169 spigot;
 #X obj 29 146 route master 1 2 3 4;
