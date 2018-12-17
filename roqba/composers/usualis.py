@@ -2,31 +2,35 @@ import threading
 from random import choice
 
 from roqba.composers.abstract_composer import AbstractComposer
+from roqba.static.usualis import end_word, next_valid_word
 
 
-class Usualis(AbstractComposer):
+class Composer(AbstractComposer):
     def __init__(self, gateway, settings, behaviour, scale="DIATONIC"):
         # General
-        super(Usualis, self).__init__(gateway,
+        super(Composer, self).__init__(gateway,
                                       settings,
                                       behaviour)
         # specific
-        self.tone_range = behaviour['tone_range']
-
         self.set_scale(self.scale)
-        self.word = self.next_word()
+        self.current_max_length = 99
+        self.current_note = 0
+        self.tone = "1st plagal"
+        self.notes_since_caesura = 0
+        self.word = self.next_word(self.current_max_length)
         self.gateway.mute_voice("drums", 1)
 
-    def words(self):
-        return USUALIS_WORDS[self.full_tone]
+    def high_limit(self):
+        return 2
 
-    def end_words(self):
-        return USUALIS_WORDS[self.full_tone]
+    def low_limit(self):
+        return -2
 
-    def next_word(self, notes_since_caesura, current_max_length):
-        if notes_since_caesura > current_max_length:
-            word = choice(self.end_words())
-        word = choice(self.words())
+    def next_word(self, current_max_length):
+        if self.notes_since_caesura > current_max_length:
+            word = end_word(self.current_note)
+        else:
+            word = next_valid_word(self.current_note, self.high_limit(), self.low_limit())
         self.notes_since_caesura += len(word)
         return word
 
@@ -79,3 +83,6 @@ class Usualis(AbstractComposer):
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
         return next_note
+
+    def __repr__(self):
+        return "<Usualis composer with tone: {}, current: {}>".format(self.tone, self.current_note)

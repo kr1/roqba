@@ -6,7 +6,7 @@ from random import random, choice, randint
 from Queue import deque
 
 import metronome
-from roqba.composers import baroq, amadinda, rendezvous
+from roqba.composers import baroq, amadinda, rendezvous, usualis
 from roqba.utilities import random_between
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
 
