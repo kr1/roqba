@@ -36,11 +36,13 @@ for clausula in clausulae:
 
 
 def end_word(start_note):
-    return random.choice(CLAUSULAE_BY_START_NOTE[start_note])
+    word = random.choice(CLAUSULAE_BY_START_NOTE[start_note])
+    return word
 
 
 def next_valid_word(start_note, high_limit, low_limit):
-    valid_words = [mov for indicators, mov in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL
+    valid_words = [movement for indicators, movement
+                   in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items()
                    if indicators.high <= high_limit
                    and indicators.low >= low_limit]
     return random.choice(valid_words)
