@@ -575,14 +575,14 @@ styles = {
             'number_of_voices': 4,
             'voice_registers': ['MID', 'MID', 'MID', 'MID'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
-            'enable_adsr': False,
+            'enable_adsr': True,
             'gui': True,
             'composer': 'usualis',
             'notate': False,
             'start_scale': 'DIATONIC' },
         'behaviour': {
-            'max_adsr': [7, 7, 90, 2666],
-            'min_adsr': [2, 2, 70, 1666],
+            'max_adsr': [7, 7, 90, 3666],
+            'min_adsr': [2, 2, 70, 2666],
             'automate_microspeed_change': True,
             'microspeed_variation': 0.06,
             'microspeed_max_speed_in_hz': 0.3,
@@ -603,26 +603,27 @@ styles = {
             # quarter of the range (predominantly fast)
             "speed_target": 0.5,
             "speed_change": "leap",  # alt:"transition"
-            'caesura_prob': 0.05,
+            'caesura_prob': 1, #any caesura by the composer is accepted by the director
             "shuffle_delay": 0.01,  # keep this between 0 and MAX_SHUFFLE
             'default_behaviour': "AUTONOMOUS",
             "max_shuffle": 0.6,
             "automate_scale": True,
 
             # METERS
-            'automate_meters': True,
+            'automate_meters': False,
             'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
             'meters': METERS.keys(),
 
             # WAVETABLES
             'automate_wavetables': True,
-            #'wavetable_specs': sum([[['random_harmonic', ['all', 'odd']]]] * 5,
-            'wavetable_specs': sum([[['harmonic', ['all', 'even']]]] * 5,
+            'wavetable_specs': sum([[['random', ['all', 'even', 'odd']]] * 3,
+                                   [['random_harmonic', ['all', 'even', 'odd']]] * 5,
+                                   [['harmonic', ['all', 'even', 'odd']]] * 10],
                                    []),
             'automate_num_partials': True,
             'default_num_partial': 3,
             'max_num_partials': 7,
-            'common_wavetables': True,
+            'common_wavetables': False,
 
             # TRANSPOSING
             'transpose': 12,
