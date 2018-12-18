@@ -132,9 +132,8 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
-            if ((comment == 'caesura' and
-               random() < self.behaviour["caesura_prob"]) or
-               self.force_caesura):
+            if ((comment == 'caesura' and random() < self.behaviour["caesura_prob"])
+                    or self.force_caesura):
                 if self.force_caesura:
                     self.force_caesura = False
                 # take 5 + 1 times out....

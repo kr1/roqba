@@ -37,6 +37,7 @@ class AbstractComposer(object):
         self.meter = self.behaviour['meter']
         self.applied_meter = METERS[self.meter]['applied']
         self._update_groupings(self.meter)
+        self.use_meter = True
         self.drummer = Drummer(self)
         self.comment = None
         self.voices = {}

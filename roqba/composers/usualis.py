@@ -2,7 +2,7 @@ import threading
 from random import choice, random
 
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.static.usualis import end_word, next_valid_word, Note
+from roqba.static.usualis import ambitus, end_word, next_valid_word, Note
 
 
 class Composer(AbstractComposer):
@@ -17,12 +17,23 @@ class Composer(AbstractComposer):
         self.current_max_length = 30
         self.current_note = Note(0, 1)
         self.tone = "1st plagal"
+        self.ambitus = ambitus
         self.notes_since_caesura = 0
         self.word = self.next_word(self.current_max_length)
         self.gateway.mute_voice("drums", 1)
         self.during_end_word = False
         self.current_note_counter = 0
         self.current_note_length = 1
+        self.selected_meters = ['n/a']
+        self.use_meter = False
+        self.zero_note_offset = 30
+        for voice in self.voices.values():
+            voice.slide = False
+            #args = [random() * 0.3 for n in range(4)]
+            #voice.pan_sine = MultiSine(args)
+
+            if not settings['enable_adsr']:
+                self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
 
     def high_limit(self):
         return 2
@@ -34,14 +45,18 @@ class Composer(AbstractComposer):
         self.position_in_word = 0
         self.during_end_word = False
         if self.notes_since_caesura > current_max_length:
-            self.musical_logger.info("getting next word")
             try:
-                word = end_word(self.current_note)
+                self.musical_logger.info("trying to get end word for current note: {}".format(self.current_note))
+                word = end_word(self.current_note.note)
+                self.musical_logger.info("getting end word: {}".format(word))
                 self.during_end_word = True
                 return word
-            except IndexError:
-                pass
-        word = next_valid_word(self.current_note, self.high_limit(), self.low_limit())
+            except IndexError as error:
+                self.gateway.stop_all_notes()
+                self.musical_logger.error("error finding clausula from this note: {}".format(self.current_note))
+                return [Note(2, 1), Note(1, 1)] if self.current_note.note < 0 else [Note(-1, 1), Note(-2, 1)]
+        word = next_valid_word(self.current_note.note, self.high_limit(), self.low_limit())
+        self.musical_logger.info("getting next word: {}".format(word))
         return word
 
     def choose_rhythm(self):
@@ -50,7 +65,10 @@ class Composer(AbstractComposer):
     def get_next_note(self):
         try:
             note = self.word[self.position_in_word]
+            if not self.during_end_word and not self.current_note == 'caesura':
+                note = Note(self.current_note.note + note.note, note.length)
             self.position_in_word += 1
+            self.musical_logger.info(note)
             return note
         except IndexError:
             self.position_in_word = 0
@@ -64,26 +82,28 @@ class Composer(AbstractComposer):
 
         any of the voices can change.
         """
-        self.comment = 'normal'
         self.current_note_counter += 1
-        self.notes_since_caesura += 1
-        if self.current_note_counter >= self.current_note.length:
+        if (self.current_note == 'caesura'
+                or self.current_note_counter >= self.current_note.length):
             self.current_note = self.get_next_note()
             self.current_note_counter = 0
-        else:
-            return
+            self.notes_since_caesura += 1
         if self.current_note == 'caesura':
-            self.comment = 'caesura'
+            self.during_end_word = False
             self.notes_since_caesura = 0
+            self.musical_logger.info("caesura")
             return 'caesura'
         for voice in self.voices.values():
             if len(self.voices) < self.num_voices:
-                raise (RuntimeError, "mismatch in voices count")
+                raise RuntimeError("mismatch in voices count")
+            voice.note = self.current_note.note
             self.musical_logger.debug("note {0}".format(voice.note))
-            if self.current_note is None or voice.note == 0 or not voice.note_change:
+            if self.current_note is None or voice.note == 0:
                 continue
             voice.note_change = True
-            voice.note = self.current_note.note
+            voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
+        self.musical_logger.info("real-note voice {}: {}".format(voice, voice.real_note))
+        self.gateway.hub.send(self.voices)  # this sends the voices to the hub
         #  TODO: add drums
         # send_drum = True
         # self.drummer.generator.send([state, cycle_pos])
@@ -115,3 +135,6 @@ class Composer(AbstractComposer):
 
     def __repr__(self):
         return "<Usualis composer with tone: {}, current: {}>".format(self.tone, self.current_note)
+
+    def set_meter(self, _):
+        pass

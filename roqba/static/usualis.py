@@ -42,6 +42,8 @@ for clausula in clausulae:
 
 def end_word(start_note):
     word = random.choice(CLAUSULAE_BY_START_NOTE[start_note])
+    word = [Note(note, length) for note, length in word]
+    musical_logger.debug("\nend word {0}\n".format(word))
     return word
 
 
