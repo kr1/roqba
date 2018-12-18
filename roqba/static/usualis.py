@@ -1,4 +1,6 @@
+import logging
 import random
+import itertools
 from collections import namedtuple, defaultdict
 
 # these movements are relative to the preceding note of the melody
@@ -9,6 +11,7 @@ delta_movements = (
     (0, 0, 1, 1, -2, -1, 1, 0),
     (0, 1, 0, 0, -2, -1, 1, 0)
 )
+musical_logger = logging.getLogger('musical')
 
 DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL = defaultdict(list)
 
@@ -21,14 +24,16 @@ for mov in delta_movements:
     diff = sum(mov)
     DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL[Deltatype(high, low, diff)].append(mov)
 
-# this movemente are relative to the target note
-Clausula = namedtuple('Clausula', 'note length')
+# these movements are relative to the target note
+Note = namedtuple('Note', 'note length')
+
 
 clausulae = (
     ((0, 1), (-1, 1), (-1, 3), (0, 3)),
     ((-1, 1), (1, 1), (-1, 1), (0, 3), (0, 3)),
     ((3, 1), (2, 1), (3, 1), (1, 3), (0, 3)),
 )
+
 
 CLAUSULAE_BY_START_NOTE = defaultdict(list)
 for clausula in clausulae:
@@ -45,7 +50,20 @@ def next_valid_word(start_note, high_limit, low_limit):
                    in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items()
                    if indicators.high <= high_limit
                    and indicators.low >= low_limit]
-    return random.choice(valid_words)
+    valid_words = list(itertools.chain(*valid_words))
+    word = random.choice(valid_words)
+    word = [Note(note, length()) for note in word]
+    musical_logger.debug("word {0}".format(word))
+    return word
+
+
+def length():
+    value = random.random()
+    if value < 0.05:
+        return 3
+    elif value < 0.08:
+        return 2
+    return 1
 
 
 if __name__ == '__main__':
