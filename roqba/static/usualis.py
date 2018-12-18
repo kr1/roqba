@@ -8,7 +8,12 @@ from collections import namedtuple, defaultdict
 delta_movements = (
     (-1,),
     (1,),
-    (0, 0, 1, 1, -2, -1, 1, 0),
+    (-1, -1, 1),
+    (-1, -1, 2),
+    (1, 1, -1),
+    (1, 1, -2),
+    (1, 1, 1, -1, 1, -3, 1),
+    (1, 1, -2, -1, 1, 0),
     (0, 1, 0, 0, -2, -1, 1, 0)
 )
 musical_logger = logging.getLogger('musical')
@@ -26,12 +31,20 @@ for mov in delta_movements:
 
 # these movements are relative to the target note
 Note = namedtuple('Note', 'note length')
+Ambitus = namedtuple('Ambitus', 'lower upper')
+ambitus = Ambitus(-8, 8)
 
 
 clausulae = (
-    ((0, 1), (-1, 1), (-1, 3), (0, 3)),
+    ((-4, 1), (-3, 1), (-2, 1), (-3, 3), (0, 3)),
+    ((-3, 1), (-1, 1), (0, 1), (1, 3), (0, 3)),
+    ((-2, 1), (1, 1), (03, 1), (1, 3), (0, 3)),
     ((-1, 1), (1, 1), (-1, 1), (0, 3), (0, 3)),
+    ((0, 1), (-1, 1), (-1, 3), (0, 3)),
+    ((1, 1), (-1, 1), (-1, 1), (0, 3), (0, 3)),
+    ((2, 1), (2, 1), (3, 1), (1, 3), (0, 3)),
     ((3, 1), (2, 1), (3, 1), (1, 3), (0, 3)),
+    ((4, 1), (3, 1), (2, 1), (3, 3), (0, 3)),
 )
 
 
