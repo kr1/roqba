@@ -2,7 +2,13 @@ import threading
 from random import choice, random
 
 from roqba.composers.abstract_composer import AbstractComposer
-from roqba.static.usualis import ambitus, end_word, next_valid_word, Note
+from roqba.static.usualis import Ambitus, end_word, next_valid_word, Note
+
+# http://www.teoria.com/en/reference/g-h/gregorian.php
+ambitus_by_mode = {
+    'plagal': Ambitus(-6, 6),
+    'authentic': Ambitus(0, 12)
+}
 
 
 class Composer(AbstractComposer):
@@ -11,13 +17,12 @@ class Composer(AbstractComposer):
         super(Composer, self).__init__(gateway,
                                       settings,
                                       behaviour)
+        self.new_random_mode()
         # specific
         self.set_scale(self.scale)
         self.lengthening_prob = 0.07
         self.current_max_length = 30
         self.current_note = Note(0, 1)
-        self.tone = "1st plagal"
-        self.ambitus = ambitus
         self.notes_since_caesura = 0
         self.word = self.next_word(self.current_max_length)
         self.gateway.mute_voice("drums", 1)
@@ -35,11 +40,22 @@ class Composer(AbstractComposer):
             if not settings['enable_adsr']:
                 self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
 
+    def new_random_mode(self):
+        self.mode = choice(ambitus_by_mode.keys())
+        self.ambitus = ambitus_by_mode[self.mode]
+        self.tone = "1st {}".format(self.mode)
+
     def high_limit(self):
-        return 2
+        return self.zero_note_offset + self.ambitus.upper
 
     def low_limit(self):
-        return -2
+        return self.zero_note_offset + self.ambitus.lower
+
+    def melody_headroom(self):
+        return self.ambitus.upper - self.current_note.note
+
+    def melody_legroom(self):
+        self.ambitus.lower - self.current_note.note
 
     def next_word(self, current_max_length):
         self.position_in_word = 0
@@ -55,7 +71,7 @@ class Composer(AbstractComposer):
                 self.gateway.stop_all_notes()
                 self.musical_logger.error("error finding clausula from this note: {}".format(self.current_note))
                 return [Note(2, 1), Note(1, 1)] if self.current_note.note < 0 else [Note(-1, 1), Note(-2, 1)]
-        word = next_valid_word(self.current_note.note, self.high_limit(), self.low_limit())
+        word = next_valid_word(self.current_note.note, self.melody_headroom(), self.melody_legroom())
         self.musical_logger.info("getting next word: {}".format(word))
         return word
 

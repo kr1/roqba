@@ -32,7 +32,6 @@ for mov in delta_movements:
 # these movements are relative to the target note
 Note = namedtuple('Note', 'note length')
 Ambitus = namedtuple('Ambitus', 'lower upper')
-ambitus = Ambitus(-8, 8)
 
 
 clausulae = (
