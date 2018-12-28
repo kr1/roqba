@@ -118,38 +118,41 @@ class Composer(AbstractComposer):
             self.notes_since_caesura = 0
             self.musical_logger.info("caesura")
             return 'caesura'
-        for voice in self.voices.values():
-            if len(self.voices) < self.num_voices:
-                raise RuntimeError("mismatch in voices count")
-            voice.note = self.current_note.note
-            self.musical_logger.debug("note {0}".format(voice.note))
-            if self.current_note is None or voice.note == 0:
-                continue
-            voice.note_change = True
-            voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
-        self.musical_logger.info("real-note voice {}: {}".format(voice, voice.real_note))
-        self.gateway.hub.send(self.voices)  # this sends the voices to the hub
-        #  TODO: add drums
-        # send_drum = True
-        # self.drummer.generator.send([state, cycle_pos])
-        # for k, v in self.drummer.frame.items():
-        #     # TODO: re-add the drum filler
-        #     if False and v["meta"]:
-        #         if v["meta"] == 'empty':
-        #             threading.Thread(target=self.drum_fill_handler,
-        #                              args=(k, state)).start()
-        #         if v["meta"] == 'mark':
-        #             threading.Thread(target=self.drum_mark_handler,
-        #                              args=(k, state)).start()
-        # if send_drum:
-        #     self.gateway.drum_hub.send(self.drummer.frame)
-        # for voice in self.voices.values():
-        #     self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
-        # self.gateway.hub.send(self.voices)
-        # if self.notate:
-        #     self.notator.note_to_file({"notes": tmp_harm,
-        #                                "weight": state["weight"],
-        #                                "cycle_pos": state["cycle_pos"]})
+        if self.current_note_counter == 0:
+            for voice in self.voices.values():
+                if len(self.voices) < self.num_voices:
+                    raise RuntimeError("mismatch in voices count")
+                voice.note = self.current_note.note
+                self.musical_logger.debug("note {0}".format(voice.note))
+                if self.current_note is None or voice.note == 0:
+                    continue
+                voice.note_change = True
+                voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
+                voice.duration_in_msec = int(self.current_note.length * state["speed"] * 1000)
+
+            self.musical_logger.info("real-note voice {}: {}".format(voice, voice.real_note))
+            self.gateway.hub.send(self.voices)  # this sends the voices to the hub
+            #  TODO: add drums
+            # send_drum = True
+            # self.drummer.generator.send([state, cycle_pos])
+            # for k, v in self.drummer.frame.items():
+            #     # TODO: re-add the drum filler
+            #     if False and v["meta"]:
+            #         if v["meta"] == 'empty':
+            #             threading.Thread(target=self.drum_fill_handler,
+            #                              args=(k, state)).start()
+            #         if v["meta"] == 'mark':
+            #             threading.Thread(target=self.drum_mark_handler,
+            #                              args=(k, state)).start()
+            # if send_drum:
+            #     self.gateway.drum_hub.send(self.drummer.frame)
+            # for voice in self.voices.values():
+            #     self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
+            # self.gateway.hub.send(self.voices)
+            # if self.notate:
+            #     self.notator.note_to_file({"notes": tmp_harm,
+            #                                "weight": state["weight"],
+            #                                "cycle_pos": state["cycle_pos"]})
         return self.comment
 
     def set_next_voice_note(self, voice, next_note):
