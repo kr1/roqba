@@ -1,7 +1,7 @@
 import threading
 from random import choice, random
 
-from roqba.composers.abstract_composer import AbstractComposer
+from roqba.composers.abstract_composer import AbstractComposer, ComposerError
 from roqba.static.usualis import Ambitus, end_word, next_valid_word, Note
 
 # http://www.teoria.com/en/reference/g-h/gregorian.php
@@ -71,7 +71,12 @@ class Composer(AbstractComposer):
                 self.gateway.stop_all_notes()
                 self.musical_logger.error("error finding clausula from this note: {}".format(self.current_note))
                 return [Note(2, 1), Note(1, 1)] if self.current_note.note < 0 else [Note(-1, 1), Note(-2, 1)]
-        word = next_valid_word(self.current_note.note, self.melody_headroom(), self.melody_legroom())
+        try:
+            word = next_valid_word(self.current_note.note, self.melody_headroom(), self.melody_legroom())
+        except IndexError:
+            message = "No next valid word"
+            self.musical_logger.error(message)
+            raise ComposerError(message)
         self.musical_logger.info("getting next word: {}".format(word))
         return word
 

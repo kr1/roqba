@@ -12,6 +12,9 @@ from roqba.static.melodic_behaviours import registers
 from roqba.static.scales_and_harmonies import (SCALES_BY_FREQUENCY,
                                                SCALES)
 
+class ComposerError(Exception):
+    pass
+
 
 class AbstractComposer(object):
     __metaclass__ = ABCMeta

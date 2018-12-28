@@ -581,6 +581,8 @@ styles = {
             'notate': False,
             'start_scale': 'DIATONIC' },
         'behaviour': {
+            'adsr': [10, 10, 5, 20],
+            'automate_adsr': True,
             'max_adsr': [7, 7, 90, 3666],
             'min_adsr': [2, 2, 70, 2666],
             'automate_microspeed_change': True,
