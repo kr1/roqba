@@ -55,7 +55,7 @@ class Composer(AbstractComposer):
         return self.ambitus.upper - self.current_note.note
 
     def melody_legroom(self):
-        self.ambitus.lower - self.current_note.note
+        return self.ambitus.lower - self.current_note.note
 
     def next_word(self, current_max_length):
         self.position_in_word = 0
@@ -71,10 +71,14 @@ class Composer(AbstractComposer):
                 self.gateway.stop_all_notes()
                 self.musical_logger.error("error finding clausula from this note: {}".format(self.current_note))
                 return [Note(2, 1), Note(1, 1)] if self.current_note.note < 0 else [Note(-1, 1), Note(-2, 1)]
+        headroom = self.melody_headroom()
+        legroom = self.melody_legroom()
+        # print self.current_note, headroom, legroom
         try:
-            word = next_valid_word(self.current_note.note, self.melody_headroom(), self.melody_legroom())
+            word = next_valid_word(self.current_note.note, headroom, legroom)
         except IndexError:
-            message = "No next valid word"
+            message = "No next valid word for {}, headroom: {}, legroom: {}".format(
+                self.current_note.note, headroom, legroom)
             self.musical_logger.error(message)
             raise ComposerError(message)
         self.musical_logger.info("getting next word: {}".format(word))

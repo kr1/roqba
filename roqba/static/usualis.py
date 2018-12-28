@@ -8,6 +8,8 @@ from collections import namedtuple, defaultdict
 delta_movements = (
     (-1,),
     (1,),
+    (-1, -1),
+    (1, 1),
     (-1, -1, 1),
     (-1, -1, 2),
     (1, 1, -1),
@@ -60,10 +62,16 @@ def end_word(start_note):
 
 
 def next_valid_word(start_note, high_limit, low_limit):
+    should_go_upward = low_limit >= -1
+    should_go_downward = high_limit <= 1
+    free = not(should_go_downward or should_go_downward)
     valid_words = [movement for indicators, movement
                    in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items()
                    if indicators.high <= high_limit
-                   and indicators.low >= low_limit]
+                   and indicators.low >= low_limit
+                   and ((indicators.diff > 0 and should_go_upward)
+                       or (indicators.diff < 0 and should_go_downward)
+                       or free) ]
     valid_words = list(itertools.chain(*valid_words))
     word = random.choice(valid_words)
     word = [Note(note, length()) for note in word]
