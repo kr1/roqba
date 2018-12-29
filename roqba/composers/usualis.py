@@ -84,7 +84,7 @@ class Composer(AbstractComposer):
         # print self.current_note, headroom, legroom
         word = next_valid_word(self.current_note.note, headroom, legroom)
         first_note = word[0].note 
-        self.drone =  first_note - 6 if first_note >= 0 else first_note - 2
+        self.drone =  first_note
         self.musical_logger.info("getting next word: {}, drone: {}".format(word, self.drone))
         return word
 
@@ -97,6 +97,9 @@ class Composer(AbstractComposer):
             if not self.during_end_word and not self.current_note == 'caesura':
                 note = Note(self.current_note.note + note.note, note.length)
             self.position_in_word += 1
+            if len(self.word) == self.position_in_word and self.during_end_word:
+                self.drone = note.note
+                self.musical_logger.info("final note")
             self.musical_logger.info(note)
             return note
         except IndexError:
@@ -130,7 +133,7 @@ class Composer(AbstractComposer):
                 if voice.id == 1 and self.drone is not None and self.use_drone:
                     voice.note = self.drone
                     voice.note_change = True
-                    voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
+                    voice.real_note = self.real_scale[voice.note + self.zero_note_offset]
                     voice.duration_in_msec = int(self.current_note.length * state["speed"] * 1000)
                     continue
                 voice.note = self.current_note.note
