@@ -46,6 +46,7 @@ class Composer(AbstractComposer):
         self.mode = choice(ambitus_by_mode.keys())
         self.ambitus = ambitus_by_mode[self.mode]
         self.tone = "1st {}".format(self.mode)
+        self.musical_logger.info("mode: {}".format(self.tone))
 
     def high_limit(self):
         return self.zero_note_offset + self.ambitus.upper
@@ -54,10 +55,12 @@ class Composer(AbstractComposer):
         return self.zero_note_offset + self.ambitus.lower
 
     def melody_headroom(self):
-        return self.ambitus.upper - self.current_note.note
+        precise = self.ambitus.upper - self.current_note.note
+        return precise if precise >= 0 else 0
 
     def melody_legroom(self):
-        return self.ambitus.lower - self.current_note.note
+        precise = self.ambitus.lower - self.current_note.note
+        return precise if precise <= 0 else 0
 
     def next_word(self, current_max_length):
         self.position_in_word = 0
