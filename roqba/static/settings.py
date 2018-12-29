@@ -597,7 +597,7 @@ styles = {
             'automate_speed_change': True,
             'has_percussion': False,
             "max_speed": 1.2,
-            "min_speed": 0.08,
+            "min_speed": 0.3,
             # speed-target:
             # 0.5 means that the average of all speeds will be
             # +/- in the middle of the given range
