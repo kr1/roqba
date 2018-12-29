@@ -115,6 +115,7 @@ class Composer(AbstractComposer):
         if self.current_note == 'caesura':
             self.during_end_word = False
             self.notes_since_caesura = 0
+            self.new_random_mode()
             self.musical_logger.info("caesura")
             return 'caesura'
         if self.current_note_counter == 0:

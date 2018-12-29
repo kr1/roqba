@@ -630,7 +630,7 @@ styles = {
             # TRANSPOSING
             'transpose': 12,
             'automate_transpose': True,
-            'transposings': [10, 11, 12, 12, 12, 12, 13, 14],
+            'transposings': [6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 9, 10, 11, 12, 12, 12, 12, 13, 14],
 
             # PAN RELATED
             'default_pan_position': 0,
