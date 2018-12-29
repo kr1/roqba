@@ -11,12 +11,12 @@ class UsualisError(Exception):
 # these movements are relative to the preceding note of the melody
 # i. e. staps to be taken (2 up, 1 down, ...)
 delta_movements = (
-    (-1,),
-    (1,),
+    (-1, 0, 0),
+    (1, 0),
     (-1, -1),
-    (1, 1),
-    (-1, -1, 1),
-    (-1, -1, 1, 1),
+    (1, 1, -1, 1),
+    (-1, -1, 1, 1, 1),
+    (-1, -1, 1, 2, -1),
     (-1, -1, 2),
     (1, 1, -1),
     (1, 1, -1, -1),
