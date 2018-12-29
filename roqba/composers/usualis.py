@@ -74,13 +74,7 @@ class Composer(AbstractComposer):
         headroom = self.melody_headroom()
         legroom = self.melody_legroom()
         # print self.current_note, headroom, legroom
-        try:
-            word = next_valid_word(self.current_note.note, headroom, legroom)
-        except IndexError:
-            message = "No next valid word for {}, headroom: {}, legroom: {}".format(
-                self.current_note.note, headroom, legroom)
-            self.musical_logger.error(message)
-            raise ComposerError(message)
+        word = next_valid_word(self.current_note.note, headroom, legroom)
         self.musical_logger.info("getting next word: {}".format(word))
         return word
 

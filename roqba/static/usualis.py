@@ -3,6 +3,11 @@ import random
 import itertools
 from collections import namedtuple, defaultdict
 
+
+class UsualisError(Exception):
+    pass
+
+
 # these movements are relative to the preceding note of the melody
 # i. e. staps to be taken (2 up, 1 down, ...)
 delta_movements = (
@@ -73,7 +78,13 @@ def next_valid_word(start_note, high_limit, low_limit):
                        or (indicators.diff < 0 and should_go_downward)
                        or free) ]
     valid_words = list(itertools.chain(*valid_words))
-    word = random.choice(valid_words)
+    try:
+        word = random.choice(valid_words)
+    except IndexError:
+        message = "No next valid word for {}, headroom: {}, legroom: {}".format(
+            start_note, high_limit, low_limit)
+        musical_logger.error(message)
+        raise UsualisError(message)
     word = [Note(note, length()) for note in word]
     musical_logger.debug("word {0}".format(word))
     return word
