@@ -92,9 +92,9 @@ def next_valid_word(start_note, high_limit, low_limit):
 
 def length():
     value = random.random()
-    if value < 0.05:
+    if value < 0.03:
         return 3
-    elif value < 0.08:
+    elif value < 0.07:
         return 2
     return 1
 
