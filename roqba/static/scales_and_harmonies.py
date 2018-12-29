@@ -24,9 +24,9 @@ SCALES_BY_FREQUENCY = sum([
     ["DIATONIC"] * 4,
     ["HARMONIC"] * 2,
     ["MELODIC"] * 2,
-    ["PENTATONIC"] * 2,
     ["GREEK_ENHARMONIC"] * 2,
     ["GREEK_CHROMATIC"] * 2,
+    ["PENTATONIC"] * 1,
     ["PENTA_MINOR"] * 1],
   [])
 

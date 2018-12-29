@@ -32,6 +32,8 @@ class Composer(AbstractComposer):
         self.selected_meters = ['n/a']
         self.use_meter = False
         self.zero_note_offset = 30
+        self.offered_scales = [scale for scale in self.offered_scales
+                               if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC')]
         for voice in self.voices.values():
             voice.slide = False
             #args = [random() * 0.3 for n in range(4)]
