@@ -32,6 +32,7 @@ class Composer(AbstractComposer):
         self.selected_meters = ['n/a']
         self.use_meter = False
         self.zero_note_offset = 30
+        self.use_drone = True
         self.offered_scales = [scale for scale in self.offered_scales
                                if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC')]
         for voice in self.voices.values():
@@ -64,12 +65,14 @@ class Composer(AbstractComposer):
 
     def next_word(self, current_max_length):
         self.position_in_word = 0
+        self.drone = None
         self.during_end_word = False
         if self.notes_since_caesura > current_max_length:
             try:
                 self.musical_logger.info("trying to get end word for current note: {}".format(self.current_note))
                 word = end_word(self.current_note.note)
-                self.musical_logger.info("getting end word: {}".format(word))
+                self.drone = choice((1, -1))
+                self.musical_logger.info("getting end word: {}, drone: {}".format(word, self.drone))
                 self.during_end_word = True
                 return word
             except IndexError as error:
@@ -80,7 +83,9 @@ class Composer(AbstractComposer):
         legroom = self.melody_legroom()
         # print self.current_note, headroom, legroom
         word = next_valid_word(self.current_note.note, headroom, legroom)
-        self.musical_logger.info("getting next word: {}".format(word))
+        first_note = word[0].note 
+        self.drone =  first_note - 6 if first_note >= 0 else first_note - 2
+        self.musical_logger.info("getting next word: {}, drone: {}".format(word, self.drone))
         return word
 
     def choose_rhythm(self):
@@ -122,6 +127,12 @@ class Composer(AbstractComposer):
             for voice in self.voices.values():
                 if len(self.voices) < self.num_voices:
                     raise RuntimeError("mismatch in voices count")
+                if voice.id == 1 and self.drone is not None and self.use_drone:
+                    voice.note = self.drone
+                    voice.note_change = True
+                    voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
+                    voice.duration_in_msec = int(self.current_note.length * state["speed"] * 1000)
+                    continue
                 voice.note = self.current_note.note
                 self.musical_logger.debug("note {0}".format(voice.note))
                 if self.current_note is None or voice.note == 0:
