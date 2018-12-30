@@ -94,21 +94,37 @@ class Composer(AbstractComposer):
 
     def get_next_note(self):
         try:
-            note = self.word[self.position_in_word]
-            if not self.during_end_word and not self.current_note == 'caesura':
-                note = Note(self.current_note.note + note.note, note.length)
-            self.position_in_word += 1
-            if len(self.word) == self.position_in_word and self.during_end_word:
-                self.drone = note.note
-                self.musical_logger.info("final note")
-            self.musical_logger.info(note)
-            return note
+            if self.current_note == 'caesura':
+                self.word = self.next_word(self.current_max_length)
+            new_note = self.word[self.position_in_word]
         except IndexError:
             self.position_in_word = 0
             if self.during_end_word is True:
                 return 'caesura'
             self.word = self.next_word(self.current_max_length)
             return self.get_next_note()
+        if new_note == 'caesura':
+            return 'caesura'
+        if not self.during_end_word:
+            ref_note = 0 if self.current_note == 'caesura' else self.current_note.note
+            new_note = Note(ref_note + new_note.note, new_note.length)
+        else:
+            self.musical_logger.info("new end-word note: {}".format(new_note))
+        self.current_note = new_note
+        self.position_in_word += 1
+        if len(self.word) == self.position_in_word and self.during_end_word:
+            self.drone = new_note.note
+            self.musical_logger.info("final note")
+        self.musical_logger.info(new_note)
+        return new_note
+
+    def _log_word(self, word, prefix='word: '):
+        if self.use_drone:
+            drone_segment = ", drone: {}".format(self.drone)
+        else:
+            drone_segment = ""
+        self.musical_logger.info("{}{}{}".format(prefix,
+            [item.note for item in word], drone_segment))
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
