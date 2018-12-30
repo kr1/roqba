@@ -1,7 +1,7 @@
 #N canvas 2 50 1916 1028 10;
 #X obj 589 713 dac~;
 #X msg 683 405 \; pd dsp \$1 \;;
-#X obj 683 383 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 683 383 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 4
 4;
 #X obj 455 703 snapshot~;
 #X obj 494 651 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -15,7 +15,7 @@
 #X obj 455 725 abs;
 #X obj 14 683 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 156 666 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 156 682 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 455 680 metro 120;
 #X obj 749 729 doku~;
@@ -45,12 +45,12 @@
 -1 -1 5138 1;
 #X obj 253 248 / 666;
 #X obj 303 131 vsl 50 80 0 1024 0 0 empty empty drums 0 -9 0 10 -262144
--1 -1 5138 1;
+-1 -1 1938 1;
 #X obj 303 248 / 666;
 #X msg 279 68 666;
 #X obj 279 44 loadbang;
 #X obj 359 131 vsl 50 80 0 1024 0 0 empty empty main 0 -9 0 10 -262144
--1 -1 5138 1;
+-1 -1 238 1;
 #X obj 359 246 / 666;
 #X obj 370 73 * 666;
 #N canvas 2 50 1362 716 voice_volume_receiver 0;
