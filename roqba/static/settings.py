@@ -596,8 +596,8 @@ styles = {
             'half_beat': True,
             'automate_speed_change': True,
             'has_percussion': False,
-            "max_speed": 1.2,
-            "min_speed": 0.3,
+            "max_speed": 0.8,
+            "min_speed": 0.4,
             # speed-target:
             # 0.5 means that the average of all speeds will be
             # +/- in the middle of the given range
@@ -651,7 +651,7 @@ styles = {
 
             # NOTE DURATION RELATED
             'automate_note_duration_prop': True,
-            'automate_note_duration_min_max': [0.1, 3.3],
+            'automate_note_duration_min_max': [0.1, 1.0],
             'common_note_duration': True,
             'default_note_duration_prop': 0.8,  # proportion
 

@@ -155,11 +155,11 @@ class Composer(AbstractComposer):
                     continue
                 voice.note = self.current_note.note
                 self.musical_logger.debug("note {0}".format(voice.note))
-                if self.current_note is None or voice.note == 0:
-                    continue
                 voice.note_change = True
                 voice.real_note = self.real_scale[self.current_note.note + self.zero_note_offset]
                 voice.duration_in_msec = int(self.current_note.length * state["speed"] * 1000)
+                if self.current_note is None or voice.real_note == 0:
+                    continue
 
             self.musical_logger.info("real-note voice {}: {}".format(voice, voice.real_note))
             self.gateway.hub.send(self.voices)  # this sends the voices to the hub
