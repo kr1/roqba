@@ -3,6 +3,7 @@ from random import choice, random
 
 from roqba.composers.abstract_composer import AbstractComposer, ComposerError
 from roqba.static.usualis import Ambitus, end_word, next_valid_word, Note
+from roqba.utilities.sine_controllers import MultiSine
 
 # http://www.teoria.com/en/reference/g-h/gregorian.php
 ambitus_by_mode = {
@@ -32,13 +33,12 @@ class Composer(AbstractComposer):
         self.selected_meters = ['n/a']
         self.use_meter = False
         self.zero_note_offset = 30
-        self.use_drone = True
         self.offered_scales = [scale for scale in self.offered_scales
                                if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC')]
         for voice in self.voices.values():
             voice.slide = False
-            #args = [random() * 0.3 for n in range(4)]
-            #voice.pan_sine = MultiSine(args)
+            args = [random() * 0.3 for n in range(4)]
+            voice.pan_sine = MultiSine(args)
 
             if not settings['enable_adsr']:
                 self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
