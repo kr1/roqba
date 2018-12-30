@@ -19,10 +19,10 @@ class Composer(AbstractComposer):
                                       settings,
                                       behaviour)
         self.new_random_mode()
-        # specific
+        self.use_drone = True
         self.set_scale(self.scale)
         self.lengthening_prob = 0.07
-        self.current_max_length = 30
+        self.current_max_length = 15
         self.current_note = Note(0, 1)
         self.notes_since_caesura = 0
         self.word = self.next_word(self.current_max_length)
@@ -55,12 +55,12 @@ class Composer(AbstractComposer):
     def low_limit(self):
         return self.zero_note_offset + self.ambitus.lower
 
-    def melody_headroom(self):
-        precise = self.ambitus.upper - self.current_note.note
+    def melody_headroom(self, ref_note):
+        precise = self.ambitus.upper - ref_note
         return precise if precise >= 0 else 0
 
-    def melody_legroom(self):
-        precise = self.ambitus.lower - self.current_note.note
+    def melody_legroom(self, ref_note):
+        precise = self.ambitus.lower - ref_note
         return precise if precise <= 0 else 0
 
     def next_word(self, current_max_length):
@@ -72,20 +72,21 @@ class Composer(AbstractComposer):
                 self.musical_logger.info("trying to get end word for current note: {}".format(self.current_note))
                 word = end_word(self.current_note.note)
                 self.drone = choice((1, -1))
-                self.musical_logger.info("getting end word: {}, drone: {}".format(word, self.drone))
+                self._log_word(word, 'selected end word: ')
                 self.during_end_word = True
                 return word
             except IndexError as error:
                 self.gateway.stop_all_notes()
                 self.musical_logger.error("error finding clausula from this note: {}".format(self.current_note))
                 return [Note(2, 1), Note(1, 1)] if self.current_note.note < 0 else [Note(-1, 1), Note(-2, 1)]
-        headroom = self.melody_headroom()
-        legroom = self.melody_legroom()
+        ref_note = 0 if self.current_note == 'caesura' else self.current_note.note
+        headroom = self.melody_headroom(ref_note)
+        legroom = self.melody_legroom(ref_note)
         # print self.current_note, headroom, legroom
-        word = next_valid_word(self.current_note.note, headroom, legroom)
-        first_note = word[0].note 
-        self.drone =  first_note
-        self.musical_logger.info("getting next word: {}, drone: {}".format(word, self.drone))
+        word = next_valid_word(ref_note, headroom, legroom)
+        first_note = word[0].note
+        self.drone = first_note
+        self._log_word(word, 'getting next word: ')
         return word
 
     def choose_rhythm(self):
