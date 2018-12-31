@@ -73,7 +73,7 @@ def end_word(start_note):
     return word
 
 
-def next_valid_word(start_note, high_limit, low_limit):
+def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_prob=0.03):
     should_go_upward = low_limit >= -1
     should_go_downward = high_limit <= 1
     free = not(should_go_downward or should_go_downward)
@@ -92,16 +92,16 @@ def next_valid_word(start_note, high_limit, low_limit):
             start_note, high_limit, low_limit)
         musical_logger.error(message)
         raise UsualisError(message)
-    word = [Note(note, length()) for note in word]
+    word = [Note(note, length(double_prop, triple_prob)) for note in word]
     musical_logger.debug("word {0}".format(word))
     return word
 
 
-def length():
+def length(double_prop, triple_prob):
     value = random.random()
-    if value < 0.03:
+    if value < triple_prob:
         return 3
-    elif value < 0.07:
+    elif value < double_prop:
         return 2
     return 1
 

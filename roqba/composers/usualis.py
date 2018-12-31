@@ -45,6 +45,10 @@ class Composer(AbstractComposer):
                 self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
 
     def new_random_mode(self):
+        self.double_length_prob = random() * self.max_double_length_prob
+        self.triple_length_prob = random() * self.max_triple_length_prob
+        self.use_drone = random() < self.drone_prob
+        self.current_max_length = int(random() * self.min_phrase_length)
         self.mode = choice(ambitus_by_mode.keys())
         self.ambitus = ambitus_by_mode[self.mode]
         self.tone = "1st {}".format(self.mode)
@@ -84,7 +88,8 @@ class Composer(AbstractComposer):
         headroom = self.melody_headroom(ref_note)
         legroom = self.melody_legroom(ref_note)
         # print self.current_note, headroom, legroom
-        word = next_valid_word(ref_note, headroom, legroom)
+        word = next_valid_word(ref_note, headroom, legroom, self.double_length_prob,
+            self.triple_length_prob)
         first_note = word[0].note
         self.drone = first_note
         self._log_word(word, 'getting next word: ')
