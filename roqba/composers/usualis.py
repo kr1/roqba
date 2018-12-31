@@ -18,11 +18,12 @@ class Composer(AbstractComposer):
         super(Composer, self).__init__(gateway,
                                       settings,
                                       behaviour)
+        self.min_phrase_length = behaviour['min_phrase_length']
+        self.max_double_length_prob = behaviour['max_double_length_prob']
+        self.max_triple_length_prob = behaviour['max_triple_length_prob']
+        self.drone_prob = behaviour['drone_prob']
         self.new_random_mode()
-        self.use_drone = True
         self.set_scale(self.scale)
-        self.lengthening_prob = 0.07
-        self.current_max_length = 15
         self.current_note = Note(0, 1)
         self.notes_since_caesura = 0
         self.word = self.next_word(self.current_max_length)
