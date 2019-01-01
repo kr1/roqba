@@ -385,6 +385,10 @@ styles = {
     'greek_enharmonic': {
         "settings": {
             'composer': 'baroq',
+            'number_of_voices': 4,
+            'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
+                                 ['SLAVE', 2], 'AUTONOMOUS'],
             'start_scale': 'GREEK_ENHARMONIC'},
         "behaviour": {
             'adsr': [40, 40, 100, 20000],
@@ -431,6 +435,10 @@ styles = {
     'greek_chromatic': {
         "settings": {
             'composer': 'baroq',
+            'number_of_voices': 4,
+            'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS',
+                                 ['SLAVE', 2], 'AUTONOMOUS'],
             'start_scale': 'GREEK_CHROMATIC'},
         "behaviour": {
             'adsr': [40, 40, 100, 20000],
