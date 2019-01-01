@@ -7,6 +7,7 @@ from Queue import deque
 
 import metronome
 from roqba.static import settings as default_settings
+from roqba.note_gateway import NoteGateway
 from roqba.composers import baroq, amadinda, rendezvous, usualis
 from roqba.utilities import random_between
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
@@ -262,12 +263,18 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                              replace(" ", "_")])
 
     def set_style(self, style_name):
+        del self.gateway
         settings, raw_behaviour, behaviour_dict = default_settings.behaviour_and_settings_from_style(
             default_settings, style_name)
         composer = globals().get(settings.get('composer', 'baroq'))
         if not composer:
             raise RuntimeError("Composer is not configured correctly")
+        self.gateway = NoteGateway(settings, behaviour_dict)
         self.composer = composer.Composer(self.gateway, settings, behaviour_dict)
+        self.behaviour = behaviour_dict
         self.meter = self.composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
+        self.new_random_adsr_for_all_voices()
+        self.force_caesura = True
+        self.gateway.set_slide_to_0()
 

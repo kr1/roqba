@@ -70,6 +70,7 @@ class NoteGateway(object):
         '''this method bypasses the slide functionality
 
         by setting slide-duration to 0'''
+        self.logger.error("Send slide to 0")
         for v in self.voice_ids:
             self.pd.send(["voice", "slide", v, 0])
 
@@ -87,7 +88,7 @@ class NoteGateway(object):
         if voice_id not in self.voice_ids:
             self.voice_ids.append(voice_id)
         self.pd.send(["voice", voice_id, 0 if msg == 0 else
-                                         msg + self.transpose])
+                      msg + self.transpose])
         return True
 
     def pd_send_duration(self, voice_id, val):
@@ -112,7 +113,7 @@ class NoteGateway(object):
 
         use values from 0 to 1'''
         args = ["voice", voice.id, "volume", val]
-        print "sending: ", args
+        # print "sending: ", args
         self.pd.send(args)
 
     def send_voice_adsr(self, voice, adsr):
