@@ -44,13 +44,17 @@ class AbstractComposer(object):
         self.drummer = Drummer(self)
         self.comment = None
         self.voices = {}
+        for voice_idx in range(1, 5):
+            self.gateway.mute_voice(voice_idx, 1)
         for voice_idx in range(self.num_voices):
+            self.gateway.mute_voice(voice_idx, 0)
             id_ = voice_idx + 1
             self.voices[id_] = Voice(
                 id_, self,
                 note_length_grouping=self.behaviour["meter"][1],
                 register=self.settings["voice_registers"][voice_idx],
                 behaviour=self.settings['voice_behaviours'][voice_idx])
+            self.gateway.pd.send(["voice", id_, "adsr_enable", int(bool(settings['enable_adsr']))])
         [voice.register_other_voices() for voice in self.voices.values()]
         self.set_meter(self.meter)
         self.notate = settings.get('notate')
