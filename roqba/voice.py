@@ -136,30 +136,32 @@ class Voice(object):
         while True:
             state = (yield)
             meter_pos = state['cycle_pos']
-            self.musical_logger.info("voice-generator: meter-pos: {}\non_off_pattern: {}".format(meter_pos, self.on_off_pattern))
+            self.musical_logger.info("voice: meter-pos: {} - on_off_pattern: {}".format(
+                meter_pos, self.on_off_pattern))
             self.note_change = self.on_off_pattern[meter_pos]
             if random.random() < self.legato_prob:
                 self.note_change = 0
             self.weight = state["weight"]
-            if self.note_change:
-                # calculate duration by checking for the next note
-                # in the pattern
-                tmp_list = self.on_off_pattern[(meter_pos + 1):]
-                if 1 in tmp_list:
-                    self.note_duration_steps = tmp_list.index(1) + 1
-                else:
-                    # self.note_duration_steps = 1
-                    self.note_duration_steps = len(self.on_off_pattern) - meter_pos
-                self.prior_note = self.note
-                if random.random() < self.pause_prob and not self.playing_a_melody:
-                    self.note = 0
-                else:
-                    self.note = self.next_note(state)
-                    self.note_delta = self.note - self.prior_note
-                if self.track_me:
-                    self.queue.append(self.note)
-                if random.random() < self.embellishment_prob:
-                    self.do_embellish = True
+            if not self.note_change:
+                continue
+            # calculate duration by checking for the next note
+            # in the pattern
+            tmp_list = self.on_off_pattern[(meter_pos + 1):]
+            if 1 in tmp_list:
+                self.note_duration_steps = tmp_list.index(1) + 1
+            else:
+                # self.note_duration_steps = 1
+                self.note_duration_steps = len(self.on_off_pattern) - meter_pos
+            self.prior_note = self.note
+            if random.random() < self.pause_prob and not self.playing_a_melody:
+                self.note = 0
+            else:
+                self.note = self.next_note(state)
+                self.note_delta = self.note - self.prior_note
+            if self.track_me:
+                self.queue.append(self.note)
+            if random.random() < self.embellishment_prob:
+                self.do_embellish = True
 
     def next_note(self, state):
         """the next note is calculated/read here"""
@@ -220,8 +222,8 @@ class Voice(object):
             if self.in_the_middle(res):
                 self.dir = 0
             if self.exceeds(res):
-                raise RuntimeError('''diabolus in musica: {0} is too low/high,
-                             dir:{1}'''.format(res, self.dir))
+                message = 'diabolus in musica: {0} is too low/high, dir:{1}'
+                raise RuntimeError(message.format(res, self.dir))
         return res
 
     def search_suitable_melody(self, speed):

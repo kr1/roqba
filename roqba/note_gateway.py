@@ -155,36 +155,33 @@ class NoteGateway(object):
         according to the present state'''
         while True:
             data = (yield)
-            if not self.block_messages:
-                self.logger.info("sending out: {0}".format(data))
-                if type(data) == dict:
-                    for v in data.values():
-                        if v.note_change:
-                            msg = v.real_note if v.real_note else 0
-                            #self.logger.info("sending out:\
-                            #                  voice: {1}: {0}".\
-                            #                  format(msg, v.id))
-                            if self.slide and v.slide:
-                                if self.behaviour.voice_get(v.id, "use_proportional_slide_duration"):
-                                    #print "{0} has slide_prop: {1}".format(v.id, v.slide_duration_prop)
-                                    dur_prop = v.slide_duration_prop
-                                    slide_length = v.duration_in_msec * dur_prop
-                                else:
-                                    slide_length =  self.behaviour.voice_get(v.id, "slide_duration_msecs")
-                                self.set_slide_msecs(v.id, slide_length)
-                            self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
-                            self.pd_send_note(v.id, msg)
-                            if v.weight == HEAVY:
-                                self.pd.send(["voice",
-                                              "rhythm",
-                                              v.id,
-                                              str(v.note_length_grouping).\
-                                                  replace(",", "_")])
-
-                    #address = data["voice"]
-                    #msg = data["message"]
-                else:
-                    msg = str(data)
+            if self.block_messages:
+                continue
+            self.logger.info("sending out: {0}".format(data))
+            if type(data) == dict:
+                for v in data.values():
+                    if v.note_change:
+                        msg = v.real_note if v.real_note else 0
+                        # self.logger.info("sending out:\ voice: {1}: {0}".\ format(msg, v.id))
+                        if self.slide and v.slide:
+                            if self.behaviour.voice_get(v.id, "use_proportional_slide_duration"):
+                                # self.logger.info("{0} has slide_prop: {1}".format(
+                                #    v.id, v.slide_duration_prop))
+                                dur_prop = v.slide_duration_prop
+                                slide_length = v.duration_in_msec * dur_prop
+                            else:
+                                slide_length = self.behaviour.voice_get(
+                                    v.id, "slide_duration_msecs")
+                            self.set_slide_msecs(v.id, slide_length)
+                        self.pd_send_duration(v.id, v.duration_in_msec * v.note_duration_prop)
+                        self.pd_send_note(v.id, msg)
+                        if v.weight == HEAVY:
+                            self.pd.send(["voice",
+                                          "rhythm",
+                                          v.id,
+                                          str(v.note_length_grouping).replace(",", "_")])
+            else:
+                msg = str(data)
 
     def set_transpose(self, val):
         self.transpose = val
