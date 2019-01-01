@@ -149,7 +149,12 @@ behaviour = {
 
 styles = {
     "slow_and_slidy": {
-        'settings': {},
+        'settings': {
+            'composer': 'baroq',
+            'number_of_voices': 4,
+            'voice_registers': ['BASS', 'LOW_MID', 'MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 2]],
+        },
         'behaviour': {
             'per_voice': {
                 1: BehaviourDict({
@@ -166,6 +171,7 @@ styles = {
                 }),
             },
             'max_speed': 1.2,
+            'automate_slide': True,
             'slide_duration_prop': 1.0,
             'use_proportional_slide_duration': True,
             'transposings':  [1, 2, 3, 3, 3, 3, 4, 5],
@@ -224,7 +230,12 @@ styles = {
         }
     },
     "bulgarian": {
-        "settings": {'composer': 'baroq'},
+        "settings": {
+            'composer': 'baroq',
+            'number_of_voices': 4,
+            'voice_registers': ['BASS', 'LOW_MID', 'MID', 'HIGH'],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 2]],
+        },
         "behaviour": {
             'automate_meters': True,
             "meter": (7, (3, 2, 2)),
@@ -249,7 +260,8 @@ styles = {
             'common_note_duration': False,
             'automate_binaural_diffs': False,
             'binaural_diff': 0.666,
-            'max_binaural_diff': 10
+            'max_binaural_diff': 10,
+            'caesura_prob': 0.15,
         }
     },
     "rock": {
@@ -288,13 +300,14 @@ styles = {
     'amadinda': {
         'settings': {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 3]],
+            'enable_adsr': True,
             'composer': 'amadinda'},
         'behaviour': {
-            'adsr': [10, 10, 5, 20],
-            'max_adsr': [20, 20, 30, 666],
-            'min_adsr': [7, 7, 2, 10],
+            'adsr': [10, 10, 40, 120],
+            'max_adsr': [30, 30, 50, 666],
+            'min_adsr': [7, 7, 20, 10],
             'automate_adsr': True,
-            'automate_binaural_diffs': True,  # alt: False
+            'automate_binaural_diffs': True,
             'automate_microspeed_change': True,
             'microspeed_variation': 0.08,
             'microspeed_max_speed_in_hz': 2,
@@ -708,5 +721,6 @@ def behaviour_and_settings_from_style(default_settings, style_name):
         default_settings.settings.update(default_settings.styles[style_name]["settings"])
         default_settings.behaviour.update(default_settings.styles[style_name]["behaviour"])
     default_settings.behaviour["style"] = style_name
+    flatten_meters(default_settings.behaviour)
     behaviour_dict = BehaviourDict(default_settings.behaviour.items(), name='global')
     return default_settings.settings, default_settings.behaviour, behaviour_dict
