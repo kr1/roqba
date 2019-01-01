@@ -5,9 +5,9 @@ import logging.config
 
 from roqba.director import Director
 from roqba.note_gateway import NoteGateway
-from roqba.utilities.behaviour_dict import BehaviourDict
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
 import roqba.static.settings as default_settings
+
 
 try:
     import static.local_settings as local_settings
@@ -21,31 +21,30 @@ else:
     # will overwrite the default settings and behaviour
     if getattr(local_settings, 'style', None):
         style = local_settings.style
-        if default_settings.styles.get(style):
-            default_settings.settings.update(default_settings.styles[style]["settings"])
-            default_settings.behaviour.update(default_settings.styles[style]["behaviour"])
-        default_settings.behaviour["style"] = style
+        _, _, behaviour = default_settings.behaviour_and_settings_from_style(
+            default_settings, style)
+
 
 settings = default_settings.settings
 
 if os.environ.get("ROQBA_NO_GUI"):
     settings['gui'] = False
 
-behaviour = BehaviourDict(default_settings.behaviour.items(), name='global')
-default_settings.flatten_meters(behaviour)
-
-gateway = NoteGateway(settings, behaviour)
-
-logging.config.fileConfig("logging.conf")
-logger = logging.getLogger('startup')
-logger = StyleLoggerAdapter(logger, None)
-
-
-director = Director(gateway, behaviour, settings)
-
 
 def main():
-    '''starts the main thread of the application'''
+    '''creates a director instance and starts the main thread of the application'''
+    global director, behaviour
+
+    default_settings.flatten_meters(behaviour)
+
+    gateway = NoteGateway(settings, behaviour)
+
+    logging.config.fileConfig("logging.conf")
+    logger = logging.getLogger('startup')
+    logger = StyleLoggerAdapter(logger, None)
+
+
+    director = Director(gateway, behaviour, settings)
     shutdown_event = threading.Event()
     director_thread = threading.Thread(target=director._play, args=(shutdown_event,))
     director_thread.setDaemon(True)

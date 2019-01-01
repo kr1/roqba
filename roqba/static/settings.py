@@ -701,3 +701,12 @@ def flatten_meters(behaviour):
         behaviour["meters"] = sum(behaviour["meters"], [])
 
 flatten_meters(behaviour)
+
+
+def behaviour_and_settings_from_style(default_settings, style_name):
+    if default_settings.styles.get(style_name):
+        default_settings.settings.update(default_settings.styles[style_name]["settings"])
+        default_settings.behaviour.update(default_settings.styles[style_name]["behaviour"])
+    default_settings.behaviour["style"] = style_name
+    behaviour_dict = BehaviourDict(default_settings.behaviour.items(), name='global')
+    return default_settings.settings, default_settings.behaviour, behaviour_dict
