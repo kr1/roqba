@@ -260,3 +260,14 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.gateway.pd.send(["sys", "meter",
                              str(new_meter).replace(",", " ").
                              replace(" ", "_")])
+
+    def set_style(self, style_name):
+        settings, raw_behaviour, behaviour_dict = default_settings.behaviour_and_settings_from_style(
+            default_settings, style_name)
+        composer = globals().get(settings.get('composer', 'baroq'))
+        if not composer:
+            raise RuntimeError("Composer is not configured correctly")
+        self.composer = composer.Composer(self.gateway, settings, behaviour_dict)
+        self.meter = self.composer.applied_meter
+        self.metronome = metronome.Metronome(self.meter)
+
