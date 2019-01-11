@@ -66,7 +66,8 @@ class GuiConnect(object):
                     type(beh[field]).__name__ in ['list', 'dict']):
                 continue
             self.send({field: beh[field]})
-        for vid in beh['per_voice'].keys():
+        for voice in director.composer.voices.values():
+            vid = voice.id
             voice = director.composer.voices[vid]
             v_beh = beh['per_voice'][vid]
             prefix = 'voice_' + str(vid) + '_'
