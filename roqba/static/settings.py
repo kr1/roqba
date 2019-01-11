@@ -259,6 +259,7 @@ styles = {
             # constraints on dual and triple grouping
             'common_note_duration': False,
             'automate_binaural_diffs': False,
+            'automate_scale': True,
             'binaural_diff': 0.666,
             'max_binaural_diff': 10,
             'caesura_prob': 0.15,
