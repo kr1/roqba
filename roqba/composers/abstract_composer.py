@@ -47,8 +47,8 @@ class AbstractComposer(object):
         for voice_idx in range(1, 5):
             self.gateway.mute_voice(voice_idx, 1)
         for voice_idx in range(self.num_voices):
-            self.gateway.mute_voice(voice_idx, 0)
             id_ = voice_idx + 1
+            self.gateway.mute_voice(id_, 0)
             self.voices[id_] = Voice(
                 id_, self,
                 note_length_grouping=self.behaviour["meter"][1],
