@@ -83,6 +83,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                                     args=(self.incoming,))
             thre.daemon = True
             thre.start()
+        self.set_wavetables(voices=self.composer.voices.values())
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
