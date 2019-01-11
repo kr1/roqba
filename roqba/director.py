@@ -96,6 +96,8 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.behaviour.real_setters["binaural_diff"] = self.composer.set_binaural_diffs
         self.behaviour.real_setters["slide_duration_msecs"] = self.gateway.set_slide_msecs_for_all_voices
         for vid in self.behaviour['per_voice'].keys():
+            if not vid in self.composer.voices:
+                continue
             self.behaviour['per_voice'][vid].real_setters["pan_pos"] = \
                 [self.composer.voices[vid].set_pan_pos, self.gateway]
             self.behaviour['per_voice'][vid].real_setters["slide_duration_msecs"] = \

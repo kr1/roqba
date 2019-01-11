@@ -82,15 +82,15 @@ class BehaviourDict(dict):
         if the value is present for the voice, this value is returned
         otherwise the default value for this key is returned'''
         if vid in self["per_voice"].keys():
-                if key in self["per_voice"][vid].keys():
-                    return self["per_voice"][vid][key]
-                else:
-                    try:
-                        return self[key]
-                    except KeyError:
-                        msg = "inexistent key: "
-                        msg += "{0} for both voice: {1} and default"
-                        raise RuntimeError(msg.format(key, vid))
+            if key in self["per_voice"][vid]:
+                return self["per_voice"][vid][key]
+            else:
+                try:
+                    return self[key]
+                except KeyError:
+                    msg = "inexistent key: "
+                    msg += "{0} for both voice: {1} and default"
+                    raise RuntimeError(msg.format(key, vid))
         else:
             msg = "voice_get() called for unregistered voice: {0}"
             raise RuntimeError(msg.format(vid))

@@ -262,6 +262,12 @@ styles = {
             'binaural_diff': 0.666,
             'max_binaural_diff': 10,
             'caesura_prob': 0.15,
+            'per_voice': {
+                1: BehaviourDict({}),
+                2: BehaviourDict({}),
+                3: BehaviourDict({}),
+                4: BehaviourDict({}),
+            },
         }
     },
     "rock": {
