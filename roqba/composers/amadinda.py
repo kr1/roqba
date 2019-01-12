@@ -32,6 +32,7 @@ class Composer(AbstractComposer):
         self.make_new_pattern()
         self.gateway.mute_voice("drums", 1)
         self.gateway.set_slide_to_0()
+        self.set_binaural_diffs()
 
     def all_python_words(self):
         filepaths = itertools.chain(*[[os.path.join(entry[0], file_)

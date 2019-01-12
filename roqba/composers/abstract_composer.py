@@ -114,17 +114,17 @@ class AbstractComposer(object):
                 self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
             else:
                 self.gateway.pd.send(["voice", "binaural", -1, val])
-                for v in self.voices.values():
-                    v.binaural_diff = val
+                for voice in self.voices.values():
+                    voice.binaural_diff = val
         else:
             if self.behaviour['common_binaural_diff']:
                 val = random.random() * self.behaviour.get("max_binaural_diff")
-            for v in self.voices.values():
-                if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+            for voice in self.voices.values():
+                if not self.behaviour.voice_get(voice.id, "automate_binaural_diffs"):
                     continue
-                val = val or random.random() * self.behaviour.voice_get(v.id, "max_binaural_diff")
-                v.binaural_diff = val
-                self.gateway.pd.send(["voice", "binaural", v.id, val])
+                new_val = val or random.random() * self.behaviour.voice_get(voice.id, "max_binaural_diff")
+                voice.binaural_diff = new_val
+                self.gateway.pd.send(["voice", "binaural", voice.id, new_val])
 
     def set_scale(self, name, min=0, max=128):
         '''sets the specified scale and generates a new real scale'''
