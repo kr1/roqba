@@ -6,7 +6,7 @@ from random import random, choice, randint
 from Queue import deque
 
 import metronome
-from roqba.static import settings as default_settings
+from roqba.static import settings
 from roqba.note_gateway import NoteGateway
 from roqba.composers import baroq, amadinda, rendezvous, usualis
 from roqba.utilities import random_between
@@ -262,22 +262,22 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         new_meter = choice(self.composer.selected_meters)
         self.set_meter(new_meter)
         self.gateway.pd.send(["sys", "meter",
-                             str(new_meter).replace(",", " ").
-                             replace(" ", "_")])
+                              str(new_meter).replace(",", " ").replace(" ", "_")])
 
     def set_style(self, style_name):
+        global settings
         del self.gateway
-        settings, raw_behaviour, behaviour_dict = default_settings.behaviour_and_settings_from_style(
-            default_settings, style_name)
-        composer = globals().get(settings.get('composer', 'baroq'))
+        settings = reload(settings)
+        style_settings, raw_behaviour, style_behaviour = settings.behaviour_and_settings_from_style(
+            settings, style_name)
+        composer = globals().get(style_settings.get('composer', 'baroq'))
         if not composer:
             raise RuntimeError("Composer is not configured correctly")
-        self.gateway = NoteGateway(settings, behaviour_dict)
-        self.composer = composer.Composer(self.gateway, settings, behaviour_dict)
-        self.behaviour = behaviour_dict
+        self.gateway = NoteGateway(style_settings, style_behaviour)
+        self.composer = composer.Composer(self.gateway, style_settings, style_behaviour)
+        self.behaviour = style_behaviour
         self.meter = self.composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
         self.new_random_adsr_for_all_voices()
         self.force_caesura = True
         self.gateway.set_slide_to_0()
-

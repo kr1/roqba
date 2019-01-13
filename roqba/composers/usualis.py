@@ -14,7 +14,6 @@ ambitus_by_mode = {
 
 class Composer(AbstractComposer):
     def __init__(self, gateway, settings, behaviour, scale="DIATONIC"):
-        # General
         super(Composer, self).__init__(gateway,
                                       settings,
                                       behaviour)
