@@ -38,7 +38,7 @@ class PdSender(Sender):
         self.sock.sendto("{0}\n".format(msg) + "\n", (self.host, self.port))
 
     def __del__(self):
-        print "switching off the lights...."
+        self.logger.info("setting sound to 0. switching off the lights....")
         self.send("sound 0")
 
 if __name__ == "__main__":

@@ -292,6 +292,7 @@ styles = {
             "max_speed": 0.25,
             "min_speed": 0.18,
             "speed_change": "leap",  # alt:"transition"
+            'default_pan_position': 0,
             'embellishment_speed_lim': 0.1,
             'default_pause_prob': 0.1,
             'default_embellishment_prob': 0.05,
@@ -307,6 +308,7 @@ styles = {
     'amadinda': {
         'settings': {
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 3]],
+            'voice_registers': ['FLAT_MID', 'FLAT_MID', 'HIGH'],
             'number_of_voices': 3,
             'enable_adsr': True,
             'composer': 'amadinda'},
