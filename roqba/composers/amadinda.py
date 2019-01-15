@@ -24,6 +24,7 @@ class Composer(AbstractComposer):
         self.words = self.all_python_words()
         self.octave_offset = behaviour['octave_offset']
         self.transpose = 20
+        self.length_indicator = None
 
         for voice in self.voices.values():
             voice.duration_in_msec = 600
@@ -48,8 +49,12 @@ class Composer(AbstractComposer):
         pass
 
     def __repr__(self):
-        return "<Amadinda instance> pattern length: {}, # of plays: {}, # of notes in third voice".format(
-                len(self.patterns[0]), self.pattern_played_maximum, self.number_of_tones_in_3rd_voice)
+        return ("<AmadindaComposer: {}> scale: "
+                "{} \npattern: {{ len: {}, # total plays: {}, # current plays: {},# of notes 3rd v: {}}}"
+                "\nlength indicator: {}, transpose: {}").format(
+                    id(self), self.scale, len(self.patterns[0][1]),
+                    self.pattern_played_maximum, self.pattern_played_times,
+                    self.number_of_tones_in_3rd_voice, self.length_indicator, self.transpose)
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
@@ -102,12 +107,12 @@ class Composer(AbstractComposer):
 
     def next_voice_note(self, voice, meter_pos, state):
         # reduce number of plays if speed is slow and pattern long
-        length_indicator = state['speed'] * self.pattern_played_maximum * len(self.patterns[0][1])
-        if length_indicator > 200:
+        self.length_indicator = state['speed'] * self.pattern_played_maximum * len(self.patterns[0][1])
+        if self.length_indicator > 200:
             self.pattern_played_maximum = int(self.pattern_played_maximum * 0.99)
             self.musical_logger.info("amadinda: reducing max plays to {}, indicator: {}".format(
                 self.pattern_played_maximum,
-                length_indicator))
+                self.length_indicator))
         voice.update_current_microvolume()
         if self.pattern_played_times >= self.pattern_played_maximum:
             self.make_new_pattern()
