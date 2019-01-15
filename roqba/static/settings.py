@@ -507,13 +507,13 @@ styles = {
             'notate': False,
             'start_scale': 'GREEK_CHROMATIC' },
         'behaviour': {
-            'max_adsr': [200, 200, 90, 2666],
+            'max_adsr': [2000, 2000, 90, 2666],
             'min_adsr': [100, 100, 70, 1666],
             'automate_microspeed_change': True,
             'microspeed_variation': 0.06,
-            'microspeed_max_speed_in_hz': 0.3,
+            'microspeed_max_speed_in_hz': 0.05,
             'automate_microvolume_change': True,
-            'microvolume_variation': 0.2,
+            'microvolume_variation': 1.8,
             'microvolume_max_speed_in_hz': 0.4,
             'default_volume': 0.666,
             "speed": 0.3,
@@ -679,7 +679,7 @@ styles = {
             'common_binaural_diff': True,
             'automate_binaural_diffs': True,  # alt: False
             'binaural_diff': 0.666,
-            'max_binaural_diff': 10,
+            'max_binaural_diff': 5,
 
             # SLIDE RELATED
             'automate_slide': True,

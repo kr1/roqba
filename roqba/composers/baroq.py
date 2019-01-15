@@ -49,6 +49,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             tmp_harm.append(v.note)
             if v.note == 0 or not v.note_change:
                 continue
+            v.update_current_microvolume()
+            if v.current_microvolume:
+                self.gateway.send_voice_peak_level(v, v.current_microvolume)
             if (state["weight"] == metronome.HEAVY or
                     state["weight"] == metronome.MEDIUM):
                 patience = 0

@@ -102,7 +102,7 @@ class Voice(object):
             self.new_microvolume_sine()
             self.microvolume_variation = self.composer.behaviour.voice_get(
                 self.id, 'microvolume_variation')
-            self.current_microvolume = self.update_current_microvolume()
+            self.update_current_microvolume()
 
     def new_microvolume_sine(self):
         args = [random.random() * self.composer.behaviour['microvolume_max_speed_in_hz']
