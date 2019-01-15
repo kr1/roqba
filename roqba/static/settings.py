@@ -317,6 +317,7 @@ styles = {
             'pattern_played_minimum': 5,
             'adsr': [10, 10, 30, 120],
             'max_adsr': [30, 30, 30, 333],
+            "automate_scale": True,
             'min_adsr': [7, 7, 20, 100],
             'automate_adsr': True,
             'automate_binaural_diffs': True,
