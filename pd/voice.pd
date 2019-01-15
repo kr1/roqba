@@ -1,4 +1,4 @@
-#N canvas 2 48 1020 718 10;
+#N canvas 2 68 1362 698 10;
 #X obj 312 118 inlet;
 #X obj 657 269 inlet;
 #X text 309 100 trigger;
@@ -103,7 +103,7 @@ This patch is used as an abstraction in various examples.;
 #X obj 52 456 line~;
 #X obj 203 458 line~;
 #X obj 245 584 vsl 105 54 80 800 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 2843 1;
+-1 -1 524 1;
 #X obj 205 554 line;
 #X obj 210 642 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -288,6 +288,7 @@ This patch is used as an abstraction in various examples.;
 #X connect 42 0 56 0;
 #X connect 43 0 54 0;
 #X connect 43 0 114 0;
+#X connect 43 0 120 0;
 #X connect 45 0 70 0;
 #X connect 46 0 47 0;
 #X connect 47 0 51 0;
