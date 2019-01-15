@@ -1,7 +1,7 @@
 import os
 import itertools
 import threading
-from random import choice
+from random import choice, random
 
 from roqba.composers.abstract_composer import AbstractComposer
 from roqba.static.scales_and_harmonies import FOLLOWINGS
@@ -21,7 +21,8 @@ class Composer(AbstractComposer):
         self.sequence_length = behaviour['sequence_length']
         self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
         self.pattern_played_times = 0
-        self.pattern_played_maximum = 90
+        self.behaviour = behaviour
+        self.new_random_pattern_played_maximum()
         self.words = self.all_python_words()
         self.octave_offset = behaviour['octave_offset']
         self.transpose = 20
@@ -99,23 +100,6 @@ class Composer(AbstractComposer):
 
     def next_voice_note(self, voice, meter_pos):
         voice.update_current_microvolume()
-        if voice.behaviour == "SLAVE":
-            follow = self.voices[voice.followed_voice_id]
-            res = 0
-            if follow.note_change:
-                if voice.following_counter == 0:
-                    voice.follow_dist = choice(FOLLOWINGS)
-                if voice.following_counter < voice.follow_limit:
-                    res = follow.note and follow.note + voice.follow_dist or 0
-                    voice.following_counter += 1
-                else:
-                    voice.reset_slave()
-                    res = 0
-                if follow.note == 0:
-                    res = 0
-                next_note = res
-                voice.real_note = next_note and self.real_scale[next_note] or None
-                return res
         if self.pattern_played_times >= self.pattern_played_maximum:
             self.make_new_pattern()
             self.comment = 'caesura'
@@ -136,6 +120,13 @@ class Composer(AbstractComposer):
         self.patterns = {}
         for offset in range(0, 5):
             self.patterns[offset] = self.shift_pattern(pure_seq1, pure_seq2, offset)
+        self.new_random_pattern_played_maximum()
+
+    def new_random_pattern_played_maximum(self):
+        self.pattern_played_maximum = (self.behaviour['pattern_played_minimum'] + random() *
+                                       (self.behaviour['pattern_played_maximum'] -
+                                        self.behaviour['pattern_played_minimum']))
+        self.musical_logger.debug("amadinda: new pattern_played_maximum".format(self.pattern_played_maximum))
 
     def shift_pattern(self, seq1, seq2, offset):
         return self._apply_new_pattern([(entry + offset) % self.tone_range for entry in seq1],

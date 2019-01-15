@@ -307,12 +307,14 @@ styles = {
     },
     'amadinda': {
         'settings': {
-            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', ['SLAVE', 3]],
+            'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
             'voice_registers': ['FLAT_MID', 'FLAT_MID', 'HIGH'],
             'number_of_voices': 3,
             'enable_adsr': True,
             'composer': 'amadinda'},
         'behaviour': {
+            'pattern_played_maximum': 99,
+            'pattern_played_minimum': 5,
             'adsr': [10, 10, 30, 120],
             'max_adsr': [30, 30, 30, 333],
             'min_adsr': [7, 7, 20, 100],
