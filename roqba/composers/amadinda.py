@@ -47,6 +47,10 @@ class Composer(AbstractComposer):
     def choose_rhythm(self):
         pass
 
+    def __repr__(self):
+        return "<Amadinda instance> pattern length: {}, # of plays: {}, # of notes in third voice".format(
+                len(self.patterns[0]), self.pattern_played_maximum, self.number_of_tones_in_3rd_voice)
+
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
 
@@ -62,7 +66,7 @@ class Composer(AbstractComposer):
             if voice.note == 0 or not voice.note_change:
                 continue
             voice.note_change = True
-            next_note = self.next_voice_note(voice, meter_pos)
+            next_note = self.next_voice_note(voice, meter_pos, state)
             tmp_harm.append(next_note)
         cycle_pos = state['cycle_pos']
         send_drum = True
@@ -96,7 +100,14 @@ class Composer(AbstractComposer):
                                        "cycle_pos": state["cycle_pos"]})
         return self.comment
 
-    def next_voice_note(self, voice, meter_pos):
+    def next_voice_note(self, voice, meter_pos, state):
+        # reduce number of plays if speed is slow and pattern long
+        length_indicator = state['speed'] * self.pattern_played_maximum * len(self.patterns[0][1])
+        if length_indicator > 200:
+            self.pattern_played_maximum = int(self.pattern_played_maximum * 0.99)
+            self.musical_logger.info("amadinda: reducing max plays to {}, indicator: {}".format(
+                self.pattern_played_maximum,
+                length_indicator))
         voice.update_current_microvolume()
         if self.pattern_played_times >= self.pattern_played_maximum:
             self.make_new_pattern()
@@ -126,10 +137,11 @@ class Composer(AbstractComposer):
             self.behaviour['min_number_of_tones_in_3rd_voice'] + random() *
             (self.behaviour['max_number_of_tones_in_3rd_voice'] -
              self.behaviour['min_number_of_tones_in_3rd_voice'])))
-        self.pattern_played_maximum = (self.behaviour['pattern_played_minimum'] + random() *
-                                       (self.behaviour['pattern_played_maximum'] -
-                                        self.behaviour['pattern_played_minimum']))
-        self.musical_logger.debug("amadinda: new pattern_played_maximum".format(self.pattern_played_maximum))
+        max_length = self.behaviour['pattern_played_maximum']
+        min_length = self.behaviour['pattern_played_minimum']
+        self.pattern_played_maximum = int(min_length + random() * (max_length - min_length))
+        self.musical_logger.info("amadinda: new pattern_played_maximum: {}".format(
+            self.pattern_played_maximum))
 
     def shift_pattern(self, seq1, seq2, offset):
         return self._apply_new_pattern([(entry + offset) % self.tone_range for entry in seq1],
