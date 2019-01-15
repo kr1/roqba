@@ -18,11 +18,9 @@ class Composer(AbstractComposer):
         self.second_beat_half = False
         # Amadinda specific
         self.tone_range = behaviour['tone_range']
-        self.sequence_length = behaviour['sequence_length']
-        self.number_of_tones_in_3rd_voice = behaviour['number_of_tones_in_3rd_voice']
         self.pattern_played_times = 0
         self.behaviour = behaviour
-        self.new_random_pattern_played_maximum()
+        self.new_random_values()
         self.words = self.all_python_words()
         self.octave_offset = behaviour['octave_offset']
         self.transpose = 20
@@ -44,7 +42,7 @@ class Composer(AbstractComposer):
             with open(filepath) as file_:
                 lines.extend(file_.readlines())
         words = itertools.chain(*[line.split(" ") for line in lines])
-        return [word.strip() for word in words if word.strip() and len(word.strip()) >= 12]
+        return [word.strip() for word in words if word.strip() and len(word.strip()) >= 36]
 
     def choose_rhythm(self):
         pass
@@ -112,6 +110,7 @@ class Composer(AbstractComposer):
         return next_note
 
     def make_new_pattern(self):
+        self.new_random_values()
         word1 = choice(self.words)
         pure_seq1 = [(ord(char) % self.tone_range) for char in word1][:self.sequence_length]
         word2 = choice(self.words)
@@ -120,9 +119,13 @@ class Composer(AbstractComposer):
         self.patterns = {}
         for offset in range(0, 5):
             self.patterns[offset] = self.shift_pattern(pure_seq1, pure_seq2, offset)
-        self.new_random_pattern_played_maximum()
 
-    def new_random_pattern_played_maximum(self):
+    def new_random_values(self):
+        self.sequence_length = choice([2, 3, 4, 5, 6]) * self.behaviour['sequence_length_grid']
+        self.number_of_tones_in_3rd_voice = int(round(
+            self.behaviour['min_number_of_tones_in_3rd_voice'] + random() *
+            (self.behaviour['max_number_of_tones_in_3rd_voice'] -
+             self.behaviour['min_number_of_tones_in_3rd_voice'])))
         self.pattern_played_maximum = (self.behaviour['pattern_played_minimum'] + random() *
                                        (self.behaviour['pattern_played_maximum'] -
                                         self.behaviour['pattern_played_minimum']))
