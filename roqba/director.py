@@ -1,14 +1,12 @@
 import time
 import logging
-import math
 import threading
-from random import random, choice, randint
+from random import random, choice
 from Queue import deque
 
 import metronome
-from roqba.static import settings
 from roqba.note_gateway import NoteGateway
-from roqba.composers import baroq, amadinda, rendezvous, usualis
+from roqba.composers import baroq, amadinda, rendezvous, usualis  # noqa
 from roqba.utilities import random_between
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
 
@@ -78,7 +76,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         if self.has_gui:
             self.incoming = deque()
             self.gui_sender.update_gui(self)
-            #start the reader thread
+            # start the reader thread
             thre = threading.Thread(target=self.gui_sender.read_incoming_messages,
                                     args=(self.incoming,))
             thre.daemon = True
@@ -96,7 +94,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.behaviour.real_setters["binaural_diff"] = self.composer.set_binaural_diffs
         self.behaviour.real_setters["slide_duration_msecs"] = self.gateway.set_slide_msecs_for_all_voices
         for vid in self.behaviour['per_voice'].keys():
-            if not vid in self.composer.voices:
+            if vid not in self.composer.voices:
                 continue
             self.behaviour['per_voice'][vid].real_setters["pan_pos"] = \
                 [self.composer.voices[vid].set_pan_pos, self.gateway]
@@ -139,69 +137,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             comment = self.composer.generate(self.state)
             if ((comment == 'caesura' and random() < self.behaviour["caesura_prob"])
                     or self.force_caesura):
-                if self.force_caesura:
-                    self.force_caesura = False
-                # take 5 + 1 times out....
-                time.sleep(self.speed * 4)
-                self.shuffle_delay = random() * self.MAX_SHUFFLE
-                logger.info("shuffle delay set to: {0}".format(
-                    self.shuffle_delay))
-                self.new_speed()
-                self.state["speed"] = self.speed
-                self.metronome.reset()
-                self.composer.gateway.stop_all_notes()
-                voices = self.composer.voices.values()
-                if self.behaviour['automate_adsr']:
-                    self.new_random_adsr_for_all_voices()
-                if self.behaviour['automate_scale']:
-                    self.composer.set_scale(choice(
-                                            self.composer.offered_scales))
-                if self.behaviour['automate_meters']:
-                    self.new_random_meter()
-                if self.behaviour["automate_pan"]:
-                    for v in voices:
-                        if self.behaviour.voice_get(v.id, "automate_pan"):
-                            max_pos = self.behaviour.voice_get(v.id,
-                                                               "automate_pan")
-                            v.pan_pos = (random() * max_pos) - max_pos / 2.0
-                            self.gateway.send_voice_pan(v, v.pan_pos)
-                if self.behaviour["automate_binaural_diffs"]:
-                    if self.behaviour["pan_controls_binaural_diff"]:
-                        for v in voices:
-                            if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
-                                continue
-                            diff = (abs(v.pan_pos) *
-                                    self.behaviour.voice_get(v.id, "max_binaural_diff"))
-                            self.composer.set_binaural_diffs(diff, v)
-                    else:
-                        self.composer.set_binaural_diffs()
-                if self.behaviour["automate_note_duration_prop"]:
-                    min_, max_ = self.behaviour["automate_note_duration_min_max"]
-                    if self.behaviour["common_note_duration"]:
-                        prop = random_between(min_, max_, 0.3)
-                        [setattr(v, 'note_duration_prop', prop) for v
-                            in self.composer.voices.values()]
-                    else:
-                        for v in self.composer.voices.values():
-                            min_, max_ = self.behaviour.voice_get(v.id,
-                                                                  "automate_note_duration_min_max")
-                            prop = random_between(min_, max_, 0.3)
-                            v.note_duration_prop = prop
-                if self.behaviour["automate_transpose"]:
-                    sample = self.behaviour["transposings"]
-                    new_transpose = choice(sample)
-                    self.gateway.transpose = new_transpose
-                    self.behaviour["transpose"] = new_transpose
-                time.sleep(self.speed)
-                if self.behaviour["automate_wavetables"]:
-                    self.set_wavetables(voices=voices)
-                if self.has_gui:
-                    self.gui_sender.handle_caesura(self)
-                    self.gui_sender.send({'transpose': new_transpose})
-                self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
-                    self.composer.meter, self.speed, self.composer.scale))
-                if self.behaviour['automate_microspeed_change']:
-                    self.new_microspeed_sine()
+                self.handle_caesura()
             self.check_incoming_messages()
             shuffle_delta = self.speed * self.shuffle_delay
             if weight == metronome.LIGHT:
@@ -218,6 +154,71 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                 microspeed_multiplier = 1
             time.sleep(sleep_time * (1 +
                        microspeed_multiplier * self.behaviour['microspeed_variation']))
+
+    def handle_caesura(self):
+        if self.force_caesura:
+            self.force_caesura = False
+        # take 5 + 1 times out....
+        time.sleep(self.speed * 4)
+        self.shuffle_delay = random() * self.MAX_SHUFFLE
+        logger.info("shuffle delay set to: {0}".format(
+            self.shuffle_delay))
+        self.new_speed()
+        self.state["speed"] = self.speed
+        self.metronome.reset()
+        self.composer.gateway.stop_all_notes()
+        voices = self.composer.voices.values()
+        if self.behaviour['automate_adsr']:
+            self.new_random_adsr_for_all_voices()
+        if self.behaviour['automate_scale']:
+            self.composer.set_scale(choice(
+                                    self.composer.offered_scales))
+        if self.behaviour['automate_meters']:
+            self.new_random_meter()
+        if self.behaviour["automate_pan"]:
+            for v in voices:
+                if self.behaviour.voice_get(v.id, "automate_pan"):
+                    max_pos = self.behaviour.voice_get(v.id,
+                                                       "automate_pan")
+                    v.pan_pos = (random() * max_pos) - max_pos / 2.0
+                    self.gateway.send_voice_pan(v, v.pan_pos)
+        if self.behaviour["automate_binaural_diffs"]:
+            if self.behaviour["pan_controls_binaural_diff"]:
+                for v in voices:
+                    if not self.behaviour.voice_get(v.id, "automate_binaural_diffs"):
+                        continue
+                    diff = (abs(v.pan_pos) *
+                            self.behaviour.voice_get(v.id, "max_binaural_diff"))
+                    self.composer.set_binaural_diffs(diff, v)
+            else:
+                self.composer.set_binaural_diffs()
+        if self.behaviour["automate_note_duration_prop"]:
+            min_, max_ = self.behaviour["automate_note_duration_min_max"]
+            if self.behaviour["common_note_duration"]:
+                prop = random_between(min_, max_, 0.3)
+                [setattr(v, 'note_duration_prop', prop) for v
+                    in self.composer.voices.values()]
+            else:
+                for v in self.composer.voices.values():
+                    min_, max_ = self.behaviour.voice_get(v.id,
+                                                          "automate_note_duration_min_max")
+                    prop = random_between(min_, max_, 0.3)
+                    v.note_duration_prop = prop
+        if self.behaviour["automate_transpose"]:
+            sample = self.behaviour["transposings"]
+            new_transpose = choice(sample)
+            self.gateway.transpose = new_transpose
+            self.behaviour["transpose"] = new_transpose
+        time.sleep(self.speed)
+        if self.behaviour["automate_wavetables"]:
+            self.set_wavetables(voices=voices)
+        if self.has_gui:
+            self.gui_sender.handle_caesura(self)
+            self.gui_sender.send({'transpose': new_transpose})
+        self.musical_logger.info('caesura :: meter: {0}, speed: {1}, scale: {2}'.format(
+            self.composer.meter, self.speed, self.composer.scale))
+        if self.behaviour['automate_microspeed_change']:
+            self.new_microspeed_sine()
 
     def check_incoming_messages(self):
         '''checks if there are incoming messages in the queue'''
