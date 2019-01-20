@@ -4,7 +4,10 @@ import logging
 
 class StyleLoggerAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
-        return '[{}] {}'.format(os.environ.get("ROQBA_STYLE", 'style: n/a'), msg), kwargs
+        ROQBA_STYLE = os.environ.get("ROQBA_STYLE", None)
+        if ROQBA_STYLE:
+            return '[{}] {}'.format(ROQBA_STYLE, msg), kwargs
+        return msg, kwargs
 
     def debug(self, msg, *args, **kwargs):
         msg, kwargs = self.process(msg, kwargs)
