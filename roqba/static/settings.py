@@ -2,6 +2,12 @@ import os
 from roqba.static.meters import METERS
 from roqba.utilities.behaviour_dict import BehaviourDict
 
+global_config = {
+    'automate_style': True,
+    'style_change_prob': 0.3,
+    'max_caesurae_of_same_style': 15,
+    'min_caesurae_of_same_style': 5
+}
 settings = {'number_of_voices': 4,
             'voice_registers': ['BASS', 'MID', 'MID', 'HIGH'],
             # 'voice_registers': ['ROCK_BASS', 'MID', 'MID', 'HIGH'],
@@ -192,7 +198,7 @@ styles = {
             'automate_microspeed_change': False,
             'common_wavetables': False,
             'max_speed': 0.5,
-            'caesura_prob': 0.001,
+            'caesura_prob': 0.07,
             'slide_duration_prop': 0.1,
             'min_speed': 0.08,
             "shuffle_delay": 0.02,

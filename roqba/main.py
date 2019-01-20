@@ -24,6 +24,7 @@ else:
         _, _, behaviour = default_settings.behaviour_and_settings_from_style(
             default_settings, style)
 
+global_config = local_settings.global_config
 
 settings = default_settings.settings
 
@@ -44,7 +45,7 @@ def main():
     logger = StyleLoggerAdapter(logger, None)
 
 
-    director = Director(gateway, behaviour, settings)
+    director = Director(gateway, behaviour, settings, global_config)
     shutdown_event = threading.Event()
     director_thread = threading.Thread(target=director._play, args=(shutdown_event,))
     director_thread.setDaemon(True)

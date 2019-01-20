@@ -1,11 +1,15 @@
 import os
 
-from roqba.utilities.behaviour_dict import BehaviourDict
+global_config = {
+    'automate_style': True,
+    'style_change_prob': 0.3,
+    'max_caesurae_of_same_style': 5,
+    'min_caesurae_of_same_style': 5
+}
 
 settings = {}
 
 behaviour = {}
-
 
 if os.environ.get("ROQBA_STYLE"):
     style = os.environ.get("ROQBA_STYLE")

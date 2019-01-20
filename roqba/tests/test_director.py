@@ -30,7 +30,7 @@ def director():
         "speed": 0.4,
         "cycle_pos": 2
     }
-    director = Director(gateway, behaviour, elab_settings)
+    director = Director(gateway, behaviour, style_settings, settings.global_config)
     return director
 
 
