@@ -9,6 +9,7 @@ from roqba.note_gateway import NoteGateway
 from roqba.composers import baroq, amadinda, rendezvous, usualis  # noqa
 from roqba.utilities import random_between
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
+from roqba.static import settings  # noqa
 
 from utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
@@ -24,15 +25,18 @@ logger = StyleLoggerAdapter(logger, None)
 
 
 class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
-    def __init__(self, gateway, behaviour, settings):
+    def __init__(self, gateway, behaviour, settings, global_config):
         composer = globals().get(settings.get('composer', 'baroq'))
         if not composer:
             raise RuntimeError("Composer is not configured correctly")
         self.composer = composer.Composer(gateway, settings, behaviour)
+
+        self.global_config = global_config
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
         self.force_caesura = False
+        self.caesura_count = 0
         self.settings = settings
         self.gateway = self.composer.gateway
 
@@ -137,7 +141,22 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             comment = self.composer.generate(self.state)
             if ((comment == 'caesura' and random() < self.behaviour["caesura_prob"])
                     or self.force_caesura):
-                self.handle_caesura()
+                self.caesura_count += 1
+                glob_conf = self.global_config
+                if glob_conf['automate_style']:
+                    change_style = False
+                    random_value = random()
+                    if self.caesura_count >= glob_conf['max_caesurae_of_same_style']:
+                        change_style = True
+                    elif (self.caesura_count >= glob_conf['min_caesurae_of_same_style']
+                            and random_value > glob_conf['style_change_prob']):
+                        change_style = True
+                    if change_style:
+                        new_style = choice(settings.styles.keys())
+                        self.set_style(new_style)
+                        self.musical_logger.info('new_style: {}'.format(new_style))
+
+                self._handle_caesura()
             self.check_incoming_messages()
             shuffle_delta = self.speed * self.shuffle_delay
             if weight == metronome.LIGHT:
@@ -155,7 +174,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             time.sleep(sleep_time * (1 +
                        microspeed_multiplier * self.behaviour['microspeed_variation']))
 
-    def handle_caesura(self):
+    def _handle_caesura(self):
         if self.force_caesura:
             self.force_caesura = False
         # take 5 + 1 times out....
