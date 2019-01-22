@@ -131,6 +131,11 @@ class NoteGateway(object):
         args = ["perc", voice, vol, pan, ctl]
         self.pd.send(args)
 
+    def set_drum_volume(self, vol):
+        '''sends volume for the drums'''
+        args = ["perc", "vol", str(vol)]
+        self.pd.send(args)
+
     def drum_hub_gen(self):
         '''generator method that sends notes to all drum voices
 
