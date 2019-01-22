@@ -88,9 +88,10 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.gateway.hub.send(self.voices)  # this sends the voices to the hub
         if self.notate:
             self.notator.notate_rhythm(self.meter, state["cycle_pos"])
-            self.notator.notate_bar_sequence(state['bar_sequence'],
-                                             state['bar_sequence_current_position'],
-                                             self.scale)
+            if self.behaviour['follow_bar_sequence'] and state.get('bar_sequence'):
+                self.notator.notate_bar_sequence(state['bar_sequence'],
+                                                 state['bar_sequence_current_position'],
+                                                 self.scale)
             self.notator.note_to_file({"notes": tmp_harm,
                                        "weight": state["weight"],
                                        "cycle_pos": state["cycle_pos"]})

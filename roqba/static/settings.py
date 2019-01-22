@@ -475,7 +475,7 @@ styles = {
             'default_pause_prob': 0.07,
             'default_embellishment_prob': 0.1,
             'embellishment_speed_lim': 0.5,
-            'follow_bar_sequence': True,
+            'follow_bar_sequence': False,
             'half_beat': False,
             'max_binaural_diff': 10,
             "max_shuffle": 0.2,  # todo: check possibility for -
@@ -512,7 +512,7 @@ styles = {
             'enable_adsr': True,
             'gui': True,
             'composer': 'baroq',
-            'notate': False,
+            'notate': True,
             'start_scale': 'GREEK_CHROMATIC' },
         'behaviour': {
             'max_adsr': [2000, 2000, 100, 30],
@@ -589,7 +589,7 @@ styles = {
             # SEQUENCE / MELODY RELATED
             'follow_bar_sequence': False,  # alt: True
 
-            'embellishment_speed_lim': 0.666,
+            'embellishment_speed_lim': 0.3,
             'default_embellishment_prob': 0.005,
             'default_pause_prob': 0.22,
             'per_voice': {
