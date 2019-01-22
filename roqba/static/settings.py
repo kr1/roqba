@@ -42,6 +42,9 @@ behaviour = {
     'microvolume_max_speed_in_hz': 0.4,
     'default_volume': 0.666,
     'has_percussion': True,
+    'percussion_automate_vol': True,
+    'percussion_max_vol': 0.17,
+    'percussion_min_vol': 0,
     "speed": 0.3,
     'half_beat': False,
     'automate_speed_change': True,
@@ -527,7 +530,10 @@ styles = {
             "speed": 0.3,
             'half_beat': True,
             'automate_speed_change': True,
-            'has_percussion': False,
+            'has_percussion': True,
+            'percussion_automate_vol': True,
+            'percussion_max_vol': 0.25,
+            'percussion_min_vol': 0,
             "max_speed": 1.2,
             "min_speed": 0.08,
             # speed-target:
@@ -535,7 +541,7 @@ styles = {
             # +/- in the middle of the given range
             # 0.25 means that the average of speeds will be at the first
             # quarter of the range (predominantly fast)
-            "speed_target": 0.5,
+            "speed_target": 0.2,
             "speed_change": "leap",  # alt:"transition"
             'caesura_prob': 0.05,
             "shuffle_delay": 0.05,  # keep this between 0 and MAX_SHUFFLE
@@ -590,7 +596,7 @@ styles = {
             'follow_bar_sequence': False,  # alt: True
 
             'embellishment_speed_lim': 0.3,
-            'default_embellishment_prob': 0.005,
+            'default_embellishment_prob': 0.07,
             'default_pause_prob': 0.22,
             'per_voice': {
                 1: BehaviourDict({
@@ -601,9 +607,7 @@ styles = {
                     'binaural_diff': 0.666,
                     'default_pan_position': 1,
                     'automate_pan': 1,
-                    'max_binaural_diff': 5,
-                    'automate_note_duration_prop': False,
-                    'automate_note_duration_min_max': [0.1, 3.3]},
+                    'max_binaural_diff': 5},
                     name='voice 1'),
                 2: BehaviourDict({
                     'default_pan_position': 0,

@@ -228,6 +228,11 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             new_transpose = choice(sample)
             self.gateway.transpose = new_transpose
             self.behaviour["transpose"] = new_transpose
+        if self.behaviour.get('percussion_automate_vol'):
+            new_vol = (self.behaviour['percussion_max_vol'] * random() -
+                       self.behaviour['percussion_min_vol'])
+            self.gateway.set_drum_volume(new_vol)
+
         time.sleep(self.speed)
         if self.behaviour["automate_wavetables"]:
             self.set_wavetables(voices=voices)
