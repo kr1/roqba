@@ -169,7 +169,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                         change_style = True
                     if change_style:
                         new_style = choice(settings.styles.keys())
-                        self.set_style(new_style)
+                        self.set_style(new_style, manual=False)
                         self.musical_logger.info('new_style: {}'.format(new_style))
 
                 self._handle_caesura()
@@ -289,10 +289,11 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.gateway.pd.send(["sys", "meter",
                               str(new_meter).replace(",", " ").replace(" ", "_")])
 
-    def set_style(self, style_name):
+    def set_style(self, style_name, manual=True):
         global settings
         del self.gateway
-        self.global_config['automate_style'] = False
+        if manual:
+            self.global_config['automate_style'] = False
         settings = reload(settings)
         style_settings, raw_behaviour, style_behaviour = settings.behaviour_and_settings_from_style(
             settings, style_name)
