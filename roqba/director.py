@@ -287,6 +287,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def set_style(self, style_name):
         global settings
         del self.gateway
+        self.global_config['automate_style'] = False
         settings = reload(settings)
         style_settings, raw_behaviour, style_behaviour = settings.behaviour_and_settings_from_style(
             settings, style_name)

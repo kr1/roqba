@@ -515,8 +515,8 @@ styles = {
             'notate': False,
             'start_scale': 'GREEK_CHROMATIC' },
         'behaviour': {
-            'max_adsr': [2000, 2000, 90, 2666],
-            'min_adsr': [100, 100, 70, 1666],
+            'max_adsr': [2000, 2000, 100, 30],
+            'min_adsr': [10, 10, 40, 5],
             'automate_microspeed_change': True,
             'microspeed_variation': 0.06,
             'microspeed_max_speed_in_hz': 0.05,
@@ -538,9 +538,9 @@ styles = {
             "speed_target": 0.5,
             "speed_change": "leap",  # alt:"transition"
             'caesura_prob': 0.05,
-            "shuffle_delay": 0.01,  # keep this between 0 and MAX_SHUFFLE
+            "shuffle_delay": 0.05,  # keep this between 0 and MAX_SHUFFLE
             'default_behaviour': "AUTONOMOUS",
-            "max_shuffle": 0.6,
+            "max_shuffle": 0.3,
             "automate_scale": True,
 
             # METERS
@@ -581,17 +581,17 @@ styles = {
             'slide_duration_prop': 0.666,  # proportion
 
             # NOTE DURATION RELATED
-            'automate_note_duration_prop': True,
+            'automate_note_duration_prop': False,
             'automate_note_duration_min_max': [0.1, 3.3],
             'common_note_duration': True,
-            'default_note_duration_prop': 0.8,  # proportion
+            'default_note_duration_prop': 3.5,  # proportion
 
             # SEQUENCE / MELODY RELATED
             'follow_bar_sequence': False,  # alt: True
 
             'embellishment_speed_lim': 0.666,
             'default_embellishment_prob': 0.005,
-            'default_pause_prob': 0.03,
+            'default_pause_prob': 0.22,
             'per_voice': {
                 1: BehaviourDict({
                     'slide_duration_msecs': 100,
@@ -602,7 +602,7 @@ styles = {
                     'default_pan_position': 1,
                     'automate_pan': 1,
                     'max_binaural_diff': 5,
-                    'automate_note_duration_prop': True,
+                    'automate_note_duration_prop': False,
                     'automate_note_duration_min_max': [0.1, 3.3]},
                     name='voice 1'),
                 2: BehaviourDict({
