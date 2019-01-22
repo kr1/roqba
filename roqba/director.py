@@ -139,6 +139,22 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             if weight == metronome.HEAVY:
                 self.composer.choose_rhythm()
             comment = self.composer.generate(self.state)
+            self.check_incoming_messages()
+            shuffle_delta = self.speed * self.shuffle_delay
+            if weight == metronome.LIGHT:
+                sleep_time = self.speed + shuffle_delta
+            else:
+                sleep_time = self.speed - shuffle_delta
+            if cycle_pos == 0:
+                if self.state.get('bar_sequence'):
+                    new_pos = (self.state['bar_sequence_current_position'] + 1) % len(self.state['bar_sequence'])
+                    self.state['bar_sequence_current_position'] = new_pos
+            if self.behaviour['automate_microspeed_change']:
+                microspeed_multiplier = self.microspeed_sine.get_value()
+            else:
+                microspeed_multiplier = 1
+            time.sleep(sleep_time * (1 +
+                       microspeed_multiplier * self.behaviour['microspeed_variation']))
             if ((comment == 'caesura' and random() < self.behaviour["caesura_prob"])
                     or self.force_caesura):
                 self.caesura_count += 1
@@ -157,22 +173,6 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                         self.musical_logger.info('new_style: {}'.format(new_style))
 
                 self._handle_caesura()
-            self.check_incoming_messages()
-            shuffle_delta = self.speed * self.shuffle_delay
-            if weight == metronome.LIGHT:
-                sleep_time = self.speed + shuffle_delta
-            else:
-                sleep_time = self.speed - shuffle_delta
-            if cycle_pos == 0:
-                if self.state.get('bar_sequence'):
-                    new_pos = (self.state['bar_sequence_current_position'] + 1) % len(self.state['bar_sequence'])
-                    self.state['bar_sequence_current_position'] = new_pos
-            if self.behaviour['automate_microspeed_change']:
-                microspeed_multiplier = self.microspeed_sine.get_value()
-            else:
-                microspeed_multiplier = 1
-            time.sleep(sleep_time * (1 +
-                       microspeed_multiplier * self.behaviour['microspeed_variation']))
 
     def _handle_caesura(self):
         if self.force_caesura:
