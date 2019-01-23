@@ -5,6 +5,7 @@ from utilities.sine_controllers import MultiSine
 
 ContFrame = namedtuple("ContFrame", 'confirm vol pan pan2 ctl ctl2 meta')
 
+
 class Drummer(object):
     def __init__(self,
                  composer,
@@ -28,11 +29,11 @@ class Drummer(object):
             "cont": {"val": 1200, "devi": 400,
                      "fun": MultiSine([0.01, 0.2, 0.77, 6], False).get_value},
             "cont2": {"val": 2800, "devi": 1000,
-                     "fun": MultiSine([0.05, 0.2, 0.47, 4.5], False).get_value},
+                      "fun": MultiSine([0.05, 0.2, 0.47, 4.5], False).get_value},
             "cont_pan": {"val": 0, "devi": 1,
                          "fun": MultiSine([0.03, 0.35, 0.65, 4], False).get_value},
             "cont2_pan": {"val": 0, "devi": 1,
-                         "fun": MultiSine([0.03, 0.25, 0.67, 4], False).get_value},
+                          "fun": MultiSine([0.03, 0.25, 0.67, 4], False).get_value},
             "tuned": {"val": 500, "devi": 100},
             "mark": {"val": 10000, "devi": 1000,
                      "fun": MultiSine([0.05, 0.02, 0.77, 10], False).get_value}
@@ -54,7 +55,7 @@ class Drummer(object):
             self.frame = {}
             for k, v in self.pattern.items():
                 if v[meter_pos] or k == 'mark':
-                    ## to-do make more dynamic
+                    #  to-do make more dynamic
                     vol = 0.5
                     ctl = None
                     meta = None
@@ -96,18 +97,18 @@ class Drummer(object):
             addendum2 = (self.ctl_values["cont2"]["fun"]() *
                          self.ctl_values["cont2"]["devi"])
             pan = (self.ctl_values["cont_pan"]["fun"]() *
-                       self.ctl_values["cont_pan"]["devi"])
+                   self.ctl_values["cont_pan"]["devi"])
             pan2 = (self.ctl_values["cont2_pan"]["fun"]() *
-                        self.ctl_values["cont2_pan"]["devi"])
+                    self.ctl_values["cont2_pan"]["devi"])
         else:
             addendum = (random() * self.ctl_values["cont"]["devi"] *
                         choice([1, -1]))
             addendum = (random() * self.ctl_values["cont2"]["devi"] *
                         choice([1, -1]))
             pan = (random() * self.ctl_values["cont_pan"]["devi"] *
-                        choice([1, -1]))
+                   choice([1, -1]))
             pan2 = (random() * self.ctl_values["cont2_pan"]["devi"] *
-                        choice([1, -1]))
+                    choice([1, -1]))
         ctl = self.ctl_values["cont"]["val"] + addendum
         ctl2 = self.ctl_values["cont2"]["val"] + addendum2
         return ContFrame(True, vol, pan, pan2, ctl, ctl2, meta)
