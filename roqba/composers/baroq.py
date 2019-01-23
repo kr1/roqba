@@ -277,3 +277,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         for v in self.voices.values():
             v.duration_in_msec = int(v.note_duration_steps *
                                      state["speed"] * 1000)
+
+    def __repr__(self):
+        return ("Composer-Inst ({}) with harmony: {}\n"
+                "num voices: {}, scale: {}, meter: {}"
+                "").format(self.__class__, self.harm,
+                           len(self.voices), self.scale, self.meter)
