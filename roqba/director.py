@@ -91,7 +91,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def __repr__(self):
         return ("<roqba.Director instance\nstyle: {} \n"
                 "composer: {}\nspeed: {} - transpose: {}>").format(
-            self.style_name, self.state['comp'], self.state['speed'],
+            self.style_name, self.composer, self.state['speed'],
             self.gateway.transpose)
 
     def new_microspeed_sine(self):

@@ -50,9 +50,10 @@ class Composer(AbstractComposer):
 
     def __repr__(self):
         return ("<AmadindaComposer: {} scale: {}\n"
-                "pattern: {{ len: {}, total plays: {}\n           current plays: {}, notes 3rd v: {}}}"
+                "pattern: {{ meter: {}, len: {}, total plays: {}\n"
+                "          current plays: {}, notes 3rd v: {}}}"
                 "\nlength indicator: {}, transpose: {}").format(
-                    id(self), self.scale, len(self.patterns[0][1]),
+                    id(self), self.scale, self.meter, len(self.patterns[0][1]),
                     self.pattern_played_maximum, self.pattern_played_times,
                     self.number_of_tones_in_3rd_voice, self.length_indicator, self.transpose)
 
