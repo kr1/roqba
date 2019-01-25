@@ -70,7 +70,7 @@ class NoteGateway(object):
         '''this method bypasses the slide functionality
 
         by setting slide-duration to 0'''
-        self.logger.error("Send slide to 0")
+        self.logger.info("Send slide to 0")
         for v in self.voice_ids:
             self.pd.send(["voice", "slide", v, 0])
 

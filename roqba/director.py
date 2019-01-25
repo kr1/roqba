@@ -54,6 +54,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.musical_logger = StyleLoggerAdapter(musical_logger, None)
         behaviour_logger = logging.getLogger('behaviour')
         self.behaviour_logger = StyleLoggerAdapter(behaviour_logger, None)
+        self.style_logger = logging.getLogger('style')
         self.gui_logger = logging.getLogger('gui')
         self.add_setters()
         if behaviour['automate_microspeed_change']:
@@ -300,6 +301,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         global settings
         del self.gateway
         self.style_name = style_name
+        self.style_logger.info("new style: {}".format(style_name))
         if manual:
             self.global_config['automate_style'] = False
         settings = reload(settings)
@@ -310,6 +312,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             raise RuntimeError("Composer is not configured correctly")
         self.gateway = NoteGateway(style_settings, style_behaviour)
         self.composer = composer.Composer(self.gateway, style_settings, style_behaviour)
+        self.style_logger.info(str(self).replace("\n", " "))
         self.behaviour = style_behaviour
         self.meter = self.composer.applied_meter
         self.metronome = metronome.Metronome(self.meter)
