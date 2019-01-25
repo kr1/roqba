@@ -34,6 +34,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.behaviour = behaviour
         self.playing = None
         self.stopped = False
+        self.style_name = None
         self.force_caesura = False
         self.caesura_count = 0
         self.settings = settings
@@ -85,6 +86,12 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             thre.daemon = True
             thre.start()
         self.set_wavetables(voices=self.composer.voices.values())
+
+    def __repr__(self):
+        return ("<roqba.Director instance\nstyle: {} \n"
+                "composer: {}\nspeed: {} - transpose: {}>").format(
+            self.style_name, self.state['comp'], self.state['speed'],
+            self.gateway.transpose)
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
@@ -292,6 +299,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def set_style(self, style_name, manual=True):
         global settings
         del self.gateway
+        self.style_name = style_name
         if manual:
             self.global_config['automate_style'] = False
         settings = reload(settings)

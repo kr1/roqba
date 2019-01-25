@@ -198,7 +198,11 @@ class Composer(AbstractComposer):
         return next_note
 
     def __repr__(self):
-        return "<Usualis composer with tone: {}, current: {}>".format(self.tone, self.current_note)
+        return ("<Usualis composer with tone: {}, current: {}\n"
+                "scale: {}\nnotes since caesura: {}\nminimum phrase length: {}\n"
+                "using drone: {}>").format(
+                        self.tone, self.current_note, self.scale, self.notes_since_caesura,
+                        self.min_phrase_length, self.use_drone)
 
     def set_meter(self, _):
         pass

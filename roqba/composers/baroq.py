@@ -279,7 +279,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                      state["speed"] * 1000)
 
     def __repr__(self):
-        return ("Composer-Inst ({}) with harmony: {}\n"
+        return ("<Composer-Inst ({}) with harmony: {}\n"
                 "num voices: {}, scale: {}, meter: {}"
-                "").format(self.__class__, self.harm,
+                ">").format(self.__class__, self.harm,
                            len(self.voices), self.scale, self.meter)
