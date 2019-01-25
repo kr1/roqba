@@ -13,7 +13,7 @@ class Composer(AbstractComposer):
         super(Composer, self).__init__(gateway,
                                        settings,
                                        behaviour)
-        self.selected_meters = [self.behaviour['meter']]
+        self.selected_meters = self.behaviour['meters']
         self.half_beat = self.behaviour['half_beat']
         self.second_beat_half = False
         # Amadinda specific
@@ -179,3 +179,9 @@ class Composer(AbstractComposer):
             else:
                 seq3.append(0)
         return seq3
+
+    def _update_groupings(self, meter):
+        self.TERNARY_GROUPINGS = []
+        self.HEAVY_GROUPINGS = []
+        self.DEFAULT_GROUPINGS =[]
+        self.FAST_GROUPINGS =[]
