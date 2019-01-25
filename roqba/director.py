@@ -232,6 +232,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             new_vol = (self.behaviour['percussion_max_vol'] * random() -
                        self.behaviour['percussion_min_vol'])
             self.gateway.set_drum_volume(new_vol)
+            self.composer.drummer.new_pan_positions()
 
         time.sleep(self.speed)
         if self.behaviour["automate_wavetables"]:

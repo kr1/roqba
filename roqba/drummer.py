@@ -23,6 +23,7 @@ class Drummer(object):
                               "cont": 0,
                               "tuned": 0,
                               "mark": 0}
+        self.new_pan_positions()
         self.ctl_values = {
             "low": {"val": 150, "devi": 30},
             "high": {"val": 800, "devi": 30},
@@ -44,6 +45,10 @@ class Drummer(object):
         self.cont_accent_mult = 0.3
         self.mark_accent_mult = 0.1
         self.frame = {}
+
+    def new_pan_positions(self):
+        for key in self.pan_positions:
+            self.pan_positions[key] = random() * 2 - 1
 
     def generate(self):
         while True:
