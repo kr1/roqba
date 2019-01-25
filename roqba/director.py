@@ -310,5 +310,6 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             self.gateway.mute_voice("drums", 0)
         else:
             self.gateway.mute_voice("drums", 1)
+        self.state["comp"] = self.composer
         self.force_caesura = True
         self.gateway.set_slide_to_0()
