@@ -90,9 +90,11 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
 
     def __repr__(self):
         return ("<roqba.Director instance\nstyle: {} \n"
-                "composer: {}\nspeed: {} - transpose: {}>").format(
+                "composer: {}\nspeed: {} - transpose: {}\n"
+                "binaural diffs: {}>").format(
             self.style_name, self.composer, self.state['speed'],
-            self.gateway.transpose)
+            self.gateway.transpose,
+            [voice.binaural_diff for voice in self.composer.voices.values()])
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]

@@ -335,6 +335,13 @@ groupings = {
     }
 }
 
+groupings.update({
+    (12, (2, 2, 2, 1, 1, 1, 2, 1)): groupings[(12, (1, 2, 2, 1, 2, 2, 2))],
+    (9, (2, 1, 1, 2, 1, 1, 1)): groupings[(9, (3, 3, 3))],
+    (9, (2, 2, 2, 3)): groupings[(9, (3, 3, 3))],
+    (7, (2, 3, 2)): groupings[(7, (3, 2, 2))],
+    (7, (2, 2, 3)): groupings[(7, (3, 2, 2))],
+})
 
 def get_grouping(meter, mode, check=True):
     '''returns the groupings for a given meter and mode
@@ -358,7 +365,7 @@ def _assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
 
     it is called during the loading of the module'''
     if id not in groupings.keys():
-        raise RuntimeError("KeyError: specified meter not found.")
+        raise RuntimeError("KeyError: specified meter not found: {}".format(id))
     target = groupings[id]
 
     if which:
