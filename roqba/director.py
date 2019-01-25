@@ -20,7 +20,6 @@ from roqba.mixins.speed_mixin import SpeedMixin
 
 
 logger = logging.getLogger('director')
-logger.setLevel(logging.INFO)
 logger = StyleLoggerAdapter(logger, None)
 
 
