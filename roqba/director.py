@@ -117,7 +117,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
     def set_meter(self, meter):
         self.composer.set_meter(meter)
         self.meter = self.composer.applied_meter
-        self.metronome.set_meter(self.composer.offered_meters[meter]["applied"])
+        self.metronome.set_meter(self.composer.applied_meter)
 
     def _play(self, shutdown_event=None, duration=None):
         """this is the core of the program giving the impulse for all actions.
