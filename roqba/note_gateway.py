@@ -5,7 +5,7 @@ its main concerns are:
 - sending notes
 - sending controlling messages
 """
-
+from random import random, choice
 import logging
 import time
 
@@ -87,8 +87,14 @@ class NoteGateway(object):
         '''send out a single note'''
         if voice_id not in self.voice_ids:
             self.voice_ids.append(voice_id)
+        detune = self.settings.get('humanize_oscillator_tuning')
+        if detune:
+            detune = random() * detune * choice([1, -1])
+            self.logger.error("detune: {}".format(detune))
+        else:
+            detune = 0
         self.pd.send(["voice", voice_id, 0 if msg == 0 else
-                      msg + self.transpose])
+                      msg + self.transpose + detune])
         return True
 
     def pd_send_duration(self, voice_id, val):

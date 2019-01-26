@@ -635,6 +635,7 @@ styles = {
             'voice_registers': ['MID', 'MID', 'MID', 'MID'],
             'voice_behaviours': ['AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS', 'AUTONOMOUS'],
             'enable_adsr': False,
+            'humanize_oscillator_tuning': 0.04,
             'gui': True,
             'composer': 'usualis',
             'notate': False,
