@@ -90,7 +90,7 @@ class NoteGateway(object):
         detune = self.settings.get('humanize_oscillator_tuning')
         if detune:
             detune = random() * detune * choice([1, -1])
-            self.logger.error("detune: {}".format(detune))
+            self.logger.info("detune: {}".format(detune))
         else:
             detune = 0
         self.pd.send(["voice", voice_id, 0 if msg == 0 else
