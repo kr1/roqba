@@ -6,7 +6,7 @@ import random
 from roqba.voice import Voice
 from roqba.notator import Notator
 from roqba.drummer import Drummer
-import roqba.static.note_length_groupings as note_length_groupings
+from roqba.static import note_length_groupings
 from roqba.static.meters import METERS
 from roqba.static.melodic_behaviours import registers
 from roqba.static.scales_and_harmonies import (SCALES_BY_FREQUENCY,
@@ -86,7 +86,11 @@ class AbstractComposer(object):
         calls reload_register method of the voices and creates and
         sets the new meter also for the drummer-instance'''
         self.meter = meter
-        self.applied_meter = self.offered_meters[meter]["applied"]
+        try:
+            self.applied_meter = self.offered_meters[meter]["applied"]
+        except KeyError:
+            self.comp_logger.error("no applied meter registered for: {}".format(meter))
+            self.applied_meter = note_length_groupings.analyze_grouping(meter[1])
         self._update_groupings(meter)
         for v in self.voices.values():
             v.set_note_length_groupings()
