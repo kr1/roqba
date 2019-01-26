@@ -5,6 +5,10 @@ are not implemented in the groupings
 reconsider specifying pauses with negative values(to-do:
 check implications on other modules)
 """
+import logging
+from random import choice
+
+logger = logging.getLogger('setup')
 
 DEFAULT_METER_LENGTH = (8, (4, 4))
 
@@ -281,6 +285,20 @@ groupings = {
             [[3, 3, 2, 3, 2, 2]] * 20,
         ]
     },
+    (18, (3, 3, 2, 2, 2, 3, 3)): {
+        "heavy": [
+            [[3, 3, 2, 2, 2, 3, 3]] * 20,
+        ],
+        "first": [
+            [[2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2]] * 20,
+         ],
+        "second": [
+            [[1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1]] * 20,
+         ],
+        "terns": [
+            [[1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 2, 1]] * 20,
+        ]
+    },
     (23, (3, 3, 2, 3, 3, 2, 3, 2, 2)): {
         "heavy": [
             [[3, 3, 2, 3, 3, 2, 3, 2, 2]] * 20,
@@ -335,14 +353,6 @@ groupings = {
     }
 }
 
-groupings.update({
-    (12, (2, 2, 2, 1, 1, 1, 2, 1)): groupings[(12, (1, 2, 2, 1, 2, 2, 2))],
-    (9, (2, 1, 1, 2, 1, 1, 1)): groupings[(9, (3, 3, 3))],
-    (9, (2, 2, 2, 3)): groupings[(9, (3, 3, 3))],
-    (7, (2, 3, 2)): groupings[(7, (3, 2, 2))],
-    (7, (2, 2, 3)): groupings[(7, (3, 2, 2))],
-})
-
 def get_grouping(meter, mode, check=True):
     '''returns the groupings for a given meter and mode
 
@@ -351,7 +361,7 @@ def get_grouping(meter, mode, check=True):
     '''
     mode = None if mode == "default" else mode
     meter_length = meter if type(meter) == int else meter[0]
-    res = _assemble(meter, mode, meter_length=meter_length)
+    res = _assemble(meter, mode)
     if check:
         if badly_formeD(meter_length, res):
             raise RuntimeError(
@@ -360,50 +370,35 @@ def get_grouping(meter, mode, check=True):
     return res
 
 
-def _assemble(id, which=None, fallback=True, meter_length=DEFAULT_METER_LENGTH):
+def _assemble(id_, which=None, fallback=True):
     '''assembles note-length groupings.
 
     it is called during the loading of the module'''
-    if id not in groupings.keys():
-        raise RuntimeError("KeyError: specified meter not found: {}".format(id))
-    target = groupings[id]
-
+    target = groupings.get(id_)
+    if not target:
+        logger.error("no dedicated note length groupings for {}".format(id_))
+        target_length = id_[0]
+        fitting = [groupings[key] for key in groupings.keys() if key[0] == target_length]
+        try:
+            target = choice(fitting)
+        except Exception as error:
+            message = "Exception when falling back to length-based groupings for: {}\n{}\n{}".format(
+                    id_, error.__class__, error)
+            logger.error(message)
+            raise RuntimeError(message)
     if which:
-        if which not in target.keys():
+        if which in target:
+            return sum(target[which], [])
+        else:
             if fallback:
-                res = groupings[DEFAULT_METER_LENGTH][which]
-                return cut_grouping_to_size(sum(res, []), meter_length)
+                return sum(target['heavy'], [])
             else:
                 raise RuntimeError("non-existing meter mode")
-        else:
-            return sum(target[which], [])
     else:
-        return (_assemble(id, "first", fallback, meter_length) +
-                _assemble(id, "second", fallback, meter_length) +
-                _assemble(id, "terns", fallback, meter_length))
+        return (_assemble(id_, "first", fallback) +
+                _assemble(id_, "second", fallback) +
+                _assemble(id_, "terns", fallback))
 
-
-def cut_grouping_to_size(grouping, size):
-    '''cut the grouping to the required size
-
-    it will sanitize the last entry if necessary
-    this function is called in case a non-existing size is required'''
-    res = []
-    for group in grouping:
-        new = []
-        for i in group:
-            new.append(i)
-            sum_ = sum(new)
-            if sum_ >= size:
-                new.pop()
-                diff = size - sum(new)
-                if diff != 0:
-                    new.append(abs(diff))
-                break
-        if sum_ < size:
-            new.append(size - sum_)
-        res.append(new)
-    return res
 
 DEFAULT_NOTE_LENGTH_GROUPINGS = _assemble(DEFAULT_METER_LENGTH)
 DEFAULT_FAST_GROUPINGS = _assemble(DEFAULT_METER_LENGTH, "first")
