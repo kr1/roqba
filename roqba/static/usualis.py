@@ -82,8 +82,8 @@ def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_
                    if indicators.high <= high_limit
                    and indicators.low >= low_limit
                    and ((indicators.diff > 0 and should_go_upward)
-                       or (indicators.diff < 0 and should_go_downward)
-                       or free) ]
+                        or (indicators.diff < 0 and should_go_downward)
+                        or free)]
     valid_words = list(itertools.chain(*valid_words))
     try:
         word = random.choice(valid_words)

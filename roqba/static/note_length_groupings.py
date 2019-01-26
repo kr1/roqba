@@ -353,6 +353,7 @@ groupings = {
     }
 }
 
+
 def get_grouping(meter, mode, check=True):
     '''returns the groupings for a given meter and mode
 
@@ -382,8 +383,8 @@ def _assemble(id_, which=None, fallback=True):
         try:
             target = choice(fitting)
         except Exception as error:
-            message = "Exception when falling back to length-based groupings for: {}\n{}\n{}".format(
-                    id_, error.__class__, error)
+            message = ("Exception when falling back to length-based groupings "
+                       "for: {}\n{}\n{}").format(id_, error.__class__, error)
             logger.error(message)
             raise RuntimeError(message)
     if which:
