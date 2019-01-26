@@ -20,6 +20,8 @@ class Composer(AbstractComposer):
         self.min_phrase_length = behaviour['min_phrase_length']
         self.max_double_length_prob = behaviour['max_double_length_prob']
         self.max_triple_length_prob = behaviour['max_triple_length_prob']
+        self.min_double_length_prob = behaviour['min_double_length_prob']
+        self.min_triple_length_prob = behaviour['min_triple_length_prob']
         self.drone_prob = behaviour['drone_prob']
         self.new_random_mode()
         self.set_scale(self.scale)
@@ -44,8 +46,14 @@ class Composer(AbstractComposer):
                 self.gateway.pd.send(["voice", voice.id, "adsr_enable", 0])
 
     def new_random_mode(self):
-        self.double_length_prob = random() * self.max_double_length_prob
-        self.triple_length_prob = random() * self.max_triple_length_prob
+        double_length_prob_range = (self.max_double_length_prob -
+                                    self.min_double_length_prob)
+        triple_length_prob_range = (self.max_triple_length_prob -
+                                    self.min_triple_length_prob)
+        self.double_length_prob = (random() * double_length_prob_range +
+                                   self.min_double_length_prob)
+        self.triple_length_prob = (random() * triple_length_prob_range +
+                                   self.min_triple_length_prob)
         self.use_drone = random() < self.drone_prob
         self.current_max_length = int(random() * self.min_phrase_length)
         self.mode = choice(ambitus_by_mode.keys())
@@ -200,9 +208,10 @@ class Composer(AbstractComposer):
     def __repr__(self):
         return ("<Usualis composer with tone: {}, current: {}\n"
                 "scale: {}\nnotes since caesura: {}\nminimum phrase length: {}\n"
-                "using drone: {}>").format(
+                "using drone: {}, note_lengthening_probs: 3: {} - 2: {}>").format(
                         self.tone, self.current_note, self.scale, self.notes_since_caesura,
-                        self.min_phrase_length, self.use_drone)
+                        self.min_phrase_length, self.use_drone, self.triple_length_prob,
+                        self.double_length_prob)
 
     def set_meter(self, _):
         pass
