@@ -122,7 +122,10 @@ class Composer(AbstractComposer):
         which_shift_index = int(self.pattern_played_times / (self.pattern_played_maximum / 4.999))
         shift = self.patterns[which_shift_index]
         voice_shift = shift[voice.id]
-        next_note = voice_shift[meter_pos] or None
+        try:
+            next_note = voice_shift[meter_pos] or None
+        except IndexError:
+            next_note = None
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
         self.pattern_played_times += 1.0 / len(self.patterns[0][1])
