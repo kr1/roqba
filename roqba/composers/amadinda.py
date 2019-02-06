@@ -120,7 +120,9 @@ class Composer(AbstractComposer):
             self.comment = 'caesura'
             self.pattern_played_times = 0
         which_shift_index = int(self.pattern_played_times / (self.pattern_played_maximum / 4.999))
-        next_note = self.patterns[which_shift_index][voice.id][meter_pos] or None
+        shift = self.patterns[which_shift_index]
+        voice_shift = shift[voice.id]
+        next_note = voice_shift[meter_pos] or None
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
         self.pattern_played_times += 1.0 / len(self.patterns[0][1])
