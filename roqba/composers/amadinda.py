@@ -125,7 +125,7 @@ class Composer(AbstractComposer):
         try:
             next_note = voice_shift[meter_pos] or None
         except IndexError:
-            next_note = None
+            next_note = voice.note
         voice.note = next_note
         voice.real_note = next_note and self.real_scale[next_note] or None
         self.pattern_played_times += 1.0 / len(self.patterns[0][1])
