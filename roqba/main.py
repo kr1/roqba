@@ -10,7 +10,7 @@ import roqba.static.settings as default_settings
 
 
 try:
-    from . import static.local_settings as local_settings
+    from .static import local_settings as local_settings
 except ImportError:
     local_settings = default_settings
 else:
