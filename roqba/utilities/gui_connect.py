@@ -26,7 +26,7 @@ class GuiConnect(object):
         '''send 'raw' messages over the socket
 
         message should be a dict {key: value} for json encoding'''
-        self.sock.sendto(json.dumps(msg), (self.gui_host, self.send_port))
+        self.sock.sendto(str.encode(json.dumps(msg)), (self.gui_host, self.send_port))
 
     def handle_caesura(self, director):
         '''update the GUI when a caesura happens'''

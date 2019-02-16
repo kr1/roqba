@@ -35,7 +35,7 @@ class PdSender(Sender):
         msg -> list'''
         msg = self.format_msg_list(msg)
         self.trace_send(msg)
-        self.sock.sendto("{0}\n".format(msg) + "\n", (self.host, self.port))
+        self.sock.sendto(str.encode("{0}\n".format(msg) + "\n"), (self.host, self.port))
 
     def __del__(self):
         self.logger.info("setting sound to 0. switching off the lights....")
