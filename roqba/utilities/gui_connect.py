@@ -12,7 +12,7 @@ class GuiConnect(object):
     def __init__(self):
         self.gui_host = settings['GUI_HOST']
         self.send_port = settings['TO_GUI_PORT']
-        print "GUI: sending to:", self.gui_host, self.send_port
+        print("GUI: sending to:", self.gui_host, self.send_port)
         self.receive_port = settings['FROM_GUI_PORT']
         self.sock = socket.socket(socket.AF_INET,  # Internet
                                   socket.SOCK_DGRAM)  # UDP
@@ -35,7 +35,7 @@ class GuiConnect(object):
             self.send({field: getattr(director, field)})
         voice_fields_to_transmit = ['pan_pos', 'binaural_diff']
         for field in voice_fields_to_transmit:
-            for v in director.composer.voices.values():
+            for v in list(director.composer.voices.values()):
                 dic = {'voice_' + str(v.id) + '_' + field: getattr(v, field)}
                 #print "handle caesura, voice-fields: ", dic
                 self.send(dic)
@@ -61,17 +61,17 @@ class GuiConnect(object):
     def update_gui(self, director):
         '''sends messages for a complete update of the GUI'''
         beh = director.behaviour
-        for field in beh.keys():
+        for field in list(beh.keys()):
             if (field in ['per_voice', 'meter', 'meters', 'speed'] or
                     type(beh[field]).__name__ in ['list', 'dict']):
                 continue
             self.send({field: beh[field]})
-        for voice in director.composer.voices.values():
+        for voice in list(director.composer.voices.values()):
             vid = voice.id
             voice = director.composer.voices[vid]
             v_beh = beh['per_voice'][vid]
             prefix = 'voice_' + str(vid) + '_'
-            for field in v_beh.keys():
+            for field in list(v_beh.keys()):
                 if (field in ['max_num_partials'] or
                         type(v_beh[field]) in ['list', 'dict']):
                     continue
@@ -85,5 +85,5 @@ class GuiConnect(object):
                 self.send(do)
         # self.gui_logger.info("sending behaviours: {0}".format(
         #         beh.saved_behaviours.keys()))
-        self.send({'saved_behaviours': beh.saved_behaviours.keys()})
+        self.send({'saved_behaviours': list(beh.saved_behaviours.keys())})
         self.send({'scale': director.composer.scale})

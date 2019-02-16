@@ -9,8 +9,8 @@ from random import random, choice
 import logging
 import time
 
-from metronome import HEAVY
-from utilities.pdsender import PdSender
+from .metronome import HEAVY
+from .utilities.pdsender import PdSender
 
 
 class NoteGateway(object):
@@ -26,9 +26,9 @@ class NoteGateway(object):
         self.behaviour = behaviour
         self.pd = PdSender(settings["PD_HOST"], settings["PD_PORT"])
         self.hub = self.hub_gen()
-        self.hub.next()
+        next(self.hub)
         self.drum_hub = self.drum_hub_gen()
-        self.drum_hub.next()
+        next(self.drum_hub)
 
     def pause(self):
         '''blocks new messages and turns off sound-production'''
@@ -150,7 +150,7 @@ class NoteGateway(object):
             data = (yield)
             if not self.block_messages:
                 self.logger.info("drums out: {0}".format(data))
-                for k, v in data.items():
+                for k, v in list(data.items()):
                     if v["meta"] != "empty":
                         args = ["perc", k]
                         if v["vol"]:
@@ -170,7 +170,7 @@ class NoteGateway(object):
                 continue
             self.logger.info("sending out: {0}".format(data))
             if type(data) == dict:
-                for v in data.values():
+                for v in list(data.values()):
                     if v.note_change:
                         msg = v.real_note if v.real_note else 0
                         # self.logger.info("sending out:\ voice: {1}: {0}".\ format(msg, v.id))

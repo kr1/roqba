@@ -1,7 +1,7 @@
 import time
 import logging
 import socket
-from Queue import deque
+from queue import deque
 
 
 class Sender(object):
@@ -25,7 +25,7 @@ class PdSender(Sender):
     def format_msg_list(msg):
         '''formats an incoming list as a space separated string'''
         if msg.__class__ == [].__class__:
-            msg = " ".join(map(lambda x: str(x), msg))
+            msg = " ".join([str(x) for x in msg])
         return msg
 
     def send(self, msg):
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     import random
     pd = PdSender("msf", 11211)
     pd.send("sound 1")
-    for i in xrange(4):
+    for i in range(4):
         pd.send(["ctl 1", random.randrange(60, 75)])
         time.sleep(0.15)
         pd.send(["ctl 2", random.randrange(60, 75)])

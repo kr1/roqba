@@ -2,8 +2,8 @@
 various melodic environments
 '''
 
-from scales_and_harmonies import *
-from movement_probabilities import *
+from .scales_and_harmonies import *
+from .movement_probabilities import *
 
 registers = {
     "BASS": {
@@ -189,5 +189,5 @@ melody_sets = {
 }
 
 if __name__ == "__main__":
-    print melody_sets
-    print registers
+    print(melody_sets)
+    print(registers)

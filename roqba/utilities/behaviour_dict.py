@@ -19,7 +19,7 @@ class BehaviourDict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.real_setters = {}
-        if 'name' in kwargs.keys():
+        if 'name' in list(kwargs.keys()):
             self.name = kwargs['name']
         else:
             self.name = None
@@ -60,7 +60,7 @@ class BehaviourDict(dict):
         dict.__setitem__(self, item, value)
         self.behaviour_logger.info(
             "behaviour dict-{0}: setting '{1}' to '{2}'".format(self.name, item, value))
-        if item in self.real_setters.keys():
+        if item in list(self.real_setters.keys()):
             instructions = self.real_setters[item]
             if type(instructions).__name__ == 'instancemethod':
                 self.real_setters[item](value)
@@ -73,7 +73,7 @@ class BehaviourDict(dict):
 
     def _update(self, *args, **kwargs):
         '''assures that __setitem__  is called from __init__'''
-        for k, v in dict(*args, **kwargs).iteritems():
+        for k, v in dict(*args, **kwargs).items():
             self[k] = v
 
     def voice_get(self, vid, key):
@@ -81,7 +81,7 @@ class BehaviourDict(dict):
 
         if the value is present for the voice, this value is returned
         otherwise the default value for this key is returned'''
-        if vid in self["per_voice"].keys():
+        if vid in list(self["per_voice"].keys()):
             if key in self["per_voice"][vid]:
                 return self["per_voice"][vid][key]
             else:
@@ -97,17 +97,17 @@ class BehaviourDict(dict):
 
 
 def test_setter(val):
-    print "from test_setter, val:", val
+    print("from test_setter, val:", val)
 
 
 if __name__ == "__main__":
-    kd = BehaviourDict({
-        "erre": {'val': [34, 56], 'setter': test_setter}, 17: 45}.items())
-    print kd
-    print kd.real_setters
+    kd = BehaviourDict(list({
+        "erre": {'val': [34, 56], 'setter': test_setter}, 17: 45}.items()))
+    print(kd)
+    print(kd.real_setters)
     kd[5] = "wer"
     kd.__setitem__('tee', (45, 56))
     kd['erre'] = [45, 46]
     kd['single'] = 666
-    print kd
-    print kd.real_setters
+    print(kd)
+    print(kd.real_setters)

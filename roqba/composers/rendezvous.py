@@ -17,8 +17,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                        behaviour)
         self.harm = {}
         self.speed_lim = behaviour['embellishment_speed_lim']
-        self.selected_meters = ("meters" in self.behaviour.keys() and
-                                self.behaviour["meters"] or METERS.keys())
+        self.selected_meters = ("meters" in list(self.behaviour.keys()) and
+                                self.behaviour["meters"] or list(METERS.keys()))
         self.modified_note_in_current_frame = None
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
@@ -51,7 +51,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.prior_harmony = None
 
         self.set_binaural_diffs(self.behaviour['binaural_diff'])
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             voice.slide = False
             args = [random() * 0.3 for n in range(4)]
             voice.pan_sine = MultiSine(args)
@@ -80,9 +80,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             self.select_next_anchor_tick(sendout_offset=sendout_offset)
         if self.send_out_tick == self.ticks_counter and self.behaviour['common_transitions']:
             transitions = self.determine_rendezvous_transition()
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             if len(self.voices) < self.num_voices:
-                raise (RuntimeError, "mismatch in voices count")
+                raise RuntimeError("mismatch in voices count")
             next_note = self.next_voice_note(voice)
             if next_note:
                 # send a rendezvous message
@@ -119,7 +119,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 send_drum = False
         else:
             self.drummer.generator.send([state, cycle_pos])
-        for k, v in self.drummer.frame.items():
+        for k, v in list(self.drummer.frame.items()):
             # TODO: re-add the drum filler
             if False and v["meta"]:
                 if v["meta"] == 'empty':
@@ -130,7 +130,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                      args=(k, state)).start()
         if send_drum:
             self.gateway.drum_hub.send(self.drummer.frame)
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             voice.update_current_microvolume()
             self.gateway.send_voice_pan(voice, voice.pan_sine.get_value())
             # self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
@@ -143,7 +143,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     def determine_rendezvous_transition(self, voice=None):
         if self.behaviour['transition_strategy'] == 'direct':
             transitions = self._direct_transitions()
-        elif self.behaviour['transition_strategy'] in self.strategy_max_deviation_mapping.keys():
+        elif self.behaviour['transition_strategy'] in list(self.strategy_max_deviation_mapping.keys()):
             transitions = self._transitions_by_deviation(self.behaviour['transition_strategy'])
         else:
             transitions = {

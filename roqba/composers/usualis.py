@@ -37,7 +37,7 @@ class Composer(AbstractComposer):
         self.zero_note_offset = 30
         self.offered_scales = [scale for scale in self.offered_scales
                                if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC')]
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             voice.slide = False
             args = [random() * 0.3 for n in range(4)]
             voice.pan_sine = MultiSine(args)
@@ -56,7 +56,7 @@ class Composer(AbstractComposer):
                                    self.min_triple_length_prob)
         self.use_drone = random() < self.drone_prob
         self.current_max_length = int(random() * self.min_phrase_length)
-        self.mode = choice(ambitus_by_mode.keys())
+        self.mode = choice(list(ambitus_by_mode.keys()))
         self.ambitus = ambitus_by_mode[self.mode]
         self.tone = "1st {}".format(self.mode)
         self.musical_logger.info("mode: {}".format(self.tone))
@@ -157,7 +157,7 @@ class Composer(AbstractComposer):
             self.musical_logger.info("caesura")
             return 'caesura'
         if self.current_note_counter == 0:
-            for voice in self.voices.values():
+            for voice in list(self.voices.values()):
                 if len(self.voices) < self.num_voices:
                     raise RuntimeError("mismatch in voices count")
                 if voice.id == 1 and self.drone is not None and self.use_drone:

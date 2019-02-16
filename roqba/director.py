@@ -2,16 +2,16 @@ import time
 import logging
 import threading
 from random import random, choice
-from Queue import deque
+from queue import deque
 
-import metronome
+from . import metronome
 from roqba.note_gateway import NoteGateway
 from roqba.composers import baroq, amadinda, rendezvous, usualis  # noqa
 from roqba.utilities import random_between
 from roqba.utilities.logger_adapter import StyleLoggerAdapter
 from roqba.static import settings  # noqa
 
-from utilities.sine_controllers import MultiSine
+from .utilities.sine_controllers import MultiSine
 from roqba.utilities.gui_connect import GuiConnect
 from roqba.mixins.incoming_messages_mixin import IncomingMessagesMixin
 from roqba.mixins.wavetable_mixin import WavetableMixin
@@ -67,14 +67,14 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             self.state.update({
               'bar_sequence': behaviour['bar_sequence'],
               'bar_sequence_current_position': 0})
-        for voice in self.composer.voices.values():
+        for voice in list(self.composer.voices.values()):
             self.apply_voice_adsr(voice)
 
         self.has_gui = settings['gui']
         self.gui_sender = self.has_gui and GuiConnect() or None
         self.allowed_incoming_messages = (
             self.has_gui and
-            self.behaviour.keys() + ['play', 'sys', 'scale',
+            list(self.behaviour.keys()) + ['play', 'sys', 'scale',
                                      'force_caesura',
                                      'trigger_wavetable']
             or None)
@@ -86,7 +86,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                                     args=(self.incoming,))
             thre.daemon = True
             thre.start()
-        self.set_wavetables(voices=self.composer.voices.values())
+        self.set_wavetables(voices=list(self.composer.voices.values()))
 
     def __repr__(self):
         return ("<roqba.Director instance\nstyle: {} \n"
@@ -94,7 +94,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                 "binaural diffs: {}>").format(
             self.style_name, self.composer, self.state['speed'],
             self.gateway.transpose,
-            [voice.binaural_diff for voice in self.composer.voices.values()])
+            [voice.binaural_diff for voice in list(self.composer.voices.values())])
 
     def new_microspeed_sine(self):
         args = [random() * self.behaviour['microspeed_max_speed_in_hz'] for n in range(5)]
@@ -106,7 +106,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.behaviour.real_setters["speed"] = self.new_speed
         self.behaviour.real_setters["binaural_diff"] = self.composer.set_binaural_diffs
         self.behaviour.real_setters["slide_duration_msecs"] = self.gateway.set_slide_msecs_for_all_voices
-        for vid in self.behaviour['per_voice'].keys():
+        for vid in list(self.behaviour['per_voice'].keys()):
             if vid not in self.composer.voices:
                 continue
             self.behaviour['per_voice'][vid].real_setters["pan_pos"] = \
@@ -177,7 +177,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                             and random_value > glob_conf['style_change_prob']):
                         change_style = True
                     if change_style:
-                        new_style = choice(settings.styles.keys())
+                        new_style = choice(list(settings.styles.keys()))
                         self.set_style(new_style, manual=False)
                         self.musical_logger.info('new_style: {}'.format(new_style))
 
@@ -195,7 +195,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
         self.state["speed"] = self.speed
         self.metronome.reset()
         self.composer.gateway.stop_all_notes()
-        voices = self.composer.voices.values()
+        voices = list(self.composer.voices.values())
         if self.behaviour['automate_adsr']:
             self.new_random_adsr_for_all_voices()
         if self.behaviour['automate_scale']:
@@ -225,9 +225,9 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
             if self.behaviour["common_note_duration"]:
                 prop = random_between(min_, max_, 0.3)
                 [setattr(v, 'note_duration_prop', prop) for v
-                    in self.composer.voices.values()]
+                    in list(self.composer.voices.values())]
             else:
-                for v in self.composer.voices.values():
+                for v in list(self.composer.voices.values()):
                     min_, max_ = self.behaviour.voice_get(v.id,
                                                           "automate_note_duration_min_max")
                     prop = random_between(min_, max_, 0.3)

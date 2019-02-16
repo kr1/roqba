@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 import collections
-import metronome
+from . import metronome
 
 
 class Notator(object):
@@ -28,14 +28,14 @@ class Notator(object):
 
     def make_matrix(self):
         mat = {}
-        for n in xrange(len(self.buffer)):
-            for l in xrange(self.num_lines):
+        for n in range(len(self.buffer)):
+            for l in range(self.num_lines):
                 try:
                     mat[l]
                 except KeyError:
                     mat[l] = []
                 mat[l].append(-1)
-            for v in xrange(self.num_voices):
+            for v in range(self.num_voices):
                 if self.buffer[n][v] > 0:
                     try:
                         mat[int(self.buffer[n][v] / 2)][n] = self.buffer[n][v] % 2
@@ -45,8 +45,8 @@ class Notator(object):
 
     def draw(self, mat, weight, cycle_pos):
         line_buffer = []
-        for l in xrange(self.num_lines - 1, 0, -1):
-            t = map(lambda x: {-1: " ", 0: "_", 1: "-"}[x], mat[l])
+        for l in range(self.num_lines - 1, 0, -1):
+            t = [{-1: " ", 0: "_", 1: "-"}[x] for x in mat[l]]
             if l == self.num_lines - 1 and len(t) > 6:
                 t[0] = "w"
                 t[1] = str(weight)

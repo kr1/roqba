@@ -13,8 +13,8 @@ def test_get_grouping():
 
 
 def test_all_groupings_are_well_formed():
-    for grouping_id, grouping in note_length_groupings.groupings.items():
-        for grouping_type, value in grouping.items():
+    for grouping_id, grouping in list(note_length_groupings.groupings.items()):
+        for grouping_type, value in list(grouping.items()):
             # print grouping_id, grouping_type
             assembled = note_length_groupings._assemble(grouping_id, grouping_type)
             bad = note_length_groupings.badly_formeD(grouping_id[0], assembled)

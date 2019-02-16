@@ -16,9 +16,7 @@ class ComposerError(Exception):
     pass
 
 
-class AbstractComposer(object):
-    __metaclass__ = ABCMeta
-
+class AbstractComposer(object, metaclass=ABCMeta):
     def __init__(self,
                  gateway,
                  settings,
@@ -55,7 +53,7 @@ class AbstractComposer(object):
                 register=self.settings["voice_registers"][voice_idx],
                 behaviour=self.settings['voice_behaviours'][voice_idx])
             self.gateway.pd.send(["voice", id_, "adsr_enable", int(bool(settings['enable_adsr']))])
-        [voice.register_other_voices() for voice in self.voices.values()]
+        [voice.register_other_voices() for voice in list(self.voices.values())]
         self.set_meter(self.meter)
         self.notate = settings.get('notate')
         if self.notate:
@@ -78,7 +76,7 @@ class AbstractComposer(object):
         '''utility function that prints info on  harmonies and single voices'''
         sys.stderr.write("harmonies: {0}\n".format(self.harm))
         sys.stderr.write("voices: {0}\nnotes:{1}\n".format(self.voices,
-                         map(lambda x: x.note, self.voices.values())))
+                         [x.note for x in list(self.voices.values())]))
 
     def set_meter(self, meter):
         '''modifies composer-attributes for the specified meter.
@@ -92,7 +90,7 @@ class AbstractComposer(object):
             self.comp_logger.error("no applied meter registered for: {}".format(meter))
             self.applied_meter = note_length_groupings.analyze_grouping(meter[1])
         self._update_groupings(meter)
-        for v in self.voices.values():
+        for v in list(self.voices.values()):
             v.set_note_length_groupings()
             v.reload_register()
         self.drummer.meter = self.applied_meter
@@ -118,12 +116,12 @@ class AbstractComposer(object):
                 self.gateway.pd.send(["voice", "binaural", str(voice.id), val])
             else:
                 self.gateway.pd.send(["voice", "binaural", -1, val])
-                for voice in self.voices.values():
+                for voice in list(self.voices.values()):
                     voice.binaural_diff = val
         else:
             if self.behaviour['common_binaural_diff']:
                 val = random.random() * self.behaviour.get("max_binaural_diff")
-            for voice in self.voices.values():
+            for voice in list(self.voices.values()):
                 if not self.behaviour.voice_get(voice.id, "automate_binaural_diffs"):
                     continue
                 new_val = val or random.random() * self.behaviour.voice_get(voice.id, "max_binaural_diff")
@@ -144,7 +142,7 @@ class AbstractComposer(object):
         enharmonic scale for an underlying scale of [1, 1, 1,.....'''
         real_scale = []
         value = 0
-        for n in xrange(min, max):
+        for n in range(min, max):
             index = n % len(scale)
             if scale[index]:
                 adjustment = 0 if not tunings else tunings.get(index, 0)

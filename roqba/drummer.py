@@ -1,7 +1,7 @@
 from collections import namedtuple
 from random import random, choice
 
-from utilities.sine_controllers import MultiSine
+from .utilities.sine_controllers import MultiSine
 
 ContFrame = namedtuple("ContFrame", 'confirm vol pan pan2 ctl ctl2 meta')
 
@@ -41,7 +41,7 @@ class Drummer(object):
         }
         self.high_low_seq()
         self.generator = self.generate()
-        self.generator.next()
+        next(self.generator)
         self.cont_accent_mult = 0.3
         self.mark_accent_mult = 0.1
         self.frame = {}
@@ -53,12 +53,11 @@ class Drummer(object):
     def generate(self):
         while True:
             state, cycle_pos = (yield)
-            sum_ = sum(map(lambda v: v.note_change and 1 or 0,
-                           state["comp"].voices.values()))
+            sum_ = sum([v.note_change and 1 or 0 for v in list(state["comp"].voices.values())])
             density = sum_ / float(len(state["comp"].voices))
             meter_pos = cycle_pos
             self.frame = {}
-            for k, v in self.pattern.items():
+            for k, v in list(self.pattern.items()):
                 if v[meter_pos] or k == 'mark':
                     #  to-do make more dynamic
                     vol = 0.5
@@ -96,7 +95,7 @@ class Drummer(object):
         elif density < self.empty_threshold:
             meta = "empty"
         vol = 0.5 + state["weight"] * self.cont_accent_mult
-        if "fun" in self.ctl_values["cont"].keys():
+        if "fun" in list(self.ctl_values["cont"].keys()):
             addendum = (self.ctl_values["cont"]["fun"]() *
                         self.ctl_values["cont"]["devi"])
             addendum2 = (self.ctl_values["cont2"]["fun"]() *
@@ -126,7 +125,7 @@ class Drummer(object):
         elif density > self.full_threshold:
             meta = "mark"
         vol = 0.5 + state["weight"] * self.mark_accent_mult
-        if "fun" in self.ctl_values["mark"].keys():
+        if "fun" in list(self.ctl_values["mark"].keys()):
             addendum = (self.ctl_values["mark"]["fun"]() *
                         self.ctl_values["mark"]["devi"])
         else:
@@ -140,7 +139,7 @@ class Drummer(object):
 
         as a fallback this method will create a (generic) pattern
         using the underlying meter'''
-        indeces = xrange(len(self.meter))
+        indeces = range(len(self.meter))
         if patt:
             self.empty_pattern()
             next_trigger = "low"
@@ -151,10 +150,8 @@ class Drummer(object):
                     self.pattern[next_trigger][-1] = 1
                     next_trigger = "low" if next_trigger == "high" else "high"
         else:
-            self.pattern = {"low": map(lambda x: 1 if x == 2 else 0,
-                                       self.meter),
-                            "high": map(lambda x: 1 if x == 1 else 0,
-                                        self.meter),
+            self.pattern = {"low": [1 if x == 2 else 0 for x in self.meter],
+                            "high": [1 if x == 1 else 0 for x in self.meter],
                             "cont": [1 for n in indeces],
                             "tuned": [0 for n in indeces],
                             "mark": [0 for n in indeces]}
@@ -171,7 +168,7 @@ class Drummer(object):
         format to be defined'''
         p = self.pattern
         res = []
-        indeces = xrange(len(self.pattern["low"]))
+        indeces = range(len(self.pattern["low"]))
         for i in indeces:
             if p["low"][i]:
                 res.append(-1)
@@ -184,7 +181,7 @@ class Drummer(object):
 
     def push_value(self, val):
         '''append a value to all keys of the pattern'''
-        for k, v in self.pattern.items():
+        for k, v in list(self.pattern.items()):
             v.append(val)
 
     def empty_pattern(self):

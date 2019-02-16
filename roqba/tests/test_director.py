@@ -37,8 +37,8 @@ def director():
 def test_new_transition_speed(director):
     '''test that new speed values comply with specs'''
     director.speed_change = 'transition'
-    trans = [director.new_speed() for n in xrange(666)]
-    deltas = [abs(trans[n] - trans[n + 1]) for n in xrange(len(trans) - 1)]
+    trans = [director.new_speed() for n in range(666)]
+    deltas = [abs(trans[n] - trans[n + 1]) for n in range(len(trans) - 1)]
     assert max(deltas) < 0.04
 
 
@@ -48,20 +48,20 @@ def test_new_leap_speed(director):
     min_ = director.behaviour['min_speed'] = 0.1
     max_ = director.behaviour['max_speed'] = 0.2
     center = min_ + (max_ - min_) * director.speed_target
-    leaps = [director.new_speed() for n in xrange(666)]
+    leaps = [director.new_speed() for n in range(666)]
     average = sum(leaps) / float(len(leaps))
     assert abs(average - center) < 0.07
     for r in [0.000001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6,
               0.7, 0.8, 0.9, 0.9999999]:
         director.speed_target = r
-        res = [director.new_speed() for n in xrange(666)]
+        res = [director.new_speed() for n in range(666)]
         average = sum(res) / float(len(res))
         calc_target = min_ + ((max_ - min_) * r)
         assert abs(average - calc_target) < 0.15
 
 
-@pytest.mark.parametrize('from_', styles.keys())
-@pytest.mark.parametrize('to', styles.keys())
+@pytest.mark.parametrize('from_', list(styles.keys()))
+@pytest.mark.parametrize('to', list(styles.keys()))
 def test_style_change(director, from_, to):
     '''test that new speed values comply with specs'''
     if from_ == to:

@@ -18,7 +18,7 @@ def extract_peak_passages(array):
     upwards = []
     downwards = []
     extrema = detect_local_extrema(array)
-    all_ = itertools.permutations(extrema.keys(), 2)
+    all_ = itertools.permutations(list(extrema.keys()), 2)
     for start, end in all_:
         startval = extrema[start]
         endval = extrema[end]
@@ -29,7 +29,7 @@ def extract_peak_passages(array):
         else:
             target = upwards
 
-        in_between = [(key, value) for key, value in extrema.items()
+        in_between = [(key, value) for key, value in list(extrema.items())
                       if start < key < end or end < key < start]
         if not in_between:
             deviation = 1

@@ -11,7 +11,7 @@ def random_wavetable(partials=15, which='all'):
     '''all partials have randomly selected amplitudes'''
     det = lambda x: random.random()
     fun = __assemble(which, det)
-    parts = map(fun, xrange(partials))
+    parts = list(map(fun, range(partials)))
     return " ".join(parts)
 
 
@@ -23,7 +23,7 @@ def random_harmonic_wavetable(partials=15, which='all'):
     '''
     det = lambda x: random.random() / (x + 1)
     fun = __assemble(which, det)
-    parts = map(fun, xrange(partials))
+    parts = list(map(fun, range(partials)))
     return " ".join(parts)
 
 
@@ -31,7 +31,7 @@ def harmonic_wavetable(partials=15, which='all'):
     '''the value of each amplitude of partial N is given by 1 / N'''
     det = lambda x: 1.0 / (x + 1)
     fun = __assemble(which, det)
-    parts = map(fun, xrange(partials))
+    parts = list(map(fun, range(partials)))
     parts[0] = "1"
     return " ".join(parts)
 
@@ -54,7 +54,7 @@ def _apply_wavetable(string, size=512):
     numbers = _as_floats(string)
     wavetable = []
     pi_step = 2 * math.pi / size
-    for index in xrange(size):
+    for index in range(size):
         wavetable.append(sum([value * math.sin(pi_step * index * (harmo_index + 1))
                               for harmo_index, value in enumerate(numbers)]))
     # normalize

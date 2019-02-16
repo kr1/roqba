@@ -19,7 +19,7 @@ def extract_modified_move(move):
     try:
         number = int(match("-?\d+", move).group())
         modifier = match("-?\d+([-+]?)", move).groups()[0]
-    except AttributeError, error:
+    except AttributeError as error:
         raise RuntimeError(
             "malformed melody move: {0}\nOriginal Error: {1}".format(
                 move, error))
@@ -39,7 +39,7 @@ class MelodyPlayer():
 
         by sending the necessary messages to the roqba-sound-engine"""
         if not self.melody:
-            raise "ImpossibleRequestError", "no melody given"
+            raise RuntimeError("Impossible Request: no melody given")
         start_note = (self.static_start_note + self.melody['start_note'])
         current_note = start_note
         self.pd.send("sound 1")
@@ -53,7 +53,7 @@ class MelodyPlayer():
             next_real_note = real_scale[next_note]
             if modifier:
                 next_real_note += modifier
-            print next_real_note + self.transpose,
+            print(next_real_note + self.transpose, end=' ')
             if counter >= start:
                 self.pd.send(["voice", 1, "dur", self.speed * note[1] * 1000])
                 self.pd.send(["voice", 1, next_real_note + self.transpose])

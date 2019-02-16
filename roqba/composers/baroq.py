@@ -12,6 +12,7 @@ from roqba.static.meters import METERS
 from roqba import metronome
 from roqba.composers.abstract_composer import AbstractComposer
 from roqba.composers.rhythm_and_meter_mixin import RhythmAndMeterMixin
+from functools import reduce
 
 
 class Composer(RhythmAndMeterMixin, AbstractComposer):
@@ -26,8 +27,8 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                                        scale=settings.get('start_scale', 'DIATONIC'))
         self.harm = {}
         self.speed_lim = behaviour['embellishment_speed_lim']
-        self.selected_meters = ("meters" in self.behaviour.keys() and
-                                self.behaviour["meters"] or METERS.keys())
+        self.selected_meters = ("meters" in list(self.behaviour.keys()) and
+                                self.behaviour["meters"] or list(METERS.keys()))
         self.modified_note_in_current_frame = None
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
@@ -43,7 +44,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.modified_note_in_current_frame = None
         for v in self.sort_voices_by_importance():
             if len(self.voices) < self.num_voices:
-                raise (RuntimeError, "mismatch in voices count")
+                raise RuntimeError("mismatch in voices count")
             v.generator.send(state)
             self.musical_logger.debug("note {0}".format(v.note))
             tmp_harm.append(v.note)
@@ -75,7 +76,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         # percussion
         if self.behaviour['has_percussion']:
             self.drummer.generator.send([state, state['cycle_pos']])
-            for k, v in self.drummer.frame.items():
+            for k, v in list(self.drummer.frame.items()):
                 if v["meta"]:
                     if v["meta"] == 'empty':
                         threading.Thread(target=self.drum_fill_handler,
@@ -99,7 +100,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
     def apply_scale(self):
         '''sets the real note for the scale-bound notes in each voice'''
-        for v in self.voices.values():
+        for v in list(self.voices.values()):
             if v.note == 0:
                 v.real_note = 0
                 continue
@@ -109,7 +110,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             self.musical_logger.info("modified note: '{0}'".format(
                                      self.modified_note_in_current_frame))
             which = self.modified_note_in_current_frame[0]
-            for v in self.voices.values():
+            for v in list(self.voices.values()):
                 num_notes = NOTES_PER_SCALE[self.scale]
                 if v.note % num_notes == which % num_notes:
                     direction = self.modified_note_in_current_frame[1]
@@ -142,18 +143,18 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
             - voices having a registered direction first
 
         '''
-        voices = self.voices.values()
+        voices = list(self.voices.values())
         if by == 'imp':
             register_sort_dict = {}
             [register_sort_dict.__setitem__(reg["name"],
                                             reg["sort_importance"]) for
-             reg in self.registers.values()]
+             reg in list(self.registers.values())]
             voices.sort(key=lambda x: register_sort_dict[x.register["name"]])
         else:
-            dirs = filter(lambda x: x.dir, voices)
+            dirs = [x for x in voices if x.dir]
             no_dirs = list(set(voices) - set(dirs))
             voices = dirs + no_dirs
-        melodic = filter(lambda v: v.playing_a_melody, voices)
+        melodic = [v for v in voices if v.playing_a_melody]
         if len(melodic) > 0:
             voices.remove(melodic[0])
             voices = [melodic[0]] + voices
@@ -163,7 +164,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         '''checks for embellishment markers of the single voices
 
         - starts a thread to handle the embellishment'''
-        for v in self.voices.values():
+        for v in list(self.voices.values()):
             if v.do_embellish:
                 v.do_embellish = False
                 threading.Thread(target=self.ornament_handler,
@@ -214,15 +215,15 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         searches for target-harmonies and sets a flag"""
         # check if all notes are new
         self.comment = 'normal'
-        note_changes = [v.note_change for v in self.voices.values()]
+        note_changes = [v.note_change for v in list(self.voices.values())]
         all_notes_change = reduce(lambda x, y:
                                   x and y,
                                   note_changes)
         if all_notes_change:
-            harmony = map(lambda x: x.note, self.voices.values())
+            harmony = [x.note for x in list(self.voices.values())]
             # print "all_notes_change: harmony {0}".format(harmony)
             if (self.is_base_harmony(harmony) and
-                    not filter(lambda v: v.playing_a_melody, self.voices.values())):
+                    not [v for v in list(self.voices.values()) if v.playing_a_melody]):
                 self.comment = "caesura"
                 # print "all notes change to a base harmony"
 
@@ -241,7 +242,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
     @staticmethod
     def flatten_chord(chord):
         '''maps a specified code to the base octave'''
-        flat = map(lambda x: x % 7, chord)
+        flat = [x % 7 for x in chord]
         return flat
 
     @staticmethod
@@ -274,7 +275,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
     def add_duration_in_msec(self, state):
         '''adds duration in milliseconds for each note in self.voices'''
-        for v in self.voices.values():
+        for v in list(self.voices.values()):
             v.duration_in_msec = int(v.note_duration_steps *
                                      state["speed"] * 1000)
 

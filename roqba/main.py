@@ -10,7 +10,7 @@ import roqba.static.settings as default_settings
 
 
 try:
-    import static.local_settings as local_settings
+    from . import static.local_settings as local_settings
 except ImportError:
     local_settings = default_settings
 else:
@@ -54,7 +54,7 @@ def main():
 
 
 if __name__ == "__main__":
-    print '''running this application from the interpreter lets you interact with it directly.
+    print('''running this application from the interpreter lets you interact with it directly.
 
     In the interpreter - from the project-root run as:
     \b\b\b\bfrom roqba import main
@@ -63,5 +63,5 @@ if __name__ == "__main__":
     \b\b\b\bmain.director.stop()
 
     There is also a tk based gui available (start with python rogba/ui/main.py)
-    '''
+    ''')
     main()

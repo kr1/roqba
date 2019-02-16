@@ -385,7 +385,7 @@ def _assemble(id_, which=None, fallback=True):
     if not target:
         logger.error("no dedicated note length groupings for {}".format(id_))
         target_length = id_[0]
-        fitting = [groupings[key] for key in groupings.keys() if key[0] == target_length]
+        fitting = [groupings[key] for key in list(groupings.keys()) if key[0] == target_length]
         try:
             target = choice(fitting)
         except Exception as error:
@@ -422,7 +422,7 @@ def analyze_grouping(g):
     res = []
     for item in g:
         first = True
-        for n in xrange(item):
+        for n in range(item):
             if first:
                 res.append(1)
             else:
@@ -435,7 +435,7 @@ def badly_formeD(meter_length, to_check):
     '''checks if a grouping is well-formed
 
     checks if the sum of items equals the specified target length'''
-    odd = filter(lambda x: sum(x) != meter_length, to_check)
+    odd = [x for x in to_check if sum(x) != meter_length]
     return bool(odd)
 
 if badly_formeD(DEFAULT_METER_LENGTH[0], DEFAULT_NOTE_LENGTH_GROUPINGS):

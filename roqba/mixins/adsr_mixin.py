@@ -8,7 +8,7 @@ def get_random_adsr(min_adsr, max_adsr):
 
 class ADSRMixin(object):
     def new_random_adsr_for_all_voices(self):
-        voices = self.composer.voices.values()
+        voices = list(self.composer.voices.values())
         if self.behaviour['common_adsr']:
             new_adsr = get_random_adsr(self.behaviour['min_adsr'],
                                        self.behaviour['max_adsr'])

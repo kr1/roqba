@@ -4,17 +4,17 @@ import json
 import logging
 from collections import OrderedDict
 from re import match
-from Tkinter import tkinter
-from Tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
-from Tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
-from Tkinter import Entry, OptionMenu
+from tkinter import tkinter
+from tkinter import Frame, HORIZONTAL, IntVar, StringVar, W, N, E
+from tkinter import LabelFrame, Checkbutton, Radiobutton, Scale, Button
+from tkinter import Entry, OptionMenu
 
 # TODO?: integration into roqba
 # from roqba.static.settings import settings
 
-remote_host = os.environ["ROQBA_HOST"] if "ROQBA_HOST" in os.environ.keys() else "127.0.0.1"
+remote_host = os.environ["ROQBA_HOST"] if "ROQBA_HOST" in list(os.environ.keys()) else "127.0.0.1"
 host = "0.0.0.0"
-print "listening on:", host, "sending to: ", remote_host
+print("listening on:", host, "sending to: ", remote_host)
 port = 12322
 send_port = 12323
 
@@ -95,7 +95,7 @@ class Application(Frame):
         settables = self.winfo_children()
         for w in settables:
             settables += w.winfo_children()
-        return filter(lambda w: w.__class__.__name__ in ['Scale', 'Checkbutton'], settables)
+        return [w for w in settables if w.__class__.__name__ in ['Scale', 'Checkbutton']]
 
     def create_radio_buttons(self):
         # Scale related
@@ -178,9 +178,9 @@ class Application(Frame):
                                  from_=getattr(self, 'min_' + name),
                                  to=getattr(self, 'max_' + name),
                                  resolution=SCALES[sca]['res'])
-                this_sca.enable = ('enable' in SCALES[sca].keys() and
+                this_sca.enable = ('enable' in list(SCALES[sca].keys()) and
                                    SCALES[sca]['enable'] or None)
-                this_sca.disable = ('disable' in SCALES[sca].keys() and
+                this_sca.disable = ('disable' in list(SCALES[sca].keys()) and
                                     SCALES[sca]['disable'] or None)
                 this_sca.grid(column=int(2 + int(vid)), row=counter, sticky=E + W)
                 this_sca.bind("<ButtonRelease>", self.scale_handler)
@@ -200,7 +200,7 @@ class Application(Frame):
             for cb in CHECK_BUTTONS:
                 options = CHECK_BUTTONS[cb]
                 name = 'voice_' + vid + '_' + cb
-                if isinstance(options, dict) and 'label' in options.keys():
+                if isinstance(options, dict) and 'label' in list(options.keys()):
                     label = options['label']
                 else:
                     label = cb[9:] if cb[:9] == 'automate_' else cb
@@ -252,7 +252,7 @@ class Application(Frame):
             pp_frame.grid(row=len(target_frame.winfo_children()), sticky=E + W)
 
     def wt_handler(self, event):
-        print event.widget.tk
+        print(event.widget.tk)
         ref = event.widget.ref
         self.send({ref: getattr(self, ref).get()})
 
@@ -261,7 +261,7 @@ class Application(Frame):
         for cb in CHECK_BUTTONS:
             label = cb
             target_parent = self.cb_frame
-            if isinstance(CHECK_BUTTONS[cb], dict) and 'sub_frame' in CHECK_BUTTONS[cb].keys():
+            if isinstance(CHECK_BUTTONS[cb], dict) and 'sub_frame' in list(CHECK_BUTTONS[cb].keys()):
                 target_parent = getattr(self, CHECK_BUTTONS[cb]['sub_frame'])
             setattr(self, cb, IntVar(value=type(CHECK_BUTTONS[cb]) == dict and
                                      CHECK_BUTTONS[cb]['val'] or
@@ -269,7 +269,7 @@ class Application(Frame):
             self.this_cb = Checkbutton(target_parent, text=label, variable=getattr(self, cb))
             self.this_cb.bind('<Button-1>', self.check_boxes_handler)
             self.this_cb.disable = (type(CHECK_BUTTONS[cb]) == dict and
-                                    'disable' in CHECK_BUTTONS[cb].keys())
+                                    'disable' in list(CHECK_BUTTONS[cb].keys()))
             self.this_cb.grid(sticky=W, column=0, row=len(target_parent.winfo_children()))
             self.this_cb.ref = cb
         for but in GLOBAL_BUTTONS:
@@ -290,7 +290,7 @@ class Application(Frame):
         various different widget types need custom setting functionality'''
 
         direct = ['scale', 'wavetable_generation_type', 'partial_pool']
-        if filter(lambda x: match("(voice_\d_|)" + x, name), direct):
+        if [x for x in direct if match("(voice_\d_|)" + x, name)]:
             self.gui_logger.info("setting: '{0}' to '{1}' in GUI".format(name, val))
             getattr(self, name).set(val)
             return
@@ -348,7 +348,7 @@ class Application(Frame):
     def create_scales(self):
         counter = 0
         for sca in SCALES:
-            label = SCALES[sca]['label'] if 'label' in SCALES[sca].keys() else sca
+            label = SCALES[sca]['label'] if 'label' in list(SCALES[sca].keys()) else sca
             setattr(self, 'min_' + sca, SCALES[sca]['min'])
             setattr(self, 'max_' + sca, SCALES[sca]['max'])
             self.this_scale = Scale(self, label=label, orient=HORIZONTAL,
@@ -356,11 +356,11 @@ class Application(Frame):
                                     to=getattr(self, 'max_' + sca),
                                     resolution=SCALES[sca]['res'])
             self.this_scale.set(SCALES[sca]['start'])
-            self.this_scale.enable = ('enable' in SCALES[sca].keys() and
+            self.this_scale.enable = ('enable' in list(SCALES[sca].keys()) and
                                       SCALES[sca]['enable'] or None)
-            self.this_scale.disable = ('disable' in SCALES[sca].keys() and
+            self.this_scale.disable = ('disable' in list(SCALES[sca].keys()) and
                                        SCALES[sca]['disable'] or None)
-            if 'pos' in SCALES[sca].keys():
+            if 'pos' in list(SCALES[sca].keys()):
                 pos = SCALES[sca]['pos']
                 col = pos['c']
                 row = pos['r']
@@ -404,13 +404,13 @@ class Application(Frame):
                                         resolution=RANGES[ran]['res'])
             self.this_min_scale.set(RANGES[ran]['min_start'])
             self.this_max_scale.set(RANGES[ran]['max_start'])
-            self.this_min_scale.enable = ('enable' in RANGES[ran].keys() and
+            self.this_min_scale.enable = ('enable' in list(RANGES[ran].keys()) and
                                           RANGES[ran]['enable'] or None)
-            self.this_min_scale.disable = ('disable' in RANGES[ran].keys() and
+            self.this_min_scale.disable = ('disable' in list(RANGES[ran].keys()) and
                                            RANGES[ran]['disable'] or None)
-            self.this_max_scale.enable = ('enable' in RANGES[ran].keys() and
+            self.this_max_scale.enable = ('enable' in list(RANGES[ran].keys()) and
                                           RANGES[ran]['enable'] or None)
-            self.this_max_scale.disable = ('disable' in RANGES[ran].keys() and
+            self.this_max_scale.disable = ('disable' in list(RANGES[ran].keys()) and
                                            RANGES[ran]['disable'] or None)
             self.this_min_scale.grid(column=2, row=counter, sticky=E + W)
             self.this_max_scale.grid(column=2, row=counter + 1, sticky=E + W)
@@ -422,7 +422,7 @@ class Application(Frame):
 
     def socket_read_handler(self, file, mask):
         data_object = json.loads(file.recv(1024))
-        do = data_object.items()[0]
+        do = list(data_object.items())[0]
         self.set_value(do[0], do[1])
 
 

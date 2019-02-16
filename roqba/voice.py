@@ -1,17 +1,17 @@
 import random
 import logging
-from Queue import deque
+from queue import deque
 from random import choice as sample
 
-from static.movement_probabilities import DEFAULT_MOVEMENT_PROBS, BASS_CHORD_DISTANCE_PROBS
-from static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
-from static.note_length_groupings import analyze_grouping
-from static.melodies import melodies
-from static.scales_and_harmonies import FOLLOWINGS
-from utilities.sine_controllers import MultiSine
-from utilities import melody_player
-from utilities import pd_wavetables as wavetables
-from metronome import MEDIUM, HEAVY
+from .static.movement_probabilities import DEFAULT_MOVEMENT_PROBS, BASS_CHORD_DISTANCE_PROBS
+from .static.note_length_groupings import DEFAULT_NOTE_LENGTH_GROUPINGS as GROUPINGS
+from .static.note_length_groupings import analyze_grouping
+from .static.melodies import melodies
+from .static.scales_and_harmonies import FOLLOWINGS
+from .utilities.sine_controllers import MultiSine
+from .utilities import melody_player
+from .utilities import pd_wavetables as wavetables
+from .metronome import MEDIUM, HEAVY
 
 
 class Voice(object):
@@ -32,7 +32,7 @@ class Voice(object):
         self.id = id
         self.register = (self.composer.registers[register]
                          if register else
-                         self.composer.registers[sample(self.composer.registers.keys())])
+                         self.composer.registers[sample(list(self.composer.registers.keys()))])
 
         # TECH
         self.track_me = False
@@ -45,7 +45,7 @@ class Voice(object):
         self.prior_note = None
         self.note_change = True
         self.generator = self.voice()
-        self.generator.next()  # set the coroutine to the yield-point
+        next(self.generator)  # set the coroutine to the yield-point
         self.counter = 0
         self.volume = composer.behaviour.voice_get(self.id, "default_volume")
         self.scale = composer.scale
@@ -59,13 +59,13 @@ class Voice(object):
 
         # BEHAVIOUR
         if behaviour:
-            if isinstance(behaviour, basestring):
+            if isinstance(behaviour, str):
                 self.behaviour = behaviour
             else:
                 self.behaviour = behaviour[0]
                 self.followed_voice_id = behaviour[1]
                 self.following_counter = 0
-                self.follow_limit = sample(range(5, 11))
+                self.follow_limit = sample(list(range(5, 11)))
         else:
             self.behaviour = self.composer.behaviour["default_behaviour"]
         self.should_play_a_melody = self.composer.behaviour.voice_get(
@@ -228,7 +228,7 @@ class Voice(object):
 
     def search_suitable_melody(self, speed):
         candidates = []
-        for melody_name, melody in melodies.items():
+        for melody_name, melody in list(melodies.items()):
             speed_range = melody["speed_range"]
             right_note = self.note % 7 == melody["start_note"]
             right_scale = self.composer.scale == melody["scale"]
@@ -237,7 +237,7 @@ class Voice(object):
             if right_note and right_scale and right_speed and right_meter:
                 candidates.append({melody_name: melody})
         if len(candidates) > 0:
-            chosen = sample(candidates).items()[0]
+            chosen = list(sample(candidates).items())[0]
             self.musical_logger.info("new melody: {0}".format(chosen[0]))
             return chosen[1]
 
@@ -248,7 +248,7 @@ class Voice(object):
         specified length of the note.
         returns the pitch-related move (delta) and sets eventual modifier
         attribute on the composer"""
-        move, length = self.melody_iterator.next()
+        move, length = next(self.melody_iterator)
         if type(move) == str:
             number, modifier = melody_player.extract_modified_move(move)
             self.composer.modified_note_in_current_frame = (number,
@@ -342,12 +342,12 @@ class Voice(object):
             if type(change_master) == int:
                 self.followed_voice_id = change_master
             else:
-                self.followed_voice_id = sample(self.others.keys())
+                self.followed_voice_id = sample(list(self.others.keys()))
         follow = self.other_voices[self.followed_voice_id]
         self.slide_duration_prop = follow.slide_duration_prop
         self.slide = follow.slide
         self.following_counter = 0
-        self.follow_limit = sample(range(5, 11))
+        self.follow_limit = sample(list(range(5, 11)))
 
     def set_note_length_groupings(self, mapping={'BASS': 'HEAVY_GROUPINGS',
                                                  'ROCK_BASS': 'FAST_GROUPINGS',
@@ -363,7 +363,7 @@ class Voice(object):
     def register_other_voices(self):
         '''returns the other voices registered in the app'''
         self.other_voices = {}
-        for k, v in self.composer.voices.items():
+        for k, v in list(self.composer.voices.items()):
             if v != self:
                 self.other_voices[k] = v
 
@@ -373,9 +373,9 @@ class Voice(object):
         - in voice
         - in the controller'''
         # print "reloading register: {0}".format(name)
-        for k, v in self.register["voice_attrs"].items():
+        for k, v in list(self.register["voice_attrs"].items()):
             setattr(self, k, v)
-        for k, v in self.register["voice_composer_attrs"].items():
+        for k, v in list(self.register["voice_composer_attrs"].items()):
             setattr(self, k, getattr(self.composer, v))
         self.counter = 0
 

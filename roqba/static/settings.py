@@ -66,7 +66,7 @@ behaviour = {
     # METERS
     'automate_meters': True,
     'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
-    'meters': METERS.keys(),
+    'meters': list(METERS.keys()),
 
     # WAVETABLES
     'automate_wavetables': True,
@@ -567,7 +567,7 @@ styles = {
             # METERS
             'automate_meters': True,
             'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
-            'meters': METERS.keys(),
+            'meters': list(METERS.keys()),
 
             # WAVETABLES
             'automate_wavetables': True,
@@ -682,7 +682,7 @@ styles = {
             # METERS
             'automate_meters': False,
             'meter': (12, (1, 2, 2, 1, 2, 2, 2)),
-            'meters': METERS.keys(),
+            'meters': list(METERS.keys()),
 
             # WAVETABLES
             'automate_wavetables': True,
@@ -761,7 +761,7 @@ styles = {
 
 
 def flatten_meters(behaviour):
-    if "meters" in behaviour.keys() and type(behaviour["meters"][0]) == list:
+    if "meters" in list(behaviour.keys()) and type(behaviour["meters"][0]) == list:
         behaviour["meters"] = sum(behaviour["meters"], [])
 
 flatten_meters(behaviour)
@@ -773,5 +773,5 @@ def behaviour_and_settings_from_style(default_settings, style_name):
         default_settings.behaviour.update(default_settings.styles[style_name]["behaviour"])
     default_settings.behaviour["style"] = style_name
     flatten_meters(default_settings.behaviour)
-    behaviour_dict = BehaviourDict(default_settings.behaviour.items(), name='global')
+    behaviour_dict = BehaviourDict(list(default_settings.behaviour.items()), name='global')
     return default_settings.settings, default_settings.behaviour, behaviour_dict

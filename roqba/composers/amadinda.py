@@ -26,7 +26,7 @@ class Composer(AbstractComposer):
         self.transpose = 20
         self.length_indicator = None
 
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             voice.duration_in_msec = 600
         self.set_scale(self.scale)
         self.make_new_pattern()
@@ -65,9 +65,9 @@ class Composer(AbstractComposer):
         self.comment = 'normal'
         tmp_harm = []
         meter_pos = state['cycle_pos']
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             if len(self.voices) < self.num_voices:
-                raise (RuntimeError, "mismatch in voices count")
+                raise RuntimeError("mismatch in voices count")
             self.musical_logger.debug("note {0}".format(voice.note))
             if voice.note == 0 or not voice.note_change:
                 continue
@@ -86,7 +86,7 @@ class Composer(AbstractComposer):
                 send_drum = False
         else:
             self.drummer.generator.send([state, cycle_pos])
-        for k, v in self.drummer.frame.items():
+        for k, v in list(self.drummer.frame.items()):
             # TODO: re-add the drum filler
             if False and v["meta"]:
                 if v["meta"] == 'empty':
@@ -97,7 +97,7 @@ class Composer(AbstractComposer):
                                      args=(k, state)).start()
         if send_drum:
             self.gateway.drum_hub.send(self.drummer.frame)
-        for voice in self.voices.values():
+        for voice in list(self.voices.values()):
             self.gateway.send_voice_peak_level(voice, voice.current_microvolume)
         self.gateway.hub.send(self.voices)
         if self.notate:
@@ -160,11 +160,11 @@ class Composer(AbstractComposer):
 
     def _apply_new_pattern(self, pure_seq1, pure_seq2):
         self.applied_seq1 = list(itertools.chain(
-            *zip([tone + self.transpose for tone in pure_seq1],
-                 [0] * self.sequence_length)))
+            *list(zip([tone + self.transpose for tone in pure_seq1],
+                 [0] * self.sequence_length))))
         self.applied_seq2 = list(itertools.chain(
-            *zip([0] * self.sequence_length,
-                 [tone + self.transpose for tone in pure_seq2])))
+            *list(zip([0] * self.sequence_length,
+                 [tone + self.transpose for tone in pure_seq2]))))
         seq3 = self._make_third_voice(self.applied_seq1, self.applied_seq2)
         return {
             1: self.applied_seq1,

@@ -22,7 +22,7 @@ def composer():
 
 def test_meter_setting(composer):
     '''test method raises non exception'''
-    for meter in groupings.keys():
+    for meter in list(groupings.keys()):
         composer.set_meter(meter)
 
 

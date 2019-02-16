@@ -101,7 +101,7 @@ def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_
     should_go_downward = high_limit <= 1
     free = not(should_go_downward or should_go_downward)
     valid_words = [movement for indicators, movement
-                   in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items()
+                   in list(DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items())
                    if indicators.high <= high_limit
                    and indicators.low >= low_limit
                    and ((indicators.diff > 0 and should_go_upward)
@@ -130,4 +130,4 @@ def length(double_prop, triple_prob):
 
 
 if __name__ == '__main__':
-    print DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL
+    print(DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL)

@@ -180,4 +180,4 @@ melodies = {
 }
 
 if __name__ == '__main__':
-    print melodies
+    print(melodies)

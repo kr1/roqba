@@ -9,7 +9,7 @@ class IncomingMessagesMixin(object):
         all current settings and which can be used to write a snapshot
         of a particular moment
         """
-        key, val = msg.items()[0]
+        key, val = list(msg.items())[0]
         self.gui_logger.info("incoming message '{0}' with value '{1}'".format(key, val))
         if key[0:6] == 'voice_':
             split = key.split("_")
@@ -37,7 +37,7 @@ class IncomingMessagesMixin(object):
                 self.set_wavetables(vid=vid, manual=True)
                 self.gui_sender.update_gui(self)
         elif key in self.allowed_incoming_messages:
-            if key in self.behaviour.keys():
+            if key in list(self.behaviour.keys()):
                 self.behaviour_logger.info("setting {0} to {1}".format(key, val))
                 self.behaviour[key] = val
             elif key == "play":
@@ -53,7 +53,7 @@ class IncomingMessagesMixin(object):
                     new_behaviour = val[1]
                     self.behaviour_logger.info("setting behaviour to: {0}".format(new_behaviour))
                     self.behaviour = BehaviourDict(self.behaviour.saved_behaviours[new_behaviour])
-                    for key, per_voice in self.behaviour['per_voice'].items():
+                    for key, per_voice in list(self.behaviour['per_voice'].items()):
                         per_voice = BehaviourDict(per_voice)
                     self.gui_sender.update_gui(self)
                     #TODO: apply new behaviour (attention recreation of behaviour dicts?)
@@ -63,5 +63,5 @@ class IncomingMessagesMixin(object):
                 self.force_caesura = True
             elif key == "trigger_wavetable":
                 self.behaviour_logger.info("setting a new wavetable for all voices")
-                self.set_wavetables(manual=True, voices=self.composer.voices.values())
+                self.set_wavetables(manual=True, voices=list(self.composer.voices.values()))
                 self.gui_sender.update_gui(self)

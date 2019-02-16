@@ -73,6 +73,6 @@ FOLLOWINGS = [-9, -5, -2, 2, 5, 9, 12]
 DISHARMS = [1]
 
 if __name__ == "__main__":
-    print SCALES_BY_FREQUENCY
-    print tmp_length_2_strict
-    print  "ALL_STRICT_HARMONIES", ALL_STRICT_HARMONIES
+    print(SCALES_BY_FREQUENCY)
+    print(tmp_length_2_strict)
+    print("ALL_STRICT_HARMONIES", ALL_STRICT_HARMONIES)

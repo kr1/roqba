@@ -39,7 +39,7 @@ class MultiSine(object):
         if equal_power:
             self.coeff = 1
         else:
-            self.coeff = 1.0 / sum([1.0 / (n + 1) for n in xrange(len(freqs))])
+            self.coeff = 1.0 / sum([1.0 / (n + 1) for n in range(len(freqs))])
         self.assemble_funnel()
 
     def get_value(self):
@@ -51,7 +51,7 @@ class MultiSine(object):
             return sum(tmp) / float(len(self.funnel))
         else:
             ## each value gets scaled according to its position in the array
-            tmp = [tmp[pos] / (pos + 1.0) for pos in xrange(len(tmp))]
+            tmp = [tmp[pos] / (pos + 1.0) for pos in range(len(tmp))]
             return sum(tmp) * self.coeff
 
     def get_value_as_factor(self, variation):
