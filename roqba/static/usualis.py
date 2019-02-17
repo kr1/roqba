@@ -15,8 +15,11 @@ class UsualisError(Exception):
 delta_movements = (
     (-1, 0, 0),
     (1, 0),
+    (0, 1),
     (0, -1),
     (-1, -1),
+    (0, -1, -1, 0),
+    (0, 1, 1, 0),
     (1, 1, -1, 1),
     (-1, -1, 1, 1, 1),
     (-1, -1, 1, 2, -1),
@@ -97,16 +100,21 @@ def end_word(start_note):
 
 
 def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_prob=0.03):
-    should_go_upward = low_limit >= -1
-    should_go_downward = high_limit <= 1
-    free = not(should_go_downward or should_go_downward)
-    valid_words = [movement for indicators, movement
-                   in list(DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items())
-                   if indicators.high <= high_limit
-                   and indicators.low >= low_limit
-                   and ((indicators.diff > 0 and should_go_upward)
-                        or (indicators.diff < 0 and should_go_downward)
-                        or free)]
+    """selects a new words from the available pool
+
+    according to the given start_note and limits.
+    Raises a UsualisError if no suitable candidates are found"""
+    should_go_upward = abs(start_note - low_limit) < abs(start_note - high_limit)
+    should_go_downward = not(should_go_upward)
+    valid_words = []
+    for indicators, movement in DELTA_MOVEMENTS_BY_AMPLITUDE_AND_VERTICAL.items():
+        end_note = start_note + indicators.diff
+        if ((indicators.high <= high_limit and indicators.low >= low_limit)  # statically in range
+            and (end_note <= high_limit and end_note >= low_limit)  # end-note in range
+            and (start_note <= high_limit and start_note >= low_limit)  # start-note in range
+            and (indicators.diff > 0 and should_go_upward
+                or (indicators.diff < 0 and should_go_downward))):
+            valid_words.append(movement)
     valid_words = list(itertools.chain(*valid_words))
     try:
         word = random.choice(valid_words)
