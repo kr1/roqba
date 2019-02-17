@@ -250,7 +250,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         '''returns an array of the intervals between the specified notes'''
         chord.sort()
         base = chord[0]
-        return map(lambda x: x - base, chord)[1:]
+        return [(note - base, chord) for note in chord][1:]
 
     @staticmethod
     def scale_walker(scale, present_note, delta):
