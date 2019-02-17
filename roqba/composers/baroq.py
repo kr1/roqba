@@ -257,7 +257,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         """walks the <scale> <delta> steps starting at <present_note>"""
         if delta == 0:
             return present_note
-        dir = delta / abs(delta)
+        dir = delta // abs(delta)
         steps = 0
         index = 1
         octave = present_note // len(scale)
