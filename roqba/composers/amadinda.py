@@ -78,7 +78,7 @@ class Composer(AbstractComposer):
         send_drum = True
         if self.half_beat:
             if cycle_pos % 2 == 0:
-                cycle_pos = cycle_pos / 2
+                cycle_pos = cycle_pos // 2
                 if self.second_beat_half:
                     cycle_pos += int(self.meter[0] / 2)
                 self.drummer.generator.send([state, cycle_pos])

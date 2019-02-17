@@ -55,7 +55,7 @@ class Drummer(object):
             state, cycle_pos = (yield)
             sum_ = sum([v.note_change and 1 or 0 for v in list(state["comp"].voices.values())])
             density = sum_ / float(len(state["comp"].voices))
-            meter_pos = cycle_pos
+            meter_pos = int(cycle_pos)
             self.frame = {}
             for k, v in list(self.pattern.items()):
                 if v[meter_pos] or k == 'mark':
