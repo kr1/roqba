@@ -435,7 +435,7 @@ def badly_formeD(meter_length, to_check):
     '''checks if a grouping is well-formed
 
     checks if the sum of items equals the specified target length'''
-    odd = [x for x in to_check if sum(x) != meter_length]
+    odd = [sum(x) for x in to_check if sum(x) != meter_length]
     return bool(odd)
 
 if badly_formeD(DEFAULT_METER_LENGTH[0], DEFAULT_NOTE_LENGTH_GROUPINGS):
