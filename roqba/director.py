@@ -178,6 +178,7 @@ class Director(IncomingMessagesMixin, WavetableMixin, ADSRMixin, SpeedMixin):
                             and random_value > glob_conf['style_change_prob']):
                         change_style = True
                     if change_style:
+                        self.caesura_count = 0
                         new_style = choice(list(settings.styles.keys()))
                         self.set_style(new_style, manual=False)
                         self.musical_logger.info('new_style: {}'.format(new_style))
