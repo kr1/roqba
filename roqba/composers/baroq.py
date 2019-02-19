@@ -195,7 +195,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
                 multiplier = ((note_delta / abs(note_delta))
                               if note_delta != 0
                               else 0)
-                next_note = note + (orn_note[1] * multiplier)
+                next_note = int(note + (orn_note[1] * multiplier))
                 real_note = self.real_scale[next_note]
                 dur_prop = (v.slide_duration_prop or
                             self.behaviour.voice_get(v.id, "slide_duration_prop"))
