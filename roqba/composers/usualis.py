@@ -2,7 +2,7 @@ import threading
 from random import choice, random
 
 from roqba.composers.abstract_composer import AbstractComposer, ComposerError
-from roqba.static.usualis import Ambitus, end_word, next_valid_word, Note
+from roqba.static.usualis import Ambitus, end_word, safe_next_valid_word, Note
 from roqba.utilities.sine_controllers import MultiSine
 
 # http://www.teoria.com/en/reference/g-h/gregorian.php
@@ -94,8 +94,7 @@ class Composer(AbstractComposer):
         ref_note = 0 if self.current_note == 'caesura' else self.current_note.note
         headroom = self.melody_headroom(ref_note)
         legroom = self.melody_legroom(ref_note)
-        # print self.current_note, headroom, legroom
-        word = next_valid_word(ref_note, headroom, legroom, self.double_length_prob,
+        word = safe_next_valid_word(ref_note, headroom, legroom, self.double_length_prob,
             self.triple_length_prob)
         first_note = word[0].note
         self.drone = first_note

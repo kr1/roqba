@@ -33,12 +33,12 @@ delta_movements = (
     (1, 1, -2, -1, 1, -1),
     (1, 1, -1, -1, -2, -1, 1, -1),
     # from the source (p. 781 Pascha, ed 1961)
-    (0, 0 , 2, -1, 1),
+    (0, 0, 2, -1, 1),
     (-2, -1, -1, 1, 1, -2),
     (2, -1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1),
     (0, 0, -1, 1, 2, 2),
     (0, 0, 0, 2, -1, -1, 0),
-    (-2, 2, 0,0, -2, -1, 1, 2, 0, 2, -1, 1, -2, 0),
+    (-2, 2, 0, 0, -2, -1, 1, 2, 0, 2, -1, 1, -2, 0),
     (0, 0, -1, 1, 0, -2, 1, -2, 0),
     (3, 1, 1, -1, 1, 0, -1, 1, -1, -1, 1),
     (-1, -2, 2, -1, 1, 1, -1),
@@ -99,6 +99,22 @@ def end_word(start_note):
     return word
 
 
+def safe_next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_prob=0.03):
+    """calls next_valid_word with the same arguments.
+
+    if a UsualisError is raised it returns a way back into
+    the ambitus"""
+    try:
+        word = next_valid_word(start_note, high_limit, low_limit, double_prop, triple_prob)
+        return word
+    except UsualisError:
+        direction = 1 if start_note < 0 else -1
+        word = [Note(direction, length(double_prop, triple_prob))
+                for _ in range(0, 2 + int(random.random() * abs(start_note)))]
+        musical_logger.error('Usualis: no real word, using dynamically created: {}'.format(word))
+        return word
+
+
 def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_prob=0.03):
     """selects a new words from the available pool
 
@@ -113,7 +129,7 @@ def next_valid_word(start_note, high_limit, low_limit, double_prop=0.06, triple_
             and (end_note <= high_limit and end_note >= low_limit)  # end-note in range
             and (start_note <= high_limit and start_note >= low_limit)  # start-note in range
             and (indicators.diff > 0 and should_go_upward
-                or (indicators.diff < 0 and should_go_downward))):
+                 or (indicators.diff < 0 and should_go_downward))):
             valid_words.append(movement)
     valid_words = list(itertools.chain(*valid_words))
     try:
