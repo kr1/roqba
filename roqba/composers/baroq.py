@@ -165,7 +165,7 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
 
         - starts a thread to handle the embellishment'''
         for v in list(self.voices.values()):
-            if v.do_embellish:
+            if v.do_embellish and v.note_delta:
                 v.do_embellish = False
                 threading.Thread(target=self.ornament_handler,
                                  args=(v,
