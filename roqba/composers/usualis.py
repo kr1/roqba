@@ -36,7 +36,8 @@ class Composer(AbstractComposer):
         self.use_meter = False
         self.zero_note_offset = 30
         self.offered_scales = [scale for scale in self.offered_scales
-                               if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC')]
+                               if scale in ('DIATONIC', 'GREEK_CHROMATIC', 'GREEK_ENHARMONIC',
+                                            'PERSIAN_SEGAH', 'PERSIAN_SHUR')]
         for voice in list(self.voices.values()):
             voice.slide = False
             args = [random() * 0.3 for n in range(4)]

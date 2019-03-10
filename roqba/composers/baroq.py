@@ -33,6 +33,9 @@ class Composer(RhythmAndMeterMixin, AbstractComposer):
         self.max_binaural_diff = behaviour['max_binaural_diff']
         self.generate_real_scale(settings['lowest_note_num'],
                                  settings['highest_note_num'])
+        if 'scales' in settings:
+            self.offered_scales = [scale for scale in self.offered_scales
+                                   if scale in settings['scales']]
 
     def generate(self, state):
         """main generating function, the next polyphonic step is produced here
