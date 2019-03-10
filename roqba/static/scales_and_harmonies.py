@@ -7,8 +7,11 @@ SCALES = {
     "PENTATONIC": [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0],
     "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
     "GREEK_CHROMATIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
-    "GREEK_ENHARMONIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0]
-  }
+    "GREEK_ENHARMONIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
+    # the next 2 scales starting minor, the final scale uses tunings
+    "PERSIAN_SEGAH": [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0],
+    "PERSIAN_SHUR": [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0],
+}
 
 NOTES_PER_SCALE = {
     "DIATONIC": 7,
@@ -18,17 +21,19 @@ NOTES_PER_SCALE = {
     "PENTA_MINOR": 5,
     "GREEK_CHROMATIC": 7,
     "GREEK_ENHARMONIC": 7,
-  }
+}
 
 SCALES_BY_FREQUENCY = sum([
-    ["DIATONIC"] * 4,
-    ["HARMONIC"] * 2,
-    ["MELODIC"] * 2,
-    ["GREEK_ENHARMONIC"] * 2,
-    ["GREEK_CHROMATIC"] * 2,
+    ["DIATONIC"] * 6,
+    ["HARMONIC"] * 4,
+    ["MELODIC"] * 4,
+    ["GREEK_ENHARMONIC"] * 3,
+    ["GREEK_CHROMATIC"] * 3,
+    ['PERSIAN_SEGAH'] * 2,
+    ['PERSIAN_SHUR'] * 2,
     ["PENTATONIC"] * 1,
     ["PENTA_MINOR"] * 1],
-  [])
+    [])
 
 STRICT_HARMONIES = [set([2, 4, 6]), set([2, 4, 0]),
                     set([3, 5, 0]), set([2, 5, 0])]
@@ -44,12 +49,12 @@ FOUR_NOTE_HARMONIES = [
 ]
 
 tmp_length_2_strict = [set(res) for res in
-                        [n[:2] for n in 
-                          sum(
-                              [list(itertools.permutations(set_)) for set_ in STRICT_HARMONIES],
-                              []
-                          )
-                        ]
+                          [n[:2] for n in
+                              sum(
+                                  [list(itertools.permutations(set_)) for set_ in STRICT_HARMONIES],
+                                  []
+                              )
+                          ]
                       ]
 
 ALL_STRICT_HARMONIES = STRICT_HARMONIES + tmp_length_2_strict
@@ -60,8 +65,8 @@ BASE_HARMONIES = {2: [set([6]), set([6, 2]), set([6, 0]), set([0, 2]),
                   3: [set([0]), set([6]), set([6, 2]), set([6, 0]),
                       set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])],
                   4: [set([0, 2]), set([6]), set([6, 2]), set([6, 0]),
-                      set([0, 2, 5]), set([0, 2, 4, 6]), 
-                      set([0, 5]), # experimental: for pentatonic-'trap'
+                      set([0, 2, 5]), set([0, 2, 4, 6]),
+                      set([0, 5]),  # experimental: for pentatonic-'trap'
                       set([0, 4]), set([0, 2]), set([0, 2, 4]), set([2, 4])]
                   }
 

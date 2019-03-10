@@ -156,4 +156,8 @@ class AbstractComposer(object, metaclass=ABCMeta):
         tunings = None
         if self.scale == 'GREEK_ENHARMONIC':
             tunings = {1: -0.5, 2: -1, 8:-0.5, 9:-1}
+        elif self.scale == 'PERSIAN_SEGAH':
+            tunings = {2: -0.5, 8: 0.25, 10: 0.13}
+        elif self.scale == 'PERSIAN_SHUR':
+            tunings = {3: 0.5, 8: -0.2, 10: -0.2}
         self.real_scale = self.assemble_real_scale(scale, min, max, tunings=tunings)
