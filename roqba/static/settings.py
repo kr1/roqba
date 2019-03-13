@@ -531,7 +531,7 @@ styles = {
             'gui': True,
             'composer': 'baroq',
             'scales': ['DIATONIC', 'PERSIAN_SHUR', 'PERSIAN_SEGAH',
-                       'GREEK_CHROMATIC', 'GREEK_ENHARMONIC'],
+                       'GREEK_CHROMATIC', 'GREEK_ENHARMONIC', 'PTOLEMY_TROPOI'],
             'notate': True,
             'start_scale': 'GREEK_CHROMATIC' },
         'behaviour': {

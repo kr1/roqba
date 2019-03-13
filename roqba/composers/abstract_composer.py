@@ -156,6 +156,8 @@ class AbstractComposer(object, metaclass=ABCMeta):
         tunings = None
         if self.scale == 'GREEK_ENHARMONIC':
             tunings = {1: -0.5, 2: -1, 8:-0.5, 9:-1}
+        elif self.scale == 'PTOLEMY_TROPOI':
+            tunings = {3: -0.3, 8: -0.2, 9: 0.3}  # (West - ancient greek music, p. 171)
         elif self.scale == 'PERSIAN_SEGAH':
             tunings = {2: -0.5, 8: 0.25, 10: 0.13}
         elif self.scale == 'PERSIAN_SHUR':

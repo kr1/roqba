@@ -8,7 +8,8 @@ SCALES = {
     "PENTA_MINOR": [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
     "GREEK_CHROMATIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
     "GREEK_ENHARMONIC": [1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0],
-    # the next 2 scales starting minor, the final scale uses tunings
+    "PTOLEMY_TROPOI": [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0],  # (West - ancient greek music)
+    # the next 2 scales start in minor, the final scale uses tunings
     "PERSIAN_SEGAH": [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0],
     "PERSIAN_SHUR": [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0],
 }
