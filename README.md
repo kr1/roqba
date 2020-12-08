@@ -30,6 +30,11 @@ puredata creates the sounds, run it with
     pd pd/roqba.pd
 ```
 
+or without a GUI:
+```bash
+    pd -noadc -nodac -nogui -stderr pd/roqba.pd
+```
+
 ## start the music
 
 open a python shell (I recommend [**IPython**](http://ipython.org)) in this folder.
